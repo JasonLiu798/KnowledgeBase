@@ -1,0 +1,1 @@
+[MongoDB文档（Document）全局唯一ID的设计思路](http://www.cnblogs.com/liuhao/archive/2011/12/01/2270649.html)

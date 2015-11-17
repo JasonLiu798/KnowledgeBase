@@ -90,20 +90,20 @@ srandmember(key) ：随机返回名称为key的set的一个元素
 ##zset（sorted set）
 ###zadd(key, score, member)
 向名称为key的zset中添加元素member，score用于排序。如果该元素已经存在，则根据score更新该元素的顺序。
-###zrem(key, member) 
+###zrem(key, member)
 删除名称为key的zset中的元素member
-###zincrby(key, increment, member) 
+###zincrby(key, increment, member)
 如果在名称为key的zset中已经存在元素member，则该元素的score增加increment；否则向集合中添加该元素，其score的值为increment
-###zrank(key, member) 
+###zrank(key, member)
 返回名称为key的zset（元素已按score从小到大排序）中member元素的rank（即index，从0开始），若没有member元素，返回“nil”
-###zrevrank(key, member) 
+###zrevrank(key, member)
 返回名称为key的zset（元素已按score从大到小排序）中member元素的rank（即index，从0开始），若没有member元素，返回“nil”
 ###zrange(key, start, end)
 返回名称为key的zset（元素已按score从小到大排序）中的index从start到end的所有元素
 ###zrevrange(key, start, end)
 返回名称为key的zset（元素已按score从大到小排序）中的index从start到end的所有元素
 ###zrangebyscore(key, min, max)
-返回名称为key的zset中score >= min且score <= max的所有元素 
+返回名称为key的zset中score >= min且score <= max的所有元素
 ###zcard(key)
 返回名称为key的zset的基数 
 ###zscore(key, element)

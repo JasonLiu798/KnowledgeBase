@@ -129,6 +129,14 @@ hkeys(key)：返回名称为key的hash中所有键
 hvals(key)：返回名称为key的hash中所有键对应的value
 hgetall(key)：返回名称为key的hash中所有的键（field）及其对应的value
 
+
+##二进制位数组
+bitcount 实现方法：
+遍历法O(n)
+查表法，受限于表大小，cpu缓存限制
+variable-precision SWAR算法
+
+
 ##持久化
 save：将数据同步保存到磁盘
 bgsave：将数据异步保存到磁盘
@@ -141,6 +149,10 @@ monitor     实时转储收到的请求
 slaveof     改变复制策略设置
 config      在运行时配置Redis服务器
 
+---
+#慢查询日志
+showlog-log-slower-than 指定执行时间超过多少微妙会被记录到日志
+showlog-max-len 循环写大小
 
 
 ---

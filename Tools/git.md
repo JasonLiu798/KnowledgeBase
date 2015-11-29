@@ -233,6 +233,10 @@ $ git push
     git branch -m {oldName} {newName}
     git push origin {newName}
 
+##git pull
+FETCH_HEAD：是一个版本链接，记录在本地的一个文件中，指向着目前已经从远程仓库取下来的分支的末端版本
+git pull : 首先，基于本地的FETCH_HEAD记录，比对本地的FETCH_HEAD记录与远程仓库的版本号，然后git fetch 获得当前指向的远程分支的后续版本的数据，然后再利用git merge将其与本地的当前分支合并。
+
 ##git fetch
     git fetch -p    #fetch之后删除掉没有与远程分支对应的本地分支
     git fetch [remote responsity] [remote branch]:[local branch]
@@ -267,6 +271,12 @@ git fetch origin branch1:branch2
     如果本地存在branch2分支, 并且是`fast forward', 则自动合并两个分支, 否则, 会阻止以上操作
 * git fetch origin :branch2
 等价于: git fetch origin master:branch2
+
+1. git fetch            →→ 这将更新git remote 中所有的远程repo 所包含分支的最新commit-id, 将其记录到.git/FETCH_HEAD文件中
+2. git fetch remote_repo         →→ 这将更新名称为remote_repo 的远程repo上的所有branch的最新commit-id，将其记录。 
+3. git fetch remote_repo remote_branch_name        →→ 这将这将更新名称为remote_repo 的远程repo上的分支： remote_branch_name
+4. git fetch remote_repo remote_branch_name:local_branch_name       →→ 这将这将更新名称为remote_repo 的远程repo上的分支： remote_branch_name ，并在本地创建local_branch_name 本地分支保存远端分支的所有数据。
+
 
 
 

@@ -5,6 +5,9 @@ redis-server /etc/redis/redis.conf
 redis-cli -h [ip] -p [port]
 auth    简单密码认证
 
+## delete data
+flushall
+flushdb
 
 ---
 #value 相关
@@ -215,12 +218,34 @@ redis自己实现VM，主要OS的VM换入换出是基于Page概念，无法控�
 ###建议使用hashset而不是set/get的方式来使用Redis
 [Full of keys(Salvatore antirez Sanfilippo)](http://oldblog.antirez.com/post/redis-weekly-update-7.html)
 
+##监控
+https://github.com/LittlePeng/redis-monitor
+
 ---
 #集群
 [benchamark，集群方案概览](http://www.cnblogs.com/lulu/archive/2013/06/10/3130878.html)
 http://redis.io/topics/cluster-spec
 
-## 主从配置
+#twemproxy
+[github](https://github.com/twitter/twemproxy)
+[Redis Command Support](https://github.com/twitter/twemproxy/blob/master/notes/redis.md)
+[Hash Tags](https://github.com/twitter/twemproxy/blob/master/notes/recommendation.md#hash-tags)
+##配置
+打开debug日志 编译增加 --enable-debug=log 
+mbuf：zero copy
+    --mbuf-size=N
+    small mbuf allows us to handle more connections，并发高
+    large mbuf allows us to read and write more data to and from kernel socket buffers，单个连接读写效率高
+
+
+
+## keepalived
+http://heylinux.com/archives/1942.html
+
+##redis自带集群
+[redis 3.0](http://blog.csdn.net/myrainblues/article/details/25881535)
+
+### 主从配置
 master:namenode:6379
 slave1:datanode1
 slave2:datanode2
@@ -228,12 +253,6 @@ slave2:datanode2
 slave1:/etc/redis_slave.conf
 slaveof namenode 6379
 
-## keepalived
-http://heylinux.com/archives/1942.html
-
-
-## redis 3.0
-http://blog.csdn.net/myrainblues/article/details/25881535
 
 ## 分布式
 架构细节：
@@ -243,18 +262,13 @@ http://blog.csdn.net/myrainblues/article/details/25881535
 * redis-cluster把所有的物理节点映射到[0-16383]slot上,cluster 负责维护node<->slot<->value
 
 
-keepalived
 
-Twemproxy 
 
-一致性hash
 
-监控
-https://github.com/LittlePeng/redis-monitor
 
-## delete data
-flushall
-flushdb
+
+
+
 
 
 

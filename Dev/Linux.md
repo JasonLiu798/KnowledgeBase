@@ -2,6 +2,27 @@
 ---
 
 
+#unix哲学
+11 缄默原则：如果一个程序没什么好说的，就保持沉默
+12 补救原则：出现异常时，立马给出足量错误信息
+13 经济原则：宁花机器一分，不花程序员1秒
+14 生成原则：避免手工hack，尽量编写程序去生成程序
+15 优化原则：雕琢前先得有原型，跑之前先学会走
+16 多样原则：绝不相信所谓不二法门的断言
+17 扩展原则：设计总着眼未来，未来比预想快
+KISS
+
+软件设计有两种方式：设计的极简单，没有缺陷；设计的极复杂，有缺陷也看不出
+
+模块分解法
+
+
+
+
+
+
+
+---
 #debug
 strace 
 -c 统计每一系统调用的所执行的时间,次数和出错的次数等. 
@@ -67,7 +88,7 @@ qualifier只能是 trace,abbrev,verbose,raw,signal,read,write其中之一.value�
 
 
 
-
+---
 #filesystem
 [Zero-Copy&sendfile浅析](http://blog.csdn.net/jiangbo_hit/article/details/6146502)
 [sendfile:Linux中的"零拷贝"](http://blog.csdn.net/caianye/article/details/7576198)
@@ -96,6 +117,8 @@ Java NIO中FileChannel.transferTo(long position, long count,WriteableByteChannel
 《Zero Copy I: User-Mode Perspective》http://www.linuxjournal.com/article/6345?page=0,0
 《Efficient data transfer through zero copy》http://www.ibm.com/developerworks/linux/library/j-zerocopy
 《The C10K problem》http://www.kegel.com/c10k.html
+
+
 
 ---
 #process

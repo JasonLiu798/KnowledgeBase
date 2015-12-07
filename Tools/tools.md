@@ -6,7 +6,6 @@ https://www.gnupg.org/
 ## sublime text
 
 
-
 ##FE开发
 [全新理念的Web前端开发方式——AlloyDesigner](http://www.alloyteam.com/2014/03/alloydesigner-lai-zi-xing-xing-di-web-qian-duan-kai-fa-fang-shi/)
 [AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)

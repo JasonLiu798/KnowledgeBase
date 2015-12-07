@@ -178,6 +178,11 @@ DDD并不要求采用特定的架构风格，因为它是对架构中立的。�
 [EntityFramework之领域驱动设计实践【扩展阅读】：CQRS体系结构模式](http://www.cnblogs.com/daxnet/archive/2010/08/02/1790299.html)
 [EDA事件驱动架构](http://www.jdon.com/eda.html)
 
+[谈一下关于CQRS架构如何实现高性能](http://www.cnblogs.com/guohu/p/4058954.html)
+
+[Saga的思想与实现](http://www.cnblogs.com/netfocus/p/3149156.html)
+[Reference 6: A Saga on Sagas](https://msdn.microsoft.com/en-us/library/jj591569.aspx)
+
 
 
 

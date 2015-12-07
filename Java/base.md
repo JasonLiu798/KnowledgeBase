@@ -1,5 +1,9 @@
 #Java Basis
 ---
+
+
+
+----
 #编码
 https://github.com/alibaba/dubbo
 [中文编码](http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/)
@@ -92,6 +96,8 @@ http://www.tuicool.com/articles/IfeUfq
 
 ---
 #内存管理
+[java memory model](https://www.cs.umd.edu/users/pugh/java/memoryModel/)
+
 [java内存泄露](http://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/)
 ##gc
 垃圾回收不会发生在永久代，如果永久代满了或者是超过了临界值，会触发完全垃圾回收(Full GC)。如果你仔细查看垃圾收集器的输出信息，就会发现永久代也是被回收的。这就是为什么正确的永久代大小对避免Full GC是非常重要的原因。

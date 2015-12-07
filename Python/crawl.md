@@ -70,6 +70,8 @@ http://space.bilibili.com/space?uid=8578857&page=1
 http://www.zhihu.com/people/zswsg
 http://weibo.com/mygroups?gid=3439201712715348&wvr=6&leftnav=1&isspecialgroup=1
 
+示例
+http://www.zhihu.com/question/36338520#answer-22827812
 
 ##wiki
 ###分类链接

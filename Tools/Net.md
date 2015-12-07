@@ -52,15 +52,6 @@ GoogleDNS：★★
 你懂的，国内基本残废了一半。
 
 
-https://www.pinterest.com/
-http://shu.taobao.com/
-http://www.opclass.com/
-http://www.twitch.tv/
-
-http://item.jd.com/1867711.html#none
-
-
-
 
 
 

@@ -35,6 +35,8 @@ Ctrl + r　str ：可以搜索历史，也可以当前光标处向左定位到�
 Ctrl -s　str ：从当前光标处向右定位到字符串 str 处，Esc 退出。注意，Ctrl + S默认被用户控制 XON/XOFF ，需要在终端里执行stty -ixon或加入profile。
 注意上述所有涉及Alt键的实际是Meta键，在xshell中默认是没有勾选“Use Alt key as Meta key”，要充分体验这些键带来的快捷，请在对应的terminal设置。
 
+#putty
+http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
 
 ---
 #系统相关

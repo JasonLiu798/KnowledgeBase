@@ -7,6 +7,29 @@
 
 
 
+---
+#settings
+10G
+listener.ora
+D:\ProgramFiles\Oracle\product\10.2.03\db_1\network\ADMIN\listener.ora
+tnsnames.ora
+D:\ProgramFiles\Oracle\product\10.2.03\db_1\network\ADMIN\tnsnames.ora
+——————————————————————————————————————————
+10g启动
+@echo off  
+net start OracleDBConsoleorcl10g
+net start OracleOraDb10g_homeiSQL*Plus
+net start OracleOraDb10g_homeTNSListener
+net start OracleServiceORCL10G
+10g停止
+@echo off  
+net stop OracleDBConsoleorcl10g
+net stop OracleOraDb10g_homeiSQL*Plus
+net stop OracleOraDb10g_homeTNSListener
+net stop OracleServiceORCL10G
+——————————————————————————————————————————
+
+
 
 ---
 #sqlplus

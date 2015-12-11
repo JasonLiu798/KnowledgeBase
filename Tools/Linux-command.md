@@ -288,8 +288,16 @@ yum –y install vsftpd
 
 ---
 #Network 网络相关 
+##curl
+curl -H "Content-type: application/json" -X POST -d '{"account":"$RANDOM","password":"123345"}'  http://bbb
+
 ##wget
 http://java-er.com/blog/wget-useage-x/
+
+
+###with post
+wget -q -O- --post-data="account=$RANDOM&password=123345"  http://aaaa
+
 测网速
 wget -O /dev/null http://ftp.jaist.ac.jp/pub/eclipse/technology/epp/downloads/release/mars/R/eclipse-jee-mars-R-win32-x86_64.zip
 ###爬虫

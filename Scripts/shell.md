@@ -1,0 +1,443 @@
+#shell脚本编程
+---
+#shell能干什么
+shell 控制 OS 控制 machine 控制 other machine(via net)
+
+* 自动化（重复操作，后台执行，节省时间）
+* 各种批量操作
+* 减少人为操作，减少出错概率
+
+---
+#如何开始
+##骨
+shell语法，变量，选择，循环
+##骨架
+基本编程技能
+##肉
+Linux系统基础概念；常用命令；长期的学习积累；
+
+---
+#什么时候不用
+* 资源密集型的任务
+* 涉及数学计算，尤其是浮点运算、精确运算或者复杂的算术运算
+* 跨平台移植需求
+* 复杂的应用，在必须使用结构化编程的时候(需要变量的类型检查,函数原型,等等) 
+* 对于影响系统全局性的关键任务应用
+* 对于安全有很高要求的任务,比如你需要一个健壮的系统来防止入侵,破解,恶意破坏等等
+* 项目由连串的依赖的各个部分组成
+* 需要大规模的文件操作
+* 需要多维数组的支持
+* 需要数据结构的支持,比如链表或数等数据结构 需要产生或操作图形化界面GUI
+* 需要直接操作系统硬件
+* 需要 I/O 或 socket 接口
+* 需要使用库或者遗留下来的老代码的接口
+* 私人的,闭源的应用(shell 脚本把代码就放在文本文件中,全世界都能看到)
+
+---
+#start
+```
+#!/bin/bash
+echo "hello,$1"
+exit
+```
+
+ #! 实际上是一个 2 字节的magic number，这是指定一个文件类型的特殊标记，也可以被忽略,不过这样你的脚本文件就只能是一些命令的集合，不能够使用 shell 内建 的指令
+ /bin/bash 路径名：指定了一个解释脚本中命令的程序
+ exit 当以不带参数的exit命令来结束时, 脚本的退出状态码就由脚本中最后执行的命令来决定(就是exit之前的命令)
+
+##执行
+sh xxx.sh 这禁用了脚本从 stdin 中读数据的功能
+增加执行权限：
+chmod 555 scriptname
+chmod +x scriptname
+chmod u+x scriptname
+
+----
+#语法(数据/指令)
+#数据
+[变量类型](http://blog.csdn.net/wangcj625/article/details/6423517)
+[shell变量详解](http://www.cnblogs.com/barrychiao/archive/2012/10/22/2733210.html)
+###定义
+```
+var="value"
+echo $var
+echo ${var}  变量var的值, 与$var相同
+```
+注意，变量名和等号之间不能有空格。同时，变量名的命名须遵循如下规则：
+首个字符必须为字母（a-z，A-Z）;
+中间不能有空格，可以使用下划线（_）;
+不能使用标点符号;
+不能使用bash里的关键字（可用help命令查看保留关键字）
+
+###变量类型
+指定变量类型 declare或typeset
+选 项 | 含 义   
+------|--------
+-a    | 将变量当作一个数组。即，分配元素
+-i    | 将变量设为整型
+-f    | 列出函数的名称和定义
+-F    | 只列出函数名
+-r    | 将变量设为只读，等于readonly
+-x    | 将变量名输出到子shell中，等于export
+```
+declare -i a
+declare -i a=3
+echo $a
+declare -i a=hello
+echo $a
+```
+* Bash变量是不分类型的[ABS 4.3]
+本质上,Bash 变量都是字符串,但是依赖于上下文，Bash允许比较操作和算术操作.决定这些的关键因素就是，变量中的值是否只有数字.
+
+
+空变量将转换成一个整型变量
+###局部变量 local variable
+只在函数或代码块中出现
+```
+local VARIABLE_NAME=value
+```
+###环境变量 environmental variables
+在一般的上下文中,每个进程都有自己的环境,就是一组保持进程可能引用的信息的变量
+```
+export
+export ENV_VARIABLE_NAME=value
+```
+export变量到这个脚本所产生的子进程, 也就是说只能够对
+这个脚本所产生的命令和进程起作用. 如果脚本是从命令行中调用的, 那么
+这个脚本所export的变量是不能影响命令行环境的. 也就是说, 子进程是不
+能够export变量来影响产生自己的父进程的环境的.
+
+###只读变量
+```
+declare -x RO_VARIABLE_NAME=value1
+readonly RO_VARIABLE_NAME1=value2
+echo $RO_VARIABLE_NAME
+RO_VARIABLE_NAME=zzxds
+echo $?
+```
+
+
+##数字
+Bash不能够处理浮点运算.它会把包含小数点的数字看作字符串.
+非要做浮点运算的话,可以在脚本中使用bc,这个命令可以进行浮点运算,或者调用数学库函数.
+
+###基础计算
+let
+```
+a=5  
+b=6  
+let res=a*b  
+echo $res
+let res*=res
+echo $res
+```
+(())
+```
+a=5
+b=6
+res=$((a+b))
+```
+[]
+```
+a=5
+b=6
+res=$[a+b]
+echo $res
+res=$[$a+$a]
+echo $res
+```
+
+###高级操作
+expr
+```
+a=1
+res=`expr $a + 1`
+echo $res
+```
+bc
+```
+echo "4*6.4" |bc
+echo "scale=2;1/3" | bc
+```
+awk
+```
+a=1
+b=2
+res=`echo "$a $b"|awk '{printf("%g",$1*$2)}'`
+echo $res
+var=350456
+res=`echo "$var"|awk '{printf("%g",log($1)/log(2))}'`
+# %g 自动选择合适的表示法 
+echo $res
+```
+
+##字符串
+```
+#index 从零开始
+a=1234561234567
+echo ${#a}
+#从3开始截取
+echo ${a:3} 
+#从3开始截取2个
+echo ${a:3:2} 
+#从变量$a的开头，删除最短匹配
+echo ${a#12*}
+#从变量$a的开头，删除最长匹配
+echo ${a##12*}
+#从变量$a的结尾, 删除最短匹配
+echo ${a%*67}
+#从变量$a的结尾, 删除最短匹配
+echo ${a%*67}
+#字符串替换-第一个
+echo ${a/23/twothree} 
+#字符串替换-所有
+echo ${a//23/twothree}
+#字符串替换-前缀替换
+echo ${a/#12/twothree}
+#字符串替换-后缀替换
+echo ${a/%67/sixseven}
+```
+性能对比：
+time for i in $(seq 10000);do a=${#test};done;
+time for i in $(seq 100);do a=$(expr length $test);done;
+
+man test
+判断字符串为空:
+```
+if [ -z "$string1" ];then
+    echo "null"
+fi
+# -n 为非空
+if [ "$str" = "" ]; then
+    echo "null"
+fi
+if [ x"$str" = x ]; then
+    echo "null"
+fi
+
+if [ $string1 ]; then
+    echo "not null"
+fi
+```
+注意：都要代双引号，否则有些命令会报错
+
+##数组
+http://www.coder4.com/archives/3853
+定义
+arr=(1 2 3 4 5)
+array
+array[0]="a"
+array[1]="b"
+array[2]="c"
+长度
+${#array[@]}
+${arr[i]}
+[关联数组](http://blog.csdn.net/ysdaniel/article/details/7909824)
+
+
+
+----
+#控制语句
+##条件
+if [ condition1 ]
+then
+     command1
+     command2
+elif [ condition2 ]  # 与else if一样
+then
+     command3
+     command4
+else
+     default-command
+fi
+###condition
+test, /usr/bin/test, [ ], 和/usr/bin/[都是等价命令
+[[ ]]结构比[ ]结构更加通用.这是一个扩展的test命令, 是从ksh88中引进的. &&, ||, <, 和> 操作符能够正常存在于[[ ]]条件判断结构中, 但是如果出现在[ ]结构中的话, 会报错.
+
+### if COMMAND"结构
+将会返回COMMAND的退出状态码.
+
+### (( ))结构
+扩展并计算一个算术表达式的值. 如果表达式的结果为0, 那么返回的退出状态码为1,或者是"假". 而一个非零值的表达式所返回的退出状态码将为0, 或者是"true".这种情况和先前所讨论的test命令和[ ]结构的行为正好相反.
+
+==比较操作符在双中括号对和单中括号对中的行为是不同的.
+
+
+
+##循环
+break
+continue
+
+##case结构
+case "$variable" in
+     $condition1" )
+     TT CLASS="REPLACEABLE" >command...
+     ;
+     $condition2" )
+     TT CLASS="REPLACEABLE" >command...
+     ;
+esac
+
+---
+##for循环
+for arg in [list]
+
+for ((a=1; a <= LIMIT ; a++))
+for ((a=1, b=1; a <= LIMIT ; a++, b++))
+
+for i in "${!arr[@]}"; do
+printf "%s\t%s\n" "$i" "${arr[$i]}"
+done
+
+
+##while循环
+while [condition]
+do
+     command...
+done
+
+while (( a <= LIMIT ))
+
+i=0
+while [ $i -lt ${ #array[@] } ]do
+   echo ${ array[$i] }
+   let i++
+done
+
+
+##循环控制
+continue/break
+http://c.biancheng.net/cpp/view/7010.html
+
+break命令可以带一个参数. 一个不带参数的break命令只能退出最内层的循环, 而break N可以退出N层循环.
+continue命令也可以象break命令一样带一个参数. 一个不带参数的continue命令只会去掉本次循环的剩余代码. 而continue N将会把N层循环的剩余代码都去掉, 但是循环的次数不变.
+
+
+---
+#函数
+格式：
+function functionname()
+{
+$1 #入口参数
+echo ... #返回值
+}
+默认：全局变量
+局部变量 关键字local
+局部变量屏蔽全局变量
+
+function function_name {
+command...
+}
+或
+function_name () {
+command...
+}
+
+
+文件读取
+http://www.cnblogs.com/iloveyoucc/archive/2012/07/10/2585529.html
+
+
+
+
+
+
+----
+#各种括号
+##单小括号 ()
+1.命令组。括号中的命令将会新开一个子shell顺序执行，所以括号中的变量不能够被脚本余下的部分使用。括号中多个命令之间用分号隔开，最后一个命令可以没有分号，各命令和括号之间不必有空格。
+2.命令替换。等同于`cmd`，shell扫描一遍命令行，发现了$(cmd)结构，便将$(cmd)中的cmd执行一次，得到其标准输出，再将此输出放到原来命令。有些shell不支持，如tcsh。   
+3.用于初始化数组。如：array=(a b c d)
+
+##双小括号 (( ))
+1.整数扩展。这种扩展计算是整数型的计算，不支持浮点型。((exp))结构扩展并计算一个算术表达式的值，如果表达式的结果为0，那么返回的退出状态码为1，或者 是"假"，而一个非零值的表达式所返回的退出状态码将为0，或者是"true"。若是逻辑判断，表达式exp为真则为1,假则为0。   
+2.只要括号中的运算符、表达式符合C语言运算规则，都可用在$((exp))中，甚至是三目运算符。作不同进位(如二进制、八进制、十六进制)运算时，输出结果全都自动转化成了十进制。如：echo $((16#5f)) 结果为95 (16进位转十进制)   
+3.单纯用 (( )) 也可重定义变量值，比如 a=5; ((a++)) 可将 $a 重定义为6   
+4.常用于算术运算比较，双括号中的变量可以不使用$符号前缀。括号内支持多个表达式用逗号分开。 只要括号中的表达式符合C语言运算规则,比如可以直接使用for((i=0;i<5;i++)), 如果不使用双括号, 则为for i in `seq 0 4`或者for i in {0..4}。再如可以直接使用if (($i<5)), 如果不使用双括号, 则为if [ $i -lt 5 ]。
+
+1、在双括号结构中，所有表达式可以像c语言一样，如：a++,b--等。
+2、在双括号结构中，所有变量可以不加入：“$”符号前缀。
+3、双括号可以进行逻辑运算，四则运算
+4、双括号结构 扩展了for，while,if条件测试运算
+5、支持多个表达式运算，各个表达式之间用“，”分开
+
+##单中括号 []
+1.bash 的内部命令，[和test是等同的。如果我们不用绝对路径指明，通常我们用的都是bash自带的命令。if/test结构中的左中括号是调用test的命令标识，右中括号是关闭条件判断的。这个命令把它的参数作为比较表达式或者作为文件测试，并且根据比较的结果来返回一个退出状态码。if/test结构中并不是必须右中括号，但是新版的Bash中要求必须这样。   
+2.Test和[]中可用的比较运算符只有==和!=，两者都是用于字符串比较的，不可用于整数比较，整数比较只能使用-eq，-gt这种形式。无论是字符串比较还是整数比较都不支持大于号小于号。如果实在想用，对于字符串比较可以使用转义形式，如果比较"ab"和"bc"：[ ab \< bc ]，结果为真，也就是返回状态为0。[ ]中的逻辑与和逻辑或使用-a 和-o 表示。
+3.字符范围。用作正则表达式的一部分，描述一个匹配的字符范围。作为test用途的中括号内不能使用正则。
+4.在一个array 结构的上下文中，中括号用来引用数组中每个元素的编号。
+
+##双中括号[[ ]]
+1.[[是 bash 程序语言的关键字。并不是一个命令，[[ ]] 结构比[ ]结构更加通用。在[[和]]之间所有的字符都不会发生文件名扩展或者单词分割，但是会发生参数扩展和命令替换。   
+2.支持字符串的模式匹配，使用=~操作符时甚至支持shell的正则表达式。字符串比较时可以把右边的作为一个模式，而不仅仅是一个字符串，比如[[ hello == hell? ]]，结果为真。[[ ]] 中匹配字符串或通配符，不需要引号。   
+3.使用[[ ... ]]条件判断结构，而不是[ ... ]，能够防止脚本中的许多逻辑错误。比如，&&、||、<和> 操作符能够正常存在于[[ ]]条件判断结构中，但是如果出现在[ ]结构中的话，会报错。比如可以直接使用if [[ $a != 1 && $a != 2 ]], 如果不适用双括号, 则为if [ $a -ne 1] && [ $a != 2 ]或者if [ $a -ne 1 -a $a != 2 ]。   
+4.bash把双中括号中的表达式看作一个单独的元素，并返回一个退出状态码。
+
+##{}
+###常规用法
+1.大括号拓展。(通配(globbing))将对大括号中的文件名做扩展。在大括号中，不允许有空白，除非这个空白被引用或转义。
+第一种：对大括号中的以逗号分割的文件列表进行拓展。如 touch {a,b}.txt 结果为a.txt b.txt。
+第二种：对大括号中以点点（..）分割的顺序文件列表起拓展作用，如：touch {a..d}.txt 结果为a.txt b.txt c.txt d.txt[cpp] view plaincopy    
+2.代码块，又被称为内部组，这个结构事实上创建了一个匿名函数 。与小括号中的命令不同，大括号内的命令不会新开一个子shell运行，即脚本余下部分仍可使用括号内变量。括号内的命令间用分号隔开，最后一个也必须有分号。{}的第一个命令和左括号之间必须要有一个空格。
+###几种特殊的替换结构${var:-string},${var:+string},${var:=string},${var:?string}     
+1.${var:-string}和${var:=string}:若变量var为空，则用在命令行中用string来替换${var:-string}，否则变量var不为空时，则用变量var的值来替换${var:-string}；对于${var:=string}的替换规则和${var:-string}是一样的，所不同之处是${var:=string}若var为空时，用string替换${var:=string}的同时，把string赋给变量var： ${var:=string}很常用的一种用法是，判断某个变量是否赋值，没有的话则给它赋上一个默认值。       
+2.${var:+string}的替换规则和上面的相反，即只有当var不是空的时候才替换成string，若var为空时则不替换或者说是替换成变量 var的值，即空值。(因为变量var此时为空，所以这两种说法是等价的)       
+3.${var:?string}替换规则为：若变量var不为空，则用变量var的值来替换${var:?string}；若变量var为空，则把string输出到标准错误中，并从脚本中退出。我们可利用此特性来检查是否设置了变量的值。 补充扩展：在上面这五种替换结构中string不一定是常值的，可用另外一个变量的值或是一种命令的输出。
+###四种模式匹配替换结构${var%pattern},${var%%pattern},${var#pattern},${var##pattern}
+    第一种模式：${variable%pattern}，这种模式时，shell在variable中查找，看它是否一给的模式pattern结尾，如果是，就从命令行把variable中的内容去掉右边最短的匹配模式
+    第二种模式： ${variable%%pattern}，这种模式时，shell在variable中查找，看它是否一给的模式pattern结尾，如果是，就从命令行把variable中的内容去掉右边最长的匹配模式
+    第三种模式：${variable#pattern} 这种模式时，shell在variable中查找，看它是否一给的模式pattern开始，如果是，就从命令行把variable中的内容去掉左边最短的匹配模式
+    第四种模式： ${variable##pattern} 这种模式时，shell在variable中查找，看它是否一给的模式pattern结尾，如果是，就从命令行把variable中的内容去掉右边最长的匹配模式 这四种模式中都不会改变variable的值，其中，只有在pattern中使用了*匹配符号时，%和%%，#和##才有区别。结构中的pattern支持通配符，*表示零个或多个任意字符，?表示仅与一个任意字符匹配，[...]表示匹配中括号里面的字符，[!...]表示不匹配中括号里面的字符。
+
+echo ${var-DEFAULT}   #var没被声明, 那么就以$DEFAULT作为其值
+echo ${var:-DEFAULT}  #var没被声明 或 其值为空, 那么就以$DEFAULT作为其值
+echo ${var=DEFAULT}   #var没被声明, 那么就以$DEFAULT作为其值
+echo ${var:=DEFAULT}  #var没被声明 或 其值为空, 那么就以$DEFAULT作为其值
+echo ${var?ERR_MSG}   #var没被声明, 那么就打印$ERR_MSG
+echo ${var:?ERR_MSG}  #var没被设置, 那么就打印$ERR_MSG
+
+echo ${var+OTHER}     #var被声明, 那么其值就是$OTHER, 否则就为null字符串
+echo ${var:+OTHER}    #var被设置, 那么其值就是$OTHER, 否则就为null字符串
+
+echo ${!varprefix*}   #匹配之前所有以varprefix开头进行声明的变量
+echo ${!varprefix@}   #同上
+
+
+##符号$后的括号
+1 ${a} 变量a的值, 在不引起歧义的情况下可以省略大括号。
+2 $(cmd) 命令替换，和`cmd`效果相同，结果为shell命令cmd的输，过某些Shell版本不支持$()形式的命令替换, 如tcsh。
+3 $((expression)) 和`exprexpression`效果相同, 计算数学表达式exp的数值, 其中exp只要符合C语言的运算规则即可, 甚至三目运算符和逻辑表达式都可以计算。
+
+
+
+---
+#系统
+##管道
+IPC Inter-Process Communication
+第三方通信协议
+如果没有，那必须了解彼此细节才能实现合作，一旦有新程序加入通信，必须解决相关通讯问题
+
+##ssh
+[pssh](http://www.cnblogs.com/wangkangluo1/archive/2013/01/06/2847353.html)
+###执行命令
+
+###无密码登录
+
+##scp
+
+
+
+
+##文本处理
+sort
+tsort 拓扑排序, 读取以空格分隔的有序对, 并且依靠输入模式进行排序.
+uniq 删除一个已排序文件中的重复行 -c用来统计每行出现的次数, 并把次数作为前缀放到输出行的前面.
+
+
+
+
+---
+#参考资料
+[Advance Bash-Scripting Guide](http://book.douban.com/subject/3010746/)
+[鸟哥Linux私房菜](http://book.douban.com/subject/2208530/) 第三部分 学习shell和shell脚本
+[Linux Shell脚本教程：30分钟玩转Shell脚本编程](http://c.biancheng.net/cpp/shell/)

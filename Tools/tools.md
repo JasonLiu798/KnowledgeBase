@@ -6,7 +6,6 @@ https://www.gnupg.org/
 ## sublime text
 
 
-
 ##FE开发
 [全新理念的Web前端开发方式——AlloyDesigner](http://www.alloyteam.com/2014/03/alloydesigner-lai-zi-xing-xing-di-web-qian-duan-kai-fa-fang-shi/)
 [AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
@@ -27,6 +26,11 @@ Java Mission Control JMC
 
 ---
 #win
+##文档管理 #dev 
+velocity
+http://velocity.silverlakesoftware.com/
+zeal
+https://zealdocs.org/download.html
 
 ## pomodairo #efficient #番茄工作法
 ## 改fov #game
@@ -63,6 +67,9 @@ Microsoft Project 2010(附激活密钥) 简体中文版
 #mac
 mac 程序员必备 
 http://www.zhihu.com/question/20036899
+##文档管理 #dev 
+dash
+
 ##safari
 [windows 同步 safari标签  iCloud（Windows 版)](http://support.apple.com/kb/DL1455?viewlocale=zh_CN&locale=zh_CN)
 [safari-改造指南一-safari扩展-safari优化](http://bbs.waerfa.com/discussion/13/safari-改造指南一-safari扩展-safari优化)
@@ -113,7 +120,6 @@ cmd+D 添加到收藏夹
 前进 – 两指向右滑动
 缩小 / 减小文字大小 – 两指捏合
 放大 / 增大文字大小 – 两指外张
-
 
 
 

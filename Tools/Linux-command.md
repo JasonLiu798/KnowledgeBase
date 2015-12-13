@@ -1,5 +1,65 @@
 #linux command notes
 ---
+#bash快捷键
+习惯使用编辑的快捷键可以大大提高效率，记忆学习过程要有意识的忽略功能键、方向键和数字小键盘。以下快捷键适用在bash处于默认的Emacs模式下。如果你有set -o vi，就处于 vi 模式就不适用了。
+另外下面的内容并不包含所有快捷键，只是我个人适用频率最高的几种，但相信已经可以大大提高工作效率了：
+
+Ctrl + l ：清除屏幕，同clear
+Ctrl + a ：将光标定位到命令的开头
+Ctrl + e ：与上一个快捷键相反，将光标定位到命令的结尾
+Ctrl + u ：剪切光标之前的内容，在输错命令或密码
+Ctrl + k ：与上一个快捷键相反，剪切光标之后的内容
+Ctrl + y ：粘贴以上两个快捷键所剪切的内容。Alt+y粘贴更早的内容
+Ctrl + w ：删除光标左边的参数（选项）或内容（实际是以空格为单位向前剪切一个word）
+Ctrl + / ：撤销，同Ctrl+x u
+Ctrl + f ：按字符前移（右向），同→
+Ctrl + b ：按字符后移（左向），同←
+Alt + f ：按单词前移，标点等特殊字符与空格一样分隔单词（右向），同Ctrl+→
+Alt + b ：按单词后移（左向），同Ctrl+←
+Alt + d ：从光标处删除至字尾。可以Ctrl+y粘贴回来
+Alt + \ ：删除当前光标前面所有的空白字符
+Ctrl + d ：删除光标处的字符，同Del键。没有命令是表示注销用户
+Ctrl + h ：删除光标前的字符
+Ctrl + r ：逆向搜索命令历史，比history好用
+Ctrl + g ：从历史搜索模式退出，同ESC
+Ctrl + p ：历史中的上一条命令，同↑
+Ctrl + n ：历史中的下一条命令，同↓
+Alt + .：同!$，输出上一个命令的最后一个参数（选项or单词）。
+还有如Alt+0 Alt+. Alt+.，表示输出上上一条命令的的第一个单词（即命令）。
+另外有一种写法 !:n，表示上一命令的第n个参数，如你刚备份一个配置文件，马上编辑它：cp nginx.conf nginx.conf，vi !:1，同vi !^。!^表示命令的第一个参数，!$最后一个参数（一般是使用Alt + .代替）。
+这里提一下按字符或字符串，向左向后搜索字符串的命令：
+
+Ctrl + ]　c ：从当前光标处向右定位到字符 c 处
+Esc　Ctrl + ]　c ：从当前光标向左定位到字符 c 处。（ bind -P 可以看到绑定信息）
+Ctrl + r　str ：可以搜索历史，也可以当前光标处向左定位到字符串 str，Esc后可定位继续编辑
+Ctrl -s　str ：从当前光标处向右定位到字符串 str 处，Esc 退出。注意，Ctrl + S默认被用户控制 XON/XOFF ，需要在终端里执行stty -ixon或加入profile。
+注意上述所有涉及Alt键的实际是Meta键，在xshell中默认是没有勾选“Use Alt key as Meta key”，要充分体验这些键带来的快捷，请在对应的terminal设置。
+
+#putty
+http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+
+---
+#系统相关
+##type
+type命令用来显示指定命令的类型。一个命令的类型可以是如下之一
+alias 别名
+keyword 关键字，Shell保留字
+function 函数，Shell函数
+builtin 内建命令，Shell内建命令
+file 文件，磁盘文件，外部命令
+unfound 没有找到
+它是Linux系统的一种自省机制，知道了是那种类型，我们就可以针对性的获取帮助。比如内建命令可以用help命令来获取帮助，外部命令用man或者info来获取帮助。
+
+常用参数
+type命令的基本使用方式就是直接跟上命令名字。
+type -a可以显示所有可能的类型，比如有些命令如pwd是shell内建命令，也可以是外部命令。
+type -p只返回外部命令的信息，相当于which命令。
+type -f只返回shell函数的信息。
+type -t 只返回指定类型的信息。
+
+
+
+---
 #用户相关
 ##sudo add user
 ##/etc/passwd
@@ -108,6 +168,34 @@ find . -name "*.nasl" -exec rm {} \;
 grep -C 5 foo file 显示file文件里匹配foo字串那行以及上下5行
 grep -B 5 foo file 显示foo及前5行
 grep -A 5 foo file 显示foo及后5行
+-i 选项在搜索时忽略大小写.
+-w 选项用来匹配整个单词.
+-l 选项仅列出符合匹配的文件, 而不列出匹配行.
+-r (递归) 选项不仅在当前工作目录下搜索匹配, 而且搜索子目录.
+-n 选项列出所有匹配行, 并显示行号.
+-v (或者--invert-match)选项将会显示所有不匹配的行.
+-c (--count) 选项将只会显示匹配到的行数的总数,而不会列出具体的匹配.
+egrep 与grep -E等价.  egrep 'matches|Matches' file.txt
+fgrep 与grep -F等价. 按照字符串字面意思进行的搜索(即不允许使用正则表达式)
+
+##wc
+wc -w 统计单词数量.
+wc -l 统计行数量.
+wc -c 统计字节数量.
+wc -m 统计字符数量.
+wc -L 给出文件中最长行的长度
+
+##flex
+取代lex
+##bison
+取代yacc
+
+#jot, seq
+这些工具用来生成一系列整数, 用户可以指定生成范围.
+每个产生出来的整数一般都占一行, 但是可以使用-s选项来改变这种设置.
+seq -s : 5
+1:2:3:4:5
+
 
 ##encoding 文件编码
 iconv -f encoding -t encoding inputfile
@@ -166,6 +254,14 @@ mount -o loop disk1.iso /mntmount/iso
 -a  ：会由 PATH 变量定义的路径中，将所有含 name 的命令都列出来，包含 alias
 
 
+
+
+
+##strace
+
+##ltrace
+库跟踪工具(Library trace): 跟踪给定命令的调用库的相关信息.
+
 ---
 #Software setup
 ## apt setting
@@ -192,8 +288,16 @@ yum –y install vsftpd
 
 ---
 #Network 网络相关 
+##curl
+curl -H "Content-type: application/json" -X POST -d '{"account":"$RANDOM","password":"123345"}'  http://bbb
+
 ##wget
 http://java-er.com/blog/wget-useage-x/
+
+
+###with post
+wget -q -O- --post-data="account=$RANDOM&password=123345"  http://aaaa
+
 测网速
 wget -O /dev/null http://ftp.jaist.ac.jp/pub/eclipse/technology/epp/downloads/release/mars/R/eclipse-jee-mars-R-win32-x86_64.zip
 ###爬虫
@@ -303,6 +407,7 @@ sudo ifconfig eth0 up
 paralle desktop 无网络：http://bbs.feng.com/read-htm-tid-6881868-page-3.html
 
 ##namp
+网络映射(Network mapper)与端口扫描程序
 nmap -sT -O localhost
 
 ## nc
@@ -310,6 +415,8 @@ nc -z -w 10 %IP% %PORT%
 -z表示检测或者扫描端口
 -w表示超时时间
 -u表示使用UDP协议
+echo clone | nc thunk.org 5000 > e2fsprogs.dat
+
 ### result
 端口成功联通返回值是0，提示succeeded；否则返回1，不提示任何数据
 假如我们有这样一堆IP和端口。
@@ -369,6 +476,16 @@ vi /etc/ssh/sshd_config
 如之前为服务器配置了双网卡，使的在/etc/resolv.conf文件中多了一行目前不使用的IP地址。注释或者删除该行即可。大多数情况修改1和5两项即可解决问题
 
 ##pssh 批量ssh
+###安装
+tar -xvf pssh-2.3.1.tar.gz
+cd pssh-2.3.1
+python setup.py build
+python setup.py install
+###配置
+1.从结点的IP列表文件；
+[ip]:[port] [user]
+2.主节点到从节点的ssh无密钥登录
+###使用
 pssh -h /root/ot.txt -l root -i 'tar -zpxvf /opt/project/lib.tar.gz -C /opt/project/'
 pscp -h /root/slave -l root /etc/redis/7001.conf /etc/redis
 http://www.theether.org/pssh/

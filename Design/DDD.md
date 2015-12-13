@@ -171,7 +171,20 @@ DDD并不要求采用特定的架构风格，因为它是对架构中立的。�
 
 ---
 #CQRS架构
-Event Sourcing（事件溯源）
+[对CQRS的一次批判性思考](http://www.infoq.com/cn/news/2015/07/cqrs-critical-view)
+[CAP理论十二年回顾："规则"变了](http://www.infoq.com/cn/articles/cap-twelve-years-later-how-the-rules-have-changed)
+[Event Driven Architecture](http://www.infoq.com/news/Event-Driven)
+[浅谈命令查询职责分离(CQRS)模式](http://www.cnblogs.com/yangecnu/p/Introduction-CQRS.html)
+[EntityFramework之领域驱动设计实践【扩展阅读】：CQRS体系结构模式](http://www.cnblogs.com/daxnet/archive/2010/08/02/1790299.html)
+[EDA事件驱动架构](http://www.jdon.com/eda.html)
+
+[谈一下关于CQRS架构如何实现高性能](http://www.cnblogs.com/guohu/p/4058954.html)
+
+[Saga的思想与实现](http://www.cnblogs.com/netfocus/p/3149156.html)
+[Reference 6: A Saga on Sagas](https://msdn.microsoft.com/en-us/library/jj591569.aspx)
+
+
+
 
 
 

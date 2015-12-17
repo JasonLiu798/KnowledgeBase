@@ -8,8 +8,12 @@ export F=/f
 export YP=$D/yp
 export TOOLS=$D/tools
 export CYGWIN=$TOOLS/cygwin
+
+#ubin & serverfile config
 export UBIN=$YP/ubin
-export LIB=$UBIN/lib
+export BLIB=$UBIN/lib
+export DDIR=$UBIN/data
+
 export SETUP=/opt/setups
 export TL=/opt/tools
 export GPG=$TL/GnuPG

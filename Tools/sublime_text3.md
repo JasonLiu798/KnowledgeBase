@@ -152,7 +152,7 @@ http://www.tuicool.com/articles/AJR7Rn3
 
 ---
 #plugins packages 插件
-### vi 扩展
+## vi 扩展
 Vintageous
 配置
 http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
@@ -162,51 +162,52 @@ http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
 默认命令模式
  "vintage_start_in_command_mode": true
 
-### 转码
+##转码
 * ConvertToUTF8 
 * GBK Encoding Support
 
-### 快速敲代码
-Emmet
+##SublimeLinter
+语法检查
+
+##Emmet
 - "Emmet (ex-Zen Coding) for Sublime Text."
 语法速查 http://docs.emmet.io/cheat-sheet/
 
-Doc​Blockr
-- "Simplifies writing DocBlock comments in Javascript, PHP, CoffeeScript, Actionscript, C & C++."
+##Doc​Blockr
+"Simplifies writing DocBlock comments in Javascript, PHP, CoffeeScript, Actionscript, C & C++."
 
-Emmet Css Snippets
+##Emmet Css Snippets
 - "Emmet CSS completions for Sublime Text."
 
-Bootstrap 3 Snippets
-- "Twitter Bootstrap 3 Snippets Plugin for Sublime Text."
+##Bootstrap 3 Snippets
+Twitter Bootstrap 3 Snippets Plugin for Sublime Text
 
-Better Completion
+##Better Completion
 - "Better auto-completion for Sublime Text."
 
-All Autocomplete
+##All Autocomplete
 - "Extend Sublime text autocompletion to find matches in all open files of the current window."
 
-Auto​File​Name
+##Auto​File​Name
 - "Sublime Text plugin that autocompletes filenames."
 
-j​Query
+##j​Query
 - "Sublime Text package bundle for jQuery."
 
-### Markdown Preview
+##Markdown Preview
 快捷键配置
 [
 	{ "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} }
 ]
 
-### 自动格式调整 
-Js​Format
+##Js​Format
+自动格式调整 
 - "Javascript formatting for Sublime Text."
 
-HTMLBeautify
+##HTMLBeautify
 - "A plugin for Sublime Text that formats (indents) HTML source code. It makes code easier for humans to read."
 
-### 功能类
-#### ctag
+##ctag
 brew install ctags
 配置：
 command配置项，为ctags的可执行文件路径/usr/local/bin/ctags
@@ -221,25 +222,24 @@ D:\\yp\\ubin\\ctags58\\ctags.exe
 mouse binding: 去掉shift,可以左键+点击
 
 
-#### SideBarEnhancements
+##SideBarEnhancements
 - "Enhancements to Sublime Text sidebar, Files and folders."
 
-#### View In Browser
+##View In Browser
 - "Open the contents of your current view/tab in a web browser."
 
-#### AutoBackups
+##AutoBackups
 - "Backup file every time you save or open (if backup file not exists) it."
 
-### 系统
-Plain​Tasks
+##Plain​Tasks
 - "An opinionated todo-list plugin for Sublime Text."
 
-### UI
-Theme - Soda
-- "Dark and light custom UI themes for Sublime Text."
 
-Monokai Extended (GitHub)
+##Soda[Theme]
+- "Dark and light custom UI themes for Sublime Text."
+##Monokai Extended[Theme]
 如果你喜欢 Soda Dark 和 Monokai，我建议你使用 Monokai Extended (GitHub)。这个 color scheme 是 Monokai Soda 的增强，如果再配合 Markdown Extended (GitHub)，将大大改善 Markdown 的语法高亮。
+
 
 ## license
 

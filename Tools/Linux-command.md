@@ -58,7 +58,6 @@ type -f只返回shell函数的信息。
 type -t 只返回指定类型的信息。
 
 
-
 ---
 #用户相关
 ##sudo add user

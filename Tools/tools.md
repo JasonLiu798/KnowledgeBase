@@ -24,6 +24,10 @@ Java Mission Control JMC
 ###图像图形
 [markman 图像测量](http://www.getmarkman.com/)
 
+
+[shell json 处理](https://stedolan.github.io/jq/)
+
+
 ---
 #win
 ##文档管理 #dev 

@@ -7,12 +7,12 @@ OS:驱动 内核 接口库 外围
 * CLI(command line interface) shell
     - window
         + power shell
-    - linux/unix
-        + sh,Bourne shell
-        + csh,C shell
-        + ksh,Korn shell
-        + *bash,Bourne-Again shell*
-        + zsh
+    - [unix/linux](http://www.cnblogs.com/cocowool/archive/2012/04/23/2466370.html)
+        + sh,Thompson Shell
+        + sh,Bourne shell,70's,System V7
+        + csh,C shell,70's
+        + ksh,Korn shell,80's,[unix war](http://www.ruanyifeng.com/blog/2010/03/unix_copyright_history.html)
+        + *bash,Bourne-Again shell*,1989,GNU
 
 ---
 #cli shell 能干什么
@@ -26,7 +26,7 @@ OS:驱动 内核 接口库 外围
 演示：
 
 * 自动部署并验证
-    - 打包
+    - 编译，打包
     - 上传
     - 停服务
     - 解包
@@ -41,8 +41,7 @@ OS:驱动 内核 接口库 外围
 ---
 #如何开始
 ##骨-shell语法
-
-* 数据：变量
+* 数据/变量
     - 数字
     - 字符串
     - 数组
@@ -51,10 +50,11 @@ OS:驱动 内核 接口库 外围
     - 选择
     - 循环
 
-##骨架-基本编程技能
+##骨架
+基本编程技能
 
 ##血和肉
-Linux系统基础概念；常用命令；长期的学习积累；
+Linux系统基础概念，常用命令
 
 ---
 #[什么时候不用](http://tldp.org/LDP/abs/html/why-shell.html)
@@ -117,8 +117,7 @@ PS:变量名和等号之间不能有空格。同时，变量名的命名须遵�
 -r    | 将变量设为只读，等于readonly
 -x    | 将变量名输出到子shell中，等于export
 
-* Bash变量是不分类型的[ABS 4.3]
-本质上,Bash 变量都是字符串,但是依赖于上下文，Bash允许比较操作和算术操作.决定这些的关键因素就是，变量中的值是否只有数字.
+* [Bash变量是不分类型的](http://tldp.org/LDP/abs/html/untyped.html)
 
 ---
 #数字
@@ -154,20 +153,23 @@ echo $res
 ##高级操作
 expr
 ```
+#支持整型
 a=1
 res=`expr $a + 1`
 echo $res
 ```
 bc
 ```
+#支持浮点
 echo "4*6.4" | bc
 echo "scale=2;1/3" | bc
 ```
 awk
 ```
-a=1
-b=2
-res=`echo "$a $b"|awk '{printf("%g",$1*$2)}'`
+#支持浮点
+n1=1.5
+n2=2.3
+res=`echo "$n1 $n2"|awk '{printf("%g",$1*$2)}'`
 echo $res
 var=350456
 res=`echo "$var"|awk '{printf("%g",log($1)/log(2))}'`
@@ -195,6 +197,8 @@ echo ${a##12*}
 echo ${a%*67}
 #从变量$a的结尾, 删除最短匹配
 echo ${a%*67}
+
+#--------字符串替换----------
 #字符串替换-第一个
 echo ${a/23/twothree}
 #字符串替换-所有
@@ -206,18 +210,19 @@ echo ${a/%67/sixseven}
 ```
 性能对比：
 test=a
-time for i in $(seq 10000);do a=${#test};done;
+time for i in $(seq 100);do a=${#test};done;
 time for i in $(seq 100);do a=$(expr length $test);done;
 
 判断字符串为空:
 ```
-if [ -z "$string1" ];then
+if [ -z "$string1" ];then # -n 为非空
     echo "null"
 fi
-# -n 为非空
+
 if [ "$str" = "" ]; then
     echo "null"
 fi
+
 if [ x"$str" = x ]; then
     echo "null"
 fi
@@ -351,7 +356,7 @@ done
 continue/break
 PS:
 * break命令可以带一个参数. 一个不带参数的break命令只能退出最内层的循环, 而break N可以退出N层循环.
-* continue命令也可以象break命令一样带一个参数. 一个不带参数的continue命令只会去掉本次循环的剩余代码. 而continue N将会把N层循环的剩余代码都去掉, 但是循环的次数不变.
+* continue命令也可以象break命令一样带一个参数. 一个不带参数的continue命令只会去掉本次循环的剩余代码. 而continue N将会把N层循环的剩余代码都去掉, 但是循环的次数不变
 
 ---
 #函数
@@ -360,20 +365,12 @@ function functionname()
 {
 $1 #入口参数
 echo ... #返回值
-return
-}
-默认：全局变量
-局部变量 关键字local
-局部变量屏蔽全局变量
-
-function function_name {
-command...
+return   #返回值 1~255
 }
 或
-function_name () {
-command...
+function function_name {
+    command...
 }
-
 
 ---
 #系统
@@ -386,6 +383,15 @@ IPC Inter-Process Communication
 ssh work@192.168.143.118
 ###执行命令
 ssh work@192.168.143.118 "ls -l"
+
+---
+#常用命令
+##ssh
+非对称加密
+主机-客户端
+公钥-加密
+私钥-解密
+ssh work@192.168.143.118
 ###无密码登录
 ```
 #客户端生成公钥私钥
@@ -395,6 +401,8 @@ ssh-keygen -t rsa
 ssh-copy-id user@host
 ssh user@host
 ```
+###执行命令
+ssh work@192.168.143.118 "ls -l"
 
 ##scp
 scp file user@host:/path/filename
@@ -426,8 +434,28 @@ ps -ef|grep
 top
 free -m
 
-##
-strace
+
+##wget/curl
+wget -q -O - http://ip.ws.126.net/ipquery?ip="10.10.10.1" |iconv -f GBK -t "utf-8"
+
+curl -H "Content-type: application/json" -X POST -d '{"ip":"10.10.10.1"}'  http://ip.ws.126.net/ipquery
+
+wget --post-data="os_username=service_guest&os_password=111111" --save-cookies=cookie.txt --keep-session-cookies http://url
+
+wget -r -k -c -nc -p -np --load-cookies=cookie.txt http://url -U "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; GTB5)" 
+
+##nc
+nc -z -w 10 $IP $PORT
+netstat -anop |grep 9999
+tcpdump -i eth0 -A tcp port 22 and host 127.0.0.1
+
+##~/.bashrc ~/.bash_profile /etc/profile
+
+##ln
+ln -sfv /target aa
+
+##tar
+tar -zpcvf xxx.tar.gz --exclude=/root/etc* --exclude=/root/system.tar.bz2 /etc /root
 
 ##网络
 ifconfig
@@ -440,6 +468,6 @@ tcpdump -i eth0 -A tcp port 1414 and host 10.185.234.14
 
 ---
 #参考资料
+[鸟哥Linux私房菜](http://book.douban.com/subject/2208530/) 
 [Advance Bash-Scripting Guide](http://book.douban.com/subject/3010746/)
-[鸟哥Linux私房菜](http://book.douban.com/subject/2208530/) 第三部分 学习shell和shell脚本
-[Linux Shell脚本教程：30分钟玩转Shell脚本编程](http://c.biancheng.net/cpp/shell/)
+

@@ -11,20 +11,25 @@ https://www.gnupg.org/
 [AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
 
 ##下载
-youtube-dl
-http://bbs.feng.com/read-htm-tid-8856281-page-1.html
+[youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
 
-## java相关
-### 性能
+#IDE
+#python ide 
+http://www.jetbrains.com/pycharm/
+
+
+#java相关
+## 性能
 性能监控
 Java Mission Control JMC
-### 开发
+## 开发
 [findbugs](http://findbugs.sourceforge.net)
 
-###图像图形
+##图像图形
 [markman 图像测量](http://www.getmarkman.com/)
 
-
+---
+#shell
 [shell json 处理](https://stedolan.github.io/jq/)
 
 

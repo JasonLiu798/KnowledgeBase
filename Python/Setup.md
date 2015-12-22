@@ -79,7 +79,7 @@ sudo apt-get install python-dev libxml2-dev libxslt-dev
 
 
 ---
-#ide 
+#python ide 
 http://www.jetbrains.com/pycharm/
 
 

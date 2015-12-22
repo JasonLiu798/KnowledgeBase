@@ -78,8 +78,9 @@ error: Setup script exited with error: command 'x86_64-linux-gnu-gcc' failed wit
 sudo apt-get install python-dev libxml2-dev libxslt-dev
 
 
-
-
+---
+#ide 
+http://www.jetbrains.com/pycharm/
 
 
 

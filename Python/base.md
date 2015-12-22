@@ -1,5 +1,7 @@
 #python基础
 -----
+![语法速查](../img/python-grammer.jpg)
+
 #安装卸载包
 python setup.py install --record files.txt
 cat files.txt | xargs rm -rf 
@@ -42,6 +44,59 @@ classmates = ['Michael', 'Bob', 'Tracy']
 index范围 -len ~ len-1
 classmates.insert(1, 'Jack')
 classmates.pop()
+
+## 元素删除
+python的列表list可以用for循环进行遍历，实际开发中发现一个问题，就是遍历的时候删除会出错，例如
+```
+l = [1,2,3,4]
+for i in l:
+    if i != 4:
+    l.remove(i)
+print l 
+```
+这几句话本来意图是想清空列表l，只留元素4，但是实际跑起来并不是那个结果。再看下面，利用index来遍历删除列表l
+
+    l = [1, 2, 3, 4]
+    for i in range(len(l)):
+        if l[i] == 4:
+            del l[i]
+    print l
+
+这样没问题，可以遍历删除，但是列表l如果变为 l = [1,2,3,4,5]
+如果还是按照上面的方法，设想一下，range开始的范围是0-4，中间遍历的时候删除了一个元素4，这个时候列表变成了= [1,2,3,5],这时候就会报错了，提示下标超出了数组的表示，原因就是上面说的遍历的时候删除了元素
+删除可以使用filter过滤返回新的list
+```
+l = [1,2,3,4]
+l = filter(lambda x:x !=4,l)
+print l
+```
+这样可以安全删除l中值为4的元素了，filter要求两个参数，第一个是规则函数，第二个参数要求输入序列，而lambda这个函数的作用就是产生一个函数，是一种紧凑小函数的写法，一般简单的函数可以这么些
+或者可以这样
+l = [1,2,3,4]
+l = [ i for i in l if i !=4]//同样产生一个新序列，复值给l
+print l
+或者干脆建立新的list存放要删除的元素
+l = [1,2,3,4]
+dellist = []
+for i in l:
+    if i == 4:
+        dellist.append(i)
+for i in dellist:
+    l.remove(i)
+这样也能安全删除元素
+所以要遍历的时候删除元素一定要小心，特别是有些操作并不报错，但却没有达到预期的效果
+上面说到产生新序列，赋值等等，用python的id()这个内置函数来看对象的id,可以理解为内存中的地址，所以有个简要说明
+如果
+l = [1,2,3,4]
+ll = l
+l.remove(1)
+print l//肯定是[2,3,4]
+print ll//这里会是什么？
+如果用id函数查看的话就发现
+print id(l),id(ll)
+打印出相同的号码，说明他们其实是一个值，也就是说上面的print ll将和l打印的一样，所以python有这种性质，用的时候注意一下就行了
+
+
 
 #tuple
 一旦初始化就不能修改
@@ -147,6 +202,7 @@ if __name__ == '__main__':
 
 
 ## json
+http://www.cnblogs.com/coser/archive/2011/12/14/2287739.html
 http://www.tuicool.com/articles/F3aU7j
 json_input = '{ "one": 1, "two": { "list": [ {"item":"A"},{"item":"B"} ] } }'
  
@@ -262,6 +318,12 @@ func(**args)
 >>>g = (x * x for x in range(10))
 >>>for n in g:
 >>>...     print n
+
+isgeneratorfunction 
+
+#yield
+[yeild ibm](http://www.ibm.com/developerworks/cn/opensource/os-cn-python-yield/)
+[yeild](http://www.cnblogs.com/tqsummer/archive/2010/12/27/1917927.html)
 
 如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator
 def fib(max):
@@ -632,87 +694,32 @@ finally:
 print 'END'
 ```
 
-#assert 
+---
+#调试
+##assert 
 assert n != 0, 'n is zero!'
+Python解释器时可以用-O参数来关闭assert
+
+##logging
+import logging
+s = '0'
+n = int(s)
+logging.info('n = %d' % n)
+
+##pdb
+python -m pdb err.py
+l查看代码
+n可以单步执行代码
+p 变量名 查看变量
+q结束调试
+
+pdb.set_trace()，就可以设置一个断点
+
+##单元测试
+unittest
 
 
-----
-## subprocess
-这里的内容以Linux进程基础和Linux文本流为基础。subprocess包主要功能是执行外部的命令和程序。比如说，我需要使用wget下载文件。我在Python中调用wget程序。从这个意义上来说，subprocess的功能与shell类似。
 
-1. subprocess以及常用的封装函数
-当我们运行python的时候，我们都是在创建并运行一个进程。正如我们在Linux进程基础中介绍的那样，一个进程可以fork一个子进程，并让这个子进程exec另外一个程序。在Python中，我们通过标准库中的subprocess包来fork一个子进程，并运行一个外部的程序(fork，exec见Linux进程基础)。
-subprocess包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外subprocess还提供了一些管理标准流(standard stream)和管道(pipe)的工具，从而在进程间使用文本通信。
-使用subprocess包中的函数创建子进程的时候，要注意:
-1) 在创建子进程之后，父进程是否暂停，并等待子进程运行。
-2) 函数返回什么
-3) 当returncode不为0时，父进程如何处理。
-
-subprocess.call()
-父进程等待子进程完成
-返回退出信息(returncode，相当于exit code，见Linux进程基础)
-subprocess.check_call()
-父进程等待子进程完成
-返回0
-检查退出信息，如果returncode不为0，则举出错误subprocess.CalledProcessError，该对象包含有returncode属性，可用try...except...来检查(见Python错误处理)。
-subprocess.check_output()
-父进程等待子进程完成
-返回子进程向标准输出的输出结果
-检查退出信息，如果returncode不为0，则举出错误subprocess.CalledProcessError，该对象包含有returncode属性和output属性，output属性为标准输出的输出结果，可用try...except...来检查。
-
-这三个函数的使用方法相类似，我们以subprocess.call()来说明:
-import subprocess 
-rc = subprocess.call(["ls","-l"]) 
-我们将程序名(ls)和所带的参数(-l)一起放在一个表中传递给subprocess.call()
-可以通过一个shell来解释一整个字符串:
-import subprocess 
-out = subprocess.call("ls -l", shell=True) 
-out = subprocess.call("cd ..", shell=True) 
-我们使用了shell=True这个参数。这个时候，我们使用一整个字符串，而不是一个表来运行子进程。Python将先运行一个shell，再用这个shell来解释这整个字符串。
-shell命令中有一些是shell的内建命令，这些命令必须通过shell运行，$cd。shell=True允许我们运行这样一些命令。
-2. Popen
-实际上，我们上面的三个函数都是基于Popen()的封装(wrapper)。这些封装的目的在于让我们容易使用子进程。当我们想要更个性化我们的需求的时候，就要转向Popen类，该类生成的对象用来代表子进程。
-与上面的封装不同，Popen对象创建后，主程序不会自动等待子进程完成。我们必须调用对象的wait()方法，父进程才会等待 (也就是阻塞block)：
-import subprocess 
-child = subprocess.Popen(["ping","-c","5","www.google.com"]) 
-print("parent process") 
-从运行结果中看到，父进程在开启子进程之后并没有等待child的完成，而是直接运行print。
-对比等待的情况:
-import subprocess 
-child = subprocess.Popen(["ping","-c","5","www.google.com"]) 
-child.wait() 
-print("parent process") 
-此外，你还可以在父进程中对子进程进行其它操作，比如我们上面例子中的child对象:
-child.poll()           # 检查子进程状态
-child.kill()           # 终止子进程
-child.send_signal()    # 向子进程发送信号
-child.terminate()      # 终止子进程
-子进程的PID存储在child.pid
-3. 子进程的文本流控制
-(沿用child子进程) 子进程的标准输入，标准输出和标准错误也可以通过如下属性表示:
-child.stdin
-child.stdout
-child.stderr
-我们可以在Popen()建立子进程的时候改变标准输入、标准输出和标准错误，并可以利用subprocess.PIPE将多个子进程的输入和输出连接在一起，构成管道(pipe):
-import subprocess 
-child1 = subprocess.Popen(["ls","-l"], stdout=subprocess.PIPE) 
-child2 = subprocess.Popen(["wc"], stdin=child1.stdout,stdout=subprocess.PIPE) 
-out = child2.communicate() 
-print(out)
-subprocess.PIPE实际上为文本流提供一个缓存区。child1的stdout将文本输出到缓存区，随后child2的stdin从该PIPE中将文本读取走。child2的输出文本也被存放在PIPE中，直到communicate()方法从PIPE中读取出PIPE中的文本。
-要注意的是，communicate()是Popen对象的一个方法，该方法会阻塞父进程，直到子进程完成。
-我们还可以利用communicate()方法来使用PIPE给子进程输入:
-import subprocess 
-child = subprocess.Popen(["cat"], stdin=subprocess.PIPE) 
-child.communicate("vamei") 
-我们启动子进程之后，cat会等待输入，直到我们用communicate()输入"vamei"。
-通过使用subprocess包，我们可以运行外部程序。这极大的拓展了Python的功能。如果你已经了解了操作系统的某些应用，你可以从Python中直接调用该应用(而不是完全依赖Python)，并将应用的结果输出给Python，并让Python继续处理。shell的功能(比如利用文本流连接各个应用)，就完全可以在Python中实现。这也是Python经常被称为脚本语言，并拿来和bash以及Perl进行比较的原因之一。相对于bash和perl，Python的语法更加动态灵活，也大大提高了脚本的可读性与可维护性。当然，bash和perl也有各自的优势(比如bash更加贴近系统，而perl有更强大的正则表达式工具)，我们可以根据自身需要进行选择。
-总结:
-subprocess.call
-subprocess.check_call()
-subprocess.check_output()
-subprocess.Popen(), subprocess.PIPE
-Popen.wait(), Popen.communicate()
 
 
 

@@ -12,6 +12,7 @@ Flask：使用@decorator的URL路由不错，但框架对应用程序的代码�
 
 
 Django：一站式开发框架，但不利于定制化；
+https://www.gitbook.com/book/andrew-liu/django-blog/details
 
 Tornado
 计似乎更注重 RESTful URL

@@ -73,6 +73,11 @@ mac 程序员必备
 http://www.zhihu.com/question/20036899
 ##文档管理 #dev 
 dash
+##游戏
+winskin 
+移植游戏
+[THE PORTINGKIT](http://paulthetall.com/portingkit-2/)
+
 
 ##safari
 [windows 同步 safari标签  iCloud（Windows 版)](http://support.apple.com/kb/DL1455?viewlocale=zh_CN&locale=zh_CN)

@@ -30,6 +30,9 @@ Java Mission Control JMC
 
 ---
 #win
+##markdown
+[mdp](https://tylingsoft.com/mdp)
+
 ##文档管理 #dev 
 velocity
 http://velocity.silverlakesoftware.com/
@@ -186,6 +189,18 @@ acrobat
 1118-0732-7889-3385-4819-5335
 1118-0833-3524-0475-2122-4564
 1118-0413-0660-6186-6863-8213
+
+
 ---
 #linux
+#[web压测](http://www.oschina.net/question/12_6110)
+siege
+    siege http://localhost:8000/?q=pants -c10 -t10s
+    10秒内执行大约10个并发请求
+
+    [download](http://soft.vpser.net/test/siege/siege-2.67.tar.gz)
+    ./configure
+    configure: error: cannot guess build type; you must specify one
+
+ab
 

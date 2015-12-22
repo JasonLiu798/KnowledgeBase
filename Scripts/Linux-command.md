@@ -223,10 +223,6 @@ mount -o loop disk1.iso /mntmount/iso
 -a  ：会由 PATH 变量定义的路径中，将所有含 name 的命令都列出来，包含 alias
 
 
-##strace
-
-##ltrace
-库跟踪工具(Library trace): 跟踪给定命令的调用库的相关信息.
 
 ---
 #Software setup
@@ -366,8 +362,6 @@ sudo route add default gw 192.168.1.1
 sudo ifconfig eth0 down
 sudo ifconfig eth0 up
 paralle desktop 无网络：http://bbs.feng.com/read-htm-tid-6881868-page-3.html
-
-
 
 
 

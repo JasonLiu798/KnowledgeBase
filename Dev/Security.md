@@ -1,5 +1,9 @@
 #security development  
 ---
+
+[mozila安全编程指南](https://wiki.mozilla.org/WebAppSec/Secure_Coding_Guidelines)
+
+
 #XSS
 [DOM-based XSS 与 存储性XSS、反射型XSS有什么区别](http://www.zhihu.com/question/26628342)
 易用上，存储型XSS > DOM - XSS > 反射型 XSS
@@ -17,6 +21,10 @@ jQuery html()方法可能
 ##防御
 HttpOnly
 Cookie IP绑定
+
+
+
+
 ---
 #编译器
 [给
@@ -399,7 +407,7 @@ spring security
 
 
 
-
+---
 #openid
 [OpenID学习笔记](http://www.biaodianfu.com/learn-openid.html)
 

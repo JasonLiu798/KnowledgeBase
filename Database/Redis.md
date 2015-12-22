@@ -1,5 +1,10 @@
 #Redis
 ---
+
+[JIMDB：一个大规模分布式内存存储的演进之路](http://www.infoq.com/cn/articles/JMDB-liuhaifeng)
+
+
+---
 #常用
 redis-server /etc/redis/redis.conf
 redis-cli -h [ip] -p [port]

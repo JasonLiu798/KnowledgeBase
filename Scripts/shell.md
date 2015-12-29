@@ -41,7 +41,6 @@ OS:驱动 内核 接口库 外围
 ---
 #如何开始
 ##骨-shell语法
-
 * 数据/变量
     - 数字
     - 字符串
@@ -51,7 +50,7 @@ OS:驱动 内核 接口库 外围
     - 选择
     - 循环
 
-##搭骨架
+##骨架
 基本编程技能
 
 ##血和肉
@@ -119,7 +118,6 @@ PS:变量名和等号之间不能有空格。同时，变量名的命名须遵�
 -x    | 将变量名输出到子shell中，等于export
 
 * [Bash变量是不分类型的](http://tldp.org/LDP/abs/html/untyped.html)
-
 
 ---
 #数字
@@ -367,12 +365,24 @@ function functionname()
 {
 $1 #入口参数
 echo ... #返回值
-return   #返回值
+return   #返回值 1~255
 }
 或
 function function_name {
     command...
 }
+
+---
+#系统
+##管道
+IPC Inter-Process Communication
+第三方通信协议
+
+##ssh
+非对称加密
+ssh work@192.168.143.118
+###执行命令
+ssh work@192.168.143.118 "ls -l"
 
 ---
 #常用命令
@@ -399,6 +409,32 @@ scp file user@host:/path/filename
 scp user@host:/path/filename file
 [pssh](http://www.cnblogs.com/wangkangluo1/archive/2013/01/06/2847353.html)
 
+
+##wget/curl
+wget -q -O- --post-data="account=$RANDOM&password=123345"  http://aaaa
+curl -H "Content-type: application/json" -X POST -d '{"account":"$RANDOM","password":"123345"}'  http://
+
+wget --post-data="os_username=service_guest&os_password=111111" --save-cookies=cookie.txt --keep-session-cookies http://url
+
+wget -r -k -c -nc -p -np --load-cookies=cookie.txt http://url -U "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; GTB5)" 
+wget --mirror -p --convert-links --load-cookies=cookie.txt 
+
+
+##~/.bashrc ~/.bash_profile /etc/profile
+
+##ln
+ln -sfv /target aa
+iconv -f encoding -t encoding inputfile
+
+tar -zpcvf xxx.tar.gz --exclude=/root/etc* --exclude=/root/system.tar.bz2 /etc /root
+
+
+##系统状态
+ps -ef|grep 
+top
+free -m
+
+
 ##wget/curl
 wget -q -O - http://ip.ws.126.net/ipquery?ip="10.10.10.1" |iconv -f GBK -t "utf-8"
 
@@ -421,6 +457,14 @@ ln -sfv /target aa
 ##tar
 tar -zpcvf xxx.tar.gz --exclude=/root/etc* --exclude=/root/system.tar.bz2 /etc /root
 
+##网络
+ifconfig
+hostname
+nslookup
+/etc/resolve.conf
+nc -z -w 10 $IP $PORT
+netstat -anop |grep 9999
+tcpdump -i eth0 -A tcp port 1414 and host 10.185.234.14
 
 ---
 #参考资料

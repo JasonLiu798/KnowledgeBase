@@ -38,6 +38,9 @@ http://www.tuicool.com/articles/JraYBfr
 
 ----
 #包管理
+#安装卸载包
+python setup.py install --record files.txt
+cat files.txt | xargs rm -rf 
 ##pip
 [download](https://pypi.python.org/pypi/pip)
 [doc](https://pip.pypa.io/en/stable/installing/)
@@ -63,7 +66,18 @@ python setup.py install
 
 ---
 #第三方库
-MySQL-python
+##MySQL
+MySQL官方的纯Python驱动
+easy_install mysql-connector-python
+封装了MySQL C驱动的Python驱动
+easy_install MySQL-python
+##ORM
+easy_install sqlalchemy
+#模板引擎
+easy_install jinja2
+
+
+
 科学计算的NumPy库：numpy
 生成文本的模板工具Jinja2
 

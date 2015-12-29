@@ -13,6 +13,21 @@ http://www.w3school.com.cn/xpath/xpath_syntax.asp
 Kimono : Turn websites into structured APIs from your browser in seconds
 
 
+urllib2
+requests
+页面解析 BeautifulSoup
+scrapy
+
+lxml
+
+
+验证码PIL
+opencv，pybrain
+
+threading
+celery
+
+
 Python+urllib+re
 
 http抓取工具，scrapy

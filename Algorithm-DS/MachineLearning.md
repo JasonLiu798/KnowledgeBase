@@ -6,6 +6,9 @@ http://download.csdn.net/detail/flybirds98/1934334
 
 [基于Python的卷积神经网络和特征提取](http://www.csdn.net/article/2015-08-27/2825549)
 
+[Twitter情感分析技术](http://www.infoq.com/cn/news/2015/12/Twitter-api-notion)
+
+
 ##base
 CS principal
 数据结构，基本算法

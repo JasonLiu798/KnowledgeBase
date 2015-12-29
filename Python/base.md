@@ -1,16 +1,16 @@
 #python基础
 -----
 ![语法速查](../img/python-grammer.jpg)
-
-#安装卸载包
-python setup.py install --record files.txt
-cat files.txt | xargs rm -rf 
-
-
+[Python 2.7教程](http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000)
 ----
-#语法
-#变量
-##字符串
+#语法-变量
+#数字
+struct
+解决str和其他二进制数据类型的转换。
+struct的pack函数把任意数据类型变成字符串
+
+---
+#字符串string
 ''或""括起来的任意文本
 转义字符\
 ord()和chr()函数，可以把字母和对应的数字相互转换：
@@ -37,7 +37,36 @@ None
 
 ##类型判断
 type()
+##正则
+import re
+>>> re.match(r'^\d{3}\-\d{3,8}$', '010-12345')
 
+match()方法判断是否匹配，如果匹配成功，返回一个Match对象，否则返回None
+re.split(r'\s+', 'a b   c')
+
+###分组
+除了简单地判断是否匹配之外，正则表达式还有提取子串的强大功能。用()表示的就是要提取的分组（Group）
+
+##Base64
+是一种用64个字符来表示任意二进制数据的方法。
+>>> import base64
+>>> base64.b64encode('binary\x00string')
+'YmluYXJ5AHN0cmluZw=='
+>>> base64.b64decode('YmluYXJ5AHN0cmluZw==')
+'binary\x00string'
+
+##hashlib
+import hashlib
+md5 = hashlib.md5()
+md5.update('how to use md5 in python hashlib?')
+print md5.hexdigest()
+
+itertools提供了非常有用的用于操作迭代对象的函数
+
+
+
+----
+#集合
 ---
 #list
 classmates = ['Michael', 'Bob', 'Tracy']
@@ -96,8 +125,19 @@ print ll//这里会是什么？
 print id(l),id(ll)
 打印出相同的号码，说明他们其实是一个值，也就是说上面的print ll将和l打印的一样，所以python有这种性质，用的时候注意一下就行了
 
+---
+#deque
+使用list存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为list是线性存储，数据量大的时候，插入和删除效率很低。
+deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈
+>>> from collections import deque
+>>> q = deque(['a', 'b', 'c'])
+>>> q.append('x')
+>>> q.appendleft('y')
+>>> q
+deque(['y', 'a', 'b', 'c', 'x'])
 
 
+---
 #tuple
 一旦初始化就不能修改
 classmates = ('Michael', 'Bob', 'Tracy')
@@ -108,10 +148,21 @@ tuple不可变，所以代码更安全
 t = (1,)
 
 
+##namedtuple
+namedtuple是一个函数，它用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并可以用属性而不是索引来引用tuple的某个元素
+>>> from collections import namedtuple
+>>> Point = namedtuple('Point', ['x', 'y'])
+>>> p = Point(1, 2)
+>>> p.x
+1
+>>> p.y
+2
 
 
-## 字典
-### 新建
+
+---
+#dict
+##新建
 http://developer.51cto.com/art/201003/188837.htm
 dict1 = {}  
 dict2 = {'name': 'earth', 'port': 80}  
@@ -122,10 +173,10 @@ ddict = {}.fromkeys(('x', 'y'), -1)
 
 PS：dict的key必须是不可变对象
 
-### 遍历
+##遍历
 http://www.cnblogs.com/skyhacker/archive/2012/01/27/2330177.html
 
-### 合并
+##合并
 dict1={1:[1,11,111],2:[2,22,222]}
 dict2={3:[3,33,333],4:[4,44,444]}
 合并两个字典得到类似
@@ -141,6 +192,14 @@ dictMerged.update(dict2)
 dictMerged=dict(dict1)
 dictMerged.update(dict2)
 
+#defaultdict
+使用dict时，如果引用的Key不存在，就会抛出KeyError。如果希望key不存在时，返回一个默认值，就可以用defaultdict
+
+#OrderedDict
+使用dict时，Key是无序的。在对dict做迭代时，我们无法确定Key的顺序。
+如果要保持Key的顺序，可以用OrderedDict
+
+---
 #set
 和dict类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在set中，没有重复的key。
 s = set([1, 2, 3])

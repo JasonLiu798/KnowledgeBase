@@ -1,8 +1,8 @@
 #Redis
 ---
-
+#文档
 [JIMDB：一个大规模分布式内存存储的演进之路](http://www.infoq.com/cn/articles/JMDB-liuhaifeng)
-
+[Redis GEO 特性简介](http://blog.huangz.me/diary/2015/redis-geo.html)
 
 ---
 #常用
@@ -157,10 +157,12 @@ monitor     实时转储收到的请求
 slaveof     改变复制策略设置
 config      在运行时配置Redis服务器
 
+
 ---
 #慢查询日志
 showlog-log-slower-than 指定执行时间超过多少微妙会被记录到日志
 showlog-max-len 循环写大小
+
 
 
 ---
@@ -210,6 +212,7 @@ PS:
 redis的事务实现是如此简单，当然会存在一些问题。第一个问题是redis只能保证事务的每个命令连续执行，但是如果事务中的一个命令失败了，并不回滚其他命令，比如使用的命令类型不匹配
 
 
+
 ---
 #dev
 https://github.com/xetorthio/jedis/wiki
@@ -225,6 +228,8 @@ redis自己实现VM，主要OS的VM换入换出是基于Page概念，无法控�
 
 ##监控
 https://github.com/LittlePeng/redis-monitor
+
+
 
 ---
 #集群

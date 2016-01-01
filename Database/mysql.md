@@ -95,6 +95,7 @@ SELECT MID(ColumnName, Start [, Length]) FROM TableName
 #base
 ## Datatype
 [v5.7 Json Data Type](http://dev.mysql.com/doc/refman/5.7/en/json.html#json-paths)
+[Mysql gis 空间数据库功能详解学习](http://blog.csdn.net/chaiqi/article/details/23099407)
 
 ##元数据
 information_schema.COLUMNS

@@ -11,25 +11,33 @@ https://www.gnupg.org/
 [AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
 
 ##下载
-youtube-dl
-http://bbs.feng.com/read-htm-tid-8856281-page-1.html
+[youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
 
-## java相关
-### 性能
+#IDE
+#python ide 
+http://www.jetbrains.com/pycharm/
+
+
+#java相关
+## 性能
 性能监控
 Java Mission Control JMC
-### 开发
+## 开发
 [findbugs](http://findbugs.sourceforge.net)
 
-###图像图形
+##图像图形
 [markman 图像测量](http://www.getmarkman.com/)
 
-
+---
+#shell
 [shell json 处理](https://stedolan.github.io/jq/)
 
 
 ---
 #win
+##markdown
+[mdp](https://tylingsoft.com/mdp)
+
 ##文档管理 #dev 
 velocity
 http://velocity.silverlakesoftware.com/
@@ -64,6 +72,8 @@ Microsoft Project 2010(附激活密钥) 简体中文版
 ----------------------------------------
 [ProjectProfessional.exe](http://download.microsoft.com/download/4/3/6/43668FB2-E9F4-456B-AF81-F33FC58C63CB/ProjectProfessional.exe)
 激活密钥推荐：8XWTK-7DBPM-B32R2-V86MX-BTP8P
+
+
 
 
 
@@ -191,6 +201,18 @@ acrobat
 1118-0732-7889-3385-4819-5335
 1118-0833-3524-0475-2122-4564
 1118-0413-0660-6186-6863-8213
+
+
 ---
 #linux
+#[web压测](http://www.oschina.net/question/12_6110)
+siege
+    siege http://localhost:8000/?q=pants -c10 -t10s
+    10秒内执行大约10个并发请求
+
+    [download](http://soft.vpser.net/test/siege/siege-2.67.tar.gz)
+    ./configure
+    configure: error: cannot guess build type; you must specify one
+
+ab
 

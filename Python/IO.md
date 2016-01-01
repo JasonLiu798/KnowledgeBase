@@ -1,67 +1,56 @@
-
-
-
-
----
-#List
-## 元素删除
-python的列表list可以用for循环进行遍历，实际开发中发现一个问题，就是遍历的时候删除会出错，例如
-l = [1,2,3,4]
-for i in l:
-    if i != 4:
-    l.remove(i)
-print l
-这几句话本来意图是想清空列表l，只留元素4，但是实际跑起来并不是那个结果。再看下面，利用index来遍历删除列表l
-
-l = [1, 2, 3, 4]
-for i in range(len(l)):
-    if l[i] == 4:
-        del l[i]
-
-print l
-这样没问题，可以遍历删除，但是列表l如果变为 l = [1,2,3,4,5]
-如果还是按照上面的方法，设想一下，range开始的范围是0-4，中间遍历的时候删除了一个元素4，这个时候列表变成了= [1,2,3,5],这时候就会报错了，提示下标超出了数组的表示，原因就是上面说的遍历的时候删除了元素
-
-所以python的list在遍历的时候删除元素一定要小心
-
-可以使用filter过滤返回新的list
-
-l = [1,2,3,4]
-l = filter(lambda x:x !=4,l)
-print l
-
-这样可以安全删除l中值为4的元素了，filter要求两个参数，第一个是规则函数，第二个参数要求输入序列，而lambda这个函数的作用就是产生一个函数，是一种紧凑小函数的写法，一般简单的函数可以这么些
-
-或者可以这样
-l = [1,2,3,4]
-l = [ i for i in l if i !=4]//同样产生一个新序列，复值给l
-print l
-
-或者干脆建立新的list存放要删除的元素
-l = [1,2,3,4]
-dellist = []
-for i in l:
-    if i == 4:
-        dellist.append(i)
-for i in dellist:
-    l.remove(i)
-这样也能安全删除元素
-所以要遍历的时候删除元素一定要小心，特别是有些操作并不报错，但却没有达到预期的效果
-
-上面说到产生新序列，赋值等等，用python的id()这个内置函数来看对象的id,可以理解为内存中的地址，所以有个简要说明
-如果
-l = [1,2,3,4]
-ll = l
-l.remove(1)
-print l//肯定是[2,3,4]
-print ll//这里会是什么？
-如果用id函数查看的话就发现
-print id(l),id(ll)
-打印出相同的号码，说明他们其实是一个值，也就是说上面的print ll将和l打印的一样，所以python有这种性质，用的时候注意一下就行了
-
-
 ---
 #File
+
+```
+try:
+    f = open('/path/to/file', 'r')
+    print f.read()
+finally:
+    if f:
+        f.close()
+
+#使用with自动调用close
+with open('/path/to/file', 'r') as f:
+    print f.read()
+```
+read(size)方法，每次最多读取size个字节的内容
+
+for line in f.readlines():
+    print(line.strip()) # 把末尾的'\n'删掉
+
+file-like Object
+
+像open()函数返回的这种有个read()方法的对象，在Python中统称为file-like Object。除了file外，还可以是内存的字节流，网络流，自定义流等等。file-like Object不要求从特定类继承，只要写个read()方法就行
+
+##二进制文件
+f = open('/Users/michael/test.jpg', 'rb')
+读取非ASCII编码的文本文件，就必须以二进制模式打开，再解码。比如GBK编码的文件：
+>>> f = open('/Users/michael/gbk.txt', 'rb')
+>>> u = f.read().decode('gbk')
+>>> u
+
+##写文件
+import codecs
+with codecs.open('/Users/michael/gbk.txt', 'r', 'gbk') as f:
+    f.read() # u'\u6d4b\u8bd5'
+
+>>> f = open('/Users/michael/test.txt', 'w')
+>>> f.write('Hello, world!')
+>>> f.close()
+
+with open('/Users/michael/test.txt', 'w') as f:
+    f.write('Hello, world!')
+
+---
+#序列化
+cPickle和pickle
+功能是一样的，区别在于cPickle是C语言写的，速度快，pickle是纯Python写的，速度慢
+
+
+
+
+
+---
 
 最近在写的程序频繁地与文件操作打交道，这块比较弱，还好在百度上找到一篇不错的文章，这是原文传送门，我对原文稍做了些改动。
 有关文件夹与文件的查找，删除等功能 在 os 模块中实现。使用时需先导入这个模块，

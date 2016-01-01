@@ -231,6 +231,10 @@ $ git push
     git push --delete origin {oldName}      //删除远程分支
     git branch -m {oldName} {newName}
     git push origin {newName}
+## 设置远端分支
+    git branch --set-upstream-to=xxx
+    git branch --unset-upstream xxx
+    git push -u origin my_branch
 
 ##git pull
 FETCH_HEAD：是一个版本链接，记录在本地的一个文件中，指向着目前已经从远程仓库取下来的分支的末端版本
@@ -247,9 +251,8 @@ FETCH_HEAD指的是: 某个branch在服务器上的最新状态'.
 当前分支指向的FETCH_HEAD, 就是这个文件第一行对应的那个分支
 * 如果没有显式的指定远程分支, 则远程分支的master将作为默认的FETCH_HEAD.
 * 如果指定了远程分支, 就将这个远程分支作为FETCH_HEAD.
-
 git fetch 这一步其实是执行了两个关键操作:
-* 创建并更新所有远程分支的本地远程分支.
+* 创建并更新所有远程分支的本地远程分支
 * 设定当前分支的FETCH_HEAD为远程服务器的master分支 (上面说的第一种情况)
 PS:和push不同, fetch会自动获取远程`新加入'的分支.
 
@@ -425,6 +428,9 @@ find . -type d -name ".settings"|xargs rm -rf
 git update-index --assume-unchanged /path/to/file
 ##修改最近一次提交的注释
 git commit --amend
+
+
+
 
 ---
 #svn

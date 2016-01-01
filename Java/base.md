@@ -32,6 +32,9 @@ https://github.com/alibaba/dubbo
 [高性能序列化框架FST](http://itindex.net/detail/51375-%E6%80%A7%E8%83%BD-%E5%BA%8F%E5%88%97%E5%8C%96-%E6%A1%86%E6%9E%B6)
 [ kryo jdk fst Serializable对比](http://my.oschina.net/chenleijava/blog/198721)
 
+---
+#钩子
+[关闭钩子](http://blog.csdn.net/jaune161/article/details/46422881)
 
 ---
 #IO

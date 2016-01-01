@@ -1,4 +1,10 @@
 #String
+
+----
+##flex
+取代lex
+##bison
+取代yacc
 -----
 #tr
 [tr](http://fyan.iteye.com/blog/1172279)

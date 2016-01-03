@@ -2,6 +2,7 @@
 -----
 ![语法速查](../img/python-grammer.jpg)
 [Python 2.7教程](http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000)
+[你见过哪些令你瞠目结舌的 Python 代码技巧？](https://www.zhihu.com/question/37904398)
 ----
 #语法-变量
 #数字

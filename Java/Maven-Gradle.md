@@ -30,6 +30,77 @@ test
 system
 跟provided 相似，但是在系统中要以外部JAR包的形式提供，maven不会在repository查找它。
 
+<distributionManagement>
+    <repository>
+        <id>releases</id>
+        <name>发布版本仓库地址</name>
+        <url>xxx</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>快照版本仓库地址</name>
+        <url>http://xxx</url>
+    </snapshotRepository>
+</distributionManagement>
+
+<mirror>
+  <id>nexus</id>
+  <mirrorOf>*</mirrorOf>
+  <name>Human Readable Name for this Mirror.</name>
+  <url>http://xxxx</url>
+</mirror>
+
+<servers>
+    <server>
+      <id>releases</id>
+      <username>aaa</username>
+      <password>aaa</password>
+    </server>
+    <server>
+      <id>snapshots</id>
+      <username>aaa</username>
+      <password>aaa</password>
+    </server> 
+</servers>
+
+##local
+```
+<profiles>
+    <profile>
+       <id>jdk-1.7</id>
+       <activation>
+              <activeByDefault>true</activeByDefault>
+              <jdk>1.7</jdk>
+       </activation>
+       <properties>
+              <maven.compiler.source>1.7</maven.compiler.source>
+              <maven.compiler.target>1.7</maven.compiler.target>
+              <maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>
+       </properties>
+    </profile>
+    <profile>
+         <id>jason-dev-repositories</id>
+         <repositories>
+              <repository>
+                   <id>jason</id>
+                   <url>http://xxx</url>
+                   <releases>
+                        <enabled>true</enabled>
+                   </releases>
+                   <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                   </snapshots>
+              </repository>
+         </repositories>
+    </profile>
+</profiles>
+<activeProfiles>
+    <activeProfile>jdk-1.7</activeProfile>
+    <activeProfile>jason-dev-repositories</activeProfile>
+</activeProfiles>
+```
+
 ---
 #cmd
 ##lifecycle

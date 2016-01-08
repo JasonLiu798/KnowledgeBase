@@ -13,23 +13,28 @@ sudo /etc/init.d/mysql start
 sudo /etc/init.d/mysql stop 
 sudo /etc/init.d/mysql restart
 
+mysql -u root -p
+mysql -h 192.168.143.113 -u root -proot
 ##root password
 use mysql
 update user set password=PASSWORD('root') where user='root';
 flush privileges;
 quit
-##root remote access
+##root远程登录
 /etc/mysql/my.cnf
 //找到如下内容，并注释
 bind-address = 127.0.0.1
 ###method a change table
-mysql -u root –p
 mysql>use mysql;
 mysql>update user set host = '%' where user = 'root';
 mysql>select host, user from user;
 ###method b grant privilage
 mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
 mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321' WITH GRANT OPTION;
+##忘记密码
+/etc/my.cnf
+在[mysqld]下添加一行skip-grant-table，再设置密码
+
 
 
 ----
@@ -53,6 +58,14 @@ utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8
 #common grammer
 show databases;
 show tables;
+
+##参数
+show variables like 'innodb_%';  
+show variables where Variable_name like 'log%' and value='ON';  
+show global variables;  
+show session/local variables;  
+SET GLOBAL var_name = value;  
+
 
 ##COALESCE
 返回其参数中第一个非空表达式
@@ -166,6 +179,32 @@ MyISAM
 Innodb
 1.InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB只需要几分钟。
 2.select count(*) 和order by一类的，Innodb其实也是会锁表
+
+
+LRU midpoint insertion strategy
+innodb_old_blocks_time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

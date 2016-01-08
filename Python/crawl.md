@@ -1,30 +1,38 @@
 #Crawl
 ---
-#GoogleAdsense
-niche站申请CPA，CPS
+#http请求
+urllib2
+requests
 
-CPM，CPC，CPA，CPS，哪一种适合你？
-http://blogunion.org/posts/cpm-cpc-cpa-or-cps.html
-
+#页面解析
+BeautifulSoup
 
 XPATH
 http://www.w3school.com.cn/xpath/xpath_syntax.asp
 
+
+#并行
+threading
+Celery - 分布式任务队列
+
+#验证码
+##图形库
+PIL
+opencv
+##机器学习
+pybrain
+
+#整体解决方案
+scrapy
 Kimono : Turn websites into structured APIs from your browser in seconds
 
 
-urllib2
-requests
-页面解析 BeautifulSoup
-scrapy
 
 lxml
 
 
-验证码PIL
-opencv，pybrain
 
-threading
+
 celery
 
 
@@ -66,6 +74,8 @@ rabbit mq
 谷阿莫
 http://space.bilibili.com/space?uid=8578857&page=1
 
+https://www.zhihu.com/question/36338520#answer-22827812
+
 
 distribute_crawler 这是用scrapy,redis, mongodb,graphite实现的一个分布式网络爬虫 ，如果爬取知乎或是豆瓣这种网页数量庞大的网站，还是用分布式吧，不然你只能 眼看着花谢花开，爬虫根本停不下来
 
@@ -90,6 +100,8 @@ http://ssnode.me/user/docheckin.php
 
 
 
+
+[java爬虫](http://www.open-open.com/68.htm)
 
 
 ----

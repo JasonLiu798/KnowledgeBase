@@ -34,6 +34,11 @@ Batik
 开源语法分析器 antlr 
 javacc语法和词法分析器的生成程序
 
+[microsoft 人脸识别](http://www.projectoxford.ai/doc/face/How-To/detectface)
+
+
+
+
 ---
 # distribute
 ## connector

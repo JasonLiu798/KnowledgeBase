@@ -41,6 +41,10 @@ http://www.tuicool.com/articles/JraYBfr
 #安装卸载包
 python setup.py install --record files.txt
 cat files.txt | xargs rm -rf 
+
+##setuptools 15.0
+[download](https://pypi.python.org/pypi/setuptools#windows-simplified)
+
 ##pip
 [download](https://pypi.python.org/pypi/pip)
 [doc](https://pip.pypa.io/en/stable/installing/)
@@ -56,13 +60,12 @@ pip list --outdated
 pip install --upgrade SomePackage
 pip uninstall SomePackage
 
-
-##setuptools 15.0
-[download](https://pypi.python.org/pypi/setuptools#windows-simplified)
-
 https://pypi.python.org/pypi/setuptools#unix-wget
 wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz#md5=2a6b2901b6c265d682139345849cbf03
 python setup.py install
+
+##pylint
+http://www.pylint.org/#install
 
 ---
 #第三方库

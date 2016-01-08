@@ -220,6 +220,7 @@ $ git push
     git checkout <name>
     git checkout -b <name>      #change & new
     git checkout -b [分支名] [远程名]/[分支名]
+    git co -b 
     签出远程分支
     git checkout --track origin/serverfix
 
@@ -242,7 +243,8 @@ git pull : 首先，基于本地的FETCH_HEAD记录，比对本地的FETCH_HEAD�
 
 ##git fetch
     git fetch -p    #fetch之后删除掉没有与远程分支对应的本地分支
-    git fetch [remote responsity] [remote branch]:[local branch]
+    git fetch [remote responsity] [remote branch]:[local branch] #获取远端分支到本地
+    git checkout -b [分支名] [远程名]/[分支名] #并创建本地分支
 ###theory
 理解 fetch 的关键, 是理解 FETCH_HEAD
 FETCH_HEAD指的是: 某个branch在服务器上的最新状态'.
@@ -258,7 +260,6 @@ PS:和push不同, fetch会自动获取远程`新加入'的分支.
 
 git fetch origin
 同上, 只不过手动指定了remote.
-
 git fetch origin branch1
 设定当前分支的 FETCH_HEAD' 为远程服务器的branch1分支`.
 PS:在这种情况下, 不会在本地创建本地远程分支, 这是因为:
@@ -266,7 +267,7 @@ PS:在这种情况下, 不会在本地创建本地远程分支, 这是因为:
 一个附加效果是:
 这个命令可以用来测试远程主机的远程分支branch1是否存在, 如果存在, 返回0, 如果不存在, 返回128, 抛出一个异常.
 
-git fetch origin branch1:branch2
+git fetch origin branch_remote:branch_local
 * 首先执行上面的fetch操作
 * 使用远程branch1分支在本地创建branch2(但不会切换到该分支), 
     如果本地不存在branch2分支, 则会自动创建一个新的branch2分支, 

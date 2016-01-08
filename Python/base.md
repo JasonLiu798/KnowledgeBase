@@ -5,20 +5,42 @@
 [你见过哪些令你瞠目结舌的 Python 代码技巧？](https://www.zhihu.com/question/37904398)
 ----
 #语法-变量
+#变量判断
+##是否存在
+内置函数locals()：
+    'testvar'   in   locals().keys()
+内置函数dir()：
+    'testvar'   in   dir()
+内置函数vars()：
+    vars().has_key('testvar')
+try...except...
+
 #数字
 struct
 解决str和其他二进制数据类型的转换。
 struct的pack函数把任意数据类型变成字符串
 
 ---
-#字符串string
+#string字符串
 ''或""括起来的任意文本
 转义字符\
 ord()和chr()函数，可以把字母和对应的数字相互转换：
->>> ord('A')
->>> chr(65)
-
-Unicode表示的字符串用u'...'
+```
+ord('A')
+chr(65)
+```
+##字符串拼接
+```
+'Jim' + 'Green' = 'JimGreen'
+'Jim', 'Green' = 'Jim Green'  #中间会有空格
+'Jim''Green' = 'JimGreen'
+'%s, %s' % ('Jim', 'Green') = 'Jim, Green'
+str.join(some_list)
+#字符串乘法
+a = 'abc'  a * 3 = 'abcabcabc'
+```
+##Unicode
+u'...'
 u'ABC'.encode('utf-8')
 '\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')
 len()
@@ -29,7 +51,7 @@ len()
 %s  字符串
 %x  十六进制整数
 
-##布尔值
+##布尔值 bool
 True、False
 and,or,not
 
@@ -291,9 +313,11 @@ pass语句什么都不做，那有什么用？实际上pass可以用来作为占
 
 ##返回多个值
 x, y = move(100, 100, 60, math.pi / 6)
->>>r = move(100, 100, 60, math.pi / 6)
->>>print r
+```
+r = move(100, 100, 60, math.pi / 6)
+print r
 (151.96152422706632, 70.0)
+```
 
 ##默认参数
 
@@ -569,10 +593,14 @@ except ImportError:
 from __future__ import unicode_literals
 
 ---
-#OOP
+#classOOP
 在类中定义的函数只有一点不同，就是第一个参数永远是实例变量self，并且，调用时，不用传递该参数
 
 实例的变量名如果以__开头，就变成了一个私有变量（private）
+##类变量
+    紧接在类名后面定义，相当于java和c++的static变量
+##实例变量
+    __init__里定义，相当于java和c++的普通变量
 
 ##继承
 class Dog(Animal):
@@ -753,12 +781,27 @@ finally:
     print 'finally...'
 print 'END'
 ```
+##抛出异常
+raise [SomeException [, args [,traceback]]  
+第一个参数，SomeException必须是一个异常类，或异常类的实例
+第二个参数是传递给SomeException的参数，必须是一个元组。这个参数用来传递关于这个异常的有用信息。
+第三个参数traceback很少用，主要是用来提供一个跟中记录对象（traceback）
+raise NameError,("There is a name error","in test.py")  
+
+另一种获取异常信息的途径是通过sys模块中的exc_info()函数。该函数回返回一个三元组:(异常类，异常类的实例，跟中记录对象)
+tuple = sys.exc_info()  
 
 ---
 #调试
 ##assert 
 assert n != 0, 'n is zero!'
 Python解释器时可以用-O参数来关闭assert
+
+try:  
+    assert 1 == 2 , "1 is not equal 2!"  
+except AssertionError,reason:  
+    print "%s:%s"%(reason.__class__.__name__,reason)  
+
 
 ##logging
 import logging

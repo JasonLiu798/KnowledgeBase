@@ -26,6 +26,12 @@ else:
 
 ----
 #multiprocessing
+并发数据处理：
+进程还是线程：python解释器执行代码时，有一个GIL锁：Global Interpreter Lock
+任何Python线程执行前，必须先获得GIL锁，然后，每执行100条字节码，解释器就自动释放GIL锁，让别的线程有机会执行，所以多线程没啥用
+队列
+消息传递系统
+
 ```
 from multiprocessing import Process
 import os

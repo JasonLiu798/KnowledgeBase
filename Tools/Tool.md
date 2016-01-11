@@ -13,50 +13,20 @@ https://www.gnupg.org/
 ##下载
 [youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
 
-#IDE
-#python ide 
-http://www.jetbrains.com/pycharm/
 
+------
+#IDE/Editor
+#markdown
+[flowchart](https://github.com/knsv/mermaid)
+[win-mdp](https://tylingsoft.com/mdp)
+[mac-Mou]()
 
-#java相关
-## 性能
-性能监控
-Java Mission Control JMC
-## 开发
-[findbugs](http://findbugs.sourceforge.net)
-
-##图像图形
-[markman 图像测量](http://www.getmarkman.com/)
-
----
-#shell
-[shell json 处理](https://stedolan.github.io/jq/)
-
-
----
-#win
-##markdown
-[mdp](https://tylingsoft.com/mdp)
-
-##文档管理 #dev 
-velocity
-http://velocity.silverlakesoftware.com/
-zeal
-https://zealdocs.org/download.html
-
-## pomodairo #efficient #番茄工作法
-## 改fov #game
-http://www.flawlesswidescreen.org/#Download
-## Restorator 
-资源修改器
-http://www.portablesoft.org/restorator/
-
-## mosh 异步ssh 
-https://mosh.mit.edu/#getting
+#python ide
+[ALL](http://www.jetbrains.com/pycharm)
 
 ##project 
-Microsoft Project 2010激活密钥：
-
+[Microsoft Project 2010](http://download.microsoft.com/download/4/3/6/43668FB2-E9F4-456B-AF81-F33FC58C63CB/ProjectProfessional.exe)
+推荐：8XWTK-7DBPM-B32R2-V86MX-BTP8P
 8XWTK-7DBPM-B32R2-V86MX-BTP8P
 MVR3D-9XVBT-TBWY8-W3793-FR7C3
 26K3G-RGBT2-7W74V-4JQ42-KHXQW
@@ -67,28 +37,49 @@ CMWV4-2D83Y-PHYMG-DFX73-QPGQC
 7TCB4-6DVYG-P4KVX-TV97T-G9H74
 C44YG-8BM4M-9RTJM-VJCTD-WKVYT
 YG64T-FDD7J-P6R3Q-4X4YV-7QGJP
-系统大全站-温馨提示：
-Microsoft Project 2010(附激活密钥) 简体中文版
-----------------------------------------
-[ProjectProfessional.exe](http://download.microsoft.com/download/4/3/6/43668FB2-E9F4-456B-AF81-F33FC58C63CB/ProjectProfessional.exe)
-激活密钥推荐：8XWTK-7DBPM-B32R2-V86MX-BTP8P
 
 
 
+-----
+#DEV
+[mac 程序员必备](http://www.zhihu.com/question/20036899)
+#java相关
+## 性能
+性能监控
+Java Mission Control JMC
+## 开发
+[findbugs](http://findbugs.sourceforge.net)
+
+##图像图形
+[markman 图像测量](http://www.getmarkman.com/)
+
+##文档管理 
+[mac-dash]()
+[win-velocity](http://velocity.silverlakesoftware.com)
+[win-zeal](https://zealdocs.org/download.html)
+
+[mac-Valgrind-内存调试、内存泄漏检测以及性能分析](http://valgrind.org/)
+
+#shell
+[shell json 处理](https://stedolan.github.io/jq/)
+## mosh 异步ssh 
+https://mosh.mit.edu/#getting
+
+---
+#效率工具
+## pomodairo #efficient #番茄工作法
 
 
 ---
-#mac
-mac 程序员必备 
-http://www.zhihu.com/question/20036899
-##文档管理 #dev 
-dash
-##游戏
-winskin 
-移植游戏
-[THE PORTINGKIT](http://paulthetall.com/portingkit-2/)
+#game游戏
+[win-改fov](http://www.flawlesswidescreen.org/#Download)
+[资源修改器](http://www.portablesoft.org/restorator/)
+[mac-winskin]()
+[mac-winskin-辅助-THE PORTINGKIT](http://paulthetall.com/portingkit-2/)
 
 
+----
+#浏览器
 ##safari
 [windows 同步 safari标签  iCloud（Windows 版)](http://support.apple.com/kb/DL1455?viewlocale=zh_CN&locale=zh_CN)
 [safari-改造指南一-safari扩展-safari优化](http://bbs.waerfa.com/discussion/13/safari-改造指南一-safari扩展-safari优化)
@@ -142,9 +133,7 @@ cmd+D 添加到收藏夹
 
 
 
-## Valgrind #dev 
-内存调试、内存泄漏检测以及性能分析
-http://valgrind.org/
+
 
 
 ## alfred
@@ -164,25 +153,18 @@ https://github.com/guard/guard-livereload
 
 ## Divvy
 
-## Mou
-Markdown 编辑器
+
+
 
 ## Doo
 文档管理工具
 http://www.macupdate.com/app/mac/45860/doo
-
-## SourceTree
-过得去的 Git GUI
 
 ## Less.app
 ## MAMP
 
 Guard livereload
 
-
-## Git GUI
-    * Less.app
-## MAMP
 
 Balasmiq mockups 最好的画ue工具
 Minipicker 免费取色器

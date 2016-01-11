@@ -1,6 +1,5 @@
 #Http protocol
 ---
-#Theory
 # 幂等率
 [HTTP幂等性概念和应用](http://coolshell.cn/articles/4787.html)
 操作本身幂等
@@ -48,11 +47,11 @@ atomic_inc:这个是原子加操作，可以利用redis的原子加操作。即�
  （2）有的可以根据自己业务的唯一主键进行幂等性保证。
 2：有些业务天生是幂等性的，可以不考虑。比如通过mysql 数据库的主键唯一性来确保。
 
-# http2
-https://www.gitbook.com/book/ye11ow/http2-explained/details
+
 
 ---
-# 缓存
+#cache C7缓存
+HTTP1.1(RFC2616)详细展开地描述了Cache机制，详见13节
 ## 解决问题
 带宽瓶颈
 瞬间拥塞
@@ -66,6 +65,22 @@ https://www.gitbook.com/book/ye11ow/http2-explained/details
 
 文档过期
 服务器再验证
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
 
 ---
 #REST
@@ -196,8 +211,7 @@ HTTP1.1 增加的新的status code：
 ##Content Negotiation
     HTTP1.1增加了Content Negotiation，分为Server-driven Negotiation，Agent-driven Negotiation和Transparent Negotiation三种。
 
-##Cache (缓存)
-HTTP1.1(RFC2616)详细展开地描述了Cache机制，详见13节。
+
 
 
 

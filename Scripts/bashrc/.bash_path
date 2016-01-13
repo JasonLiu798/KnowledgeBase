@@ -28,6 +28,7 @@ export HOST=$S32/drivers/etc
 export PRJ=$YP/project
 export PY=$PRJ/python
 export TR=$PY/tornado
+export LT=$PRJ/leetcode
 export PHP=$PRJ/php
 export DOC=$YP/documents
 export WWW=$TOOLS/xampp/htdocs

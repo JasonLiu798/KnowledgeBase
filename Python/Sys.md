@@ -10,9 +10,15 @@ os.path.splitext()可以直接让你得到文件扩展名
 列出所有py文件
 [x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1]=='.py']
 
-
 ---
-#fork
+#process
+##并发数据处理常用工具：
+进程还是线程：python解释器执行代码时，有一个GIL锁：Global Interpreter Lock
+任何Python线程执行前，必须先获得GIL锁，然后，每执行100条字节码，解释器就自动释放GIL锁，让别的线程有机会执行，所以多线程没啥用
+队列：
+进程间通信：消息传递系统、管道
+
+##fork
 ```
 import os
 
@@ -24,14 +30,7 @@ else:
     print 'I (%s) just created a child process (%s).' % (os.getpid(), pid)
 ```
 
-----
-#multiprocessing
-并发数据处理：
-进程还是线程：python解释器执行代码时，有一个GIL锁：Global Interpreter Lock
-任何Python线程执行前，必须先获得GIL锁，然后，每执行100条字节码，解释器就自动释放GIL锁，让别的线程有机会执行，所以多线程没啥用
-队列
-消息传递系统
-
+##multiprocessing
 ```
 from multiprocessing import Process
 import os
@@ -54,14 +53,12 @@ if __name__=='__main__':
 ```
 from multiprocessing import Pool
 import os, time, random
-
 def long_time_task(name):
     print 'Run task %s (%s)...' % (name, os.getpid())
     start = time.time()
     time.sleep(random.random() * 3)
     end = time.time()
     print 'Task %s runs %0.2f seconds.' % (name, (end - start))
-
 if __name__=='__main__':
     print 'Parent process %s.' % os.getpid()
     p = Pool() #默认大小是CPU的核数
@@ -106,6 +103,7 @@ if __name__=='__main__':
     # pr进程里是死循环，无法等待其结束，只能强行终止:
     pr.terminate()
 ```
+
 
 ---
 #thread
@@ -175,8 +173,6 @@ def run_thread(n):
 #gevent 协程
 gevent是第三方库，通过greenlet实现协程，其基本思想是：
 当一个greenlet遇到IO操作时，比如访问网络，就自动切换到其他的greenlet，等到IO操作完成，再在适当的时候切换回来继续执行。由于IO操作非常耗时，经常使程序处于等待状态，有了gevent为我们自动切换协程，就保证总有greenlet在运行，而不是等待IO。
-
-
 
 #threadlocal
 ```
@@ -261,13 +257,6 @@ for i in range(10):
 # 处理结束:
 print('worker exit.')
 ```
-
-
-
-
-
-
-
 
 
 

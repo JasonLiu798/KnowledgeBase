@@ -96,91 +96,69 @@ classmates = ['Michael', 'Bob', 'Tracy']
 index范围 -len ~ len-1
 classmates.insert(1, 'Jack')
 classmates.pop()
-
-## 元素删除
+##删除元素
 python的列表list可以用for循环进行遍历，实际开发中发现一个问题，就是遍历的时候删除会出错，例如
 ```
-l = [1,2,3,4]
+l = [1,2,3,4]  #默认初始都为此
 for i in l:
     if i != 4:
-    l.remove(i)
-print l 
+    l.remove(i) #本来意图是想清空列表l，只留元素4
+print l         #实际结果[2, 4] 
 ```
-这几句话本来意图是想清空列表l，只留元素4，但是实际跑起来并不是那个结果。再看下面，利用index来遍历删除列表l
-
-    l = [1, 2, 3, 4]
-    for i in range(len(l)):
-        if l[i] == 4:
-            del l[i]
-    print l
-
+再看下面，
+```
+for i in range(len(l)):
+    if l[i] == 4:
+        del l[i]        #利用index来遍历删除列表l
+print l                 #结果 [1, 2, 3]
+```
 这样没问题，可以遍历删除，但是列表l如果变为 l = [1,2,3,4,5]
 如果还是按照上面的方法，设想一下，range开始的范围是0-4，中间遍历的时候删除了一个元素4，这个时候列表变成了= [1,2,3,5],这时候就会报错了，提示下标超出了数组的表示，原因就是上面说的遍历的时候删除了元素
 删除可以使用filter过滤返回新的list
 ```
-l = [1,2,3,4]
-l = filter(lambda x:x !=4,l)
-print l
-```
-这样可以安全删除l中值为4的元素了，filter要求两个参数，第一个是规则函数，第二个参数要求输入序列，而lambda这个函数的作用就是产生一个函数，是一种紧凑小函数的写法，一般简单的函数可以这么些
-或者可以这样
-l = [1,2,3,4]
+l = filter(lambda x:x!=4,l)
+#或者
 l = [ i for i in l if i !=4]//同样产生一个新序列，复值给l
-print l
-或者干脆建立新的list存放要删除的元素
-l = [1,2,3,4]
-dellist = []
-for i in l:
-    if i == 4:
-        dellist.append(i)
-for i in dellist:
-    l.remove(i)
-这样也能安全删除元素
-所以要遍历的时候删除元素一定要小心，特别是有些操作并不报错，但却没有达到预期的效果
-上面说到产生新序列，赋值等等，用python的id()这个内置函数来看对象的id,可以理解为内存中的地址，所以有个简要说明
-如果
-l = [1,2,3,4]
-ll = l
-l.remove(1)
-print l//肯定是[2,3,4]
-print ll//这里会是什么？
-如果用id函数查看的话就发现
-print id(l),id(ll)
-打印出相同的号码，说明他们其实是一个值，也就是说上面的print ll将和l打印的一样，所以python有这种性质，用的时候注意一下就行了
+```
+filter要求两个参数，第一个是规则函数，第二个参数要求输入序列
+
+
 
 ---
 #deque
 使用list存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为list是线性存储，数据量大的时候，插入和删除效率很低。
 deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈
->>> from collections import deque
->>> q = deque(['a', 'b', 'c'])
->>> q.append('x')
->>> q.appendleft('y')
->>> q
+```
+from collections import deque
+q = deque(['a', 'b', 'c'])
+q.append('x')
+q.appendleft('y')
+q
 deque(['y', 'a', 'b', 'c', 'x'])
-
+```
 
 ---
 #tuple
 一旦初始化就不能修改
 classmates = ('Michael', 'Bob', 'Tracy')
 tuple不可变，所以代码更安全
+tuple可hash，可以放入set
 当你定义一个tuple时，在定义的时候，tuple的元素就必须被确定下来
-
 只有1个元素的tuple定义时必须加一个逗号,，来消除歧
 t = (1,)
-
-
-##namedtuple
+您不能向 tuple 增加元素。Tuple 没有 append 或 extend 方法。
+您不能从 tuple 删除元素。Tuple 没有 remove 或 pop 方法。
+您不能在 tuple 中查找元素。Tuple 没有 index 方法。
+然而, 您可以使用 in 来查看一个元素是否存在于 tuple 中。
+#namedtuple
 namedtuple是一个函数，它用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并可以用属性而不是索引来引用tuple的某个元素
->>> from collections import namedtuple
->>> Point = namedtuple('Point', ['x', 'y'])
->>> p = Point(1, 2)
->>> p.x
-1
->>> p.y
-2
-
+```
+from collections import namedtuple
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(1, 2)
+print p.x #1
+print p.y #2
+```
 
 
 ---

@@ -15,8 +15,20 @@
 排序+单趟遍历
 hash
 
-
-
+---
+#回文
+最长回文字串O(n)
+[Manacher csdn](http://blog.csdn.net/ggggiqnypgjg/article/details/6645824/)
+[Manacher cnblog](http://www.cnblogs.com/biyeymyhjob/archive/2012/10/04/2711527.html)
+(3)[http://www.tuicool.com/articles/mqUfai]
+12212321 ->
+S[] = "$#1#2#2#1#2#3#2#1#";
+然后用一个数组 P[i] 来记录以字符S[i]为中心的最长回文子串向左/右扩张的长度（包括S[i]），比如S和P的对应关系：
+S     #  1  #  2  #  2  #  1  #  2  #  3  #  2  #  1  #
+P     1   2  1  2  5   2  1  4   1  2  1  6   1  2   1  2  1
+(p.s. 可以看出，P[i]-1正好是原字符串中回文串的总长度）
+mx则为id+P[id]，即最大回文子串的边界
+如果mx > i，那么P[i] >= MIN(P[2 * id - i], mx - i)
 
 ---
 #ac自动机

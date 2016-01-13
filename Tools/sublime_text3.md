@@ -141,7 +141,6 @@ Ctrl + Alt + Down
     "word_wrap": true,
     "wrap_width": 80
 }
-
 ```
 
 ###keybind

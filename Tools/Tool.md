@@ -65,10 +65,34 @@ Java Mission Control JMC
 ## mosh 异步ssh 
 https://mosh.mit.edu/#getting
 
+##包管理
+[mac-Homebrew]
+
+## oh-my-zsh
+https://github.com/robbyrussell/oh-my-zsh
+自带几十个插件、自动升级的 zsh，任何开机就要开命令行的人都该尝试一下
+
+## iTerm 2
+
+## Guard livereload
+automatically reload your browser when 'view' files are modified.
+https://github.com/guard/guard-livereload
+
+## Divvy
+
+## Doo
+文档管理工具
+http://www.macupdate.com/app/mac/45860/doo
+
+## Less.app
+## MAMP
+
+
+
 ---
 #效率工具
-## pomodairo #efficient #番茄工作法
-
+[all-pomodairo]()#efficient #番茄工作法
+[mac-alfred-附加](http://www.alfredworkflow.com)
 
 ---
 #game游戏
@@ -132,36 +156,16 @@ cmd+D 添加到收藏夹
 放大 / 增大文字大小 – 两指外张
 
 
+----
+#小工具
+[罗马数字](http://www.novaroma.org/via_romana/numbers.html)
 
 
 
 
-## alfred
-http://www.alfredworkflow.com/
-
-## Homebrew
-
-## oh-my-zsh
-https://github.com/robbyrussell/oh-my-zsh
-自带几十个插件、自动升级的 zsh，任何开机就要开命令行的人都该尝试一下
-
-## iTerm 2
-
-## Guard livereload
-automatically reload your browser when 'view' files are modified.
-https://github.com/guard/guard-livereload
-
-## Divvy
 
 
 
-
-## Doo
-文档管理工具
-http://www.macupdate.com/app/mac/45860/doo
-
-## Less.app
-## MAMP
 
 Guard livereload
 

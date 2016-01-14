@@ -401,157 +401,30 @@ generator和函数的执行流程不一样。
 
 
 
-----
-#函数式编程
-允许把函数本身作为参数传入另一个函数，还允许返回一个函数
-高阶函数：
-变量可以指向函数，函数名其实就是指向函数的变量
-函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数
-
-##map
-map(str, [1, 2, 3, 4, 5, 6, 7, 8, 9])
-map将传入的函数依次作用到序列的每个元素，并把结果作为新的list返回
-
-##reduce
-把一个函数作用在一个序列[x1, x2, x3...]上，这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算
-reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
-
-##filter
-filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素
-
-##sort
-sorted([36, 5, 12, 9, 21], reversed_cmp)
-
-#闭包
-如果不需要立刻求和，而是在后面的代码中，根据需要再计算怎么办？可以不返回求和的结果，而是返回求和的函数！
-
-def lazy_sum(*args):
-    def sum():
-        ax = 0
-        for n in args:
-            ax = ax + n
-        return ax
-    return sum
-
->>> f1 = lazy_sum(1, 3, 5, 7, 9)
->>> f2 = lazy_sum(1, 3, 5, 7, 9)
->>> f1==f2
-
-返回的函数并没有立刻执行，而是直到调用了f()才执行
-返回闭包时牢记的一点就是：返回函数不要引用任何循环变量，或者后续会发生变化的变量。
-```
-def count():
-    fs = []
-    for i in range(1, 4):
-        def f(j):
-            def g():
-                return j*j
-            return g
-        fs.append(f(i))
-    return fs
-```
-如果一定要引用循环变量怎么办？方法是再创建一个函数，用该函数的参数绑定循环变量当前的值，无论该循环变量后续如何更改，已绑定到函数参数的值不变：
-
-##匿名函数
-关键字lambda表示匿名函数，冒号前面的x表示函数参数。
-map(lambda x: x * x, [1, 2, 3, 4, 5, 6, 7, 8, 9])
-匿名函数有个限制，就是只能有一个表达式，不用写return，返回值就是该表达式的结果
-
-##装饰器
-函数对象有一个__name__属性，可以拿到函数的名字
-decorator就是一个返回函数的高阶函数
-```
-def log(func):
-    def wrapper(*args, **kw):
-        print 'call %s():' % func.__name__
-        return func(*args, **kw)
-    return wrapper
-
-@log
-def now():
-    print '2013-12-25'
-```
-把@log放到now()函数的定义处，相当于执行了语句：
-now = log(now)
-
-如果decorator本身需要传入参数，那就需要编写一个返回decorator的高阶函数，写出来会更复杂。比如，要自定义log的文本：
-```
-def log(text):
-    def decorator(func):
-        def wrapper(*args, **kw):
-            print '%s %s():' % (text, func.__name__)
-            return func(*args, **kw)
-        return wrapper
-    return decorator
-
-@log('execute')
-def now():
-    print '2013-12-25'
-
-#相当于 now = log('execute')(now)
-```
-经过decorator装饰之后的函数，它们的__name__已经从原来的'now'变成了'wrapper'
-functools.wraps相当于wrapper.__name__ = func.__name__
-```
-import functools
-
-def log(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kw):
-        print 'call %s():' % func.__name__
-        return func(*args, **kw)
-    return wrapper
-
-#带参数的
-def log(text):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kw):
-            print '%s %s():' % (text, func.__name__)
-            return func(*args, **kw)
-        return wrapper
-    return decorator
-```
-
-##偏函数
-```
-import functools
-int2 = functools.partial(int, base=2)
-```
-functools.partial的作用就是，把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数，调用这个新函数会更简单
 
 ----
-#模块
-```
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-' a test module '
-
-__author__ = 'Michael Liao'
-
-import sys
-
-def test():
-    args = sys.argv
-    if len(args)==1:
-        print 'Hello, world!'
-    elif len(args)==2:
-        print 'Hello, %s!' % args[1]
-    else:
-        print 'Too many arguments!'
-
-if __name__=='__main__':
-    test()
-```
-
+#module模块
+##自定义模块
+模块搜索路径 
+print sys.path
+#同目录
+直接import
+#子目录
+子目录中增加一个空白的__init__.py文件，该文件使得python解释器将子目录整个也当成一个模块，然后直接通过“import 子目录.模块”导入
+#父目录/不同目录
+M1:
+在sys.path列表中添加新的路径 import sys，sys.path.append('父目录、其他目录的路径')
+M2:
+添加路径到环境变量PYTHONPATH
+M3:将库文件复制到sys.path列表中的目录里（如site-packages目录）
+#模块所在路径
+print modulename.__file__
 ##别名
 ```
 try:
     import cStringIO as StringIO
 except ImportError: # 导入失败会捕获到ImportError
     import StringIO
-
 try:
     import json # python >= 2.6
 except ImportError:
@@ -559,190 +432,13 @@ except ImportError:
 ```
 
 类似__xxx__这样的变量是特殊变量，可以被直接引用，但是有特殊用途，比如上面的__author__，__name__就是特殊变量，hello模块定义的文档注释也可以用特殊变量__doc__访问，我们自己的变量一般不要用这种变量名；
-
 类似_xxx和__xxx这样的函数或变量就是非公开的（private），不应该被直接引用，比如_abc，__abc等；
-
 之所以我们说，private函数和变量“不应该”被直接引用，而不是“不能”被直接引用，是因为Python并没有一种方法可以完全限制访问private函数或变量，但是，从编程习惯上不应该引用private函数或变量。
-
-##包路径
-默认情况下，Python解释器会搜索当前目录、所有已安装的内置模块和第三方模块，搜索路径存放在sys模块的path变量中
-
 ##__future__
 from __future__ import unicode_literals
 
----
-#classOOP
-在类中定义的函数只有一点不同，就是第一个参数永远是实例变量self，并且，调用时，不用传递该参数
-
-实例的变量名如果以__开头，就变成了一个私有变量（private）
-##类变量
-    紧接在类名后面定义，相当于java和c++的static变量
-##实例变量
-    __init__里定义，相当于java和c++的普通变量
-
-##继承
-class Dog(Animal):
-
-判断一个变量是否是某个类型可以用isinstance()
-
-##__slots__
-```
-def set_age(self, age): # 定义一个函数作为实例方法
-    self.age = age
-```
-
-给一个实例绑定的方法，对另一个实例是不起作用的
-
-为了给所有实例都绑定方法，可以给class绑定方法：
-```
-def set_score(self, score):
-    self.score = score
-Student.set_score = MethodType(set_score, None, Student)
-```
-
-定义一个特殊的__slots__变量，来限制该class能添加的属性，对继承的子类是不起作用的
-
-##@property
-装饰器就是负责把一个方法变成属性调用的
-```
-class Student(object):
-
-    @property
-    def score(self):
-        return self._score
-
-    @score.setter
-    def score(self, value):
-        if not isinstance(value, int):
-            raise ValueError('score must be an integer!')
-        if value < 0 or value > 100:
-            raise ValueError('score must between 0 ~ 100!')
-        self._score = value
-```
-
-##Mixin
-
-
-
-
-##__str__
-直接显示变量调用的不是__str__()，而是__repr__()，两者的区别是__str__()返回用户看到的字符串，而__repr__()返回程序开发者看到的字符串，也就是说，__repr__()是为调试服务的。
-解决办法是再定义一个__repr__()。
-```
-class Student(object):
-    def __init__(self, name):
-        self.name = name
-    def __str__(self):
-        return 'Student object (name=%s)' % self.name
-    __repr__ = __str__
-```
-
-##__iter__
-如果一个类想被用于for ... in循环，类似list或tuple那样，就必须实现一个__iter__()方法，该方法返回一个迭代对象
-```
-class Fib(object):
-    def __init__(self):
-        self.a, self.b = 0, 1 # 初始化两个计数器a，b
-
-    def __iter__(self):
-        return self # 实例本身就是迭代对象，故返回自己
-
-    def next(self):
-        self.a, self.b = self.b, self.a + self.b # 计算下一个值
-        if self.a > 100000: # 退出循环的条件
-            raise StopIteration();
-        return self.a # 返回下一个值
-```
-
-##__getitem__
-要表现得像list那样按照下标取出元素
-class Fib(object):
-    def __getitem__(self, n):
-        a, b = 1, 1
-        for x in range(n):
-            a, b = b, a + b
-        return a
-
-##__getattr__
-```
-class Student(object):
-
-    def __getattr__(self, attr):
-        if attr=='age':
-            return lambda: 25
-        raise AttributeError('\'Student\' object has no attribute \'%s\'' % attr)
-
-
-class Chain(object):
-    def __init__(self, path=''):
-        self._path = path
-    def __getattr__(self, path):
-        return Chain('%s/%s' % (self._path, path))
-    def __str__(self):
-        return self._path
-
-Chain().status.user.timeline.list
-```
-
-##__call__
-__call__()方法，就可以直接对实例进行调用
-```
-class Student(object):
-    def __init__(self, name):
-        self.name = name
-
-    def __call__(self):
-        print('My name is %s.' % self.name)
-调用方式如下：
-
->>> s = Student('Michael')
->>> s()
-```
-
-
-##type
-创建一个class对象，type()函数依次传入3个参数：
-class的名称；
-继承的父类集合，注意Python支持多重继承，如果只有一个父类，别忘了tuple的单元素写法；
-class的方法名称与函数绑定，这里我们把函数fn绑定到方法名hello上。
-
-##metaclass
-```
-# metaclass是创建类，所以必须从`type`类型派生：
-class ListMetaclass(type):
-    def __new__(cls, name, bases, attrs):
-        attrs['add'] = lambda self, value: self.append(value)
-        return type.__new__(cls, name, bases, attrs)
-
-class MyList(list):
-    __metaclass__ = ListMetaclass # 指示使用ListMetaclass来定制类
-```
-__new__()方法接收到的参数依次是：
-当前准备创建的类的对象；
-类的名字；
-类继承的父类集合；
-类的方法集合。
-
-ORM
-```
-class User(Model):
-    # 定义类的属性到列的映射：
-    id = IntegerField('id')
-    name = StringField('username')
-    email = StringField('email')
-    password = StringField('password')
-
-# 创建一个实例：
-u = User(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
-# 保存到数据库：
-u.save()
-```
-metaclass可以隐式地继承到子类，但子类自己却感觉不到
-
-PS:千万不要把实例属性和类属性使用相同的名字
-
 ----
-#异常处理
+#exception异常处理
 ```
 try:
     print 'try...'
@@ -768,6 +464,18 @@ raise NameError,("There is a name error","in test.py")
 
 另一种获取异常信息的途径是通过sys模块中的exc_info()函数。该函数回返回一个三元组:(异常类，异常类的实例，跟中记录对象)
 tuple = sys.exc_info()  
+##常用异常类
+Error
+AttributeError：属性错误，特性引用和赋值失败时会引发属性错误
+NameError：试图访问的变量名不存在
+SyntaxError：语法错误，代码形式错误
+Exception：所有异常的基类，因为所有python异常类都是基类Exception的其中一员，异常都是从基类Exception继承的，并且都在exceptions模块中定义。
+IOError：一般常见于打开不存在文件时会引发IOError错误，也可以解理为输出输入错误
+KeyError：使用了映射中不存在的关键字（键）时引发的关键字错误
+IndexError：索引错误，使用的索引不存在，常索引超出序列范围，什么是索引
+TypeError：类型错误，内建操作或是函数应于在了错误类型的对象时会引发类型错误
+ZeroDivisonError：除数为0，在用除法操作时，第二个参数为0时引发了该错误
+ValueError：值错误，传给对象的参数类型不正确，像是给int()函数传入了字符串数据类型的参数。
 
 ---
 #调试

@@ -23,7 +23,9 @@ HttpOnly
 Cookie IP绑定
 
 
-
+---
+#SSO
+[SSO](http://blog.csdn.net/cutesource/article/details/5838693)
 
 ---
 #编译器

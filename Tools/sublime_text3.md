@@ -88,9 +88,13 @@ Ctrl + Alt + Down
 ###settings
 "font_face": "Courier New",
 ```
+    
 {
 	//colors
-	"color_scheme": "Packages/User/SublimeLinter/Monokai (SL).tmTheme",
+    #win用
+	#"color_scheme": "Packages/User/SublimeLinter/Monokai (SL).tmTheme",
+    #mac用
+    "color_scheme": "Packages/Monokai Extended/Monokai Extended.tmTheme",
 	//font
 	"font_face": "Consolas",
 	"font_size": 12,

@@ -91,7 +91,10 @@ Ctrl + Alt + Down
 {
     "auto_complete": false,
     "caret_style": "solid",
-    "color_scheme": "Packages/User/SublimeLinter/Monokai (SL).tmTheme",
+    #win用
+    #"color_scheme": "Packages/User/SublimeLinter/Monokai (SL).tmTheme",
+    #mac用
+    "color_scheme": "Packages/Monokai Extended/Monokai Extended.tmTheme",
     "ensure_newline_at_eof_on_save": true,
     "file_exclude_patterns":
     [
@@ -116,7 +119,7 @@ Ctrl + Alt + Down
     [
         "subpixel_antialias"
     ],
-    "font_size": 12,
+    "font_size": 13,
     "highlight_line": true,
     "highlight_modified_tabs": true,
     "ignored_packages":

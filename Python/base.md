@@ -225,6 +225,24 @@ else:
 if x:
     print 'True'
 只要x是非零数值、非空字符串、非空list等，就判断为True，否则为False。
+---
+#switch
+```
+#python中是没用switch语句的，一般多用字典来代替switch来实现
+def jia(x,y):  
+    print x+y  
+def jian(x,y):  
+    print x-y  
+def cheng(x,y):  
+    print x*y  
+def chu(x,y):  
+    print x/y  
+operator = {'+':jia,'-':jian,'*':cheng,'/':chu}  
+def f(x,o,y):  
+    operator.get(o)(x,y)
+f(3,'+',2)
+```
+
 
 ---
 #循环

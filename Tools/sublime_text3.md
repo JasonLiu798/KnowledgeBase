@@ -146,11 +146,12 @@ Ctrl + Alt + Down
 ###keybind
 ```
 [
-	{ "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} },
-	{ "keys": ["ctrl+right"], "command": "next_view" },
-	{ "keys": ["ctrl+left"], "command": "prev_view" }
-
+    { "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} },
+    { "keys": ["ctrl+right"], "command": "next_view" },
+    { "keys": ["ctrl+left"], "command": "prev_view" },
+    { "keys": ["ctrl+shift+enter"], "command": "open_in_browser" }
 ]
+
 ```
 
 ###markdown
@@ -189,12 +190,17 @@ http://www.tuicool.com/articles/AJR7Rn3
 
 ---
 #plugins packages 插件
-## vi 扩展
+##view in browser
+快捷键配置：
+```
+{ "keys": ["ctrl+shift+enter"], "command": "open_in_browser" }
+```
+
+## vi扩展
 Vintageous
 配置
 http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
-
-启用 
+启用
 "ignored_packages": [""]
 默认命令模式
  "vintage_start_in_command_mode": true
@@ -208,7 +214,6 @@ SublimeREPL
 
 ##语法补全
 SublimeCodeIntel
-
 
 ##SublimeLinter
 语法检查
@@ -244,12 +249,16 @@ Twitter Bootstrap 3 Snippets Plugin for Sublime Text
 	{ "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} }
 ]
 
+
 ##Js​Format
 自动格式调整 
 - "Javascript formatting for Sublime Text."
 
 ##HTMLBeautify
 - "A plugin for Sublime Text that formats (indents) HTML source code. It makes code easier for humans to read."
+Mac OS X: Command-Option-Shift-F
+Windows: ctrl-Alt-Shift-F
+Linux: ctrl-Alt-Shift-F
 
 ##ctag
 brew install ctags

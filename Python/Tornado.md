@@ -36,9 +36,26 @@ RequestHandler
 
 ---
 #模板
->>> from tornado.template import Template
->>> content = Template("<html><body><h1>{{ header }}</h1></body></html>")
->>> print content.generate(header="Welcome!")
+##文件夹路径配置
+```
+settings=dict(
+template_path=os.path.join(os.path.dirname(__file__), "templates"),
+static_path=os.path.join(os.path.dirname(__file__), "static"),)
+tornado.web.Application.__init__(self, handlers, **settings)
+
+#单独使用
+from tornado.template import Template
+content = Template("<html><body><h1>{{ header }}</h1></body></html>")
+print content.generate(header="Welcome!")
+#in handler
+class IndexHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render(
+            "index.html",
+            page_title = "Tools",
+        )
+```
+
 
 ##控制语句
 ```

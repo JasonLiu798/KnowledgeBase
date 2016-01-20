@@ -334,7 +334,7 @@ git push -f
 
 
 ---
-#git common configuration
+#gitconfig common configuration
 ##gitignore 配置
 删除已经commit的文件，但不删除文件本身 `git rm --cached filename`
 [gitignore配置模板](https://github.com/github/gitignore)
@@ -363,6 +363,10 @@ git config --global alias.lg "log --graph --pretty=oneline --abbrev-commit"
 
 ##配色
 git config --global color.ui auto
+git config --global color.status auto  
+git config --global color.diff auto  
+git config --global color.branch auto  
+git config --global color.interactive auto  
 
 ##git add proxy
 http://segmentfault.com/q/1010000000118837
@@ -429,7 +433,11 @@ find . -type d -name ".settings"|xargs rm -rf
 git update-index --assume-unchanged /path/to/file
 ##修改最近一次提交的注释
 git commit --amend
-
+##moba
+git-remote-ftp.exe: error while loading shared libraries:
+apt-get install libopenssl100
+apt-cyg install ca-certificates
+cygcheck /usr/lib/git-core/git-remote-https.exe
 
 
 

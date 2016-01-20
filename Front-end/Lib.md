@@ -1,4 +1,11 @@
 #lib
+
+----
+#encodeURI
+
+
+
+
 ----
 #ajax
 [fetch](https://github.com/bitinn/node-fetch)
@@ -12,9 +19,42 @@ JavaScript 构建工具： Grunt , Gulp 和 Brocolli .
 #bower
 npm install -g bower
 bower help
-bower install jquery
-bower update jquery
-bower uninstall jquery
+bower install jquery --save     #安装 --save write bower.json
+bower update jquery             #更新
+bower uninstall jquery          #卸载
+bower info jquery               #查看信息
+##.bowerrc
+```
+{
+        "directory" : "js/lib"
+}
+```
+##bower.json
+```
+{
+  "name": "tools",
+  "version": "0.0.1",
+  "authors": [
+    "jasonliu <jasondliu@qq.com>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "js/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
+```
+
 
 #browserify
 https://github.com/substack/node-browserify

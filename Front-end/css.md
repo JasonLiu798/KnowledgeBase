@@ -1,7 +1,20 @@
 #CSS
------
+---
+#引入
+```
+#element上定义
+
+#页面内定义
+<style type="text/css">
+    body{
+      margin:20 0 0 0;
+    }
+</style>
+#css文件内定义
+<link rel="stylesheet" href="{{ static_url('js/lib/bootstrap/dist/css/bootstrap.min.css') }}"/>
 
 
+```
 
 -----
 #圆角矩形

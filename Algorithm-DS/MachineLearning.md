@@ -254,8 +254,48 @@ hj严格的more-general-than hk（写作hj＞ghk），当且仅当( hj ≥ g hk 
             从G中移去所有这样的假设：它比G中另一假设更特殊
 
 2.5.5 算法示例
-
 ##2.6 关于变型空间和候选消除的说明
+
+##2.7 归纳偏置
+###一个有偏的假设空间
+Example:
+    Sky     airtemp ... EnjoySport
+1   sunny   warm    ...  yes
+2   cloudy  warm    ...  yes
+3   rainy   warm    ...  no  
+<?, Warm, Nornal, Strong, Cool, Change>它将第三个样例错误地划为正例
+
+###无偏的学习器
+可教授概念(every teachable concept)
+幂集（power set）:集合X所有子集的集合
+
+定义一个新的假设空间H´，它能表示实例的每一个子集，也就是把H´对应到X的幂集。
+定义H´的一种办法是，允许使用前面的假设的任意析取、合取和否定式
+
+无偏学习的无用性：学习器如果不对目标概念的形式做预先的假定，它从根本上无法对未见实例进行分类
+
+归纳偏置（Inductive bias）定义：
+一般情况下任意的学习算法L
+为任意目标概念c提供的任意训练数据Dc={<x, c(x)>
+训练过程结束后，L需要对新的实例xi进行分类。
+令L(xi, Dc)表示在对训练数据Dc学习后L赋予xi的分类（正例或反例），我们可以如下描述L所进行的这一归纳推理过程：
+(Dc∧xi) >- L(xi,Dc)
+这里的记号y >- z ，表示z从y归纳推理得到
+定义L的归纳偏置为前提集合B，使所有的新实例xi满足。
+(B∧Dc∧xi) ├ L(xi, Dc)
+这里的记号y├z表示z从y演绎派生（follow deductively，或z可以由y证明得出）
+
+定义： 
+考虑对于实例集合X的概念学习算法L。
+令c为X上定义的任一概念，并令Dc={<x, c(x)>}为c的任意训练样例集合。
+令L(xi, Dc)表示经过数据Dc的训练后，L赋予实例xi的分类。
+L的归纳偏置是最小断言集合B，它使任意目标概念c和相应的训练样例Dc满足：
+(∀xi∈X)[(B∧Dc∧xi) ├ L(xi, Dc)]
+
+
+
+
+
 
 
 

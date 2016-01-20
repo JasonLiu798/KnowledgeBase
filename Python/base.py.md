@@ -211,6 +211,13 @@ s1 | s2
 set([1, 2, 3, 4])
 
 
+---
+#itertools
+[itertools 的使用](http://blog.csdn.net/xiaocaiju/article/details/6968123)
+
+
+----
+#控制语句
 ----
 #if
 if <条件判断1>:
@@ -527,7 +534,9 @@ q结束调试
 
 pdb.set_trace()，就可以设置一个断点
 
-##单元测试
+
+---
+#单元测试
 unittest
 
 编写一个测试类，从unittest.TestCase继承
@@ -545,8 +554,6 @@ class Dict(dict):
 
     def __setattr__(self, key, value):
         self[key] = value
-
-
 
 #测试类
 import unittest

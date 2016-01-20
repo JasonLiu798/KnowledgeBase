@@ -8,6 +8,36 @@ http://download.csdn.net/detail/flybirds98/1934334
 [基于Python的卷积神经网络和特征提取](http://www.csdn.net/article/2015-08-27/2825549)
 
 [Twitter情感分析技术](http://www.infoq.com/cn/news/2015/12/Twitter-api-notion)
+[deeplearning](http://www.deeplearningbook.org/)
+
+统计学习方法.李航
+All of Statistics
+统计学习基础-数据挖掘、推理与预测
+
+
+PRML, ESL, MLAPP,
+Linear Algebra Done Right
+
+
+
+机器学习及其应用
+All of Statistics.LarryWasserman
+机器学习.TomMitchell
+PRML.pdf
+PRML读书会合集打印版.pdf
+Programming Collective Intelligence.pdf
+[奥莱理] Machine Learning for Hackers.pdf
+大数据：互联网大规模数据挖掘与分布式处理
+推荐系统实践.pdf
+数据挖掘-实用机器学习技术（中文第二版）.pdf
+数据挖掘_概念与技术.pdf
+机器学习导论.pdf
+模式分类第二版中文版Duda.pdf（全）.pdf
+深入搜索引擎--海量信息的压缩、索引和查询.pdf
+矩阵分析.美国 Roger.A.Horn.扫描版.pdf
+
+机器学习实战
+LDA数学八卦.pdf
 
 ---
 #C1 base 序论

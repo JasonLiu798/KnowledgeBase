@@ -6,6 +6,33 @@ babel src --out-dir build
 [使用 React 的一些经验](http://segmentfault.com/a/1190000002432718)
 [facebook get start](http://facebook.github.io/react/docs/getting-started.html)
 
+----
+#使用
+```
+<script src="{{ static_url('js/lib/react/react.min.js') }}" ></script>
+<script src="{{ static_url('js/lib/react/react-dom.min.js') }}"></script>
+<script src="{{ static_url('js/lib/browser.min.js') }}"></script>
+```
+Browser.js 的作用是将 JSX 语法转为 JavaScript 语法，这一步很消耗时间，实际上线的时候，应该将它放到服务器完成
+```
+0.14前，jsx编译依赖jsxtransformer.js <script type="text/jsx">
+0.14后，为browser.js <script type="text/babel">
+babel src --out-dir build
+```
+
+
+---
+#渲染
+渲染HTML标签，首字母小写
+var myDivElement = <div className="foo" />;
+React.render(myDivElement, document.body);
+渲染React组件，首字母大写
+var MyComponent = React.createClass({/*...*/});
+var myElement = <MyComponent someProperty={true} />;
+React.render(myElement, document.body);
+
+
+
 ```
 <script type="text/babel">
 ReactDOM.render(
@@ -13,10 +40,7 @@ ReactDOM.render(
   document.getElementById('example')
 );
 </script>
-```
-
-数组
-```
+#参数使用数组
 <script type="text/babel">
   var names = ['Alice', 'Emily', 'Kate'];
   ReactDOM.render(
@@ -29,7 +53,6 @@ ReactDOM.render(
     </div>,
     document.getElementById('example')
   );
-
   var arr = [
     <h1>Hello world!</h1>,
     <h2>React is awesome</h2>,
@@ -42,6 +65,21 @@ ReactDOM.render(
 ```
 
 
+---
+#JSX
+[](http://segmentfault.com/a/1190000002646155)
+引入jsxtransformer.js或browser.js(0.14+)
+
+
+表达式用{}包起来，不要加引号，加引号就会被当成字符串
+JSX是HTML和JavaScript混写的语法，当遇到<，JSX就当HTML解析，遇到{就当JavaScript解析。
+
+PS：
+1.React默认会进行HTML的转义，避免XSS攻击
+2.标签的属性class和for，需要写成className和htmlFor。因为两个属性是JavaScript的保留字和关键字，无论你是否使用JSX。
+
+
+---
 #组件
 ```
 //HelloMessage

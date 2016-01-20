@@ -476,9 +476,12 @@ $ mkpasswd -c >> /etc/passwd
 $ mkgroup -c >> /etc/group
 
 
+
+
 ## 常用工具
 telnet -> 
 apt-cyg install inetutils
+cygcheck /usr/lib/git-core/git-remote-https.exe #检查缺少的库
 
 ## 乱码问题
 [终极解决方案](http://www.cnblogs.com/yshl-dragon/p/3631056.html)

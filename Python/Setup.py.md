@@ -38,16 +38,19 @@ http://www.tuicool.com/articles/JraYBfr
 
 ----
 #包管理
-#安装卸载包
+#setuptools 15.0
+[download](https://pypi.python.org/pypi/setuptools#windows-simplified)
+wget https://bootstrap.pypa.io/ez_setup.py -O - | python
+wget https://pypi.python.org/packages/source/s/setuptools/setuptools-19.4.tar.gz#md5=c5a7d90c1e0acf8c4ec5c2bf31bc25b5
+##安装卸载包
 python setup.py install --record files.txt
 cat files.txt | xargs rm -rf 
-
-##setuptools 15.0
-[download](https://pypi.python.org/pypi/setuptools#windows-simplified)
 
 ##pip
 [download](https://pypi.python.org/pypi/pip)
 [doc](https://pip.pypa.io/en/stable/installing/)
+升级：
+pip install --upgrade pip
 
 https://pypi.python.org/pypi/pip#downloads
 wget --no-check-certificate https://pypi.python.org/packages/source/p/pip/pip-6.1.1.tar.gz#md5=6b19e0a934d982a5a4b798e957cb6d45

@@ -12,6 +12,13 @@
 ```
 
 ---
+#ssh
+[pexpect](http://blog.csdn.net/lwnylslwnyls/article/details/8239791)
+pip install pexpect
+
+
+
+---
 #随机数
 ```
 import random

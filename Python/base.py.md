@@ -211,6 +211,13 @@ s1 | s2
 set([1, 2, 3, 4])
 
 
+---
+#itertools
+[itertools 的使用](http://blog.csdn.net/xiaocaiju/article/details/6968123)
+
+
+----
+#控制语句
 ----
 #if
 if <条件判断1>:
@@ -225,6 +232,11 @@ else:
 if x:
     print 'True'
 只要x是非零数值、非空字符串、非空list等，就判断为True，否则为False。
+#三元表达式
+variable = a if exper else b
+variable = (exper and [b] or [c])[0]
+variable = bool(exper) and b or c
+
 ---
 #switch
 ```
@@ -433,7 +445,7 @@ print sys.path
 M1:
 在sys.path列表中添加新的路径 import sys，sys.path.append('父目录、其他目录的路径')
 M2:
-添加路径到环境变量PYTHONPATH
+添加路径到环境变量   PYTHONPATH
 M3:将库文件复制到sys.path列表中的目录里（如site-packages目录）
 #模块所在路径
 print modulename.__file__
@@ -522,7 +534,9 @@ q结束调试
 
 pdb.set_trace()，就可以设置一个断点
 
-##单元测试
+
+---
+#单元测试
 unittest
 
 编写一个测试类，从unittest.TestCase继承
@@ -540,8 +554,6 @@ class Dict(dict):
 
     def __setattr__(self, key, value):
         self[key] = value
-
-
 
 #测试类
 import unittest

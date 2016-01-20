@@ -130,6 +130,8 @@ ps -Af | grep agent
 
 ###配置
 /etc/ssh/sshd_config 
+PermitRootLogin yes
+
 ###重启
 ubuntu
 service ssh start

@@ -431,6 +431,13 @@ http\://code.xxx.com/schema/proxy/proxy.xsd=/META-INF/proxy.xsd
 
 [spring自定义标签实现 之一对多实体解析](http://mozhenghua.iteye.com/blog/1914155)
 
+---
+#event
+ContextClosedEvent
+ContextRefreshedEvent
+ContextStartedEvent
+ContextStoppedEvent
+RequestHandleEvent 
 
 
 

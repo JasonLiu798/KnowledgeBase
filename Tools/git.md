@@ -357,9 +357,42 @@ git config --global alias.ci commit
 git config --global alias.br branch
 git config --global alias.unstage 'reset HEAD'
 git config --global alias.last 'log -1'
+git config --global alias.lg "log "
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-
-git config --global alias.lg "log --graph --pretty=oneline --abbrev-commit"
+git log无颜色版（moba颜色显示有问题）
+git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --graph --abbrev-commit"
+###--pretty=format参数
+%H   提交对象（commit）的完整哈希字串 
+%h   提交对象的简短哈希字串 
+%T   树对象（tree）的完整哈希字串 
+%t   树对象的简短哈希字串 
+%P   父对象（parent）的完整哈希字串 
+%p   父对象的简短哈希字串 
+%an  作者（author）的名字 
+%ae  作者的电子邮件地址
+%ad  作者修订日期-（可以用 -date= 选项定制格式）
+%ar  作者修订日期-相对格式(1 day ago)
+%aD  作者修订日期-RFC2822格式
+%ar  作者修订日期-相对日期
+%at  作者修订日期-UNIX timestamp
+%ai  作者修订日期-ISO 8601 格式
+%cn  提交者(committer)的名字 
+%ce  提交者的电子邮件地址
+%cd  提交日期-(--date= 制定的格式)
+%cD  提交日期-RFC2822格式
+%cr  提交日期-相对日期
+%ct  提交日期-UNIX timestamp
+%ci  提交日期-ISO 8601 格式
+%d:  ref名称
+%s:  提交的信息标题
+%b:  提交的信息内容
+%Cred: 切换到红色 
+%Cgreen: 切换到绿色 
+%Cblue: 切换到蓝色
+%Creset: 重设颜色 
+%C(...): 制定颜色, as described in color.branch.* config option 
+%n:  换行
+作者（author）和提交者（committer）之间差别:作者指的是实际作出修改的人，提交者指的是最后将此工作成果提交到仓库的人。所以，当你为某个项目发布补丁，然后某个核心成员将你的补丁并入项目时，你就是作者，而那个核心成员就是提交者
 
 ##配色
 git config --global color.ui auto

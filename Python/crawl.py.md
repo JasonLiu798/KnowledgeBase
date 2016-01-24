@@ -6,9 +6,17 @@ requests
 
 ---
 #页面解析
-BeautifulSoup
+#BeautifulSoup
+pip install BeautifulSoup
+```
+from BeautifulSoup import *
+from urlparse import urljoin
 
-XPATH
+```
+
+
+
+##XPATH
 http://www.w3school.com.cn/xpath/xpath_syntax.asp
 lxml
 

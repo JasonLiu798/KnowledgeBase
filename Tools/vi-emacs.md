@@ -44,7 +44,18 @@ hi Constant ctermfg =blue
 修改声明颜色
 hi Statement ctermfg =darkyellow
 
-
+---
+#命令模式
+set fileformats=unix,dos unix文件格式作为第一选择，dos格式作为第二选择
+set fileformat ==>查看文件格式
+set fileformat=unix/dos ==>设置（转换）文件格式
+set list/nolist ==>设置是否显示不可见字符，注意此选项受set listchars约束
+set listchars=tab:>-,trail:-
+set textwidth=78 ==>设置指定列宽自动换行，当使用gq命令格式化文本时就会按照设置的长度在单词的结尾换行。
+TAB会被显示成 ">—" 而行尾多余的空白字符显示成 "-"。
+highlight WhitespaceEOL ctermbg=red guibg=red 
+match WhitespaceEOL /\s\+$/
+%s/\n//g ==>删除换行符
 
 ---
 #.vimrc

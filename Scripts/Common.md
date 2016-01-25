@@ -113,6 +113,9 @@ find . "*.nasl" | xargs rm -f
 or
 find . -name "*.nasl" -exec rm {} \; 
 
+find: paths must precede expression
+关键字中有*，* 被展开为当前目录下所有的文件，关键字要单引号，不转义*
+
 ##wc
 wc -w 统计单词数量.
 wc -l 统计行数量.

@@ -1,5 +1,5 @@
 #!/bin/bash
-. $BLIB/const.sh
+#. $BLIB/const.sh
 
 CMDFILE=$DDIR/rediscmd.dat
 #echo $CMDFILE

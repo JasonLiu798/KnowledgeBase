@@ -116,8 +116,8 @@ mvn archetype:create -DgroupId=com.jason -DartifactId=jersey -DarchetypeArtifact
 mvn dependency:copy-dependencies
 mvn dependency:copy-dependencies -DoutputDirectory=lib -DincludeScope=compile
 
-mvn dependency:list
-mvn dependency:tree
+mvn dependency:list   #最终列表
+mvn dependency:tree   #树型结构
 mvn dependency:analyze
 
 ### 下源码/文档

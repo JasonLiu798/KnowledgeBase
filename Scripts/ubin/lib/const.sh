@@ -14,6 +14,7 @@ echo date '+%s'
 TS=`ts`
 
 #default path
+UBIN=~/bin
 DDIR=$UBIN/data
 BLIB=$UBIN/lib
 SRVFILE=$DDIR/servers.dat

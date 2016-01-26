@@ -546,6 +546,47 @@ svn info test.php
 
 
 
+---
+#gitignore
+```
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+classes/
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+#python 
+*.pyc
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*.logs
+*.bak
+*.swp
+*.swo
+
+
+```
+
+
 
 
 

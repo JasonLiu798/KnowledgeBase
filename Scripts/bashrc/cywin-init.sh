@@ -25,3 +25,9 @@ ln -sfv /cygdrive/d/tools /opt/tools
 ln -sfv /opt/tools/maven/apache-maven-3.3.3 /opt/maven
 
 ln -sfv /d/yp/documents/Scripts/.vimrc .vimrc
+
+
+
+ln -sfv /d/yp/documents/Scripts/bashrc/.bash_alias .bash_alias
+ln -sfv /d/yp/documents/Scripts/bashrc/.bash_path_win .bash_path
+

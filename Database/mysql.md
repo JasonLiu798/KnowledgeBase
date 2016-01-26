@@ -103,6 +103,9 @@ MID() 函数语法为：
 SELECT MID(ColumnName, Start [, Length]) FROM TableName
 注：字符串从1开始，而非0，Length是可选项，如果没有提供，MID()函数将返回余下的字符串。
 
+##字符串
+substr(t.uln_uid,CHAR_LENGTH(t.uln_uid))
+
 
 ---
 #base

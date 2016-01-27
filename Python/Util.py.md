@@ -16,7 +16,12 @@
 [pexpect](http://blog.csdn.net/lwnylslwnyls/article/details/8239791)
 pip install pexpect
 
-
+---
+#字符串处理
+##代码高亮
+Pygments
+##makedown
+markdown
 
 ---
 #随机数

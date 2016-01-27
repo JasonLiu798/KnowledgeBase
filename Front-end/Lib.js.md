@@ -5,6 +5,17 @@
 
 
 
+---
+#url
+//获取当前网址，如： http://localhost:8080/Tmall/index.jsp
+var curWwwPath=window.document.location.href;
+//获取主机地址之后的目录如：/Tmall/index.jsp
+var pathName=window.document.location.pathname;
+var pos=curWwwPath.indexOf(pathName);
+//获取主机地址，如： http://localhost:8080
+var localhostPath=curWwwPath.substring(0,pos);
+//获取带"/"的项目名，如：/Tmall
+var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
 
 ----
 #ajax
@@ -60,9 +71,12 @@ bower info jquery               #查看信息
 https://github.com/substack/node-browserify
 browserify --x superagent input.js -o output.js
 
-#webpack
-https://github.com/webpack/webpack
-
+#Babel-兼容
+[Babel-现在开始使用 ES6](http://www.tuicool.com/articles/biiyAfI)
+npm install -g babel
+babel -d lib/ src/
+babel src --out-dir build
+npm install --save-dev babel-loader
 
 
 
@@ -81,19 +95,27 @@ https://github.com/jgm/CommonMark.git
 
 [websocket rfc6455](https://tools.ietf.org/html/rfc6455)
 
+
+##editor
+###tinyMCE
+[插件 图片上传](https://github.com/vikdiesel/justboil.me)
 ---
 #文件处理
 ##JS压缩
 [Javaweb配置](http://www.blogjava.net/badqiu/archive/2007/08/01/85461.html)
 
 
+
+
+-----
+#Font
+#字体渲染
+[字体渲染](http://blog.jobbole.com/50061/)
+
+
 ---
 #other
-#Babel-兼容
-[Babel-现在开始使用 ES6](http://www.tuicool.com/articles/biiyAfI)
-npm install -g babel
-babel -d lib/ src/
-babel src --out-dir build
+
 
 
 #面试题

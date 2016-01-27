@@ -38,6 +38,17 @@ pip install sqlparse
 
 
 ---
+#orm
+peewee
+
+
+
+
+
+
+
+
+---
 #redis
 *redis-py | python2 | https://github.com/andymccurdy/redis-py
 aioredis | python3 | Asyncio (PEP 3156) Redis client

@@ -128,7 +128,47 @@ l = filter(lambda x:x!=4,l)
 l = [ i for i in l if i !=4]//同样产生一个新序列，复值给l
 ```
 filter要求两个参数，第一个是规则函数，第二个参数要求输入序列
+##排序
+sorted(iterable[, cmp[, key[, reverse]]])
+    cmp为函数，指定排序时进行比较的函数，可以指定一个函数或者lambda函数
+    key为函数，指定取待排序元素的哪一项进行排序
+res=sorted(list)  
+list.sort()
+###指定cmp
+L = [('b',6),('a',1),('c',3),('d',4)]
+L.sort(lambda x,y:cmp(x[1],y[1])) 
+###指定key
+L.sort(key=lambda x:x[1]) 
+###指定key operator.itemgetter
+import operator
+L.sort(key=operator.itemgetter(1)) 
+###DSU方法:Decorate-Sort-Undercorate
+L = [('b',2),('a',1),('c',3),('d',4)]
+A = [(x[1],i,x) for i,x in enumerate(L)] #i can confirm the stable sort
+A.sort()
+L = [s[2] for s in A]
+###效率比较
+cmp < DSU < key
 
+
+##拷贝
+```
+5种拷贝方式：
+1.listb = lista[:]
+2.listb = list(lista)
+3.listb = [i for i in lista]
+4.import copy; listb = copy.copy(lista)
+5.import copy; listb = copy.deepcopy(lista)
+拷贝后续操作：
+listb[1].append(9)
+print lista, listb
+五种拷贝方式后续操作的结果：
+1. [2, [4, 5, 9]] [2, [4, 5, 9]]
+2. [2, [4, 5, 9]] [2, [4, 5, 9]]
+3. [2, [4, 5, 9]] [2, [4, 5, 9]]
+4. [2, [4, 5, 9]] [2, [4, 5, 9]]
+5. [2, [4, 5]] [2, [4, 5, 9]]
+```
 
 
 ---

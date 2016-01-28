@@ -11,6 +11,11 @@ struct
 
 array
 
+#泛型
+void指针
+char指针
+
+#内存模型
 
 
 

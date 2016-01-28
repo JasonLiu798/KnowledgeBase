@@ -12,5 +12,42 @@
 
 
 
+---
+#常用算法
+##最大子串和问题（Maximum Subarray）
+[wiki](https://en.wikipedia.org/wiki/Maximum_subarray_problem)
+[cnblog 含On3 On2,常数级优化](http://www.cnblogs.com/en-heng/p/3970231.html)
+[正确性](http://blog.csdn.net/joylnwang/article/details/6859677):
+要说明Kadane算法的正确性，需要两个结论。
+首先，对于array[1...n]，如果array[i...j]就是满足和最大的子串，那么对于任何k(i<=k<=j)，我们有array[i...k]的和大于0。
+因为如果存在k使得array[i...k]的和小于0，那么我们就有array[k+1...j]的和大于array[i...j]，这与我们假设的array[i...j]就是array中和最大子串矛盾。
+
+我们可以将数组从左到右分割为若干子串，使得除了最后一个子串之外，其余子串的各元素之和小于0，且对于所有子串array[i...j]和任意 k（i <= k < j ）
+有array[i...k]的和大于0。此时我们要说明的是，满足条件的和最大子串，只能是上述某个子串的前缀，而不可能跨越多个子串。
+假设array[p...q]，是array的和最大子串，且array[p...q]，
+跨越了array[i...j]，array[j+1...k]
+```
+p                                       q
+        i           j j+1          k
+            m                n
+```
+根据我们的分组方式
+    存在i <= m < j 使得array[i...m]的和是array[i...j]中的最大值，
+    存在j+1<=n < k 使得array[j+1...n]的和是array[j+1...k]的最大值
+    由于array[m+1...j] 使得array[i...j]的和小于0
+    此时我们可以比较array[i...m]和array[j+1...n]，如果array[i...m]的和大于array[j+1...n]，则array[i...m]>array[p...q]，否array[j+1...n]>array[p...q]，
+    无论谁大，我们都可以找到比array[p...q]和更大的子串，这与我们的假设矛盾
+    所以满足条件的array[p...q]不可能跨越两个子串。对于跨越更多子串的情况，由于各子串的和均为负值，所以同样可以证明存在和更大的非跨越子串的存在。对于单元素和最大的特例，该结论也适用。
+
+
+
+
+
+
+
+
+
+
+
 
 

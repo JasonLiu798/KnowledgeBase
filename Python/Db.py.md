@@ -36,3 +36,55 @@ http://ftp.altlinux.org/pub/distributions/ALTLinux/Sisyphus/x86_64/RPMS.classic/
 [sqlparse](http://sqlparse.readthedocs.org/en/latest/intro/#getting-started)
 pip install sqlparse
 
+
+---
+#orm
+peewee
+
+
+
+
+
+
+
+
+---
+#redis
+*redis-py | python2 | https://github.com/andymccurdy/redis-py
+aioredis | python3 | Asyncio (PEP 3156) Redis client
+asyncio_redis|python3.3| https://github.com/jonathanslenders/asyncio-redis| Asynchronous Redis client that works with the asyncio event loop  
+brukva | | Asynchronous Redis client that works within Tornado IO loop  
+desir | |
+Pypredis | python | A client focused on arbitrary sharding and parallel pipelining.  pepijndevos
+pyredis | python3 | https://github.com/pepijndevos/pypredis |  
+redisca2 | py2.7 | Lightweight ORM for Redis    vitaliykhamin
+txredis | py2 | https://github.com/redis/hiredis-py https://pypi.python.org/pypi/txredis/2.3
+txredisapi | gcc | Full featured, non-blocking client for Twisted.
+
+https://pypi.python.org/pypi/txredis/2.3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

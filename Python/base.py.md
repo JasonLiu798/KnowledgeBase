@@ -44,6 +44,13 @@ u'...'
 u'ABC'.encode('utf-8')
 '\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')
 len()
+```
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-3 
+在文件前加两句话： 
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+```
+
 
 格式化
 %d  整数
@@ -121,7 +128,47 @@ l = filter(lambda x:x!=4,l)
 l = [ i for i in l if i !=4]//同样产生一个新序列，复值给l
 ```
 filter要求两个参数，第一个是规则函数，第二个参数要求输入序列
+##排序
+sorted(iterable[, cmp[, key[, reverse]]])
+    cmp为函数，指定排序时进行比较的函数，可以指定一个函数或者lambda函数
+    key为函数，指定取待排序元素的哪一项进行排序
+res=sorted(list)  
+list.sort()
+###指定cmp
+L = [('b',6),('a',1),('c',3),('d',4)]
+L.sort(lambda x,y:cmp(x[1],y[1])) 
+###指定key
+L.sort(key=lambda x:x[1]) 
+###指定key operator.itemgetter
+import operator
+L.sort(key=operator.itemgetter(1)) 
+###DSU方法:Decorate-Sort-Undercorate
+L = [('b',2),('a',1),('c',3),('d',4)]
+A = [(x[1],i,x) for i,x in enumerate(L)] #i can confirm the stable sort
+A.sort()
+L = [s[2] for s in A]
+###效率比较
+cmp < DSU < key
 
+
+##拷贝
+```
+5种拷贝方式：
+1.listb = lista[:]
+2.listb = list(lista)
+3.listb = [i for i in lista]
+4.import copy; listb = copy.copy(lista)
+5.import copy; listb = copy.deepcopy(lista)
+拷贝后续操作：
+listb[1].append(9)
+print lista, listb
+五种拷贝方式后续操作的结果：
+1. [2, [4, 5, 9]] [2, [4, 5, 9]]
+2. [2, [4, 5, 9]] [2, [4, 5, 9]]
+3. [2, [4, 5, 9]] [2, [4, 5, 9]]
+4. [2, [4, 5, 9]] [2, [4, 5, 9]]
+5. [2, [4, 5]] [2, [4, 5, 9]]
+```
 
 
 ---
@@ -464,8 +511,12 @@ except ImportError:
 类似__xxx__这样的变量是特殊变量，可以被直接引用，但是有特殊用途，比如上面的__author__，__name__就是特殊变量，hello模块定义的文档注释也可以用特殊变量__doc__访问，我们自己的变量一般不要用这种变量名；
 类似_xxx和__xxx这样的函数或变量就是非公开的（private），不应该被直接引用，比如_abc，__abc等；
 之所以我们说，private函数和变量“不应该”被直接引用，而不是“不能”被直接引用，是因为Python并没有一种方法可以完全限制访问private函数或变量，但是，从编程习惯上不应该引用private函数或变量。
+##直接引入函数/类
+from sound.effects.echo import echofilter
+
 ##__future__
 from __future__ import unicode_literals
+
 
 ----
 #exception异常处理

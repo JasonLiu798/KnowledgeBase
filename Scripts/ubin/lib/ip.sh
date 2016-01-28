@@ -28,5 +28,5 @@ local IPMASK=''
 }
 
 
-a=`ip2locate $1`
-echo $a
+echo `ip2locate $1`
+#echo $a

@@ -3,15 +3,13 @@ https://www.python.org/downloads
 https://www.python.org/download/releases/2.7.5/
 wget https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz
 
-
-
-Virtualenv
-纯净的包环境
-
 Pythonbrew 
 切换Python的版本环境
 Fabric 来加速部署
 
+[common libs](https://github.com/vinta/awesome-python)
+
+---
 ##setup
 ./configure  --enable-shared --prefix=/usr 
 ./configure & make & make install
@@ -69,6 +67,17 @@ python setup.py install
 
 ##pylint
 http://www.pylint.org/#install
+
+---
+#pyenv
+git clone git://github.com/yyuu/pyenv.git ~/.pyenv
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+exec $SHELL -l
+
+#virtualenv 
+
 
 ---
 #第三方库

@@ -170,13 +170,6 @@ os.name( oldfileName, newFilename)
 (1) oldfilename 旧文件名不存在
 (2) newFilename 新文件已经存在时，此时，您需要先删除 newFilename 文件。
 
-----
-#urllib2
-```
-import urllib2
-c=urllib2.urlopen('http://www.zhihu.com')
-print c
-```
 
 
 

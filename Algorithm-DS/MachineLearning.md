@@ -9,7 +9,10 @@ http://download.csdn.net/detail/flybirds98/1934334
 
 [Twitter情感分析技术](http://www.infoq.com/cn/news/2015/12/Twitter-api-notion)
 [deeplearning](http://www.deeplearningbook.org/)
-
+[Github上的十大机器学习项目](http://geek.csdn.net/news/detail/52337)
+[深度学习2015年文章整理（CVPR2015）](http://blog.csdn.net/u010402786/article/details/50548996)
+---
+#book
 统计学习方法.李航
 All of Statistics
 统计学习基础-数据挖掘、推理与预测

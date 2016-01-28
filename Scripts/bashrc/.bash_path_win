@@ -10,7 +10,7 @@ export TOOLS=$D/tools
 export CYGWIN=$TOOLS/cygwin
 
 #ubin & serverfile config
-export UBIN=$YP/ubin
+export UBIN=~/bin
 export BLIB=$UBIN/lib
 export DDIR=$UBIN/data
 

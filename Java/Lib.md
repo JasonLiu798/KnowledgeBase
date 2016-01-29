@@ -12,6 +12,7 @@ Terracotta，JVM级集群框架，共享JVM堆对象
 ---
 #server
 ##undertow
+```html
 <dependency>
     <groupId>io.undertow</groupId>
     <artifactId>undertow-core</artifactId>
@@ -23,7 +24,7 @@ Terracotta，JVM级集群框架，共享JVM堆对象
     <artifactId>undertow-servlet</artifactId>
     <version>1.0.0.Beta29</version>
 </dependency>
-
+```
 
 
 ---
@@ -61,6 +62,7 @@ The J2EE Connector architecture provides a Java technology solution to the probl
 # http
 ## httpclient 
 Aug 18, 2007
+```html
 <dependency>
     <groupId>commons-httpclient</groupId>
     <artifactId>commons-httpclient</artifactId>
@@ -89,63 +91,72 @@ MIME coded entities
     <artifactId>httpmime</artifactId>
     <version>4.5</version>
 </dependency>
+```
 
 ---
 #REST
 ##urlrewrite
+```html
     <!-- urlrewrite jar -->
     <dependency>
       <groupId>org.tuckey</groupId>
       <artifactId>urlrewrite</artifactId>
       <version>2.5.2</version>
     </dependency>
-
+```
 
 
 ----
 #序列化
+```html
 <dependency>
   <groupId>de.ruedigermoeller</groupId>
   <artifactId>fst</artifactId>
   <version>2.04</version>
 </dependency>
-
+```
 
 
 ---
 # Thread
+```html
 <dependency>
     <groupId>concurrent</groupId>
     <artifactId>concurrent</artifactId>
     <version>1.3.4</version>
 </dependency>
+```
 
 ---
 # cache
 ## ehcache
+```html
 <dependency>
     <groupId>net.sf.ehcache</groupId>
     <artifactId>ehcache-core</artifactId>
     <version>2.6.11</version>
 </dependency>
-
+```
 
 ---
 # commons
 ## core
+```html
 <dependency>
     <groupId>commons-lang</groupId>
     <artifactId>commons-lang</artifactId>
     <version>2.6</version>
 </dependency>
+```
 
 ## pool
+```html
 <dependency>
     <groupId>commons-pool</groupId>
     <artifactId>commons-pool</artifactId>
     <version>1.6</version>
 </dependency>
-
+```
 
 ## Reflection library
 <dependency>
@@ -232,19 +243,26 @@ The Digester package lets you configure an XML to Java object mapping module whi
 ---
 #view
 ## freemaker
+```html
 <dependency>
     <groupId>org.freemarker</groupId>
     <artifactId>freemarker</artifactId>
     <version>2.3.23</version>
 </dependency>
+```
+
 ## velocity
+```html
 <dependency>
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity</artifactId>
     <version>1.7</version>
 </dependency>
+```
+
 ## tiles
 http://tiles.apache.org/
+```html
 <dependency>
     <groupId>org.apache.tiles</groupId>
     <artifactId>tiles-core</artifactId>
@@ -260,9 +278,7 @@ http://tiles.apache.org/
     <artifactId>tiles-jsp</artifactId>
     <version>3.0.5</version>
 </dependency>
-
-
-
+```
 
 ---
 # network
@@ -304,11 +320,12 @@ sun's in use 2.0.0M3
 ---
 # db
 ## hibernate
-###version
+```html
+    version
     <org.hibernate.version>4.2.19.Final</org.hibernate.version>
     <hibernate.dialect>org.hibernate.dialect.MysqlDialect</hibernate.dialect>
     <hibernate.showsql>true</hibernate.showsql>
-###dependency
+    dependency
     <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
@@ -319,6 +336,7 @@ sun's in use 2.0.0M3
         <artifactId>hibernate-ehcache</artifactId>
         <version>${org.hibernate.version}</version>
     </dependency>
+```
 
 ##mybatis
 ###version
@@ -437,29 +455,35 @@ xml<->object
 
 ##xalan
 Xalan-Java is an XSLT processor for transforming XML documents into HTML, text, or other XML document types. It implements XSL Transformations (XSLT) Version 1.0 and XML Path Language (XPath) Version 1.0 and can be used from the command line, in an applet or a servlet, or as a module in other program.
+```html
 <dependency>
     <groupId>xalan</groupId>
     <artifactId>xalan</artifactId>
     <version>2.7.2</version>
 </dependency>
+```
 
 ## xerecesImpl
+```html
 <dependency>
     <groupId>xerces</groupId>
     <artifactId>xercesImpl</artifactId>
     <version>2.11.0</version>
 </dependency>
+```
 
 ## xmlapi
+```html
 <dependency>
     <groupId>xml-apis</groupId>
     <artifactId>xml-apis</artifactId>
     <version>2.0.2</version>
 </dependency>
-
+```
 
 ##jsonspring
 ##jackson
+```html
     <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-mapper-asl</artifactId>
@@ -470,35 +494,42 @@ Xalan-Java is an XSLT processor for transforming XML documents into HTML, text, 
         <artifactId>jackson-core-asl</artifactId>
         <version>1.8.4</version>
     </dependency>
+```
 
 ##Json Lib
+```html
 <dependency>
     <groupId>net.sf.json-lib</groupId>
     <artifactId>json-lib</artifactId>
     <version>2.4</version>
 </dependency>
+```
 
 ##JasonInJava
+```html
 <dependency>
     <groupId>org.json</groupId>
     <artifactId>json</artifactId>
     <version>20141113</version>
 </dependency>
+```
 
 ----
 # performance
 ## gcviewer
+```html
 <dependency>
     <groupId>com.github.chewiebug</groupId>
     <artifactId>gcviewer</artifactId>
     <version>1.34.1</version>
 </dependency>
-
+```
 
 
 ---
 # aop
 ## aspectj pom
+```html
     <org.aspectj.version>1.8.6</org.aspectj.version>
 
     <dependency>
@@ -518,11 +549,12 @@ Xalan-Java is an XSLT processor for transforming XML documents into HTML, text, 
         <artifactId>aspectjtools</artifactId>
         <version>${org.aspectj.version}</version>
     </dependency>
-
+```
 
 ---
 #security
 ## spring security pom
+```html
     <properties>
         <org.springframework.security.version>3.2.8.RELEASE</org.springframework.security.version>
     </properties>
@@ -598,8 +630,10 @@ http://mvnrepository.com/artifact/org.springframework.security.oauth/spring-secu
         <artifactId>spring-security-oauth2</artifactId>
         <version>2.0.7.RELEASE</version>
     </dependency>
+```
 
 ## security rsa pom
+```html
 <dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-rsa</artifactId>
@@ -617,10 +651,12 @@ http://mvnrepository.com/artifact/org.springframework.security.oauth/spring-secu
     <artifactId>spring-security-jwt</artifactId>
     <version>1.0.3.RELEASE</version>
 </dependency>
+```
 
 ---
 #spring
 ## spring pom
+```html
     pom.xml
     <properties>
         <org.springframework.version>3.2.13.RELEASE</org.springframework.version>
@@ -750,7 +786,7 @@ http://mvnrepository.com/artifact/org.springframework.security.oauth/spring-secu
                 <scope>test</scope>
             </dependency>
         </dependencies>
-
+```
 
 ##springredis
 <dependency>
@@ -762,6 +798,7 @@ http://mvnrepository.com/artifact/org.springframework.security.oauth/spring-secu
 ---
 #webservice
 ## woden
+```html
 <dependency>
     <groupId>org.apache.woden</groupId>
     <artifactId>woden</artifactId>
@@ -782,7 +819,7 @@ http://mvnrepository.com/artifact/org.springframework.security.oauth/spring-secu
     <artifactId>woden-impl-dom</artifactId>
     <version>1.0M9</version>
 </dependency>
-
+```
 
 
 
@@ -793,12 +830,13 @@ http://mvnrepository.com/artifact/org.springframework.security.oauth/spring-secu
 #base
 ##Java Parser and Abstract Syntax Tree
 https://github.com/javaparser/javaparser
+```html
 <dependency>
     <groupId>com.github.javaparser</groupId>
     <artifactId>javaparser-core</artifactId>
     <version>2.2.1</version>
 </dependency>
-
+```
 
 
 

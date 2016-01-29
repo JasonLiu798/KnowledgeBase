@@ -15,7 +15,7 @@ synchronized method
 synchronized block
 
 synchronized method 就等价于 synchronized (this) block
-
+```java
     public synchronized void fun1() {  
         // do something here  
     }
@@ -24,15 +24,15 @@ synchronized method 就等价于 synchronized (this) block
         // do something here  
         }  
     } 
-
+```
 静态方法的 synchronized method也就等价于下面这种形式的 synchronized block 
-
+```java
     public static synchronized void fun2() {  
         synchronized (ClassName.class) {  
         // do something here  
         }  
     }
-
+```
 
 
 ##关于synchronized string

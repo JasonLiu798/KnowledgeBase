@@ -73,11 +73,13 @@ DubboNamespaceHandler
 ## 结果缓存
 2.1.0以上版本支持
 ### cunsumer
+```html
 <dubbo:reference cache="true"/>
 或
 <dubbo:reference interface="com.foo.BarService">
     <dubbo:method name="findBar" cache="lru" />
 </dubbo:reference>
+```
 ### server
 
 

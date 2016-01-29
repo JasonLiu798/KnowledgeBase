@@ -1,5 +1,39 @@
-#markdown 速查
+#markdown
 ----
+#Editor
+#sublime text插件
+##OmniMarkupPreviewer
+markdown 浏览器实时预览
+快捷键：
+```javascript
+"ctrl+alt+o" "command": "omni_markup_preview"
+"ctrl+alt+x" "command": "omni_markup_export"
+"ctrl+alt+c" "command": "omni_markup_export""args": { "clipboard_only": true }
+```
+
+##Markdown Preview
+markdown 浏览器查看
+```javascript
+[
+  { "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} },
+]
+
+```
+
+##markdown editing
+[official site](http://sublimetext-markdown.github.io/MarkdownEditing/#installation)
+[github](https://github.com/SublimeText-Markdown/MarkdownEditing)
+markdown 语法着色
+```javascript
+{
+  "line_numbers": true,
+  "highlight_line": true
+}
+```
+
+
+---
+#语法速查
 # 标题
 # 这是 H1 <一级标题>
 ## 这是 H2 <二级标题>
@@ -22,7 +56,7 @@ _斜体_   __加粗__
 
 * 项目1
 * 项目2
-* 项目3
+
 有序列表
 
 1. 项目1

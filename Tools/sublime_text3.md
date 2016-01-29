@@ -1,7 +1,7 @@
 # sublime text 3 settings
 ---
 #Key binding
-### line 
+### line
 #### mouse
 OS X
 鼠标左键 + Option
@@ -85,9 +85,9 @@ Ctrl + Alt + Down
 
 ---
 #peference备份
-###settings
+##settings
 "font_face": "Courier New",
-```
+```javascript
 {
     "auto_complete": false,
     "caret_style": "solid",
@@ -147,41 +147,31 @@ Ctrl + Alt + Down
 ```
 
 ###keybind
-```
+```javascript
 [
     { "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} },
     { "keys": ["ctrl+right"], "command": "next_view" },
     { "keys": ["ctrl+left"], "command": "prev_view" },
     { "keys": ["ctrl+shift+enter"], "command": "open_in_browser" }
 ]
-
 ```
 
-###markdown
-markdown editing
-```
-{
-	"line_numbers": true,
-	"highlight_line": true
-}
-```
-
+---
+#plugins packages 插件
 ## package control安装
-* 简单的安装方法
-
+### 简单的安装方法
 使用```Ctrl+` ```快捷键或者通过View->Show Console菜单打开命令行，粘贴如下代码：
-`
+```python
 import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())
-`
- 
+```
+
 如果顺利的话，此时就可以在Preferences菜单下看到Package Settings和Package Control两个菜单了。
 顺便贴下Sublime Text2 的代码：
-`
+```javascript
 import urllib2,os; pf='Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), 'wb' ).write( urllib2.urlopen( 'http://sublime.wbond.net/' +pf.replace( ' ','%20' )).read()); print( 'Please restart Sublime Text to finish installation')
-`
+```
 
-* 手动安装
-
+### 手动安装
 可能由于各种原因，无法使用代码安装，那可以通过以下步骤手动安装Package Control：
 1.点击Preferences > Browse Packages菜单
 2.进入打开的目录的上层目录，然后再进入Installed Packages/目录
@@ -191,11 +181,9 @@ import urllib2,os; pf='Package Control.sublime-package'; ipp = sublime.installed
 ### 全程指南
 http://www.tuicool.com/articles/AJR7Rn3
 
----
-#plugins packages 插件
 ##view in browser
 快捷键配置：
-```
+```javascript
 { "keys": ["ctrl+shift+enter"], "command": "open_in_browser" }
 ```
 
@@ -209,7 +197,7 @@ http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
  "vintage_start_in_command_mode": true
 
 ##转码
-* ConvertToUTF8 
+* ConvertToUTF8
 * GBK Encoding Support
 
 ##窗口布局
@@ -246,15 +234,8 @@ Twitter Bootstrap 3 Snippets Plugin for Sublime Text
 ##j​Query
 - "Sublime Text package bundle for jQuery."
 
-##Markdown Preview
-快捷键配置
-[
-	{ "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} }
-]
-
-
 ##Js​Format
-自动格式调整 
+自动格式调整
 - "Javascript formatting for Sublime Text."
 
 ##HTMLBeautify
@@ -268,7 +249,7 @@ brew install ctags
 配置：
 command配置项，为ctags的可执行文件路径/usr/local/bin/ctags
 win _CTags binary: http://prdownloads.sourceforge.net/ctags/ctags58.zip
-```
+```javascript
 {
 	"command": "C:\\opt\\ctags58\\ctags.exe"
 	"command": "D:\\yp\\ubin\\ctags58\\ctags.exe"
@@ -276,7 +257,6 @@ win _CTags binary: http://prdownloads.sourceforge.net/ctags/ctags58.zip
 D:\\yp\\ubin\\ctags58\\ctags.exe
 ```
 mouse binding: 去掉shift,可以左键+点击
-
 
 ##SideBarEnhancements
 - "Enhancements to Sublime Text sidebar, Files and folders."
@@ -290,7 +270,6 @@ mouse binding: 去掉shift,可以左键+点击
 ##Plain​Tasks
 - "An opinionated todo-list plugin for Sublime Text."
 
-
 ##Soda[Theme]
 - "Dark and light custom UI themes for Sublime Text."
 ##Monokai Extended[Theme]
@@ -298,7 +277,7 @@ mouse binding: 去掉shift,可以左键+点击
 
 
 ## license
-
+```
 ----- BEGIN LICENSE ----
 Andrew Weber
 Single User License
@@ -326,3 +305,7 @@ F6164FA721FF5BF369C021ED14788990
 9BA08C8482E2B244728712B688378012
 24107C9344081E4E610458AC453199E4
 -----END LICENSE-----
+```
+
+
+

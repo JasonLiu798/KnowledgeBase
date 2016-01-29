@@ -4,8 +4,6 @@
 rescuetime-yp
 everything-net
 
-
-
 ----
 #common
 #Shadowsocks
@@ -56,7 +54,6 @@ SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols
 ##tween
 http://sourceforge.jp/projects/tween/
 
-
 #network
 tracert 
 
@@ -66,14 +63,12 @@ ipconfig /flushdns
 #ramdisk
 http://www.cnblogs.com/lyhabc/p/3410874.html
 
-
 #打印机
 点击开始--设置-打印机，进入打印机文件夹； 
 选中打印机图标，右键选取属性； 
 在打印机属性的“高级”页面，选择“直接打印到打印机”，点击“应用”； 
 在打印机属性的“端口”页面，取消“启用双向支持”的选项，点击“确定”； 
 重新启动计算机。
-
 
 #reinstall
 office 2007 
@@ -85,9 +80,7 @@ ultimate
 KH2J9-PC326-T44D4-39H6V-TVPBY
 
 
-
 #cmd速查
-
 mstsc--远程桌面连接 
 logoff--注销命令 
 rononce －p --15秒关机 
@@ -202,3 +195,13 @@ Nslookup--IP地址侦测器
 fsmgmt.msc--－共享文件夹管理器 
 utilman--－辅助工具管理器 
 gpedit.msc--－组策略
+
+
+
+
+
+
+
+
+
+

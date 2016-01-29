@@ -3,6 +3,8 @@
 
 [web框架](http://www.csdn.net/article/2014-03-25/2818964-web-application-frameworks-for-node-js)
 
+browserify
+
 ---
 #安装
 ##cygwin
@@ -15,8 +17,11 @@
 默认
 NODE_PATH=C:\Users\Administrator\Application Data\npm\node_modules 
 NODE_PATH=D:\tools\nodejs\module\node_modules
+NODE_PATH=D:\tools\nodejs\nodejs54\node_modules
+NODE_PATH=D:\tools\nodejs\win\node_modules
 npm root -g     #查看在你的系统中全局的路径。
-npm config set prefix "D:\tools\nodejs"
+npm config set prefix "D:\tools\nodejs\win"
+npm config get prefix
 
 npm config ls -l
 npm config set cache "D:\\log\\npmc"

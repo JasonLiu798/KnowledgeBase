@@ -16,6 +16,17 @@ https://www.gnupg.org/
 
 ------
 #IDE/Editor
+
+#字体 font
+微软雅黑    Microsoft YaHei
+
+#mac
+## git gui tool
+p4merge http://www.perforce.com/downloads/helix
+
+省市区sql,mysql
+http://blog.csdn.net/whzhaochao/article/details/37969145
+
 #markdown
 [flowchart](https://github.com/knsv/mermaid)
 [win-mdp](https://tylingsoft.com/mdp)
@@ -26,6 +37,7 @@ https://www.gnupg.org/
 
 ##project 
 [Microsoft Project 2010](http://download.microsoft.com/download/4/3/6/43668FB2-E9F4-456B-AF81-F33FC58C63CB/ProjectProfessional.exe)
+```
 推荐：8XWTK-7DBPM-B32R2-V86MX-BTP8P
 8XWTK-7DBPM-B32R2-V86MX-BTP8P
 MVR3D-9XVBT-TBWY8-W3793-FR7C3
@@ -37,7 +49,7 @@ CMWV4-2D83Y-PHYMG-DFX73-QPGQC
 7TCB4-6DVYG-P4KVX-TV97T-G9H74
 C44YG-8BM4M-9RTJM-VJCTD-WKVYT
 YG64T-FDD7J-P6R3Q-4X4YV-7QGJP
-
+```
 
 
 -----

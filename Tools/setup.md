@@ -1,12 +1,15 @@
-
-pssh -h /root/all.txt -l root -i 'mkdir -p /home/log'
-pssh -h /root/all.txt -l root -i 'ln -sfv /home/log /opt/log'
-
-## iso
+#Setup
+---
+# iso
 [centos](http://www.centos.org/download/)
 [centos mirror](http://isoredirect.centos.org/centos/6/isos/x86_64/)
-
 http://www.linuxidc.com/Linux/2012-06/62663.htm
+
+
+---
+#常用命令
+pssh -h /root/all.txt -l root -i 'mkdir -p /home/log'
+pssh -h /root/all.txt -l root -i 'ln -sfv /home/log /opt/log'
 
 
 ## pssh
@@ -83,8 +86,6 @@ pscp -h /root/all.txt -l root /etc/redis/redis.conf /etc/redis
 redis-server /etc/redis/redis.conf
 
 redis-cli
-
-
 
 
 # IOS

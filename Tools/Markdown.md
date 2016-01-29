@@ -1,5 +1,55 @@
-#markdown 速查
+#markdown
 ----
+#Editor
+#sublime text插件
+[Sublime插件：Markdown篇](http://www.jianshu.com/p/aa30cc25c91b)
+##OmniMarkupPreviewer
+[近乎完美的 Markdown 写作体验](http://blog.leanote.com/post/54bfa17b8404f03097000000)
+markdown 浏览器实时预览
+
+###配置
+```javascript
+"browser_command": ["open", "-a", "Google Chrome", "{url}"],
+"html_template_name": "Evolution Yellow",
+"ignored_renderers": ["CreoleRenderer", "PodRenderer", "RDocRenderer", "TextitleRenderer", "LiterateHaskellRenderer"],
+"mathjax_enabled": false,
+"renderer_options-MarkdownRenderer": {
+ "extensions": ["extra", "codehilite", "toc", "strikeout", "smarty", "subscript", "superscript"]
+ }
+```
+
+###快捷键：
+```javascript
+"ctrl+alt+o" "command": "omni_markup_preview"
+"ctrl+alt+x" "command": "omni_markup_export"
+"ctrl+alt+c" "command": "omni_markup_export""args": { "clipboard_only": true }
+```
+
+##Markdown Preview
+markdown 浏览器查看
+```javascript
+[
+  { "keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"} },
+]
+
+```
+
+##markdown editing
+[official site](http://sublimetext-markdown.github.io/MarkdownEditing/#installation)
+[github](https://github.com/SublimeText-Markdown/MarkdownEditing)
+markdown 语法着色
+```javascript
+{
+  "line_numbers": true,
+  "highlight_line": true
+}
+```
+
+##TableEditor
+首先需要用ctrl + shift + p打开这个功能（Table Editor: Enable for current syntax or Table Editor: Enable for current view or "Table Editor: Set table syntax ... for current view"），然后就可以狂用tab来自动完成了~~~
+
+---
+#语法速查
 # 标题
 # 这是 H1 <一级标题>
 ## 这是 H2 <二级标题>
@@ -22,7 +72,7 @@ _斜体_   __加粗__
 
 * 项目1
 * 项目2
-* 项目3
+
 有序列表
 
 1. 项目1

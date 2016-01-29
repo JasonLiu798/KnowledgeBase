@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function random_num()
 {
 local min=$1  

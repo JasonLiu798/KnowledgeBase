@@ -18,15 +18,9 @@ res=`wget -q -O- http://ip.ws.126.net/ipquery?ip="$1" | iconv -f gbk -t utf-8 `
 #http://ip.ws.126.net/ipquery?ip=123.160.165.114
 #var lo="河南省", lc="郑州市"; var localAddress={city:"郑州市", province:"河南省"}
 
-
 echo $res
 }
 
-function long2ip()
-{
-local IPMASK=''
-}
 
-
-echo `ip2locate $1`
+#echo `ip2locate $1`
 #echo $a

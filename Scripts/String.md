@@ -1,28 +1,27 @@
 #String
-
 ----
 ##flex
 取代lex
 ##bison
 取代yacc
+
 -----
 #tr
 [tr](http://fyan.iteye.com/blog/1172279)
 
-
-
 [Shell中字符串分割的三种方法](http://blog.csdn.net/chen_jp/article/details/8922582)
 
 var='1,2,3,4,5'
-var=${var//,/ }    #这里是将var中的,替换为空格  
-for element in $var   
-do  
-    echo $element  
+var=${var//,/ }    #这里是将var中的,替换为空格
+for element in $var
+do
+    echo $element
 done
 
 
 ---
 #sed
+
 
 ---
 #cut
@@ -42,11 +41,12 @@ grep -A 5 foo file 显示foo及后5行
 -c 总行数
 -n 行号
 -H 文件名
--E 扩展正则， | 
+-E 扩展正则， |
 egrep=grep -E
 egrep 'matches|Matches' file.txt
 fgrep=grep -F
 按照字符串字面意思进行的搜索(即不允许使用正则表达式)
+
 
 ---
 #awk

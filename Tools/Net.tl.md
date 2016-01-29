@@ -1,5 +1,17 @@
 #NET
 -----
+
+#google
+61.160.224.238 ajax.googleapis.com
+202.102.85.85 fonts.googleapis.com
+
+222.73.144.188 ajax.googleapis.com
+183.136.133.242 ajax.googleapis.com
+183.136.133.242 fonts.googleapis.com 
+61.160.224.238 fonts.googleapis.com 
+
+
+---
 #常用DNS
 台湾中华电信
 168.95.192.1 dns.hinet.net

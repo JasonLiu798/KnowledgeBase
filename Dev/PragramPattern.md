@@ -1,6 +1,6 @@
 #program pattern
 ---
-#2~4 c类型系统
+#类型系统C语言(2~4)
 大端
 0000 0001
 小端
@@ -20,7 +20,7 @@ char指针
 ##static
 内部函数，无法被其他文件调用
 
-```
+```java
 //7
 int main(){
     const char *friends={"ai","bob","carl"};
@@ -39,10 +39,11 @@ int main(){
         free(name);
     }
     StackDispose(&stringStack);
-}
+}  
 ```
 
-```
+
+```java
 typedef struct {
     void *elems;
     int elemSize;

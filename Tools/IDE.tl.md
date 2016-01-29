@@ -192,6 +192,7 @@ http://wibiline.iteye.com/blog/2073399
 
 ---
 #eclipse
+
 ##eclipse.ini
 ### 指定jdk
 -vm
@@ -223,7 +224,8 @@ Window–>Preferences–>General–>Workspace
 ###svn
 name：subclipse 1.6.x，url：http://subclipse.tigris.org/update_1.6.x
 git - http://download.eclipse.org/egit/updates
-
+###github
+http://www.cnblogs.com/yc-755909659/p/3753626.html
 
 
 ---

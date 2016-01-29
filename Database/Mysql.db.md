@@ -2,12 +2,13 @@
 ---
 #Setup
 ##ubuntu
-apt-get install mysql-server
-apt-get isntall mysql-client
-apt-get install libmysqlclient-dev
+```bash
+sudo apt-get install mysql-server  mysql-client  libmysqlclient-dev
 sudo netstat -tap | grep mysql
+```
 mysql -u root -p 
 ###启动关闭重启
+```
 service mysql start
 sudo /etc/init.d/mysql start 
 sudo /etc/init.d/mysql stop 
@@ -15,26 +16,104 @@ sudo /etc/init.d/mysql restart
 
 mysql -u root -p
 mysql -h 192.168.143.113 -u root -proot
+```
+
+##mac
+开机启动
+```bash
+vi /Library/LaunchDaemons/com.mysql.plist
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>Label</key>
+        <string>com.mysql</string>
+        <key>ProgramArguments</key>
+        <array>
+                <string>/usr/local/mysql/bin/mysqld_safe</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+</dict>
+</plist>
+```
+检查格式
+```
+sudo plutil -lint /Library/LaunchDaemons/com.mysql.plist
+launchctl load -w com.mysql.plist
+```
+错误1：Dubious ownership on file (skipping) 这个错误，原因是：这个plist文件必须是属于root用户，wheel组，用chown修改之
+
+
+---
+#setting
 ##root password
+```
 use mysql
 update user set password=PASSWORD('root') where user='root';
 flush privileges;
 quit
+```
+
 ##root远程登录
 /etc/mysql/my.cnf
 //找到如下内容，并注释
 bind-address = 127.0.0.1
 ###method a change table
+```
 mysql>use mysql;
 mysql>update user set host = '%' where user = 'root';
 mysql>select host, user from user;
+```
 ###method b grant privilage
+```
 mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
 mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321' WITH GRANT OPTION;
+```
 ##忘记密码
 /etc/my.cnf
 在[mysqld]下添加一行skip-grant-table，再设置密码
 
+##charset
+```sql
+show variables like 'character%';
+show variables like 'collation%';
+character_set_client 
+character_set_connection
+character_set_database
+character_set_results
+character_set_server
+
+SET NAMES 'utf8';
+equals three below
+SET character_set_client = utf8;
+SET character_set_results = utf8;
+SET character_set_connection = utf8;
+```
+
+##character_set_database
+```sql
+create database name character set utf8;
+alter database name character set utf8;
+```
+
+##character table
+```sql
+CREATE TABLE `type` (
+`id` int(10) unsigned NOT NULL auto_increment,
+`flag_deleted` enum('Y','N') character set utf8 NOT NULL default 'N',
+`flag_type` int(5) NOT NULL default '0',
+`type_name` varchar(50) character set utf8 NOT NULL default '',
+PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+alter table type character set utf8;
+```
+
+##change term
+```sql
+alter table type modify type_name varchar(50) CHARACTER SET utf8;
+```
 
 
 ----

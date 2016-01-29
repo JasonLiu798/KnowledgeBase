@@ -1,3 +1,6 @@
+#service
+---
+
 acpid
 ACPI（全称 Advanced Configuration and Power Interface）服务是电源管理接口。建议所有的笔记本用户开启它。一些服务器可能不需要 acpi。支持的通用操作有：“电源开关“，”电池监视“，”笔记本 Lid 开关“，“笔记本显示屏亮度“，“休眠”， “挂机”，等等。
 anacron, atd, crond

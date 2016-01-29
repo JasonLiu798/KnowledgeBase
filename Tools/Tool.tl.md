@@ -55,6 +55,49 @@ YG64T-FDD7J-P6R3Q-4X4YV-7QGJP
 -----
 #DEV
 [mac 程序员必备](http://www.zhihu.com/question/20036899)
+##iterm2
+###zsh
+```
+zsh 设置 chsh -s /bin/zsh
+zsh 高级 https://linuxtoy.org/archives/zsh.html
+zsh 主题展示 https://github.com/robbyrussell/oh-my-zsh/wiki/themes
+zsh 颜色 http://www.tuicool.com/articles/mu26Jb
+zsh 介绍 http://zhuanlan.zhihu.com/mactalk/19556676
+zsh 提示符配置 https://linuxtoy.org/archives/zsh-prompt.html http://stevelosh.com/blog/2010/02/my-extravagant-zsh-prompt/
+ls 颜色 http://blog.csdn.net/meegomeego/article/details/13092157
+相关问题 http://www.cnblogs.com/bamanzi/p/zsh-simple-guide.html
+go2shell配置 open -a go2shell --args config
+```
+
+配置备份~/Library/Preferences/com.googlecode.iterm2.plist
+PANE
+切换pane有默认设置 Cmd+[ 和 Cmd+] .但是新建tab是没有默认快捷键的，这个用户可以自己设置，在Preferences->Keys。
+⌘ + d 横着分屏 / ⌘ + shift + d 竖着分屏
+TAB
+1⌘ + 数字在各 tab 标签直接来回切换
+选择即复制 + 鼠标中键粘贴，这个很实用
+⌘ + f 所查找的内容会被自动复制
+终端通用
+C+a / C+e 这个几乎在哪都可以使用
+C+p / !! 上一条命令
+
+⌘ + r = clear，而且只是换到新一屏，不会想 clear 一样创建一个空屏
+ctrl + u 清空当前行，无论光标在什么位置
+输入开头命令后 按 ⌘ + ; 会自动列出输入过的命令
+⌘ + shift + h 会列出剪切板历史
+9可以在 Preferences > keys 设置全局快捷键调出 iterm，这个也可以用过 Alfred 实现
+我常用的一些快捷键
+1⌘ + 1 / 2 左右 tab 之间来回切换，这个在 前面 已经介绍过了
+2⌘← / ⌘→ 到一行命令最左边/最右边 ，这个功能同 C+a / C+e
+3⌥← / ⌥→ 按单词前移/后移，相当与 C+f / C+b，其实这个功能在Iterm中已经预定义好了，⌥f / ⌥b，看个人习惯了
+4好像就这几个。。囧
+设置方法如下
+C+k 从光标处删至命令行尾 (本来 C+u 是删至命令行首，但iterm中是删掉整行)
+C+w A+d 从光标处删至字首/尾
+C+h C+d 删掉光标前后的自负
+C+y 粘贴至光标后
+C+r 搜索命令历史，这个较常用
+
 #java相关
 ## 性能
 性能监控
@@ -79,6 +122,30 @@ https://mosh.mit.edu/#getting
 
 ##包管理
 [mac-Homebrew]
+homebrew常用
+```bash
+安装 ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
+brew update
+brew search xxx
+brew doctor
+brew update                        #更新brew可安装包，建议每次执行一下
+brew search php55                  #搜索php5.5
+brew tap josegonzalez/php          #安装扩展<gihhub_user/repo>
+brew tap                           #查看安装的扩展列表
+brew install php55                 #安装php5.5
+brew remove  php55                 #卸载php5.5
+brew upgrade php55                 #升级php5.5
+brew options php55                 #查看php5.5安装选项
+brew info    php55                 #查看php5.5相关信息
+brew home    php55                 #访问php5.5官方网站
+
+brew cask search        #列出所有可以被安装的软件
+brew cask search php    #查找所有和php相关的应用
+brew cask list          #列出所有通过cask安装的软件
+brew cask info phpstorm #查看 phpstorm 的信息
+brew cask uninstall qq  #卸载 QQ
+brew options xxx     查看安装选项
+```
 
 ## oh-my-zsh
 https://github.com/robbyrussell/oh-my-zsh

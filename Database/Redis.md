@@ -5,7 +5,66 @@
 [Redis GEO 特性简介](http://blog.huangz.me/diary/2015/redis-geo.html)
 
 ---
+#setup
+
+
+##mac环境
+```bash
+brew --prefix redis /
+/usr/local/Cellar/redis/2.8.17
+```
+配置重启命令
+```bash
+alias redis.start="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.redis.plist"
+alias redis.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.redis.plist"
+alias redis.restart='redis.stop && redis.start'
+```
+
+##linux
+
+---
+#配置
+Port           : 6379
+Config file    : /etc/redis/6379.conf
+Log file       : /var/log/redis_6379.log
+Data dir       : /var/lib/redis/6379
+Executable     : /usr/local/bin
+Cli Executable : /usr/local/redis-cli
+
+##redis.conf
+```
+daemonize yes
+
+pidfile
+pidfile /var/run/redis.pid        
+
+logfile
+logfile "/opt/logs/redis.log"       
+
+数据库数量
+databases 16                        
+
+保存快照的频率，第一个*表示多长时间，第三个*表示执行多少次写操作。在一定时间内执行一定数量的写操作时，自动保存快照。可设置多个条件
+save * *           
+```
+
+##自启动
+```bash
+To have launchd start redis at login:
+ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+Then to load redis now:
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+```
+Or, if you don't want/need launchctl, you can just run:
+```bash
+redis-server /usr/local/etc/redis.conf
+```
+
+
+
+---
 #常用
+##启动
 redis-server /etc/redis/redis.conf
 redis-cli -h [ip] -p [port]
 auth    简单密码认证

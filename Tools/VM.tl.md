@@ -117,6 +117,15 @@ Stderr: 0%...
 2、打开bios（具体方法要看你是什么电脑）BIOS Setup Utility --》Config ==> CPU ==> Intel(R) Virtualization Technology（如果你用的不是intel的处理器，那就是别的带有virtualization technology的选项） ==> 设置为 Enabled 
 3、在虚拟机设置里将CPU个数调整为1个。
 
+---
+#docker
+自启动
+ln -sfv /usr/local/opt/boot2docker/*.plist ~/Library/LaunchAgents
+Then to load boot2docker now:
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.boot2docker.plist
+
+
+
 
 
 ---

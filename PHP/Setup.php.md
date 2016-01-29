@@ -63,8 +63,12 @@ Note that the MySQL client library is not bundled anymore!
 #php.ini
 memory_limit = 1G
 
+##错误显示
+error_reporting(E_ALL ^ E_DEPRECATED);
 
-php-fpm
+
+
+##php-fpm配置
 测试配置
 php-fpm -t
 php-fpm -c /usr/local/etc/php/5.5/php.ini -y /usr/local/etc/php/5.5/php-fpm.conf -t

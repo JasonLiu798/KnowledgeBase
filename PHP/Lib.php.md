@@ -20,8 +20,26 @@ chr() 函数从指定的 ASCII 值返回字符。
 
 
 
+---
+#mysql
+```java
+mysql -u root -p
 
+$con = mysql_connect('localhost','root','root');
+if (!$con){
+     die('Could not connect: ' . mysql_error());
+}
 
+mysql_select_db("blog", $con);
+
+$result = mysql_query("SELECT post_content FROM posts where ID=22");
+
+$row = mysql_fetch_array($result);
+$str = $row['post_content'];
+
+mysql_close($con);
+$cont = Post::get_adjust_post($str,500);
+```
 
 
 

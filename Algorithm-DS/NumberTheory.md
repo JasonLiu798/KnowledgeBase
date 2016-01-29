@@ -1,4 +1,4 @@
-#Samkhya
+#Number Theory 数论
 ---
 #欧几里德算法
 [人脑走一遍欧几里得算法](http://www.nowamagic.net/academy/detail/40110110)

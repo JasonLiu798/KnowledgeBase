@@ -17,4 +17,4 @@ ln -sfv /d/tools /opt/tools
 ln -sfv /opt/tools/maven/apache-maven-3.3.3 /opt/maven
 ln -sfv /opt/mysql /d/tools/MySQL/MySQL5.6
 
-ln -sfv /d/yp/documents/Scripts/ubin/lib $YP/lib
+ln -sfv /d/yp/documents/Scripts/ubin/lib ~/bin/lib

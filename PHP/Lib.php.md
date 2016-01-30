@@ -3,6 +3,10 @@
 #docs
 [php trick](https://www.quora.com/What-are-some-cool-PHP-tricks)
 [一个基于PHP的事件机制](http://www.oschina.net/code/snippet_59519_2937)
+##框架
+php55-phalcon C语言
+php55-swoole 国产的PHP高性能网络通信框架
+
 
 ---
 #变量

@@ -35,6 +35,58 @@ stopmysql   停止 MySQL 数据库。
 stopftp     停止 ProFTPD 服务器。该命令将持续停止 ProFTPD，例如：执行该命令后，如果您关闭并重新启动 XAMPP，FTP 仍将处于停止状态。
 security    启动一个小型安全检查程序。
 
+---
+#lamp
+##setup
+rpm -e  --nodeps --allmatches
+libpng
+##GD
+./configure \  //配置命令
+--prefix=/usr/local/gd \  //指定安装软件的位置
+--with-jpeg=/usr/local/jpeg8/ \  //指定去哪找jpeg库文件
+--with-png=/usr/local/libpng/ \  //指定去哪找png库文件
+--with-freetype=/usr/local/freetype/   //指定去哪找freetype 2.x字体库的位置
+configure.ac:64: error: possibly undefined macro: AM_ICONV，得到“But you need to have gettext”没有gettext这个包。（）
+到http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.1.1.tar.gz
+tar xzfgettext-0.18.1.1.tar.gzcdgettext-0.17
+./configure
+make && make install
+
+##usage
+```bash
+#启动 XAMPP
+./lampp start
+#停止 XAMPP
+./lampp stop
+#重启 XAMPP
+./lampp restart
+#安全设置
+./lampp security
+#卸载 XAMPP
+rm -rf /opt/lampp
+```
+##远程访问
+httpd-xampp.conf(/opt/lampp/etc/extra/httpd-xampp.conf)文件
+```
+# New XAMPP security concept
+Order deny,allow
+Deny from all
+Allow from ::1 127.0.0.0/8 \
+fc00::/7 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 \
+81.196.40.94/32
+ErrorDocument 403 /error/XAMPP_FORBIDDEN.html.var
+```
+把 Deny from all 注释掉     
+PS：编辑配置文件时最好先备份，下载到本地用dw编辑保存上传！最好不要用leapFTP自带的内部编辑器，容易出错！！
+完成之后保存退出，需要重启lampp (/opt/lampp/lampp restartapache)
+重启后就可以远程登录xampp了，默认的管理员的用户名是lampp，密码是自己在security时设置的
+
+
+
+
+
+
+---
 #wamp
 403错误
 一，Apache部分：

@@ -1,18 +1,19 @@
 #My knowledgebase
+
 * study note
     - Computer Science
-        - Algorithm,DataStructure
-        - Database
-        - Software Design and architeture
-        - Computer basis knowledge
-        - Front end 
+        - Computer basis knowledge [/Dev]
+        - Hardware [/Hardware]
+        - Algorithm,DataStructure [/AlgorithmDS]
+        - Software Design and architeture [/Design]
+        - Database [/Database]
+        - Front end [/FrontEnd]
             + javascript
             + css
             + react
             + package manager
-        - Hardware
-        - Language
-            + java
+        - Language [/Language]
+            + java [/Java]
                 * basis
                 * spring
                 * JVM
@@ -21,15 +22,23 @@
                 * database
                     - hibernate
                     - mybatis
-            + python
-            + ruby
-            + php
+            + python [/Python]
+            + ruby [/Ruby]
+            + php [/PHP]
+            + golang [/Language/Golang.lan.md]
+            + Regrex [/Language/Regrex.lan.md]
         - OS
-            + linux
-    - Art
-    - 
+            + linux [/Linux]
+            + win
+        - Security [/Security]
+        - Web [/Web]
+    - Art [/Art]
+    - Military [/Military]
+    - Medical [/Medical]
+    - Life [/Life]
 * some useful script 
-    - Linux,OSX
-    - win /Script/Common
-* common setting of some server
-* some tools and plugins
+    - Linux,OSX [/Script/*.bs.md]
+        + bash setting [/Script/bashrc/*]
+    - win [/Script/bat.win.md]
+* common setting of some server [/Tools/Server.tl.md]
+* common tools setting and usage [/Tools/*.tl.md]

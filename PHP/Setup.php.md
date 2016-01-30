@@ -68,25 +68,44 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 
 
-##php-fpm配置
-测试配置
+#php-fpm配置
+##测试配置
 php-fpm -t
 php-fpm -c /usr/local/etc/php/5.5/php.ini -y /usr/local/etc/php/5.5/php-fpm.conf -t
-#启动php-fpm
+##启动php-fpm
 php-fpm -D
 php-fpm -c /usr/local/etc/php/5.5/php.ini -y /usr/local/etc/php/5.5/php-fpm.conf -D
-#关闭php-fpm
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php55.plist
+brew services restart php55
+##关闭php-fpm
 kill -INT `cat /usr/local/var/run/php-fpm.pid`
-#重启php-fpm
+##重启php-fpm
 kill -USR2 `cat /usr/local/var/run/php-fpm.pid`
 
-查看端口
-lsof -Pni4 | grep LISTEN | grep php
-开机启动
+
+##开机启动
 ln -sfv /usr/local/opt/php55/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.php55.plist
-状态查看
-http://www.ttlsa.com/php/use-php-fpm-status-page-detail/
+
+
+##Thread Safe 和 Non Thread Safe 版本
+先从字面意思上理解，Thread Safe 是线程安全，执行时会进行线程（Thread）安全检查，以防止有新要求就启动新线程的 CGI 执行方式而耗尽系统资源。Non Thread Safe 是非线程安全，在执行时不进行线程（Thread）安全检查。
+
+再来看 PHP 的两种执行方式：ISAPI 和 FastCGI。
+
+ISAPI 执行方式是以 DLL 动态库的形式使用，可以在被用户请求后执行，在处理完一个用户请求后不会马上消失，所以需要进行线程安全检查，这样来提高程序的执行效率，所以如果是以 ISAPI 来执行 PHP，建议选择 Thread Safe 版本；
+
+而 FastCGI 执行方式是以单一线程来执行操作，所以不需要进行线程的安全检查，除去线程安全检查的防护反而可以提高执行效率，所以，如果是以 FastCGI 来执行 PHP，建议选择 Non Thread Safe 版本。
+
+再来看PHP的两种执行方式：ISAPI和FastCGI。
+
+FastCGI执行方式是以单一线程来执行操作，所以不需要进行线程的安全检查，除去线程安全检查的防护反而可以提高执行效率，所以，如果是以 FastCGI（无论搭配 IIS 6 或 IIS 7）执行 PHP ，都建议下载、执行 non-thread safe 的 PHP （PHP 的二进位档有两种包装方式：msi 、zip ，请下载 zip 套件）。
+
+而线程安全检查正是为ISAPI方式的PHP准备的，因为有许多php模块都不是线程安全的，所以需要使用Thread Safe的PHP。
+
+所以，对于PHP5.2选择Thread Safe版本安装，而对于PHP5.3则下载None-Thread Safe，执行PHP比较有效率。
+
+
 
 ---
 #php扩展安装

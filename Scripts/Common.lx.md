@@ -57,6 +57,13 @@ type -p 只返回外部命令的信息，相当于which命令。
 type -f 只返回shell函数的信息。
 type -t 只返回指定类型的信息。
 
+##rpm
+error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+那就表示系統不知道xxx.so 放在哪個目錄下。那就表示系统不知道xxx.so放在哪个目录下。
+這個時候就要在/etc/ld.so.conf中加入xxx.so所在的目錄。一般而言，有很多so檔會在/usr/lib這個目錄下，所以在/etc/ld.so.conf中加入/usr/local/lib這一行，可以解決此問題。
+將/etc/ld.so.conf存檔後，還要執行「/sbin/ldconfig –v」來更新一下才會生效。
+ldconfig –v
+
 
 ---
 #用户相关

@@ -1,17 +1,91 @@
+#Network 网络相关 
+---
+#网卡，网络配置
+##网络配置
+```bash
+service start&stop&restart
+sudo /etc/init.d/networking restart 
+
+paralle desktop 无网络：http://bbs.feng.com/read-htm-tid-6881868-page-3.html
+
+#DNS-linux
+cat /etc/resolv.conf
+echo 'nameserver 10.33.176.66' >/etc/resolv.conf
+search localdomain
+#DNS-mac
+sudo dscacheutil -flushcache
+
+#hostname
+[ubuntu]
+/etc/hostname 
+
+```
+
+##网卡配置
+```bash
+/etc/network/interfaces
+auto eth0                  #设置自动启动eth0接口
+iface eth0 inet static     #配置静态IP
+address 192.168.11.88      #IP地址
+netmask 255.255.255.0      #子网掩码
+gateway 192.168.11.1        #默认网关
+
+sudo ifconfig eth0 192.168.1.81 netmask 255.255.255.0
+sudo route add default gw 192.168.1.1
+sudo ifconfig eth0 down
+sudo ifconfig eth0 up
+```
+
+##代理配置
+###linux
+PROXY=http://proxy.xj.petrochina:8080
+http_proxy=$PROXY
+https_proxy=$PROXY
+ftp_proxy=$PROXY
+no_proxy=10.,192.
+export http_proxy https_proxy ftp_proxy no_proxy
+http://os.51cto.com/art/200908/141449.htm
+###mac
+mac terminal add proxy
+http://codelife.me/blog/2012/09/02/how-to-set-proxy-for-terminal/
+export http_proxy='http://192.168.1.160:1080'
+export https_proxy='http://192.168.1.160:1080'
+
+unset http_proxy
+unset https_proxy
+
+##测网速
+sar -n DEV 1 100 
+1代表一秒统计并显示一次 
+100代表统计一百次
 
 ---
-#Network 网络相关 
+#网络状态查看
+##端口
+find listen process 查看端口进程
+lsof -Pnl +M -i4
+lsof -Pnl +M -i6
+lsof -Pni4 | grep LISTEN | grep php
+
+##tcpdump
+tcpdump -i eth0 -A tcp port 1414 and host 10.185.234.14
+tcpdump -i eth0 -d tcp port 1414 and host 10.185.234.14
+host 10.185.234.14 tcp port 1414
+
+tcpdump -nt -s 500 port domain 
+
+
+
+---
+#http请求，下载
 ##curl
 curl -H "Content-type: application/json" -X POST -d '{"account":"$RANDOM","password":"123345"}'  http://bbb
 
 ##wget
 http://java-er.com/blog/wget-useage-x/
-
-
 ###with post
 wget -q -O- --post-data="account=$RANDOM&password=123345"  http://aaaa
-
-测网速
+###测网速
 wget -O /dev/null http://ftp.jaist.ac.jp/pub/eclipse/technology/epp/downloads/release/mars/R/eclipse-jee-mars-R-win32-x86_64.zip
 ###爬虫
 [wget登录-使用 Wget 完成自动 Web 认证（推 portal）](http://www.cnblogs.com/lookbackinside/archive/2012/07/21/2603050.html)
@@ -19,7 +93,7 @@ wget -O /dev/null http://ftp.jaist.ac.jp/pub/eclipse/technology/epp/downloads/re
 [使用wget做站点镜像及wget的高级用法](http://www.ahlinux.com/start/cmd/2700.html)
 [wget命令](http://blog.csdn.net/forgotaboutgirl/article/details/6891123)
 [用wget做站点镜像](http://blog.chinaunix.net/uid-14735472-id-111049.html)
-登录获取cookie
+###cookie
 wget --post-data="os_username=service_guest&os_password=111111" --save-cookies=cookie.txt --keep-session-cookies http://192.168.1.92:8090/dologin.action
 爬虫
 wget -r -k -c -nc -p -np --load-cookies=cookie.txt http://192.168.1.92:8090/dashboard.action -U "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; GTB5)" 
@@ -41,78 +115,26 @@ to enclose the pattern into quotes to prevent your shell from
 expanding it, like in -A "*.mp3" or -A '*.mp3'.
 
 
-##代理
-PROXY=http://proxy.xj.petrochina:8080
-http_proxy=$PROXY
-https_proxy=$PROXY
-ftp_proxy=$PROXY
-no_proxy=10.,192.
-export http_proxy https_proxy ftp_proxy no_proxy
-http://os.51cto.com/art/200908/141449.htm
 
-### mac
-mac terminal add proxy
-http://codelife.me/blog/2012/09/02/how-to-set-proxy-for-terminal/
-export http_proxy='http://192.168.1.160:1080'
-export https_proxy='http://192.168.1.160:1080'
 
-unset http_proxy
-unset https_proxy
-
-##网速
-sar -n DEV 1 100 
-1代表一秒统计并显示一次 
-100代表统计一百次
- 
-
-##防火墙
+---
+#安全
+##iptables 防火墙
 chkconfig iptables off
 service iptables start
 service iptables stop 
 
-##DNS
-cat /etc/resolv.conf
-echo 'nameserver 10.33.176.66' >/etc/resolv.conf
-search localdomain
-###mac
-sudo dscacheutil -flushcache
-
-##tcpdump
-tcpdump -i eth0 -A tcp port 1414 and host 10.185.234.14
-tcpdump -i eth0 -d tcp port 1414 and host 10.185.234.14
-host 10.185.234.14 tcp port 1414
-
-tcpdump -nt -s 500 port domain 
-
-### service start&stop&restart
-sudo /etc/init.d/networking restart 
-
-#### find listen process 查看端口进程
-lsof -Pnl +M -i4
-lsof -Pnl +M -i6
-
-## hostname
-[ubuntu]
-/etc/hostname 
-
-### interface
-/etc/network/interfaces
-auto eth0                  #设置自动启动eth0接口
-iface eth0 inet static     #配置静态IP
-address 192.168.11.88      #IP地址
-netmask 255.255.255.0      #子网掩码
-gateway 192.168.11.1        #默认网关
-
-### dns
-/etc/resolve.conf
-nameserver 114.114.114.114
-nameserver 114.114.115.115
-sudo /etc/init.d/networking restart
-sudo ifconfig eth0 192.168.1.81 netmask 255.255.255.0
-sudo route add default gw 192.168.1.1
-sudo ifconfig eth0 down
-sudo ifconfig eth0 up
-paralle desktop 无网络：http://bbs.feng.com/read-htm-tid-6881868-page-3.html
+防火墙禁止3306端口，以iptable为例
+vi /etc/sysconfig/iptables
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 3306-j ACCEPT
+service iptables restart
+ps:  iptables设置
+1) 重启后生效
+开启： chkconfig iptables on
+关闭： chkconfig iptables off
+2) 即时生效，重启后失效
+开启： service iptables start
+关闭： service iptables stop
 
 
 
@@ -120,12 +142,13 @@ paralle desktop 无网络：http://bbs.feng.com/read-htm-tid-6881868-page-3.html
 #SSH
 ##ssh认证
 http://www.cnblogs.com/jdksummer/articles/2521550.html
+```bash
 ssh-keygen -t rsa
 chmod o-w ~/
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 ps -Af | grep agent 
-
+```
 [ssh多秘钥共存](http://www.111cn.net/sys/linux/71236.htm)
 
 ###配置
@@ -195,8 +218,15 @@ http://www.cnblogs.com/51xzdy/archive/2012/03/05/2380198.html
 
 ibus-daemon -d
 
+
 ##自动登录
 [Linux使用expect脚本实现远程机器自动登录](http://blog.csdn.net/kongxx/article/details/48675885)
 [linux expect详解(ssh自动登录)](http://www.cnblogs.com/lzrabbit/p/4298794.html)
 [自动ssh登录的几种方法](http://blueicer.blog.51cto.com/395686/88175)
 sshkey-gen,expect,建立ssh/scp通道
+
+
+
+
+
+

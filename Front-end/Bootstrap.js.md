@@ -1,6 +1,12 @@
+#bootstrap
+---
 
 #fixed nav bar
 body { padding-top: 70px; }
+
+
+IE兼容性 http://www.ypgogo.com/Event/info/vid/54846
+
 
 ---
 #pulgin

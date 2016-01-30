@@ -4,6 +4,9 @@
 #encodeURI
 
 
+判断图片加载
+http://www.frontopen.com/2614.html
+
 
 ---
 #url

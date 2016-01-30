@@ -84,6 +84,18 @@ n++，转4
 
 
 
+---
+#按位异或运算的规律
+定理一a ^ b = b ^ a
+定理二 a ^ b ^ c = a ^ (b ^ c) = (a ^ b) ^ c;
+定理三 a ^ b ^ a = b, a ^ a^ b = b, b ^ a^ a = b
+定理四若d = a ^ b ^ c，则a = d ^ b ^ c
+证明:
+在d = a ^ b ^ c两边同时异或^ b ^ c，得
+d ^ b ^ c =a ^ b ^ c ^ b ^ c
+d ^ b ^ c =a ^ b ^ b ^ c ^ c，由定理三得
+d ^ b ^ c =a ^ c ^ c，同样由定理三得
+d ^ b ^ c =a
 
 
 

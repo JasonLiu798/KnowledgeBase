@@ -8,6 +8,14 @@
 https://github.com/alibaba/dubbo
 [中文编码](http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/)
 [git example](https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples)
+[java字符串编码及转换](http://blog.csdn.net/songdexv/article/details/7471189)
+class文件采用utf8的编码方式
+JVM运行时采用utf16
+Java的字符串是unicode编码的
+
+从外部资源读取数据：
+JVM的默认字符集，这个默认字符集在虚拟机启动时决定，通常根据语言环境和底层操作系统的 charset来确定。可以通过以下方式得到JVM的默认字符集：
+Charset.defaultCharset();
 
 ---
 #Collection 集合

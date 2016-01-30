@@ -36,7 +36,9 @@ https://github.com/michaelliao/awesome-python-webapp/tree/release
 #模板引擎
 
 
-
+---
+#消息推送
+[消息推送系统——（三）Python服务器端的实现](http://www.douban.com/note/279099289/)
 
 
 

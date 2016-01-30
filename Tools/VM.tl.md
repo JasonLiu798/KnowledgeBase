@@ -119,6 +119,27 @@ Stderr: 0%...
 
 ---
 #docker
+##setup
+[setup](http://yansu.org/2014/04/10/install-docker-in-mac.html)
+
+##使用
+使用docker安装需要先启动boot2docker虚拟机
+```bash
+# Initiate the VM
+boot2docker init
+# Run the VM (the docker daemon)
+boot2docker up
+# To see all available commands:
+boot2docker
+
+boot2docker up ~/Downloads
+
+#To connect the Docker client to the Docker daemon, please set:
+export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=/Users/liujianlong/.boot2docker/certs/boot2docker-vm
+```
+
 自启动
 ln -sfv /usr/local/opt/boot2docker/*.plist ~/Library/LaunchAgents
 Then to load boot2docker now:

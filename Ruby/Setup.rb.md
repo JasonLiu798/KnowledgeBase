@@ -3,6 +3,11 @@
 #setup
 ##windows
 http://rubyinstaller.org/downloads/
+libffi下载：https://sourceware.org/libffi/
+ltconfig: you must specify a host type if you use `--no-verify'
+Try `ltconfig --help' for more information.
+configure: error: libtool configure failed
+cp /usr/share/libtool/config.guess ./
 
 
 ##包安装

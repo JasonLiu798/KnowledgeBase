@@ -47,7 +47,7 @@ launchctl load -w com.mysql.plist
 
 
 ---
-#setting
+#settings
 ##root password
 ```
 use mysql
@@ -56,8 +56,9 @@ flush privileges;
 quit
 ```
 
-##root远程登录
-/etc/mysql/my.cnf
+##/etc/mysql/my.cnf  my.ini
+
+###root远程登录
 //找到如下内容，并注释
 bind-address = 127.0.0.1
 ###method a change table
@@ -80,26 +81,26 @@ mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321
 show variables like 'character%';
 show variables like 'collation%';
 character_set_client 
-character_set_connection
-character_set_database
-character_set_results
-character_set_server
+character_set_connection  为建立连接使用的编码；
+character_set_database    数据库的编码；
+character_set_results   结果集的编码；
+character_set_server    数据库服务器的编码；
+只要保证以上四个采用的编码方式一样，就不会出现乱码问题。
 
+--修改字符集
 SET NAMES 'utf8';
 equals three below
 SET character_set_client = utf8;
 SET character_set_results = utf8;
 SET character_set_connection = utf8;
-```
+--以上命令有部分只对当前登录有效，一般只有在访问之前执行这个代码就解决问题了，下面是创建数据库和数据表的，设置为我们自己的编码格式。
 
-##character_set_database
-```sql
+--数据库编码
 create database name character set utf8;
+--修改库编码
 alter database name character set utf8;
-```
 
-##character table
-```sql
+--表编码
 CREATE TABLE `type` (
 `id` int(10) unsigned NOT NULL auto_increment,
 `flag_deleted` enum('Y','N') character set utf8 NOT NULL default 'N',
@@ -107,12 +108,26 @@ CREATE TABLE `type` (
 `type_name` varchar(50) character set utf8 NOT NULL default '',
 PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
+--修改表编码
 alter table type character set utf8;
-```
 
-##change term
-```sql
+--修改字段编码
 alter table type modify type_name varchar(50) CHARACTER SET utf8;
+
+--my.ini my.cnf
+--在 [mysqld] 标签下加上三行
+default-character-set = utf8
+character_set_server = utf8
+lower_case_table_names = 1 //表名不区分大小写（此与编码无关）
+--在 [mysql] 标签下加上一行
+default-character-set = utf8
+--在 [mysql.server]标签下加上一行
+default-character-set = utf8
+--在 [mysqld_safe]标签下加上一行
+default-character-set = utf8
+--在 [client]标签下加上一行
+default-character-set = utf8
+
 ```
 
 

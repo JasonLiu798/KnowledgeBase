@@ -191,6 +191,26 @@ http://www.macupdate.com/app/mac/45860/doo
 ##safari
 [windows 同步 safari标签  iCloud（Windows 版)](http://support.apple.com/kb/DL1455?viewlocale=zh_CN&locale=zh_CN)
 [safari-改造指南一-safari扩展-safari优化](http://bbs.waerfa.com/discussion/13/safari-改造指南一-safari扩展-safari优化)
+###配置
+字体修改
+设置-
+
+* {
+    font-family: "Hiragino Sans GB" !important
+}
+
+###插件
+[插件 official](https://safari-extensions.apple.com)
+[Stylish for Safari](http://sobolev.us/stylish/)
+    不同网站不同css
+```css
+body {
+    zoom: 150%;
+}
+/*domain zhihu.com*/
+```
+
+
 ###快捷键
 cmd+D 添加到收藏夹 
 切换到下一个标签页 – Control+Tab

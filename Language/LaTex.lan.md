@@ -14,6 +14,11 @@ hello, world
 \end{document}
 ```
 
+##中文支持
+MikTeX+WinEdt
+把开头的\documentclass{atricle}换成\documentclass{ctexart}
+
+
 ---
 #语法
 ##基本结构
@@ -43,10 +48,36 @@ hello, world
 \nopagebreak no page break should happen here.
 \pagebreak encourage page break.
 
+##插入图片
+\includegraphics[width=4.00in,height=3.00in]{figure1.eps}
+
+##表格
+\begin{tabular}{|c|c|}
+a & b \\
+c & d\\
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+a & b \\
+\hline
+c & d\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+a & b \\ \hline
+c & d\\
+\hline
+\end{tabular}
+
+
 
 ---
 #数学公式
 [公示表](http://www.mohu.org/info/symbols/symbols.htm)
+[数学公式基本命令](http://hubl82.blog.163.com/blog/static/12676948520134510173383/)
 ###基本形式
 $$F=ma$$
 \[F=ma\]
@@ -151,11 +182,28 @@ $$
 \end{aligned}
 $$
 
+---
+#宏包
+\package{}就是在调用宏包
+每一个宏包里都定义了一些专门的命令，通过这些命令可以实现对于一类对象（如数学公式等）的统一排版（如字号字形），或用来实现一些功能（如插入图片或制作复杂表格）。
+通常在\documentclass之后，在\begin{document}之前，将文章所需要涉及的宏包都罗列上
 
+##常用的宏包
+编辑数学公式的宏包：\usepackage{amsmath}和 \usepackage{amssymb}
+编辑数学定理和证明过程的宏包：\usepackage{amsthm}
+插入图片的宏包：\usepackage{graphicx}
+复杂表格的宏包：\usepackage{multirow}
 
+---
+#模板
+在\documentclass{}后面的大括号里的内容
+LaTeX默认自带的模板article，以及中文模板ctexart
+一个模板可以规定，section这个层级都用什么字体什么字号怎么对齐，subsection这个层级用什么字体什么字号怎么对齐，paragraph又用什么字体什么字号怎么对齐。
 
-
-
+---
+#参考文献和制作幻灯片
+参考文献搜bibtex
+制作幻灯片搜beamer
 
 
 

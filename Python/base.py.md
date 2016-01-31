@@ -481,22 +481,58 @@ generator和函数的执行流程不一样。
 
 ----
 #module模块
-##自定义模块
+[python中的import，reload，以及__import__](http://blog.csdn.net/turkeyzhou/article/details/8846527)
+##引入模块
+import
+作用：导入/引入一个python标准模块，其中包括.py文件、带有__init__.py文件的目录。
+`__import__`
+作用：同import语句同样的功能，但__import__是一个函数，并且只接收字符串作为参数，所以它的作用就可想而知了。其实import语句就是调用这个函数进行导入工作的，import sys <==>sys = __import__('sys')
+```python
+__import__(module_name[, globals[, locals[, fromlist]]]) #可选参数默认为globals(),locals(),[]
+__import__('os')    
+__import__('os',globals(),locals(),['path','pip'])  #等价于from os import path, pip
+```
+说明：通常在动态加载时可以使用到这个函数，比如你希望加载某个文件夹下的所用模块，但是其下的模块名称又会经常变化时，就可以使用这个函数动态加载所有模块了，最常见的场景就是插件功能的支持。
+
+
+
+reload
+作用：对已经加载的模块进行重新加载，一般用于原模块有变化等特殊情况，reload前该模块必须已经import过。
+但原来已经使用的实例还是会使用旧的模块，而新生产的实例会使用新的模块；reload后还是用原来的内存地址；不能支持from。。import。。格式的模块进行重新加载。
+
+使用场景
+```python
+import sys   #引用sys模块进来，并不是进行sys的第一次加载  
+reload(sys)  #重新加载sys  
+sys.setdefaultencoding('utf8')  ##调用setdefaultencoding函数  
+
+
+import sys     
+sys.setdefaultencoding('utf8')   #失败
+```
+为什么要在调用setdefaultencoding时必须要先reload一次sys模块？
+因为这里的import语句其实并不是sys的第一次导入语句，也就是说这里其实可能是第二、三次进行sys模块的import
+这里只是一个对sys的引用，只能reload才能进行重新加载；
+那么为什么要重新加载，而直接引用过来则不能调用该函数呢？因为setdefaultencoding函数在被系统调用后被删除了，所以通过import引用进来时其实已经没有了，所以必须reload一次sys模块，这样setdefaultencoding才会为可用，才能在代码里修改解释器当前的字符编码。
+
+
+##引入自定义模块
 模块搜索路径 
 print sys.path
-#同目录
+###同目录
 直接import
-#子目录
+###子目录
 子目录中增加一个空白的__init__.py文件，该文件使得python解释器将子目录整个也当成一个模块，然后直接通过“import 子目录.模块”导入
-#父目录/不同目录
+###父目录/不同目录
 M1:
 在sys.path列表中添加新的路径 import sys，sys.path.append('父目录、其他目录的路径')
 M2:
 添加路径到环境变量   PYTHONPATH
 M3:将库文件复制到sys.path列表中的目录里（如site-packages目录）
-#模块所在路径
+###模块所在路径
 print modulename.__file__
-##别名
+
+##模块别名
 ```
 try:
     import cStringIO as StringIO
@@ -510,11 +546,13 @@ except ImportError:
 
 类似__xxx__这样的变量是特殊变量，可以被直接引用，但是有特殊用途，比如上面的__author__，__name__就是特殊变量，hello模块定义的文档注释也可以用特殊变量__doc__访问，我们自己的变量一般不要用这种变量名；
 类似_xxx和__xxx这样的函数或变量就是非公开的（private），不应该被直接引用，比如_abc，__abc等；
-之所以我们说，private函数和变量“不应该”被直接引用，而不是“不能”被直接引用，是因为Python并没有一种方法可以完全限制访问private函数或变量，但是，从编程习惯上不应该引用private函数或变量。
+之所以我们说，private函数和变量“不应该”被直接引用，而不是“不能”被直接引用，是因为Python并没有一种方法可以完全限制访问private函数或变量，但是，从编程习惯上不应该引用private函数或变量
+
 ##直接引入函数/类
 from sound.effects.echo import echofilter
+from sound.effects.echo import *
 
-##__future__
+##`__future__`未来将要加入特性
 from __future__ import unicode_literals
 
 

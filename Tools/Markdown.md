@@ -6,16 +6,23 @@
 ##OmniMarkupPreviewer
 [近乎完美的 Markdown 写作体验](http://blog.leanote.com/post/54bfa17b8404f03097000000)
 markdown 浏览器实时预览
-
 ###配置
 ```javascript
 "browser_command": ["open", "-a", "Google Chrome", "{url}"],
 "html_template_name": "Evolution Yellow",
 "ignored_renderers": ["CreoleRenderer", "PodRenderer", "RDocRenderer", "TextitleRenderer", "LiterateHaskellRenderer"],
-"mathjax_enabled": false,
+"mathjax_enabled": true,
 "renderer_options-MarkdownRenderer": {
  "extensions": ["extra", "codehilite", "toc", "strikeout", "smarty", "subscript", "superscript"]
  }
+
+//支持latex
+"mathjax_enabled": true,
+下载MathJax：
+https://github.com/downloads/timonwong/OmniMarkupPreviewer/mathjax.zip
+解压到下面的目录里：
+Sublime Text 2\Packages\OmniMarkupPreviewer\public
+之后在目录“Sublime Text 2\Packages\OmniMarkupPreviewer”中创建一个空文件MATHJAX.DOWNLOADED
 ```
 
 ###快捷键：

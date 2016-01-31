@@ -167,6 +167,11 @@ http://www.macupdate.com/app/mac/45860/doo
 ## MAMP
 
 
+#app store
+强制刷新
+点击底部按钮10次以上
+
+
 
 ---
 #效率工具

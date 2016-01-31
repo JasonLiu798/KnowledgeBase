@@ -3,6 +3,18 @@
 #doc
 [书籍推荐](http://www.nowamagic.net/librarys/veda/books/)
 
+#十本与技术/文化/社会相关的书
+* Bruce Sterling: Shaping Things
+* Bruce Sterling: Tomorrow Now
+* Fred Turner: The Democratic Surround
+* John Markoff: What the Dormouse Said，繁体中文版：《PC 迷幻纪事》，大块文化
+* Jonathan Zittrain: The Future of the Internet—and How to Stop It，简体中文版：《互联网的未来：光荣、毁灭与救赎的预言》，东方出版社
+* Eli Pariser: The Filter Bubble
+* Jaron Lanier: Who Owns the Future?
+* James Gleick: The Information: A History, a Theory, a Flood，简体中文版：《信息简史》，人民邮电出版社
+* Guy Debord: Society of the Spectacle，简体中文版：《景观社会》，南京大学出版社
+* Walter Isaacson 将于 2014 年底出版的新书
+
 ---
 #Computer Systems：A Programmer’s Perspective
 花了将近1个月的功夫，总算把这本近1k页的大部头啃完了，不过只是阅读，做了部分习题，很多习题都没做，剩下的需要找时间挨个测。

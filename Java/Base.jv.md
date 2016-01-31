@@ -17,6 +17,10 @@ Java的字符串是unicode编码的
 JVM的默认字符集，这个默认字符集在虚拟机启动时决定，通常根据语言环境和底层操作系统的 charset来确定。可以通过以下方式得到JVM的默认字符集：
 Charset.defaultCharset();
 
+native2ascii工具使用
+native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.properties
+
+
 ---
 #Collection 集合
 [Vector和ArrayList的本质区别到底是什么？](http://www.iteye.com/topic/924440)

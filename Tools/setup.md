@@ -11,7 +11,6 @@ http://www.linuxidc.com/Linux/2012-06/62663.htm
 pssh -h /root/all.txt -l root -i 'mkdir -p /home/log'
 pssh -h /root/all.txt -l root -i 'ln -sfv /home/log /opt/log'
 
-
 ## pssh
 wget http://parallel-ssh.googlecode.com/files/pssh-2.2.2.tar.gz
 tar zxvf pssh-2.2.2.tar.gz
@@ -43,7 +42,7 @@ rpm -ivh glibc-2.12-1.132.el6.x86_64.rpm glibc-common-2.12-1.132.el6.x86_64.rpm 
 rpm -ivh gcc-4.4.7-4.el6.x86_64.rpm
 
 
-## rhel yum(centos)
+##rhel yum(centos)
 [setting](http://blog.itpub.net/25313300/viewspace-708509)
 [rhel use centos](http://www.centoscn.com/CentOS/config/2014/1119/4143.html)
 
@@ -52,7 +51,7 @@ yum-metadata-parser-1.1.2-3.el5.centos.i386.rpm
 yum-3.2.22-20.el5.centos.noarch.rpm 
 yum-fastestmirror-1.1.16-13.el5.centos.noarch.rpm
 
-## redis linux
+##redis linux
 http://download.redis.io/releases/redis-3.0.2.tar.gz
 pssh -h /root/other.txt -l root -i 'wget -P /opt/rpm http://download.redis.io/releases/redis-3.0.2.tar.gz'
 
@@ -75,7 +74,7 @@ make MALLOC=libc
 pssh -h /root/all.txt -l root -i 'mkdir -p /opt/log/redis'
 pssh -h /root/all.txt -l root -i 'mkdir -p /etc/redis'
 
-### /etc/redis/redis.conf
+###/etc/redis/redis.conf
 daemonize yes
 logfile "/opt/log/redis/redis.log"
 databases 8
@@ -88,7 +87,7 @@ redis-server /etc/redis/redis.conf
 redis-cli
 
 
-# IOS
+#IOS
 ## 固件
 http://www.taigpro.com/archives/category/firmware#iPadmini2
 

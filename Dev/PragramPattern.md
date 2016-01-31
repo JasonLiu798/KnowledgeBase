@@ -23,7 +23,7 @@ char指针
 ```java
 //7
 int main(){
-    const char *friends={"ai","bob","carl"};
+    const char *friends[]={"ai","bob","carl"};
     Stack stringStack;
     StackNew(&stringStack,sizeof(char*));
     for(int i=0;i<3;i++){
@@ -43,6 +43,7 @@ int main(){
 ```
 
 
+freefn包含了elem的指针类型
 ```java
 typedef struct {
     void *elems;
@@ -66,7 +67,30 @@ void StringFree(void * elem){
 }
 ```
 
+memcpy
+关于重叠区域
+```c
+/**
+ * 把front-middle内容拷贝到末尾，其他数据前移
+ * front    middle          end
+ * 
+ */
+void rotate(void* front,void * middle,void* end){
+    int frontSize=(char*)middle-(char*)front;
+    int backSize=(char*)end-(char*)middle;
+    char buffer[frontSize];
+    memcpy(buffer,front,frontSize);//front->buffer
+    memmove(front,middle,backSize);//middle->front,memcpy 没有对重叠区域做校验
+    memcpy((char*)end-frontSize,buffer,frontSize);//buffer->front
+}
+```
 
+```c
+void qsort(void* base,int size,int elemSize,int (*cmpfn)(void *,void *)){
+    
+}
+
+```
 
 
 

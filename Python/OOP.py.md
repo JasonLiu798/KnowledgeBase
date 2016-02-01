@@ -49,7 +49,7 @@ type就是创建类对象的类
 class的名称；
 继承的父类集合，注意Python支持多重继承，如果只有一个父类，别忘了tuple的单元素写法；
 class的方法名称与函数绑定，这里我们把函数fn绑定到方法名hello上。
-```
+```python
 MyShinyClass = type('MyShinyClass', (), {'bar':True})  
 ```
 
@@ -58,7 +58,7 @@ MyShinyClass = type('MyShinyClass', (), {'bar':True})
 [深刻理解Python中的元类(metaclass)](http://blog.jobbole.com/21351/)
 __metaclass__属性
 你可以在写一个类的时候为其添加__metaclass__属性。
-```
+```python
 class Foo(object):
     __metaclass__ = something…
 […]
@@ -71,7 +71,7 @@ Python会在类的定义中寻找__metaclass__属性
     如果没有找到，就会用内建的type来创建这个类
 
 当你写如下代码时 :
-```
+```python
 class Foo(Bar):
     pass
 ```
@@ -87,7 +87,7 @@ Foo中有__metaclass__这个属性吗？
 那么什么可以用来创建一个类呢？type，或者任何使用到type或者子类化type的东东都可以。
 
 metaclass是创建类，所以必须从`type`类型派生：
-```
+```python
 class ListMetaclass(type):
     def __new__(cls, name, bases, attrs):
         attrs['add'] = lambda self, value: self.append(value)
@@ -95,40 +95,42 @@ class ListMetaclass(type):
 
 class MyList(list):
     __metaclass__ = ListMetaclass # 指示使用ListMetaclass来定制类
+
 ```
-
-
-
 
 
 
 ---
 #常用属性
-##__new__
+##`__new__`
     __new__ 是在__init__之前被调用的特殊方法
     __new__是用来创建对象并返回之的方法
     __init__只是用来将传入的参数初始化给对象
+
 __new__()方法接收到的参数依次是：
-当前准备创建的类的对象；
-类的名字；
-类继承的父类集合；
-类的方法集合。
+* 当前准备创建的类的对象；
+* 类的名字；
+* 类继承的父类集合；
+* 类的方法集合
+
 ```
 class UpperAttrMetaclass(type):
     def __new__(cls, name, bases, dct):
         attrs = ((name, value) for name, value in dct.items() if not name.startswith('__')
         uppercase_attr  = dict((name.upper(), value) for name, value in attrs)
         return type.__new__(cls, name, bases, uppercase_attr)
+
 ```
 
-##__slots__
-```
+## `__slots__`
+```python
 def set_age(self, age): # 定义一个函数作为实例方法
     self.age = age
 ```
+
 给一个实例绑定的方法，对另一个实例是不起作用的
 为了给所有实例都绑定方法，可以给class绑定方法：
-```
+```python
 def set_score(self, score):
     self.score = score
 Student.set_score = MethodType(set_score, None, Student)
@@ -137,7 +139,7 @@ Student.set_score = MethodType(set_score, None, Student)
 
 ##@property
 装饰器就是负责把一个方法变成属性调用的
-```
+```python
 class Student(object):
 
     @property
@@ -154,10 +156,10 @@ class Student(object):
 ```
 
 
-##__str__
+##`__str__`
 直接显示变量调用的不是__str__()，而是__repr__()，两者的区别是__str__()返回用户看到的字符串，而__repr__()返回程序开发者看到的字符串，也就是说，__repr__()是为调试服务的。
 解决办法是再定义一个__repr__()。
-```
+```python
 class Student(object):
     def __init__(self, name):
         self.name = name
@@ -166,9 +168,9 @@ class Student(object):
     __repr__ = __str__
 ```
 
-##__iter__
+##`__iter__`
 如果一个类想被用于for ... in循环，类似list或tuple那样，就必须实现一个__iter__()方法，该方法返回一个迭代对象
-```
+```python
 class Fib(object):
     def __init__(self):
         self.a, self.b = 0, 1 # 初始化两个计数器a，b
@@ -183,17 +185,19 @@ class Fib(object):
         return self.a # 返回下一个值
 ```
 
-##__getitem__
+##`__getitem__`
 要表现得像list那样按照下标取出元素
+```python
 class Fib(object):
     def __getitem__(self, n):
         a, b = 1, 1
         for x in range(n):
             a, b = b, a + b
         return a
-
-##__getattr__
 ```
+
+##`__getattr__`
+```python
 class Student(object):
 
     def __getattr__(self, attr):
@@ -213,9 +217,9 @@ class Chain(object):
 Chain().status.user.timeline.list
 ```
 
-##__call__
+##`__call__`
 __call__()方法，就可以直接对实例进行调用
-```
+```python
 class Student(object):
     def __init__(self, name):
         self.name = name
@@ -224,12 +228,9 @@ class Student(object):
         print('My name is %s.' % self.name)
 调用方式如下：
 
->>> s = Student('Michael')
->>> s()
+s = Student('Michael')
+s()
 ```
-
-
-
 
 
 

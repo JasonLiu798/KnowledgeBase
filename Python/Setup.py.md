@@ -55,6 +55,7 @@ wget --no-check-certificate https://pypi.python.org/packages/source/p/pip/pip-6.
 python setup.py install
 
 ###pip usage
+```bash
 pip install redis
 pip show --files SomePackage
 pip list --outdated
@@ -64,17 +65,21 @@ pip uninstall SomePackage
 https://pypi.python.org/pypi/setuptools#unix-wget
 wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz#md5=2a6b2901b6c265d682139345849cbf03
 python setup.py install
+```
 
 ##pylint
 http://www.pylint.org/#install
 
 ---
 #pyenv
+```bash
 git clone git://github.com/yyuu/pyenv.git ~/.pyenv
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
 echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 exec $SHELL -l
+```
+
 
 #virtualenv 
 

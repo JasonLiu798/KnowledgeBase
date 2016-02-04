@@ -132,8 +132,13 @@ filter要求两个参数，第一个是规则函数，第二个参数要求输�
 sorted(iterable[, cmp[, key[, reverse]]])
     cmp为函数，指定排序时进行比较的函数，可以指定一个函数或者lambda函数
     key为函数，指定取待排序元素的哪一项进行排序
+```python
 res=sorted(list)  
 list.sort()
+dict
+sorted(d.items(), key=lambda d:d[0]) #按key
+sorted(d.items(), key=lambda d:d[1]) #按值
+```
 ###指定cmp
 L = [('b',6),('a',1),('c',3),('d',4)]
 L.sort(lambda x,y:cmp(x[1],y[1])) 

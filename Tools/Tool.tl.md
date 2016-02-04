@@ -1,36 +1,70 @@
 #Common tools
 ---
-#ALL
-## gnupg #security #encrypt
-https://www.gnupg.org/
-## sublime text
+#docs
+[知乎软件神器推荐](https://weavi.com/92079)
 
 
-##FE开发
-[全新理念的Web前端开发方式——AlloyDesigner](http://www.alloyteam.com/2014/03/alloydesigner-lai-zi-xing-xing-di-web-qian-duan-kai-fa-fang-shi/)
-[AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
+---
+#sys系统
+##disk磁盘
+CCleaner：全球下载超过1000万次的磁盘清理工具；
+Defraggler：磁盘整理；
+Recuva：数据恢复
+Speccy：电脑硬件信息。
 
+
+---
+#net网络
 ##下载
 [youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
 
 
-------
-#IDE/Editor
-
-#字体 font
-微软雅黑    Microsoft YaHei
-
-#mac
+---
+#editor编辑器
+## sublime text
 ## git gui tool
 p4merge http://www.perforce.com/downloads/helix
-
-省市区sql,mysql
-http://blog.csdn.net/whzhaochao/article/details/37969145
-
-#markdown
+##markdown
 [flowchart](https://github.com/knsv/mermaid)
 [win-mdp](https://tylingsoft.com/mdp)
 [mac-Mou]()
+
+
+
+---
+#前端
+[全新理念的Web前端开发方式——AlloyDesigner](http://www.alloyteam.com/2014/03/alloydesigner-lai-zi-xing-xing-di-web-qian-duan-kai-fa-fang-shi/)
+[AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
+
+
+
+---
+#加解密
+##GPG
+https://www.gnupg.org/
+
+
+
+---
+#字体 font
+微软雅黑    Microsoft YaHei
+
+
+
+----
+#其他
+##时间管理
+WorkRave
+[](http://www.mifengtd.cn/articles/body-mechanics-and-workrave.html)
+##省市区sql,mysql
+http://blog.csdn.net/whzhaochao/article/details/37969145
+
+
+
+
+
+
+
 
 #python ide
 [ALL](http://www.jetbrains.com/pycharm)

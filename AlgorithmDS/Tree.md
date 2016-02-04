@@ -6,6 +6,11 @@ http://blog.csdn.net/touch_2011/article/details/6831924
 
 
 
+---
+#线段树
+[线段树](http://blog.csdn.net/metalseed/article/details/8039326)
+
+
 
 ---
 #RBtree

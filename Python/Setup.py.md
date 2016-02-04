@@ -9,16 +9,14 @@ Fabric 来加速部署
 
 [common libs](https://github.com/vinta/awesome-python)
 
+
 ---
 ##setup
+```bash
 ./configure  --enable-shared --prefix=/usr 
 ./configure & make & make install
+```
 
-_bsddb             _curses            _curses_panel
-_sqlite3           _ssl               _tkinter
-bsddb185           bz2                dbm
-dl                 gdbm               imageop
-readline           sunaudiodev        zlib
 
 ###Q&A:
 http://blog.csdn.net/wanyanxgf/article/details/8021641

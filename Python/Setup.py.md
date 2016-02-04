@@ -95,6 +95,8 @@ easy_install sqlalchemy
 easy_install jinja2
 
 
+[virtkey 在Linux中使用Python模拟键盘按键](http://blog.csdn.net/zhouy1989/article/details/13997507)
+
 
 科学计算的NumPy库：numpy
 生成文本的模板工具Jinja2

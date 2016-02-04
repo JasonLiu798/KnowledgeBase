@@ -260,8 +260,30 @@ pi.dnum=7;  => M[R1+4]=7;
 ((struct fraction *)&pi.dnum)->dnum=451;
                     M[R1+8]=451;
 
+---
+活动记录
+```c
+void foo(int bar,int*baz ){
+    char snak[4];
+    short * why;
+}
+|       |baz
+|       |bar
+|       |
+| | | | |snak
+|       |why
+```
 
+```c
+int main(int arg,char **argv){
+    int i=4;
+    foo(i,&i);
+    return 0;
+}
 
+|   |argv
+|   |arg
+```
 
 
 

@@ -1,0 +1,90 @@
+#!/bin/bash
+#DOWNLOAD
+export DOWN=/Users/$USER/Downloads
+#common
+export YP=/Users/$USER/yp
+
+#ubin & serverfile config
+export UBIN=$YP/ubin
+export BLIB=$UBIN/lib
+export DDIR=$UBIN/data
+
+export TL=/opt/tools
+export SETUP=/opt/setups
+# export GPG=$TL/GnuPG
+export BAK=$YP/BACKUP
+#project
+export PRJ=$YP/project
+export PY=$PRJ/python
+export RB=$PRJ/ruby
+export BLOG=$RB/JasonLiu798.github.io/_posts
+# export TR=$PY/tornado
+export LT=$PRJ/leetcode
+export PHP=$PRJ/php
+export DOC=$YP/documents
+export WWW=/private/var/www
+#jp
+export MEM=$PRJ/member
+export SPI=$PRJ/spi
+export JPX=$PRJ/service-proxy
+#server
+export NSITE=/usr/local/etc/nginx/sites-available
+export NCONF=/usr/local/etc/nginx
+export AWW=/Library/WebServer/Documents
+export WWW=/var/www
+export NLOG=/usr/local/var/logs/nginx
+#java
+#need link
+JAVA_HOME=/opt/java
+#export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+#need link
+M2_HOME=/opt/maven
+# HADOOP_HOME=/opt/hadoop
+export CATALINA_BASE=/opt/server/tomcat
+export CATALINA_HOME=$CATALINA_BASE
+export CATALINA_TMPDIR=$CATALINA_HOME/temp
+export TOMCAT=$CATALINA_HOME
+REPO=$PRJ/repo
+TOMCAT=$CATALINA_HOME
+CLASSPATH=$JAVA_HOME/lib:$JAVA_HOME/jre/lib:.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar
+export JAVA_HOME M2_HOME HADOOP_HOME TOMCAT CLASSPATH REPO
+
+#php
+export PHPINI="/usr/local/etc/php/5.5"
+export PHP55=/usr/local/opt/php55
+export PYTHON=/usr/local/opt/python
+export PYTHON3=/usr/local/opt/python3
+export COMPOSER=/usr/local/Cellar/composer/1.0.0-alpha9
+export THRIFT=/usr/local/opt/thrift
+#Tools
+# export CASPER_PATH=$TL/casperjs
+# export CASPER_BIN=$CASPER_PATH/bin
+# export NODEJS=$TL/nodejs/nodejs54
+
+#vm
+export VM=/opt/vm
+export VSH=$VM/share
+export DOCKER_HOST=tcp://
+# export VM=$E/vm
+# export UB=$VM/ubuntu64
+
+#db
+export MYSQL=/usr/local/mysql
+export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/mysql/bin:/bin:$JAVA_HOME/bin:$PHP55/bin:$COMPOSER/bin:$PYTHON/bin:$PYTHON3/bin:$THRIFT/bin:/Users/liujianlong/.composer/vendor/bin:$M2_HOME/bin:$UBIN
+
+
+#export PATH=$PATH:$JAVA_HOME/bin:$C/HashiCorp/Vagrant/bin:$M2_HOME/bin:$CXF_HOME/bin:$CATALINA_HOME/bin:$GPG/pub:$PHANTOMJS:$CASPER_BIN:$NODEJS
+#export PATH=$PATH:$JAVA_HOME/bin:$C/HashiCorp/Vagrant/bin:$M2_HOME/bin:$CXF_HOME/bin:$CATALINA_HOME/bin:$GPG/pub:$PHANTOMJS:$CASPER_BIN:$NODEJS:$MYSQL/bin
+
+#export PATH="/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/mysql/bin:/bin:$JAVA_HOME/bin"
+#export PATH="$(brew --prefix php55)/bin:$PATH"
+#export PATH="$(brew --prefix composer)/bin:$PATH"
+#export PATH="$(brew --prefix python)/bin:$PATH"
+#export PATH="$(brew --prefix python3)/bin:$PATH"
+#export PATH="$(brew --prefix thrift)/bin:$PATH"
+#export PATH=/var/www/sport/vendor/bin:$PATH
+#export PATH=/Users/liujianlong/.composer/vendor/bin:$PATH
+
+
+
+

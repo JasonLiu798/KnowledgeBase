@@ -285,8 +285,16 @@ int main(int arg,char **argv){
     return 0;
 }
 
-|   |argv
-|   |arg
+high
+|         |argv
+|    2    |arg
+|saved pc |        //sp(main)
+|    4    |        //main called sp
+|         |
+|    4    |       //foo called sp  4 copy from M[SP+8]
+|         |       //saved pc
+|  | |< | |       
+|         |       //foo:sp-8
 
 void foo(int bar,int *baz){
     char mark[4];
@@ -295,29 +303,202 @@ void foo(int bar,int *baz){
     *why=50;
 }
 
-SP=SP-4;
-M[SP]=4;
-SP=SP-8;
-R1=M[SP+8];
-R2=SP+8;
-M[SP]=R1;
-M[SP+4]=R2;
+
+SP=SP-4;    //stack pointer 
+M[SP]=4;    //i=4
+SP=SP-8;    //为foo参数留出空间
+R1=M[SP+8]; //i
+R2=SP+8;    //&i
+M[SP]=R1;   //i
+M[SP+4]=R2; //&i
 CALL<foo>
-SP=SP+8; //recycle local variable
+SP=SP+8;    //recycle local variable
 
 foo:
-SP=SP-8; //for lolcal variable
-R1=SP+6;
+SP=SP-8; //for lolcal variable mark,why
+R1=SP+4+2; //snink+2
+M[SP]=R1;  //why=(shrot* )R1
+R1=M[SP];  //address of why
+M[R1]=.2 50;//*why=50;
+SP=SP+8; 
+RET
+
+
+//RV between call and caller store return information
+```
+
+
+##活动记录
+| parameters |  alloced and inited by caller
+| spc        |   
+| local      |   allocated and inited by callee ，局部变量
+
+##递归函数
+```c
+int fact(int n)
+{
+    if (n==0)
+        return 1;
+    return fact(n)*n;
+}
+
+<fact>:
+R1=M[SP+4]；
+BNE R1,0,PC+12
+RV=1;
+RET;
+R1=M[SP+4];
+R1=R1-1
+SP=SP-4;
 M[SP]=R1;
-R1=M[SP];
-M[R1]=.2 50;
-SP=SP+8;
+CALL <fact>
+SP=SP+4;
+R1=M[SP+4];
+RV=RV*R1
+RET;
+
+|   4   | n
+| spc   |
+|   3   |
+| spc   |
+...
 
 
 ```
 
+---
+#C11 引用
+```c
+void foo()
+{
+    int x;
+    int y;
+    x=11;
+    y=17;
+    swap(&x,&y);
+}
+
+stack
+| spc |
+| 11    | x
+| 17    | y
+|       | point to x
+|       | point to y
+
+foo:
+SP=SP-8;
+M[SP+4]=11;
+M[SP]=17;
+R1=SP;      //&y
+R2=SP+4;    //&x
+SP=SP-8;
+M[SP]=R2;
+M[SP+4]=R1;
+CALL <swap>
+SP=SP+8;
+
+SP=SP+8;
+RET;
+
+//--------------------------------------------
+void swap(int *ap,int *bp){
+    int tmp=*ap;
+    *ap=*bp;
+    *bp=tmp;
+}
+
+swap:
+|       |bp
+|       |ap
+| spc   |
+|       |tmp
+|
+
+swap:
+SP=SP-4; //for tmp
+R1=M[SP+8];
+R2=M[R1];
+M[SP]=R2; //tmp=*ap
+R1=M[SP+12];//*bp
+R2=M[R1]; //load *bp
+R3=M[SP+8];//*ap
+M[R3]=R2; //copy to *ap
+R1=M[SP];
+R2=M[SP+12];
+M[R2]=R1;
+
+SP=SP+4;
+RET;
+
+
+void swap(int &ap,int &bp){
+    int tmp=ap;
+    ap=bp;
+    bp=tmp;
+}
+|       |b 
+|       |a
+| spc   |
+|       |tmp
+
+```
+
+##类
+隐式传递的对象引用
 
 ---
+#C12 宏 include
+##宏
+
+```
+//assert
+#ifdef NDEBUG
+    #define assert(cond) (void)0
+#else
+    #define assert(cond) \
+    (cond) ? ((void) 0): 
+        fprintf(stderr,.... ),exit(0)
+#endif
+
+```
+
+gcc -E xxx.c #只进行预处理
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

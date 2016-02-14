@@ -260,6 +260,7 @@ pi.dnum=7;  => M[R1+4]=7;
 ((struct fraction *)&pi.dnum)->dnum=451;
                     M[R1+8]=451;
 
+<<<<<<< HEAD
 
 
 
@@ -285,6 +286,7 @@ int main(int arg,char **argv){
     return 0;
 }
 
+<<<<<<< HEAD
 high
 |         |argv
 |    2    |arg
@@ -497,6 +499,12 @@ gcc -E xxx.c #只进行预处理
 
 
 
+=======
+|   |argv
+|   |arg
+```
+
+>>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 
 
 

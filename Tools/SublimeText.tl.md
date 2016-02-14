@@ -259,6 +259,7 @@ http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
 
 ## license
 ```
+<<<<<<< HEAD
 ----- BEGIN LICENSE -----
 Michael Barnes
 Single User License
@@ -416,6 +417,8 @@ FD032C30 AD5E7241 4EAA66ED 167D91FB
 
 
 --no--
+=======
+>>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 ----- BEGIN LICENSE ----
 Andrew Weber
 Single User License

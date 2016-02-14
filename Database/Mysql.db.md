@@ -6,12 +6,12 @@
 sudo apt-get install mysql-server  mysql-client  libmysqlclient-dev
 sudo netstat -tap | grep mysql
 ```
-mysql -u root -p
+mysql -u root -p 
 ###启动关闭重启
 ```
 service mysql start
-sudo /etc/init.d/mysql start
-sudo /etc/init.d/mysql stop
+sudo /etc/init.d/mysql start 
+sudo /etc/init.d/mysql stop 
 sudo /etc/init.d/mysql restart
 
 mysql -u root -p
@@ -80,7 +80,11 @@ mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321
 ```sql
 show variables like 'character%';
 show variables like 'collation%';
+<<<<<<< HEAD
 character_set_client
+=======
+character_set_client 
+>>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 character_set_connection  为建立连接使用的编码；
 character_set_database    数据库的编码；
 character_set_results   结果集的编码；
@@ -154,17 +158,17 @@ show databases;
 show tables;
 
 ##参数
-show variables like 'innodb_%';
-show variables where Variable_name like 'log%' and value='ON';
-show global variables;
-show session/local variables;
-SET GLOBAL var_name = value;
+show variables like 'innodb_%';  
+show variables where Variable_name like 'log%' and value='ON';  
+show global variables;  
+show session/local variables;  
+SET GLOBAL var_name = value;  
 
 
 ##COALESCE
 返回其参数中第一个非空表达式
 语法：
-COALESCE ( expression [ ,...n ] )
+COALESCE ( expression [ ,...n ] ) 
 如果所有参数均为 NULL，则 COALESCE 返回 NULL。至少应有一个 Null 值为 NULL 类型。尽管 ISNULL 等同于 COALESCE，但它们的行为是不同的。包含具有非空参数的 ISNULL 的表达式将视为 NOT NULL，而包含具有非空参数的 COALESCE 的表达式将视为 NULL。在 SQL Server 中，若要对包含具有非空参数的 COALESCE 的表达式创建索引，可以使用 PERSISTED 列属性将计算列持久化
 
 
@@ -175,17 +179,19 @@ SELECT *, COUNT(DISTINCT nowamagic) FROM table GROUP BY now
 
 ##差集
 //子查询
-select table1.id from table1
-  where not exists
-    (select 1 from table2
+select table1.id from table1 
+  where not exists 
+    (select 1 from table2 
      where table1.id = table2.id
     );
 
 //外连接
-select table1.id from table1
+```sql
+select table1.id from table1 
   left join table2
   on table1.id=table2.id
 where table2.id is null;
+```
 
 ##ORD() 函数
 ORD() 函数返回字符串第一个字符的 ASCII 值。
@@ -244,9 +250,6 @@ Using index、Using filesort、Using temporary
 filesort
 在内存排序
 
-
-
-
 ##insert
 1)使用LOAD DATA INFILE从文本下载数据这将比使用插入语句快20倍。
 [mysql load data infile的使用](http://www.2cto.com/database/201108/99655.html)
@@ -269,10 +272,10 @@ filesort
 #引擎
 ##InnoDB MyISAM 引擎选择
 [InnoDB还是MyISAM 再谈MySQL存储引擎的选择](http://database.51cto.com/art/200905/124370.htm)
-你的数据库有外键吗？
-◆你需要事务支持吗？
-◆你需要全文索引吗？
-◆你经常使用什么样的查询模式？
+你的数据库有外键吗？ 
+◆你需要事务支持吗？ 
+◆你需要全文索引吗？ 
+◆你经常使用什么样的查询模式？ 
 ◆你的数据有多大？
 
 特点      | myisam    |   innoDB
@@ -287,12 +290,12 @@ B树索引    |   支持  |   支持
 集群索引    |       |   支持
 数据缓存    |       |   支持
 索引缓存    | 支持   |   支持
-数据可压缩   | 支持    |
+数据可压缩   | 支持    |   
 空间使用    | 低     | 高
 内存使用    | 低     | 高
 外键        |        | 支持
 
-MyISAM
+MyISAM 
 1.MyISAM的索引和数据是分开的，并且索引是有压缩的；Innodb是索引和数据是紧密捆绑的
 2.MyISAM恢复，移植方便
 3.Innodb达不到MyISAM的写性能，如果是针对基于索引的update操作，虽然MyISAM可能会逊色Innodb，如并发高，myISM可通过分库分表解决

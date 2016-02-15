@@ -387,8 +387,12 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --graph --abbrev-commit"
 
 `git log无颜色版（moba颜色显示有问题）`
+<<<<<<< HEAD
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit" 
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit --graph"
+=======
+git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --graph --abbrev-commit"
+>>>>>>> 0d7a81d6238afe9129bd5445c1b9d331a34204ec
 
 ###--pretty=format参数
 %H   提交对象（commit）的完整哈希字串 

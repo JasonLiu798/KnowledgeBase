@@ -46,12 +46,15 @@ markdown 浏览器查看
 [github](https://github.com/SublimeText-Markdown/MarkdownEditing)
 markdown 语法着色
 ```javascript
-//standrad setting
-//GFM setting
+//gfm setting
 {
-  "line_numbers": true,
-  "highlight_line": true
+  "enable_table_editor": true,
+    "line_numbers": true,
+    "highlight_line": true,
+    "word_wrap": true,
+    "wrap_width": 80
 }
+
 ```
 
 ##TableEditor

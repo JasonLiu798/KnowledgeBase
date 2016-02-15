@@ -246,6 +246,7 @@ JMP PC-10*4;
 opcode
 
 ##结构体 和 指针强制转换
+```c
 struct fraction{
     int num;
     int dnum;
@@ -259,9 +260,7 @@ pi.num=22;  => M[R1]=22;
 pi.dnum=7;  => M[R1+4]=7;
 ((struct fraction *)&pi.dnum)->dnum=451;
                     M[R1+8]=451;
-
-<<<<<<< HEAD
-
+```
 
 
 ---
@@ -466,45 +465,91 @@ void swap(int &ap,int &bp){
 
 gcc -E xxx.c #只进行预处理
  
+---
+#C13 编译 缓冲区溢出
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+int main()
+{
+    void * mem=malloc(400);
+    assert(mem!=Null);
+    print('yeah!');
+    free(mem);
+    return 0;
+}
+
+mem.o
+SP=SP-4
+call <melloc>
+call<printf>
+call<free>
+RV=0
+RET;
+
+link
+=>
+
+a.out
+
+//在编译时，gcc会对于未声明的函数会做推测函数原型（宏也可能会被推测为函数），根据实参类型
+//函数原型 为了让callee caller达成一致
 
 
+int main(){
+    int num=65;
+    int length=strlen((char*)&num,num);
+    printf("length=%d\n",length);
+    return 0;
+}
 
+int memcmp(void *v);//int memcmp(void* v1,void*v2,int size);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-|   |argv
-|   |arg
+{
+    int n=17;
+    int m=memcmp(&n);
+}
+|   17  |n  size
+|       |m  v2
+|       |   v1
+| spc   |
 ```
 
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
+seg fault
+    错误的指针解引用
+bus error
+    如int只能用4倍数的地址
+
+缓冲区溢出
+```c
+//死循环
+int main(){
+    int i;
+    int array[4];
+    for(i=0;i=4;i++){
+        array[i]=0;
+    }
+    return 0;
+}
+
+
+void foo()
+{
+    int array[4];
+    int  i;
+    for(i=0;i<=4;i++){
+        array[i]-=4; //save pc
+    }
+}
+
+```
+
+---
+#C14
+
+
+
 
 
 

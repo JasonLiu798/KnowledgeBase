@@ -113,13 +113,13 @@ __new__()方法接收到的参数依次是：
 * 类继承的父类集合；
 * 类的方法集合
 
-```
+```python
 class UpperAttrMetaclass(type):
     def __new__(cls, name, bases, dct):
-        attrs = ((name, value) for name, value in dct.items() if not name.startswith('__')
+        attrs = ((name, value) for name, value in dct.items() if not name startswith('__'))
         uppercase_attr  = dict((name.upper(), value) for name, value in attrs)
         return type.__new__(cls, name, bases, uppercase_attr)
-
+        
 ```
 
 ## `__slots__`

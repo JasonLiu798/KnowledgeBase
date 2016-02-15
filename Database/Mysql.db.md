@@ -80,7 +80,11 @@ mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321
 ```sql
 show variables like 'character%';
 show variables like 'collation%';
+<<<<<<< HEAD
+character_set_client
+=======
 character_set_client 
+>>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 character_set_connection  为建立连接使用的编码；
 character_set_database    数据库的编码；
 character_set_results   结果集的编码；
@@ -133,7 +137,7 @@ default-character-set = utf8
 
 ----
 #theory
-##character set 和 collation 
+##character set 和 collation
 character set， 即字符集
 collation, 即比对方法 指定数据集如何排序，以及字符串的比对规则
 mysql> show collation;
@@ -182,10 +186,12 @@ select table1.id from table1
     );
 
 //外连接
+```sql
 select table1.id from table1 
   left join table2
   on table1.id=table2.id
 where table2.id is null;
+```
 
 ##ORD() 函数
 ORD() 函数返回字符串第一个字符的 ASCII 值。
@@ -221,6 +227,29 @@ select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_nam
 
 ---
 #PerformanceTuning
+##explain
+[mysql explain用法和结果的含义 ](http://blog.chinaunix.net/uid-540802-id-3419311.html)
+
+###type性能从差到好排序
+all -> index -> range -> index_subquery ->unique_subquery -> index_merage -> ref_or_null -> fulltext -> ref -> eq_ref -> const -> sytem
+
+###key
+用到的索引
+优化方式：把计划用到的索引用上
+
+###rows
+扫描的行数，有误差
+优化方式：减少扫描的行数
+
+###extra
+常见：
+Using index、Using filesort、Using temporary
+优化方式：针对不同的类型进行优化，存在索引的情况下减少额外的操作，可以
+的话把Using filesort、Using temporary这些类型消灭掉
+
+filesort
+在内存排序
+
 ##insert
 1)使用LOAD DATA INFILE从文本下载数据这将比使用插入语句快20倍。
 [mysql load data infile的使用](http://www.2cto.com/database/201108/99655.html)

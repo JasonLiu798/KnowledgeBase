@@ -334,7 +334,7 @@ git push -f
 
 
 ---
-#gitconfig common configuration
+#git config common configuration
 ##gitignore 配置
 删除已经commit的文件，但不删除文件本身 `git rm --cached filename`
 [gitignore配置模板](https://github.com/github/gitignore)
@@ -350,6 +350,29 @@ git config --global user.email "jasondliu@qq.com"
 ## format
 git config --global color.ui true
 
+##AutoCRLF
+commit LF,chk out CRLF,win
+    git config --global core.autocrlf true
+commit LF,chk out nochange,mac
+    git config --global core.autocrlf input
+commit nochange,chk out nochange,linux
+    git config --global core.autocrlf false
+
+##SafeCRLF
+refuse mix format
+    git config --global core.safecrlf true
+allow mix format
+    git config --global core.safecrlf false
+warn commit mix format
+    git config --global core.safecrlf warn
+    
+##配色
+git config --global color.ui auto
+git config --global color.status auto  
+git config --global color.branch auto
+git config --global color.diff auto
+git config --global color.interactive auto
+
 ##useful shortcut
 co表示checkout，ci表示commit，br表示branch：
 git config --global alias.co checkout
@@ -359,8 +382,14 @@ git config --global alias.unstage 'reset HEAD'
 git config --global alias.last 'log -1'
 git config --global alias.lg "log "
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-git log无颜色版（moba颜色显示有问题）
-git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --graph --abbrev-commit"
+
+`git log颜色版`
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --graph --abbrev-commit"
+
+`git log无颜色版（moba颜色显示有问题）`
+git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit" 
+git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit --graph"
+
 ###--pretty=format参数
 %H   提交对象（commit）的完整哈希字串 
 %h   提交对象的简短哈希字串 
@@ -394,12 +423,6 @@ git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --graph --abbr
 %n:  换行
 作者（author）和提交者（committer）之间差别:作者指的是实际作出修改的人，提交者指的是最后将此工作成果提交到仓库的人。所以，当你为某个项目发布补丁，然后某个核心成员将你的补丁并入项目时，你就是作者，而那个核心成员就是提交者
 
-##配色
-git config --global color.ui auto
-git config --global color.status auto  
-git config --global color.diff auto  
-git config --global color.branch auto  
-git config --global color.interactive auto  
 
 ##git add proxy
 http://segmentfault.com/q/1010000000118837
@@ -411,21 +434,7 @@ HostName github.com
 PubkeyAuthentication yes
 IdentityFile ~/.ssh/github
 
-##AutoCRLF
-commit LF,chk out CRLF,win
-    git config --global core.autocrlf true
-commit LF,chk out nochange,mac
-    git config --global core.autocrlf input
-commit nochange,chk out nochange,linux
-    git config --global core.autocrlf false
 
-##SafeCRLF
-refuse mix format
-    git config --global core.safecrlf true
-allow mix format
-    git config --global core.safecrlf false
-warn commit mix format
-    git config --global core.safecrlf warn
 
 ##策略设置
 本地分支和远程分支的绑定（tracking)，加上 rebase 策略：

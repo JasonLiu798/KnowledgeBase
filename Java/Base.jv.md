@@ -1,6 +1,6 @@
 #Java Basis
 ---
-
+[关于Java你可能不知道的10件事](https://github.com/oldratlee/translations/blob/master/10-things-you-didnt-know-about-java/README.md)
 
 
 ----
@@ -53,7 +53,7 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 [深入分析 Java I/O 的工作机制](http://www.ibm.com/developerworks/cn/java/j-lo-javaio/)
 [IO的阻塞与非阻塞、同步与异步以及Java网络IO交互方式](http://www.cnblogs.com/zhuYears/archive/2012/09/28/2690194.html)
 [JAVA 中BIO,NIO,AIO的理解](http://my.oschina.net/hanruikai/blog/294108)
-
+[Java的通用I/O API设计](https://github.com/oldratlee/translations/blob/master/generic-io-api-in-java-and-api-design/README.md)
 ##同步异步
 A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes;
 An asynchronous I/O operation does not cause the requesting process to be blocked;
@@ -118,7 +118,20 @@ http://www.tuicool.com/articles/IfeUfq
 垃圾回收不会发生在永久代，如果永久代满了或者是超过了临界值，会触发完全垃圾回收(Full GC)。如果你仔细查看垃圾收集器的输出信息，就会发现永久代也是被回收的。这就是为什么正确的永久代大小对避免Full GC是非常重要的原因。
 
 ---
-#Exception异常处理规范
+#Exception
+[检查异常和未检查异常不同之处](http://blog.csdn.net/randomnet/article/details/7764579)
+java中异常分为两类:
+checked exception(检查异常)
+unchecked exception(未检查异常)对于未检查异常也叫RuntimeException(运行时异常).
+对未检查的异常(unchecked exception )的几种处理方式：
+1、捕获
+2、继续抛出
+3、不处理
+对检查的异常(checked exception，除了RuntimeException，其他的异常都是checked exception )的几种处理方式：
+1、继续抛出，消极的方法，一直可以抛到java虚拟机来处理
+2、用try...catch捕获
+注意，对于检查的异常必须处理，或者必须捕获或者必须抛出
+
 ##unchecked异常,即RuntimeException（运行时异常） 
 常见RuntimeException:
 ArithmeticException int a=0; 
@@ -185,6 +198,26 @@ throw new CacheException("Fail to get, cause:  " + e.getMessage());
 消息 1: "Incorrect argument for method"
 消息 2: "Illegal value for ${argument}: ${value}
 第一条消息仅说明了参数是非法的或者不正确，但第二条消息包括了参数名和非法值。
+
+##trick:JVM不理会受检异常
+```java
+public class Test {
+    // 方法没有声明throws
+    public static void main(String[] args) {
+        doThrow(new SQLException());
+    }
+
+    static void doThrow(Exception e) {
+        Test.<RuntimeException> doThrow0(e);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <E extends Exception>
+    void doThrow0(Exception e) throws E {
+        throw (E) e;
+    }
+}
+```
 
 ---
 #junit

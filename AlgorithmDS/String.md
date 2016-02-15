@@ -38,6 +38,8 @@ http://blog.csdn.net/niushuai666/article/details/7002823
 
 http://acm.uestc.edu.cn/bbs/read.php?tid=4294
 
+
+
 ---
 #KMP
 [从头到尾彻底理解KMP（2014年8月22日版）](http://blog.csdn.net/v_july_v/article/details/7041827)
@@ -45,6 +47,33 @@ http://acm.uestc.edu.cn/bbs/read.php?tid=4294
 
 ---
 #Trie Tree
-
 http://www.cnblogs.com/huangxincheng/archive/2012/11/25/2788268.html
+
+
+
+---
+#正则
+[正则表达式（包含 *, ?) 的动态规划算法](http://blog.csdn.net/martin_liang/article/details/27863807)
+[正则表达式匹配](http://www.cnblogs.com/davidluo/articles/1806842.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

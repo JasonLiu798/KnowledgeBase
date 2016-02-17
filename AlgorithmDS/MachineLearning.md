@@ -13,6 +13,13 @@ http://download.csdn.net/detail/flybirds98/1934334
 [深度学习2015年文章整理（CVPR2015）](http://blog.csdn.net/u010402786/article/details/50548996)
 ---
 #book
+统计学习方法
+Pattern Recognition And Machine Learning
+数据科学实战
+数据检索导论
+
+
+
 统计学习方法.李航
 All of Statistics
 统计学习基础-数据挖掘、推理与预测

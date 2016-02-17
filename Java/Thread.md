@@ -1,5 +1,43 @@
 #Java Thread Concurrent
 ---
+#theory
+一个Thread类实例只是一个对象，像Java中的任何其他对象一样，具有变量和方法，生死于堆上。
+Java中，每个线程都有一个调用栈，即使不在程序中创建任何新的线程，线程也在后台运行着，比如GC中的线程。
+
+创建一个新的线程，就产生一个新的调用栈。
+线程总体分两类：用户线程和守候线程。
+一个线程可以创建和撤消另一个线程，同一进程中的多个线程之间可以并发执行
+
+线程也有就绪、阻塞和运行三种基本状态
+当所有用户线程执行完毕的时候，JVM自动关闭。但是守候线程却独立于JVM，守候线程一般是由操作系统或者用户自己创建的
+
+
+线程的几种状态
+　　在Java当中，线程通常都有五种状态，创建、就绪、运行、阻塞和死亡。
+　　第一是创建状态。在生成线程对象，并没有调用该对象的start方法，这是线程处于创建状态。
+　　第二是就绪状态。当调用了线程对象的start方法之后，该线程就进入了就绪状态，但是此时线程调度程序还没有把该线程设置为当前线程，此时处于就绪状态。在线程运行之后，从等待或者睡眠中回来之后，也会处于就绪状态。
+　　第三是运行状态。线程调度程序将处于就绪状态的线程设置为当前线程，此时线程就进入了运行状态，开始运行run函数当中的代码。
+　　第四是阻塞状态。线程正在运行的时候，被暂停，通常是为了等待某个时间的发生(比如说某项资源就绪)之后再继续运行。sleep,suspend，wait等方法都可以导致线程阻塞。
+　　第五是死亡状态。如果一个线程的run方法执行结束或者调用stop方法后，该线程就会死亡。对于已经死亡的线程，无法再使用start方法令其进入就绪。
+
+
+---
+#创建
+```java
+Thread thread = new Thread(){
+        public void run(){
+
+        }
+}  
+Thread thread = new Thread(new Runnable(){
+          public void run(){
+ 
+           }
+});
+```
+
+
+---
 #资源同步
 #Synchronized
 [synchronized关键字详解](http://www.cnblogs.com/mengdd/archive/2013/02/16/2913806.html)
@@ -41,6 +79,18 @@ synchronized method 就等价于 synchronized (this) block
 
 ##synchronized lock对比
 [synchronized 与 Lock 的那点事](http://www.cnblogs.com/benshan/p/3551987.html)
+
+
+---
+#线程调度
+wait和sleep比较：
+sleep方法有：sleep(long millis)，sleep(long millis, long nanos)，调用sleep方法后，当前线程进入休眠期，暂停执行，但该线程继续拥有监视资源的所有权。到达休眠时间后线程将继续执行，直到完成。若在休眠期另一线程中断该线程，则该线程退出。
+
+wait方法有：wait()，wait(long timeout)，wait(long timeout, long nanos)，调用wait方法后，该线程放弃监视资源的所有权进入等待状态；
+wait()：等待有其它的线程调用notify()或notifyAll()进入调度状态，与其它线程共同争夺监视。wait()相当于wait(0)，wait(0, 0)。
+wait(long timeout)：当其它线程调用notify()或notifyAll()，或时间到达timeout亳秒，或有其它某线程中断该线程，则该线程进入调度状态。
+wait(long timeout, long nanos)：相当于wait(1000000*timeout + nanos)，只不过时间单位为纳秒。
+
 
 
 
@@ -177,6 +227,68 @@ AbstractQueuedSynchronizer(AQS)
 non-blocking sync
 CAS
 compare and set
+
+
+---
+#实现
+1:1（内核线程）、N:1（用户态线程）、M:N（混合）模型
+HotSpot VM
+在这个JVM的较新版本所支持的所有平台上，它都是使用1:1线程模型的——除了Solaris之外
+
+http://www.oracle.com/technetwork/java/threads-140302.html
+
+##synchronized
+```java
+typedef struct monitor {  
+pthread_mutex_t lock;  
+Thread *owner;  
+Object *obj;  
+int count;  
+int in_wait;  
+uintptr_t entering;  
+int wait_count;  
+Thread *wait_set;  
+struct monitor *next;  
+} Monitor;  
+
+
+void monitorLock(Monitor *mon, Thread *self) {  
+    if(mon->owner == self)  
+        mon->count++;  
+    else {  
+        if(pthread_mutex_trylock(&mon->lock)) {  
+            disableSuspend(self);  
+              
+            self->blocked_mon = mon;  
+            self->blocked_count++;  
+            self->state = BLOCKED;//
+              
+            pthread_mutex_lock(&mon->lock);  
+              
+            self->state = RUNNING;  
+            self->blocked_mon = NULL;  
+              
+            enableSuspend(self);  
+        }  
+        mon->owner = self;  
+    }  
+}  
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

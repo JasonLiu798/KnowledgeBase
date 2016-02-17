@@ -124,8 +124,8 @@ public class Pair<T extends Comparable& Serializable> {
 如果Pair这样声明public class Pair<T extends Serializable&Comparable> ，那么原始类型就用Serializable替换，而编译器在必要的时要向Comparable插入强制类型转换。为了提高效率，应该将标签（tagging）接口（即没有方法的接口）放在边界限定列表的末尾。
 
 
-##类型擦除引起的问题及解决方法
-1、先检查，在编译，以及检查编译的对象和引用传递的问题
+#类型擦除引起的问题及解决方法
+##1、先检查，在编译，以及检查编译的对象和引用传递的问题
 java编译器是通过先检查代码中泛型的类型，然后再进行类型擦除，在进行编译的
 
 ArrayList<String> arrayList1=new ArrayList(); //第一种 情况  
@@ -153,7 +153,172 @@ arrayList1.add(new String());
 ArrayList<Object> arrayList2=arrayList1;//编译错误  
 ```
 
-2、自动类型转换
+##2、自动类型转换
+checkcast
+```
+checkcast checks that the top item on the operand stack (a reference to an object or array) can be cast to a given type. For example, if you write in Java:
+
+return ((String)obj);
+
+then the Java compiler will generate something like:
+
+aload_1 ; push -obj- onto the stack
+checkcast java/lang/String ; check its a String
+areturn ; return it
+
+checkcast is actually a shortand for writing Java code like:
+
+if (! (obj == null || obj instanceof <class>)) {
+throw new ClassCastException();
+}
+// if this point is reached, then object is either null, or an instance of
+// <class> or one of its superclasses.
+```
+
+##3、类型擦除与多态的冲突和解决方法
+```java
+class Pair<T> {  
+    private T value;  
+    public T getValue() {  
+        return value;  
+    }  
+    public void setValue(T value) {  
+        this.value = value;  
+    }  
+}  
+
+class DateInter extends Pair<Date> {  
+    @Override  
+    public void setValue(Date value) {  
+        super.setValue(value);  
+    }  
+    @Override  
+    public Date getValue() {  
+        return super.getValue();  
+    }  
+}  
+
+//擦除后
+class Pair {  
+    private Object value;  
+    public Object getValue() {  
+        return value;  
+    }  
+    public void setValue(Object  value) {  
+        this.value = value;  
+    }  
+}  
+再看子类的两个重写的方法的类型：
+@Override  
+public void setValue(Date value) {  
+    super.setValue(value);  
+}  
+@Override  
+public Date getValue() {  
+    return super.getValue();  
+}
+
+//setValue方法，父类的类型是Object，而子类的类型是Date，参数类型不一样，这如果实在普通的继承关系中，根本就不会是重写，而是重载。
+```
+
+桥方法
+
+协变
+
+4、泛型类型变量不能是基本数据类型
+不能用类型参数替换基本类型。就比如，没有ArrayList<double>，只有ArrayList<Double>。因为当类型擦除后，ArrayList的原始类型变为Object，但是Object类型不能存储double值，只能引用Double的值。
+
+5、运行时类型查询
+if( arrayList instanceof ArrayList<String>)    //错误
+java限定了这种类型查询的方式
+if( arrayList instanceof ArrayList<?>)    
+
+6、异常中使用泛型的问题
+1、不能抛出也不能捕获泛型类的对象。
+2、不能再catch子句中使用泛型变量
+
+7、数组（这个不属于类型擦除引起的问题）
+不能声明参数化类型的数组。
+  数组可以记住自己的元素类型，下面的赋值会抛出一个ArrayStoreException异常。
+
+8、泛型类型的实例化 
+不能实例化泛型类型。如，
+[java] view plain copy
+first = new T(); //ERROR  
+
+9、类型擦除后的冲突
+1、当泛型类型被擦除后，创建条件不能产生冲突。如果在Pair类中添加下面的equals方法
+[java] view plain copy
+class Pair<T>   {  
+    public boolean equals(T value) {  
+        return null;  
+    }  
+}  
+2、泛型规范说明提及另一个原则“要支持擦除的转换，需要强行制一个类或者类型变量不能同时成为两个接口的子类，而这两个子类是同一接品的不同参数化。”
+
+
+10、泛型在静态方法和静态类中的问题
+泛型类中的静态方法和静态变量不可以使用泛型类所声明的泛型类型参数
+
+public class Test2<T> {    
+    public static T one;   //编译错误    
+    public static  T show(T one){ //编译错误    
+        return null;    
+    }    
+}    
+
+
+public class Test2<T> {
+//这是一个泛型方法，在泛型方法中使用的T是自己在方法中定义的T，而不是泛型类中的T
+    public static <T >T show(T one){//这是正确的    
+        return null;    
+    }    
+}    
+
+#通配符
+有三种：
+1、无限定通配符   形式<?>
+2、上边界限定通配符 形式< ? extends Number>    //用Number举例
+3、下边界限定通配符    形式< ? super Number>    //用Number举例
+1、泛型中的？通配符
+```java
+import java.util.ArrayList;  
+import java.util.Collection;  
+import java.util.List;  
+  
+publicclass GernericTest {  
+    publicstaticvoid main(String[] args) throws Exception{  
+        List<Integer> listInteger =new ArrayList<Integer>();  
+        List<String> listString =new ArrayList<String>();  
+        printCollection(listInteger);  
+        printCollection(listString);  
+    }  
+    publicstaticvoid printCollection(Collection<?> collection){  
+               for(Object obj:collection){  
+            System.out.println(obj);  
+        }  
+    }  
+}  
+
+```
+
+2、泛型中的?通配符的扩展
+1:界定通配符的上边界
+Vector<? extends 类型1> x = new Vector<类型2>();
+类型1指定一个数据类型，那么类型2就只能是类型1或者是类型1的子类
+Vector<? extends Number> x = new Vector<Integer>();//这是正确的
+Vector<? extends Number> x = new Vector<String>();//这是错误的
+ 
+2:界定通配符的下边界
+Vector<? super 类型1> x = new Vector<类型2>();
+类型1指定一个数据类型，那么类型2就只能是类型1或者是类型1的父类
+Vector<? super Integer> x = new Vector<Number>();//这是正确的
+Vector<? super Integer> x = new Vector<Byte>();//这是错误的
+ 
+提示：限定通配符总是包括自己
+
+
+
 
 
 

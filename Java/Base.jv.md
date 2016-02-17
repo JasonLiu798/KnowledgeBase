@@ -1,9 +1,29 @@
 #Java Basis
 ---
 [关于Java你可能不知道的10件事](https://github.com/oldratlee/translations/blob/master/10-things-you-didnt-know-about-java/README.md)
-
+[class文件结构](http://blog.csdn.net/dc_726/article/details/7944154)
 
 ----
+#变量
+[自动拆箱装箱](http://www.cnblogs.com/danne823/archive/2011/04/22/2025332.html)
+[自动拆箱装箱原理](http://www.cnblogs.com/dolphin0520/p/3780005.html)
+当 "=="运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象，而如果其中有一个操作数是表达式（即包含算术运算）则比较的是数值（即会触发自动拆箱的过程）
+另外，对于包装器类型，equals方法并不会进行类型转换。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #编码
 https://github.com/alibaba/dubbo
 [中文编码](http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/)

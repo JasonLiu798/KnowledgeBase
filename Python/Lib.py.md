@@ -1,4 +1,8 @@
 ---
+#blog
+https://github.com/dengmin/logpress-tornado.git
+
+---
 #网络相关
 ##ssh
 [pexpect](http://blog.csdn.net/lwnylslwnyls/article/details/8239791)
@@ -26,21 +30,12 @@ decodejson = json.loads(encodedjson)
 ##pickle
 [python 的对象序列化/反序列化](http://san-yun.iteye.com/blog/1562883)
 ```python
-<<<<<<< HEAD
-import marshal,pickle
-
-list = [1]
-list.append(list)
-print marshal.dumps(list) #出错, 无限制的递归序列化
-print pickle.dumps(list) #no problem
-=======
 import marshal,pickle  
   
 list = [1]  
 list.append(list)  
 print marshal.dumps(list) #出错, 无限制的递归序列化  
 print pickle.dumps(list) #no problem  
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 
 ```
 
@@ -49,51 +44,26 @@ print pickle.dumps(list) #no problem
 
 ---
 #算法相关
-<<<<<<< HEAD
 ##排列组合
-=======
-##组合
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 [itertools](https://docs.python.org/2/library/itertools.html?highlight=itertools.permutations#itertools.permutations)
 ```python
 import itertools
 list1 = 'abc'
 list2 = []
 for i in range(1,len(list1)+1):
-<<<<<<< HEAD
     iter = itertools.combinations(list1,i) #组合
     iter = itertools.permutations(list1,i) #排列
-=======
-    iter = itertools.combinations(list1,i)
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
     list2.append(list(iter))
 print(list2)
 ```
-打印后的结果:
 [[('a',), ('b',), ('c',)], [('a', 'b'), ('a', 'c'), ('b', 'c')], [('a', 'b', 'c')]]
-
-<<<<<<< HEAD
-=======
-##排列
-```python
-import itertools
-for i in range(1,len(list1)+1):
-    iter = itertools.permutations(list1,i)
-    list2.append(list(iter))
-```
-list2: 
 [[('a',), ('b',), ('c',)], [('a', 'b'), ('a', 'c'), ('b', 'a'), ('b', 'c'), ('c', 'a'), ('c', 'b')], [('a', 'b', 'c'), ('a', 'c', 'b'), ('b', 'a', 'c'), ('b', 'c', 'a'), ('c', 'a', 'b'), ('c', 'b', 'a')]]
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 
 ##随机数
 ```python
 import random
 #random.uniform(a, b),返回[a,b]之间的浮点数
-<<<<<<< HEAD
-print random.uniform(10, 20)
-=======
-print random.uniform(10, 20)     
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
+print random.uniform(10, 20)  
 #random.randint(a, b),返回[a,b]之间的整数
 print random.randint(12, 20)
 #random.randrange([start], stop[, step])，从指定范围内，按指定基数递增的集合中 获取一个随机数
@@ -122,12 +92,6 @@ pip install rsa
 [pyDes](http://www.cnblogs.com/txw1958/archive/2012/07/20/python-des-3des.html)
 [同上](http://my.oschina.net/liupengs/blog/124230)
 [pydes github](https://github.com/toddw-as/pyDes)
-
-
-
-
-
-
 
 
 

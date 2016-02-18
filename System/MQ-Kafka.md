@@ -3,6 +3,9 @@
 # doc
 [消息系统Kafka介绍](http://dongxicheng.org/search-engine/kafka/)
 [Updated Kafka PHP client library - Lorenzo Alberton](http://www.tuicool.com/articles/zIzyq2)
+[日志：每个软件工程师都应该知道的有关实时数据的统一概念](http://www.oschina.net/translate/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
+[分布式发布订阅消息系统 Kafka 架构设计](http://www.oschina.net/translate/kafka-design?lang=chs&page=1#)
+
 
 ---
 #架构
@@ -10,7 +13,12 @@
 [](http://www.infoq.com/cn/articles/kafka-analysis-part-2)
 [](http://www.infoq.com/cn/articles/kafka-analysis-part-3)
 
-[日志：每个软件工程师都应该知道的有关实时数据的统一概念](http://www.oschina.net/translate/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
+
+
+消息
+指的是通信的基本单位。由消息生产者（producer）发布关于某话题（topic）的消息，这句话的意思是，消息以一种物理方式被发送给了作为代理（broker）的服务器（可能是另外一台机器）。若干的消息使用者（consumer）订阅（subscribe）某个话题，然后生产者所发布的每条消息都会被发送给所有的使用者。
+
+
 订阅机制
 
 分布式系统日志

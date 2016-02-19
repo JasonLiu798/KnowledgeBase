@@ -20,153 +20,6 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 　　第四是阻塞状态。线程正在运行的时候，被暂停，通常是为了等待某个时间的发生(比如说某项资源就绪)之后再继续运行。sleep,suspend，wait等方法都可以导致线程阻塞。
 　　第五是死亡状态。如果一个线程的run方法执行结束或者调用stop方法后，该线程就会死亡。对于已经死亡的线程，无法再使用start方法令其进入就绪。
 
-##自旋锁
-当前线程不停地的在循环体内执行实现的，当循环的条件被其他线程改变时 才能进入临界区
-```java
-public class SpinLock {
-    private AtomicReference<Thread> sign =new AtomicReference<>();
-    public void lock(){
-        Thread current = Thread.currentThread();
-        while(!sign .compareAndSet(null, current)){
-        }
-    }
-    public void unlock (){
-        Thread current = Thread.currentThread();
-        sign.compareAndSet(current, null);
-    }
-}
-```
-由于自旋锁只是将当前线程不停地执行循环体，不进行线程状态的改变，所以响应速度更快。但当线程数不停增加时，性能下降明显，因为每个线程都需要执行，占用CPU时间。如果线程竞争不激烈，并且保持锁的时间段。适合使用自旋锁。
-
-TicketLock
-主要解决的是访问顺序的问题，主要的问题是在多核cpu上
-每次都要查询一个serviceNum 服务号，影响性能（必须要到主内存读取，并阻止其他cpu修改）。
-```java
-package com.alipay.titan.dcc.dal.entity;
-import java.util.concurrent.atomic.AtomicInteger;
-public class TicketLock {
-    private AtomicInteger                     serviceNum = new AtomicInteger();
-    private AtomicInteger                     ticketNum  = new AtomicInteger();
-    private static final ThreadLocal<Integer> LOCAL      = new ThreadLocal<Integer>();
-    public void lock() {
-        int myticket = ticketNum.getAndIncrement();
-        LOCAL.set(myticket);
-        while (myticket != serviceNum.get()) {
-        }
-
-    }
-    public void unlock() {
-        int myticket = LOCAL.get();
-        serviceNum.compareAndSet(myticket, myticket + 1);
-    }
-}
-```
-
-CLHlock 
-链表的形式进行排序
-CLHlock是不停的查询前驱变量， 导致不适合在NUMA 架构下使用（在这种结构下，每个线程分布在不同的物理内存区域）
-```java
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
-public class CLHLock {
-    public static class CLHNode {
-        private volatile boolean isLocked = true;
-    }
-
-    @SuppressWarnings("unused")
-    private volatile CLHNode                                           tail;
-    private static final ThreadLocal<CLHNode>                          LOCAL   = new ThreadLocal<CLHNode>();
-    private static final AtomicReferenceFieldUpdater<CLHLock, CLHNode> UPDATER = AtomicReferenceFieldUpdater.newUpdater(CLHLock.class,CLHNode.class, "tail");
-
-    public void lock() {
-        CLHNode node = new CLHNode();
-        LOCAL.set(node);
-        CLHNode preNode = UPDATER.getAndSet(this, node);
-        if (preNode != null) {
-            while (preNode.isLocked) {
-            }
-            preNode = null;
-            LOCAL.set(node);
-        }
-    }
-
-    public void unlock() {
-        CLHNode node = LOCAL.get();
-        if (!UPDATER.compareAndSet(this, node, null)) {
-            node.isLocked = false;
-        }
-        node = null;
-    }
-}
-```
-
-MCSlock 
-MCSLock则是对本地变量的节点进行循环。不存在CLHlock 的问题。
-```java
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
-public class MCSLock {
-    public static class MCSNode {
-        volatile MCSNode next;
-        volatile boolean isLocked = true;
-    }
-
-    private static final ThreadLocal<MCSNode> NODE    = new ThreadLocal<MCSNode>();
-    @SuppressWarnings("unused")
-    private volatile MCSNode queue;
-    private static final AtomicReferenceFieldUpdater<MCSLock, MCSNode> UPDATER = AtomicReferenceFieldUpdater.newUpdater(MCSLock.class,MCSNode.class, "queue");
-
-    public void lock() {
-        MCSNode currentNode = new MCSNode();
-        NODE.set(currentNode);
-        MCSNode preNode = UPDATER.getAndSet(this, currentNode);
-        if (preNode != null) {
-            preNode.next = currentNode;
-            while (currentNode.isLocked) {
-
-            }
-        }
-    }
-
-    public void unlock() {
-        MCSNode currentNode = NODE.get();
-        if (currentNode.next == null) {
-            if (UPDATER.compareAndSet(this, currentNode, null)) {
-
-            } else {
-                while (currentNode.next == null) {
-                }
-            }
-        } else {
-            currentNode.next.isLocked = false;
-            currentNode.next = null;
-        }
-    }
-}
-```
-从代码上 看，CLH 要比 MCS 更简单，
-CLH 的队列是隐式的队列，没有真实的后继结点属性。
-MCS 的队列是显式的队列，有真实的后继结点属性。
-JUC ReentrantLock 默认内部使用的锁 即是 CLH锁（有很多改进的地方，将自旋锁换成了阻塞锁等等）。
-
-
-
----
-#创建
-```java
-Thread thread = new Thread(){
-        public void run(){
-
-        }
-}  
-Thread thread = new Thread(new Runnable(){
-          public void run(){
- 
-           }
-});
-```
-
-
 ---
 #资源同步
 #Synchronized
@@ -175,7 +28,6 @@ Thread thread = new Thread(new Runnable(){
 wait功能：线程在获取对象锁后，主动释放对象锁，同时本线程休眠。直到有其它线程调用对象的notify()唤醒该线程，才能继续获取对象锁，并继续执行。
 notify()就是对对象锁的唤醒操作
 notify()调用后，并不是马上就释放对象锁的，而是在相应的synchronized(){}语句块执行结束，自动释放锁后，JVM会在wait()对象锁的线程中随机选取一线程，赋予其对象锁，唤醒线程，继续执行。
-
 
 ##synchronized的实现方式
 [synchronized的实现方式](http://blog.csdn.net/feelang/article/details/40134631)
@@ -213,6 +65,7 @@ synchronized method 就等价于 synchronized (this) block
 
 ---
 #线程调度
+##wait /sleep
 wait和sleep比较：
 sleep方法有：sleep(long millis)，sleep(long millis, long nanos)，调用sleep方法后，当前线程进入休眠期，暂停执行，但该线程继续拥有监视资源的所有权。到达休眠时间后线程将继续执行，直到完成。若在休眠期另一线程中断该线程，则该线程退出。
 
@@ -221,31 +74,7 @@ wait()：等待有其它的线程调用notify()或notifyAll()进入调度状态�
 wait(long timeout)：当其它线程调用notify()或notifyAll()，或时间到达timeout亳秒，或有其它某线程中断该线程，则该线程进入调度状态。
 wait(long timeout, long nanos)：相当于wait(1000000*timeout + nanos)，只不过时间单位为纳秒。
 
-
-
-
----
-# 集合类
-[LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
-[CopyOnWrite](http://ifeve.com/java-copy-on-write/)
-添加的时候是需要加锁的，否则多线程写的时候会Copy出N个副本出来
-读的时候不需要加锁，如果读的时候有多个线程正在向ArrayList添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的ArrayList。
-
-CopyOnWrite的缺点
-CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题。
-
-
-
----
-#测试
-[模拟并发测试](http://forrest420.iteye.com/blog/1169071)
-[Future/Callable/Runnable基本](http://www.cnblogs.com/dolphin0520/p/3949310.html)
-
-
----
-#交互机制
 ##wait/notify/notifyAll
-
 ##CountdownLatch
 一个线程(或者多个)， 等待另外N个线程完成某个事情之后才能执行
 这种现象只出现一次——计数无法被重置。
@@ -272,6 +101,8 @@ InterruptedException - 如果当前线程在等待时被中断
 
 
 ##join
+public final void join() throws InterruptedException Waits for this thread to die. Throws: InterruptedException  - if any thread has interrupted the current thread. The interrupted status of the current thread is cleared when this exception is thrown.
+
 [Thread.join()详解](http://www.open-open.com/lib/view/open1371741636171.html)
 join是Thread类的一个方法，启动线程后直接调用
 如果子线程里要进行大量的耗时的运算，主线程往往将于子线程之前结束，但是如果主线程处理完其他的事务后，需要用到子线程的处理结果，也就是主线程需要等待子线程执行完成之后再结束，这个时候就要用到join()方法了。
@@ -281,35 +112,11 @@ Causes the current thread to wait until another thread invokes the notify() meth
 The current thread must own this object's monitor. The thread releases ownership of this monitor and waits until another thread notifies threads waiting on this object's monitor to wake up either through a call to the notify method or the notifyAll method. The thread then waits until it can re-obtain ownership of the monitor and resumes execution.
 
 
-
-
----
-# base module
-## Thread schedule
-priority 
-block
-
-sleep
-
 ##yield
 暂停当前正在执行的线程对象，并执行其他线程，目的是让相同优先级的线程之间能适当的轮转执行
 但是，实际中无法保证yield()达到让步目的，因为让步的线程还有可能被线程调度程序再次选中
 
 yield()方法执行时，当前线程仍处在可运行状态，所以，不可能让出较低优先级的线程些时获得 CPU 占有权，在一个运行系统中，如果较高优先级的线程没有调用 sleep 方法，又没有受到 I\O 阻塞，那么，较低优先级线程只能等待所有较高优先级的线程运行结束，才有机会运行。
-
-
-##join
-public final void join() throws InterruptedException Waits for this thread to die. Throws: InterruptedException  - if any thread has interrupted the current thread. The interrupted status of the current thread is cleared when this exception is thrown.
-
-##wait 
-
-##notify
-
-
-1 2 3 4 5 6 7 8 9 
-
-2 5 8
-
 
 ## sync collection
 vector hashmap
@@ -334,13 +141,51 @@ thread dump
 stave
 livelock
 
+
+---
+# 集合类
+[LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
+[CopyOnWrite](http://ifeve.com/java-copy-on-write/)
+添加的时候是需要加锁的，否则多线程写的时候会Copy出N个副本出来
+读的时候不需要加锁，如果读的时候有多个线程正在向ArrayList添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的ArrayList。
+
+CopyOnWrite的缺点
+CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题。
+
+
+---
+#测试
+[模拟并发测试](http://forrest420.iteye.com/blog/1169071)
+[Future/Callable/Runnable基本](http://www.cnblogs.com/dolphin0520/p/3949310.html)
+
+
+---
+#API
+##创建
+```java
+Thread thread = new Thread(){
+        public void run(){
+
+        }
+}  
+Thread thread = new Thread(new Runnable(){
+          public void run(){
+ 
+           }
+});
+```
+
+
+
+
+
+
 ---
 # performance
 ## Amdahl's law
 加速比是用并行前的执行速度和并行后的执行速度之比来表示的，它表示了在并行化之后的效率提升情况
 {W_s + W_p} / {{W_s + {W_p}/{p}}
 W_s, W_p分别表示问题规模的串行分量（问题中不能并行化的那一部分）和并行分量，p表示处理器数量
-
 p->infty => {W}/{W_s}
 {W}={W_s}+{W_p}
 这意味着无论我们如何增大处理器数目，加速比是无法高于这个数的。
@@ -348,22 +193,7 @@ p->infty => {W}/{W_s}
 context switch
 memory barrier
 block
-
 ## decrease lock compete 
-
-
----
-#并发测试
-thread.yeild
-
--xx: +PrintCompilation
-
-AbstractQueuedSynchronizer(AQS)
-
-
-non-blocking sync
-CAS
-compare and set
 
 
 ---

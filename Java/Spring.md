@@ -13,7 +13,16 @@ http://www.cnblogs.com/zrtqsk/p/3735273.html
 
 
 ---
-# theory
+#theory
+##IOC
+接口注入（Type 1 IoC）
+setter注入（Type 2 IoC）
+构造器注入（Type 3 IoC）
+
+IoC容器系列
+BeanFactory接口的简单容器系列
+ApplicationContext应用上下文，它作为容器的高级形态而存在
+
 ## 流程
 启动阶段
 PropertyPlaceholderConfigurer

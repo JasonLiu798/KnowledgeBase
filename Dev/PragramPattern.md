@@ -285,7 +285,6 @@ int main(int arg,char **argv){
     return 0;
 }
 
-<<<<<<< HEAD
 high
 |         |argv
 |    2    |arg
@@ -547,14 +546,62 @@ void foo()
 
 ---
 #C14
+C语言函数调用完成后，不会清理活动记录，因此下个函数调用可以读取到上个函数留下的数据
+```
+initArray();
+printArray();
+```
+
+##可变参数数量
+```c
+printf(char *,...);
+printf("%d+%d=%d",4,4,8);
+
+|  8    |
+|  4    | 
+|  4    |
+|       | "%d+%d=%d"
+| spc   |
+
+struct base{
+    int abc;
+};
+struct typeone{
+    int code;
 
 
+};
+struct typetwo{
+    int code;
+};
+```
 
+##进程切换
+内存管理
+虚地址->物理地址
 
+---
+#C15 进程切换
+共享变量
+临界区
+信号量
+```c
+while(true){
+    SemaphoreWait(lock);
+    if(*numTicket==0) 
+        break;
+    (*numTickets)--;
+    SemaphoreSignal(lock);
+}
+SemaphoreSignal(lock);
 
+```
 
-
-
+---
+#C16 
+信号量
+生产者-消费者
+死锁：哲学家问题
 
 
 

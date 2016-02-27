@@ -603,6 +603,180 @@ SemaphoreSignal(lock);
 生产者-消费者
 死锁：哲学家问题
 
+---
+#C17
+多进程下载同步问题
+用信号量进程调度
+
+---
+#C18
+冰淇淋店问题
+
+---
+#C19 OOP
+producure 不关心返回值
+function 面向返回值
+functional language:scheme
+```bash
+(define c->f(temp)
+    (+32(*1.8 temp)))
+
+> (c->f 100)
+212
+```
+
+##kawa语言
+[The Kawa Scheme language](http://www.gnu.org/software/kawa/index.html)
+```
+>4
+4
+>"hello"
+hello
+>#f
+#f
+>#t
+#t
+>11.752
+11.752
+>11/5
+11/5
+>22/4
+11/2
+>(+ 1 2 3)
+6
+>(*(+ 4 4))
+    (+ 5 5))
+80
+>(> 4 2)
+#t
+>(< 10 5)
+#f
+>(and (> 4 2)
+      (< 10 5))
+#f
+```
+
+##car
+```
+>(car '(1 2 3 4 5))
+1
+```
+
+##cdr
+```
+>(cdr '(1 2 3 4 5))
+(2 3 4 5)
+>(car(cdr (cdr '(1 2 3 4 5))))
+3
+```
+AR address register
+DR data register
+
+##cms
+```
+>(cms 1 '(2 3 4 5))
+(1 2 3 4 5)
+>(cmd '(1 2 3) '(4 5))
+((1 2 3) 4 5)
+```
+
+```
+>(append (1 2 3) (4 5))
+(1 2 3 4 5)
+
+>(define add (x y)
+    (+ x y)) 
+ADD
+>(add 10 7)
+17
+>(add "H" "there")
+>(sum-of '(1 2 3 4))
+(define sum-of(numlist)
+    (if (null? numlist) 0
+        (+ (car numlist)
+           (sum-of (car numlist)))))
+```
+
+#C20
+```
+>(define sum-list(num-list)
+    (if (null? num-list) 0
+        (+ (car num-list)
+           (num-list (cdr num-list)))))
+>(sum-list ("hello" 1 2 3 4 5))
+```
+
+##fib
+```
+>(define fib(n)
+    (if (zero? n) 0
+        (if (= n 1) 1
+            (+ (fib (- n 1))
+               (fib (- n 2))))))
+
+>(define fib(n)
+    (if (or (= n 0)
+            (= n 1)) n
+        (+ (fib (- n 1))
+            (fib (- n 2))))
+)
+>(if (zero? 0) 4
+     (+ "hello" 4.5 '(8 2)))
+```
+
+
+##flatten
+```
+>(flatten '(1 2 3 4))
+(1 2 3 4)
+>(flatten '(1 (2 3) 4 ((5))))
+(1 2 3 4 5)
+```
+
+##cond
+
+##cons
+```
+>(cons 4 '(1 5 7))
+(4 1 5 7)
+```
+
+
+```
+(define flatten (sequence)
+    (cond (((null? sequence) '())
+           ((list? (car sequence))
+                (append (flatten (car sequence))
+                        (flatten (cdr sequence) ) )
+           )
+           (else (cons (car sequence)
+                    (flatten (cdr sequence))))
+            )))
+```
+
+##sorted
+```
+>(sorted? '(1 2 2 4 7))
+#t
+
+(define sorted? (num-list)
+    (or (< (length num-list) 2)
+        (and (<= (car num-list)
+                 (cadr num-list))
+             (sorted? (cdr num-list)))))
+
+```
+
+##函数式编程实现
+符号表
+函数对象，指向代码
+
+
+
+
+
+
+
 
 
 

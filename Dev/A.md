@@ -22,6 +22,8 @@ head节点
 
 
 
+[要写易删除，而不易扩展的代码](http://geek.csdn.net/news/detail/56464)
+
 
 
 

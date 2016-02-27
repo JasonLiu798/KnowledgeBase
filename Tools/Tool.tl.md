@@ -149,6 +149,11 @@ Java Mission Control JMC
 
 [mac-Valgrind-内存调试、内存泄漏检测以及性能分析](http://valgrind.org/)
 
+
+#UML
+http://jude.change-vision.com/jude-web/product/community.html
+[多平台](http://staruml.io/)
+
 #shell
 [shell json 处理](https://stedolan.github.io/jq/)
 ## mosh 异步ssh 

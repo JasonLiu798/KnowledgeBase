@@ -775,6 +775,64 @@ ADD
 #C21
 apply
 eval
+lambda
+
+---
+#C22 let permute
+powerset
+
+##let
+```
+(define (ps set)
+    (if (null? set) '(())
+        (let ((ps-rset (ps (cdr set))))
+            (append ps-rest 
+                (map (lambda (subset)
+                    (cons (car set) subset))
+                    ps-rest)))))
+
+(let* ((x expr1)
+      (y expr2)
+      (z expr3)
+      for(x,y,z) )
+```
+
+```
+(define (permute items)
+    (if (null? items) '(())
+    (apply append 
+        (map (lambda (elem) 
+            (map (lambda (permutation)
+                (cms elem permutation))
+                (permute (remove items elem))))
+        items)
+    )
+)
+
+
+
+```
+
+#C23 scheme实现
+#C24 python基础
+#C25 python对象实质
+#C26 xml解析
+#C27 rss xml解析
+#C28 haskell
+lisp/scheme 1959
+ML/OCaml 1979
+miranda 1985
+Haskell 98 (2003)
+
+
+
+
+
+
+
+
+
+
 
 
 

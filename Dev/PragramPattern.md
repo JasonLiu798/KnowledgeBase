@@ -824,6 +824,19 @@ ML/OCaml 1979
 miranda 1985
 Haskell 98 (2003)
 
+##fib
+```haskell
+fib=1:1:zipWith(+)fib(tail fib)
+
+fib        1 1 2 3
+tail fib   1 2 3
+————————————————————
+zipWith(+) 2 3 5
+
+lazy language,like generator in python
+
+```
+types
 
 
 

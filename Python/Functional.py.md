@@ -39,6 +39,13 @@ public lambda int Function( int p, Random random )//编译错误，不允许引�
 函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数
 
 [Y不动点组合子](https://www.zhihu.com/question/21099081)
+```python
+( lambda f. lambda n. n==0 ? 1 : n*((f f) (n-1)) ) ( lambda f. lambda n. n==0 ? 1 : n*((f f) (n-1)) ) 4
+
+let F = lambda f: lambda n: n==0 ? 1 : n*((f f) (n-1))
+
+( lambda f: lambda n: n==0?1:n*((f f)(n-1))) ( lambda f: lambda n: n==0 ? 1 : n*((f f) (n-1)) ) 4
+```
 
 
 ##map

@@ -125,29 +125,102 @@ DP算法
 设计层次：
 加速的另一面是减慢
 
+---
+#C10 压缩空间
+##数据空间技术
+* 不要保存，重新计算     
+generator
+急剧减小保存此类对象空间
+适用：有规律对象，随机生成器
+用途：网络传输，空间有限
+
+* 稀松数据结构        
+稀松矩阵
+
+* 数据压缩      
+
+* 分配策略      
+需要时才分配
+
+* 垃圾回收      
+高速缓存敏感的内存布局
+
+##10.4 编码空间技术
+* 解释器       
+* 转换成机器语言
+
+##10.5 原则
+* 空间成本      
+热点数据
+* 度量空间      
+性能监视器
+* 权衡
+性能、功能、可维护性
+* 和环境协作
 
 
+---
+#P3产品
+#C11 排序
+##11.1 插入排序
+```
+for i=[1,n)
+    for (j=i;j>0 && x[j-1]>x[j]; j--)
+        swap(j-1,j)
+
+for i=[1,n)
+    t=x[i]
+    for (j=i;j>0 && x[j-1]>x[j]; j--)
+        x[j]=x[j-1]
+    x[j]=t
+```
+```python
+l=[3,1,4,2,6,8,5]
+def insertSortInplace(l):
+    for i in range(1,len(l)):
+        for j in range(0,i):
+            if l[i]<l[j]:
+                tmp=l[i]
+                for k in range(i,j,-1):
+                    l[k]=l[k-1]
+                l[j]=tmp
+                break
+
+insertSortInplace(l)
+print l
+```
+##11.2 快速排序
+```
+voie qsort3(l,u)
+    if l>=u
+        return
+    t=x[l];i=l;j=u+1
+    loop
+        do i++ while i<=u && x[i]<t
+        do j-- while x[j] > t
+        if i>j
+            break
+        swap(i,j)
+    swap(l,j)
+    qsort3(l,j-1)
+    qsort3(j+1,u)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+voie qsort4(l,u)
+    if u-l<cutoff
+        return
+    swap(l,randint(l,u))
+    t=x[l];i=l;j=u+1
+    loop
+        do i++ while i<=u && x[i]<t
+        do j-- while x[j] > t
+        if i>j
+            break
+        temp=x[i];x[i]=x[j];x[j]=temp
+    swap(l,j)
+    qsort4(l,j-1)
+    qsort4(j+1,u)
+```
 
 
 

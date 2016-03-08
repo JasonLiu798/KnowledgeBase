@@ -11,6 +11,7 @@ http://download.csdn.net/detail/flybirds98/1934334
 [deeplearning](http://www.deeplearningbook.org/)
 [Github上的十大机器学习项目](http://geek.csdn.net/news/detail/52337)
 [深度学习2015年文章整理（CVPR2015）](http://blog.csdn.net/u010402786/article/details/50548996)
+[CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的内部网络结构有什么区别？](https://www.zhihu.com/question/34681168#answer-29055567)
 ---
 #book
 统计学习方法

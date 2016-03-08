@@ -73,7 +73,7 @@ ldconfig –v
 http://os.51cto.com/art/201003/187533.htm
 
 ---
-#时间相关
+#date时间相关
 ntpdate asia.pool.ntp.org >> /var/log/ntpdate.log
 ntpdate time.windows.com
 asia.pool.ntp.org

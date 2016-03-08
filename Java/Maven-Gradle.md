@@ -170,6 +170,8 @@ mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase -Dversion
 
 ---
 #plugins
+assembly
+http://blueram.iteye.com/blog/1684070
 ## main class
     shade
     <plugin>

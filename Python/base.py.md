@@ -70,7 +70,11 @@ and,or,not
 None
 
 ##类型判断
+```python
 type()
+isinstance(a, int)
+```
+
 ##正则
 import re
 >>> re.match(r'^\d{3}\-\d{3,8}$', '010-12345')
@@ -595,7 +599,7 @@ raise NameError,("There is a name error","in test.py")
 tuple = sys.exc_info()  
 ##常用异常类
 Error
-AttributeError：属性错误，特性引用和赋值失败时会引发属性错误
+AttributeError 属性错误，特性引用和赋值失败时会引发属性错误
 NameError：试图访问的变量名不存在
 SyntaxError：语法错误，代码形式错误
 Exception：所有异常的基类，因为所有python异常类都是基类Exception的其中一员，异常都是从基类Exception继承的，并且都在exceptions模块中定义。
@@ -691,6 +695,9 @@ if __name__ == '__main__':
 
 python -m unittest mydict_test
 ```
+
+
+[format](http://www.jb51.net/article/63672.htm)
 
 ##文档测试
 doctest

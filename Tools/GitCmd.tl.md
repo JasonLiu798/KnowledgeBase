@@ -168,7 +168,10 @@ git branch -d <name>
 #删除 本地存在  and 远端不存在 分支
 git remote show origin #查看
 git fetch -p #删除
+#删除远程分支
+git push origin --delete <branchName>
 ```
+
 ## git branch 重命名本地分支
     git branch -m {oldName} {newName}
 ## 重命名远程分支

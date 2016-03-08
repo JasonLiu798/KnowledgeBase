@@ -69,6 +69,36 @@ Bindings are how the messages get routed from the exchange to particular queues.
 ##ubuntu
 apt-get update
 apt-get install rabbitmq-server
+##centos
+yum install erlang  
+yum install rabbitmq-server
+
+/etc/init.d/rabbitmq-server start 
+启动:
+rabbitmq-server –detached
+关闭:
+rabbitmqctl stop
+
+管理软件
+rabbitmq-plugins enable rabbitmq_management  
+service rabbitmq-server restart  
+http://127.0.0.1:15672
+
+rabbitmqctl add_user test test
+rabbitmqctl delete_user test
+
+
+
+
+##erlang
+sudo epmd -d -d -d -d -d -d -d -d -d
+
+##epmd
+[epmd](http://www.cnblogs.com/me-sa/p/erlang-epmd.html)
+epmd 是Erlang Port Mapper Daemon的缩写,全称足够明确表达它的功能了(相比之下,OTP就是一个难以从字面理解的名字);epmd完成Erlang节点和IP,端口的映射关系,
+epmd -names
+
+
 
 ---
 #common command

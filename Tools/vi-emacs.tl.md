@@ -190,6 +190,10 @@ U return the last line to its original state
 :set fileencoding
 set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936
 
+显示所有字符
+:set list/nolist ==>设置是否显示不可见字符，注意此选项受set listchars约束。
+:%s/\n//g ==>删除换行符
+
 ##替换replace
 http://tanqisen.github.io/blog/2013/01/13/vim-search-replace-regex/
 [vi替换](http://os.51cto.com/art/200907/140987.htm)

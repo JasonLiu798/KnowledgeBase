@@ -142,6 +142,7 @@ ps:  iptables设置
 #SSH
 ##ssh认证
 http://www.cnblogs.com/jdksummer/articles/2521550.html
+[SSH25个命令 + 深入SSH端口转发细节](http://itindex.net/detail/45394-ssh25-%E5%91%BD%E4%BB%A4-ssh)
 ```bash
 ssh-keygen -t rsa
 chmod o-w ~/

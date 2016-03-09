@@ -124,3 +124,19 @@ zklog2txt /opt/zookeeper/zookeeperdir/logs/version-2/log.300000001 /opt/zookeepe
         #org.apache.zookeeper.server.LogFormatter "$LogFile"
         JAVA_OPTS="$JAVA_OPTS -Djava.ext.dirs=$zkDir:$zkDir/lib"
         java $JAVA_OPTS org.apache.zookeeper.server.LogFormatter "$LogFile"
+
+
+
+---
+#zkclient
+```bash
+zkServer.sh status 
+zkCli.sh -server 192.168.143.4:2181
+ls / 
+get /zk 
+```
+
+
+
+
+

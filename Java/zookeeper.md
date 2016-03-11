@@ -133,7 +133,9 @@ zklog2txt /opt/zookeeper/zookeeperdir/logs/version-2/log.300000001 /opt/zookeepe
 zkServer.sh status 
 zkCli.sh -server 192.168.143.4:2181
 ls / 
-get /zk 
+get /zk
+set /zk "zsl"
+delete /zk
 ```
 
 

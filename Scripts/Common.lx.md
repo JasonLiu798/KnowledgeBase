@@ -573,7 +573,10 @@ rebase
 
 
 
-
+---
+#logging banner
+/etc/issue  用户登录前显示
+/etc/motd   用户登录后显示
 
 
 

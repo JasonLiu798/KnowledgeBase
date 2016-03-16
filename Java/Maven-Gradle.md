@@ -120,6 +120,12 @@ mvn dependency:list   #最终列表
 mvn dependency:tree   #树型结构
 mvn dependency:analyze
 
+##跳过测试
+-Dmaven.test.skip=true
+
+##生成源码包
+mvn source:jar
+
 ### 下源码/文档
 mvn dependency:sources
 mvn dependency:resolve -Dclassifier=javadoc

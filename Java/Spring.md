@@ -70,6 +70,8 @@ BeanFactory
 [AOP 那点事儿](http://my.oschina.net/huangyong/blog/161338)
 spring支持AspectJ风格的AOP还是动态的，标注中用到的JoinPoint等类都来自aspectj包
 AspectJ可用于基于普通Java对象的模块化
+[比较分析 Spring AOP 和 AspectJ 之间的差别](http://www.oschina.net/translate/comparative_analysis_between_spring_aop_and_aspectj)
+
 
 ### Pointcut
 NameMatchMethodPointcut

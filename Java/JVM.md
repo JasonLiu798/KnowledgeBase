@@ -1,8 +1,13 @@
 #JVM
 ---
+#doc
+[编程语言与高级语言虚拟机杂谈](http://zhuanlan.zhihu.com/hllvm)
+
+---
 #theory
 [栈式虚拟机和寄存器式虚拟机](http://www.zhihu.com/question/35777031)
 [寄存器分配问题](http://www.zhihu.com/question/29355187)
+
 ##procedure
 编译
 装载class

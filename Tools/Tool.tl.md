@@ -6,6 +6,14 @@
 
 ---
 #sys系统
+##mac
+⌘——Command ()
+⌃ ——Control
+⌥——Option (alt)
+⇧——Shift
+⇪——Caps Lock
+fn——功能键就是fn
+
 ##disk磁盘
 CCleaner：全球下载超过1000万次的磁盘清理工具；
 Defraggler：磁盘整理；

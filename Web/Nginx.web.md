@@ -61,6 +61,7 @@ Nginx开机启动
 ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist     #启动
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist   #关闭
+```
 
 ##alias快捷启动命令
 alias nginx.start='launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'

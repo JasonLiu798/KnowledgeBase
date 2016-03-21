@@ -3,6 +3,7 @@
 #theory
 [mq comparison](http://blog.csdn.net/joeyon1985/article/details/38487395)
 
+[performance](http://bravenewgeek.com/dissecting-message-queues/)
 
 ---
 #JMS

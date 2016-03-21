@@ -146,8 +146,11 @@ git push
         gir checkout [branch name]
     
 ## git branch 查看分支
-    git branch
-    git branch -av      #查看远程分支
+```bash
+git branch
+git branch -av      #查看远程分支
+git br -vv #查看本地分支跟踪的远程分支
+```
 ##切换分支
     git checkout [branch name]
 ## git checkout 签出分支
@@ -159,7 +162,16 @@ git push
     git checkout --track origin/serverfix
 
 ## git branch 删除
-    git branch -d <name>
+```bash
+git branch -d <name>
+
+#删除 本地存在  and 远端不存在 分支
+git remote show origin #查看
+git fetch -p #删除
+#删除远程分支
+git push origin --delete <branchName>
+```
+
 ## git branch 重命名本地分支
     git branch -m {oldName} {newName}
 ## 重命名远程分支
@@ -267,7 +279,6 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 `git log无颜色版（moba颜色显示有问题）`
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit" 
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit --graph"
-
 
 ###--pretty=format参数
 %H   提交对象（commit）的完整哈希字串 

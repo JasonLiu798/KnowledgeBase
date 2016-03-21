@@ -3,6 +3,10 @@
 ![语法速查](../img/python-grammer.jpg)
 [Python 2.7教程](http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000)
 [你见过哪些令你瞠目结舌的 Python 代码技巧？](https://www.zhihu.com/question/37904398)
+The Hitchhiker’s Guide to Python!
+Python 源码剖析
+
+
 ----
 #语法-变量
 #变量判断
@@ -66,7 +70,11 @@ and,or,not
 None
 
 ##类型判断
+```python
 type()
+isinstance(a, int)
+```
+
 ##正则
 import re
 >>> re.match(r'^\d{3}\-\d{3,8}$', '010-12345')
@@ -591,7 +599,7 @@ raise NameError,("There is a name error","in test.py")
 tuple = sys.exc_info()  
 ##常用异常类
 Error
-AttributeError：属性错误，特性引用和赋值失败时会引发属性错误
+AttributeError 属性错误，特性引用和赋值失败时会引发属性错误
 NameError：试图访问的变量名不存在
 SyntaxError：语法错误，代码形式错误
 Exception：所有异常的基类，因为所有python异常类都是基类Exception的其中一员，异常都是从基类Exception继承的，并且都在exceptions模块中定义。
@@ -687,6 +695,9 @@ if __name__ == '__main__':
 
 python -m unittest mydict_test
 ```
+
+
+[format](http://www.jb51.net/article/63672.htm)
 
 ##文档测试
 doctest

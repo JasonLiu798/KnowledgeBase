@@ -13,7 +13,16 @@ http://www.cnblogs.com/zrtqsk/p/3735273.html
 
 
 ---
-# theory
+#theory
+##IOC
+接口注入（Type 1 IoC）
+setter注入（Type 2 IoC）
+构造器注入（Type 3 IoC）
+
+IoC容器系列
+BeanFactory接口的简单容器系列
+ApplicationContext应用上下文，它作为容器的高级形态而存在
+
 ## 流程
 启动阶段
 PropertyPlaceholderConfigurer
@@ -61,6 +70,8 @@ BeanFactory
 [AOP 那点事儿](http://my.oschina.net/huangyong/blog/161338)
 spring支持AspectJ风格的AOP还是动态的，标注中用到的JoinPoint等类都来自aspectj包
 AspectJ可用于基于普通Java对象的模块化
+[比较分析 Spring AOP 和 AspectJ 之间的差别](http://www.oschina.net/translate/comparative_analysis_between_spring_aop_and_aspectj)
+
 
 ### Pointcut
 NameMatchMethodPointcut

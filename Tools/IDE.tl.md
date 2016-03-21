@@ -186,6 +186,10 @@ Deployment目录选择要部署的web应用，注意此处一定要选到WebCont
 JRebel Plugin
 http://wibiline.iteye.com/blog/2073399
 
+##Q
+idea jdk无法识别，重导入项目无效
+http://stackoverflow.com/questions/10612813/intellij-idea-cant-setup-jdk
+File | Invalidate Caches is the first thing you should try in case of such issues.
 
 
 

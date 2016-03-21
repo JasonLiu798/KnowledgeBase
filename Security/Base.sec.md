@@ -7,9 +7,15 @@
 
 
 ---
-#XSS
+#XSS攻击
 [DOM-based XSS 与 存储性XSS、反射型XSS有什么区别](http://www.zhihu.com/question/26628342)
+##反射型
+点击恶意脚本url，脚本自动攻击
+##存储型
+恶意脚本存储在web站点
+##对比
 易用上，存储型XSS > DOM - XSS > 反射型 XSS
+
 ##XSS Worm
 
 ##Flash XSS
@@ -21,8 +27,41 @@ jQuery html()方法可能
 [AngularJS – 如何处理 XSS 漏洞](http://www.oschina.net/translate/angularjs-handle-xss-vulnerability-scenarios)
 
 ##防御
-HttpOnly
-Cookie IP绑定
+* 消毒
+    过滤标签，特殊字符，转义
+* HttpOnly
+* Cookie IP绑定
+
+
+---
+#注入攻击
+##SQL注入
+开源
+错误回显
+盲注
+
+##防御
+* 消毒，过滤sql
+* 参数绑定
+OS注入
+
+---
+#CSRF攻击
+跨站点请求伪造
+##防御
+* 表单Token
+* 验证码
+* Refere check
+
+
+---
+#web应用防火墙
+ModSecurity
+
+
+
+
+
 
 
 ---

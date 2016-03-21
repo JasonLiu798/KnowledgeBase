@@ -1,12 +1,18 @@
 #Zookeeper
 ---
-#dev
+#docs
 [Zookeeper入门开发demo](http://www.cnblogs.com/chengxin1982/p/3997726.html)
 
 ---
 #theory
 [zookeeper的部署和使用](http://wangwei.cao.blog.163.com/blog/static/102362526201022414553362/)
 [zookeeper原理](http://cailin.iteye.com/blog/2014486/)
+##特点
+简单：核心是精简的文件系统
+富有表现力：原语操作室一组丰富的构件
+高可用性：
+松耦合交互
+资源库
 
 ##设计目的
 1最终一致性：client不论连接到哪个Server，展示给它都是同一个视图，这是zookeeper最重要的性能
@@ -16,7 +22,11 @@
 5原子性：更新只能成功或者失败，没有中间状态。
 6顺序性：包括全局有序和偏序两种：全局有序是指如果在一台服务器上消息a在消息b前发布，则在所有Server上消息a都将在消息b前被发布；偏序是指如果一个消息b在消息a后被同一个发送者发布，a必将排在b前面。
 
-Zab协议
+##Zab协议
+阶段1：选主
+阶段2：原子广播
+阶段3：
+不同于paxos算法，操作方面不同，例如依靠TCP保证消息顺序
 
 ##Server三种状态
 LOOKING：当前Server不知道leader是谁，正在搜寻
@@ -24,11 +34,11 @@ LEADING：当前Server即为选举出来的leader
 FOLLOWING：leader已经选举出来，当前Server与之同步
 
 ##选主
-一种是基于basic paxos实现的，另外一种是基于fast paxos算法实现的。系统默认的选举算法为fast paxos
+一种是基于basic paxos实现的，另外一种是基于fast paxos算法实现的
+系统默认的选举算法为fast paxos
 
 ###zxid
 递增的事务id号（zxid）来标识事务。所有的提议（proposal）都在被提出的时候加上了zxid。实现中zxid是一个64位的数字，它高32位是epoch用来标识leader关系是否改变，每次一个leader被选出来，它都会有一个新的epoch，标识当前属于那个leader的统治时期。低32位用于递增计数。
-
 
 ###basic paxos流程
 1选举线程由当前Server发起选举的线程担任，其主要功能是对投票结果进行统计，并选出推荐的Server；
@@ -114,3 +124,21 @@ zklog2txt /opt/zookeeper/zookeeperdir/logs/version-2/log.300000001 /opt/zookeepe
         #org.apache.zookeeper.server.LogFormatter "$LogFile"
         JAVA_OPTS="$JAVA_OPTS -Djava.ext.dirs=$zkDir:$zkDir/lib"
         java $JAVA_OPTS org.apache.zookeeper.server.LogFormatter "$LogFile"
+
+
+
+---
+#zkclient
+```bash
+zkServer.sh status 
+zkCli.sh -server 192.168.143.4:2181
+ls / 
+get /zk
+set /zk "zsl"
+delete /zk
+```
+
+
+
+
+

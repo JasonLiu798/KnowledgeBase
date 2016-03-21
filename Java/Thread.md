@@ -1,5 +1,26 @@
 #Java Thread Concurrent
 ---
+#theory
+一个Thread类实例只是一个对象，像Java中的任何其他对象一样，具有变量和方法，生死于堆上。
+Java中，每个线程都有一个调用栈，即使不在程序中创建任何新的线程，线程也在后台运行着，比如GC中的线程。
+
+创建一个新的线程，就产生一个新的调用栈。
+线程总体分两类：用户线程和守候线程。
+一个线程可以创建和撤消另一个线程，同一进程中的多个线程之间可以并发执行
+
+线程也有就绪、阻塞和运行三种基本状态
+当所有用户线程执行完毕的时候，JVM自动关闭。但是守候线程却独立于JVM，守候线程一般是由操作系统或者用户自己创建的
+
+
+线程的几种状态
+　　在Java当中，线程通常都有五种状态，创建、就绪、运行、阻塞和死亡。
+　　第一是创建状态。在生成线程对象，并没有调用该对象的start方法，这是线程处于创建状态。
+　　第二是就绪状态。当调用了线程对象的start方法之后，该线程就进入了就绪状态，但是此时线程调度程序还没有把该线程设置为当前线程，此时处于就绪状态。在线程运行之后，从等待或者睡眠中回来之后，也会处于就绪状态。
+　　第三是运行状态。线程调度程序将处于就绪状态的线程设置为当前线程，此时线程就进入了运行状态，开始运行run函数当中的代码。
+　　第四是阻塞状态。线程正在运行的时候，被暂停，通常是为了等待某个时间的发生(比如说某项资源就绪)之后再继续运行。sleep,suspend，wait等方法都可以导致线程阻塞。
+　　第五是死亡状态。如果一个线程的run方法执行结束或者调用stop方法后，该线程就会死亡。对于已经死亡的线程，无法再使用start方法令其进入就绪。
+
+---
 #资源同步
 #Synchronized
 [synchronized关键字详解](http://www.cnblogs.com/mengdd/archive/2013/02/16/2913806.html)
@@ -7,7 +28,6 @@
 wait功能：线程在获取对象锁后，主动释放对象锁，同时本线程休眠。直到有其它线程调用对象的notify()唤醒该线程，才能继续获取对象锁，并继续执行。
 notify()就是对对象锁的唤醒操作
 notify()调用后，并不是马上就释放对象锁的，而是在相应的synchronized(){}语句块执行结束，自动释放锁后，JVM会在wait()对象锁的线程中随机选取一线程，赋予其对象锁，唤醒线程，继续执行。
-
 
 ##synchronized的实现方式
 [synchronized的实现方式](http://blog.csdn.net/feelang/article/details/40134631)
@@ -43,22 +63,18 @@ synchronized method 就等价于 synchronized (this) block
 [synchronized 与 Lock 的那点事](http://www.cnblogs.com/benshan/p/3551987.html)
 
 
-
 ---
-# 集合类
-[LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
+#线程调度
+##wait /sleep
+wait和sleep比较：
+sleep方法有：sleep(long millis)，sleep(long millis, long nanos)，调用sleep方法后，当前线程进入休眠期，暂停执行，但该线程继续拥有监视资源的所有权。到达休眠时间后线程将继续执行，直到完成。若在休眠期另一线程中断该线程，则该线程退出。
 
+wait方法有：wait()，wait(long timeout)，wait(long timeout, long nanos)，调用wait方法后，该线程放弃监视资源的所有权进入等待状态；
+wait()：等待有其它的线程调用notify()或notifyAll()进入调度状态，与其它线程共同争夺监视。wait()相当于wait(0)，wait(0, 0)。
+wait(long timeout)：当其它线程调用notify()或notifyAll()，或时间到达timeout亳秒，或有其它某线程中断该线程，则该线程进入调度状态。
+wait(long timeout, long nanos)：相当于wait(1000000*timeout + nanos)，只不过时间单位为纳秒。
 
----
-#测试
-[模拟并发测试](http://forrest420.iteye.com/blog/1169071)
-[Future/Callable/Runnable基本](http://www.cnblogs.com/dolphin0520/p/3949310.html)
-
-
----
-#交互机制
 ##wait/notify/notifyAll
-
 ##CountdownLatch
 一个线程(或者多个)， 等待另外N个线程完成某个事情之后才能执行
 这种现象只出现一次——计数无法被重置。
@@ -85,6 +101,8 @@ InterruptedException - 如果当前线程在等待时被中断
 
 
 ##join
+public final void join() throws InterruptedException Waits for this thread to die. Throws: InterruptedException  - if any thread has interrupted the current thread. The interrupted status of the current thread is cleared when this exception is thrown.
+
 [Thread.join()详解](http://www.open-open.com/lib/view/open1371741636171.html)
 join是Thread类的一个方法，启动线程后直接调用
 如果子线程里要进行大量的耗时的运算，主线程往往将于子线程之前结束，但是如果主线程处理完其他的事务后，需要用到子线程的处理结果，也就是主线程需要等待子线程执行完成之后再结束，这个时候就要用到join()方法了。
@@ -94,35 +112,11 @@ Causes the current thread to wait until another thread invokes the notify() meth
 The current thread must own this object's monitor. The thread releases ownership of this monitor and waits until another thread notifies threads waiting on this object's monitor to wake up either through a call to the notify method or the notifyAll method. The thread then waits until it can re-obtain ownership of the monitor and resumes execution.
 
 
-
-
----
-# base module
-## Thread schedule
-priority 
-block
-
-sleep
-
 ##yield
 暂停当前正在执行的线程对象，并执行其他线程，目的是让相同优先级的线程之间能适当的轮转执行
 但是，实际中无法保证yield()达到让步目的，因为让步的线程还有可能被线程调度程序再次选中
 
 yield()方法执行时，当前线程仍处在可运行状态，所以，不可能让出较低优先级的线程些时获得 CPU 占有权，在一个运行系统中，如果较高优先级的线程没有调用 sleep 方法，又没有受到 I\O 阻塞，那么，较低优先级线程只能等待所有较高优先级的线程运行结束，才有机会运行。
-
-
-##join
-public final void join() throws InterruptedException Waits for this thread to die. Throws: InterruptedException  - if any thread has interrupted the current thread. The interrupted status of the current thread is cleared when this exception is thrown.
-
-##wait 
-
-##notify
-
-
-1 2 3 4 5 6 7 8 9 
-
-2 5 8
-
 
 ## sync collection
 vector hashmap
@@ -147,13 +141,51 @@ thread dump
 stave
 livelock
 
+
+---
+# 集合类
+[LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
+[CopyOnWrite](http://ifeve.com/java-copy-on-write/)
+添加的时候是需要加锁的，否则多线程写的时候会Copy出N个副本出来
+读的时候不需要加锁，如果读的时候有多个线程正在向ArrayList添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的ArrayList。
+
+CopyOnWrite的缺点
+CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题。
+
+
+---
+#测试
+[模拟并发测试](http://forrest420.iteye.com/blog/1169071)
+[Future/Callable/Runnable基本](http://www.cnblogs.com/dolphin0520/p/3949310.html)
+
+
+---
+#API
+##创建
+```java
+Thread thread = new Thread(){
+        public void run(){
+
+        }
+}  
+Thread thread = new Thread(new Runnable(){
+          public void run(){
+ 
+           }
+});
+```
+
+
+
+
+
+
 ---
 # performance
 ## Amdahl's law
 加速比是用并行前的执行速度和并行后的执行速度之比来表示的，它表示了在并行化之后的效率提升情况
 {W_s + W_p} / {{W_s + {W_p}/{p}}
 W_s, W_p分别表示问题规模的串行分量（问题中不能并行化的那一部分）和并行分量，p表示处理器数量
-
 p->infty => {W}/{W_s}
 {W}={W_s}+{W_p}
 这意味着无论我们如何增大处理器数目，加速比是无法高于这个数的。
@@ -161,22 +193,71 @@ p->infty => {W}/{W_s}
 context switch
 memory barrier
 block
-
 ## decrease lock compete 
 
 
 ---
-#并发测试
-thread.yeild
+#实现
+1:1（内核线程）、N:1（用户态线程）、M:N（混合）模型
+HotSpot VM
+在这个JVM的较新版本所支持的所有平台上，它都是使用1:1线程模型的——除了Solaris之外
 
--xx: +PrintCompilation
+http://www.oracle.com/technetwork/java/threads-140302.html
 
-AbstractQueuedSynchronizer(AQS)
+##synchronized
+```java
+typedef struct monitor {  
+pthread_mutex_t lock;  
+Thread *owner;  
+Object *obj;  
+int count;  
+int in_wait;  
+uintptr_t entering;  
+int wait_count;  
+Thread *wait_set;  
+struct monitor *next;  
+} Monitor;  
 
 
-non-blocking sync
-CAS
-compare and set
+void monitorLock(Monitor *mon, Thread *self) {  
+    if(mon->owner == self)  
+        mon->count++;  
+    else {  
+        if(pthread_mutex_trylock(&mon->lock)) {  
+            disableSuspend(self);  
+              
+            self->blocked_mon = mon;  
+            self->blocked_count++;  
+            self->state = BLOCKED;//
+              
+            pthread_mutex_lock(&mon->lock);  
+              
+            self->state = RUNNING;  
+            self->blocked_mon = NULL;  
+              
+            enableSuspend(self);  
+        }  
+        mon->owner = self;  
+    }  
+}  
+```
+
+
+----
+
+[threadlocal](http://blog.csdn.net/lufeng20/article/details/24314381)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

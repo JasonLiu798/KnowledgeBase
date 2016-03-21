@@ -36,3 +36,7 @@
 获得特技飞机	BARNSTORM	1-999-2276-78676
 获得垃圾车	TRASHED	1-999-872-433
 
+
+steam gal
+http://bangumi.tv/index/18224
+http://bbs.tgbus.com/thread-5546460-1-1.html

@@ -307,7 +307,6 @@ mbuf：zero copy
     large mbuf allows us to read and write more data to and from kernel socket buffers，单个连接读写效率高
 
 
-
 ## keepalived
 http://heylinux.com/archives/1942.html
 

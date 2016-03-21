@@ -73,7 +73,7 @@ ldconfig –v
 http://os.51cto.com/art/201003/187533.htm
 
 ---
-#时间相关
+#date时间相关
 ntpdate asia.pool.ntp.org >> /var/log/ntpdate.log
 ntpdate time.windows.com
 asia.pool.ntp.org
@@ -343,6 +343,14 @@ expect：从进程接收字符串
 spawn：启动新的进程
 interact：允许用户交互
 
+\ 需转义为 \\\
+} 需转义为 \}
+[ 需转义为 \[
+$ 需转义为 \\\$
+` 需转义为 \`
+" 需转义为 \\\"
+
+
 ###send命令
 send命令接收一个字符串参数，并将该参数发送到进程。
 expect1.1> send "hello world\n"
@@ -573,7 +581,10 @@ rebase
 
 
 
-
+---
+#logging banner
+/etc/issue  用户登录前显示
+/etc/motd   用户登录后显示
 
 
 

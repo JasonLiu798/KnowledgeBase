@@ -46,8 +46,7 @@ Acceptor::accept(var,V)
 proposer在释放互斥访问权，会导致系统陷入死锁
 * 不能容忍任意proposer出现故障
 
-##方案2
-引入抢占式访问权
+##方案2 -- 引入抢占式访问权
 * acceptor可以让某个proposer获取到的访问权失效，不再接受它的访问
 * 之后，可以将访问权发放给其他proposer，让其他proposer访问acceptor.
 proposer向Acceptor申请访问权时，指定编号epoch（越大的epoch越新），获取到访问权后，才能向acceptor提交取值
@@ -56,16 +55,71 @@ proposer向Acceptor申请访问权时，指定编号epoch（越大的epoch越新
 * 在肯定旧epoch无法生成确定性取值时，新的epoch会提交自己的value，不会冲突
 * 一旦旧epoch形成确定性取值，新的epoch肯定可以获取到此取值，并且认同此值，不会破坏
 
-基于抢占式访问权的Acceptor的实现
-* acceptor保存的状态
+###基于抢占式访问权的Acceptor的实现
+* Acceptor保存的状态
   - 当前var的取值<accepted_epoch,accepted_value>
   - 最新发放访问权的epoch(latest_prepared_epoch)
+* Acceptor::prepare(epoch):
+  - 只接受比latest_prepared_epoch更大的epoch，并给与访问权
+  - 记录latest_prepared_epoch=epoch;返回当前var的取值
+* Acceptor::release(var,prepared_epoch,V):
+  - 验证latest_prepared_epoch==prepared_epoch,
+  - 并设置var的取值<accepted_epoch,accepted_value>=<prepared_epoch,v>
+* Propose(var,V)两阶段实现
+  - 第一阶段：获取epoch轮次的访问权和当前var的取值
+    + 简单选取当前时间戳为epoch，通过Acceptor::prepare(epoch)，获取epoch轮次的访问权和当前var的取值
+    + 如果不能获取，返回<error>
+  - 第二阶段：采用“后者认同前者”的原则执行
+      + 在肯定旧epoch无法生成确定取值时，新的epoch会提交自己的value，不会冲突
+      + 一旦旧epoch形成确定性取值，新的epoch肯定可以获取到此取值，不会破坏
+    -如果var取值为空
+      则肯定旧epoch无法生成确定性取值，则通过Acceptor::accept(var,epoch,V) 提交数据V，成功后返回<ok,V>
+        +如果accept失败，返回<error>（被新epoch抢占或者acceptor故障）
+    -如果var取值存在
+      则此取值肯定为确定性取值，此时认同他不再更改，直接返回<ok,accepted_value>
+
+* 核心思想
+  - 让proposer将按照epoch递增顺序抢占式的依次运行，后者认同前者
+* 优点
+  - 避免proposer机器故障带来的死锁问题，并且仍可以保证var取值一致性
+* 缺点：
+  - 仍需要引入多acceptor
+      - 单机模块Acceptor是故障导致整个系统宕机，无法提供服务
+
+##确定一个不可变变量的取值---Paxos
+Paxos在方案2基础上引入多Acceptor
+  * Acceptor的实现保持不变，仍旧采用喜新厌旧的原则运行
+Paxos采用“少数服从多数”的思路
+
+一旦某epoch的取值f被半数以上Acceptor接受，则认为此var取值确定为f，不再更改
+
+###实现
+Propose(var,V)第一阶段：选定epoch，获取epoch访问权和对应的var取值
+  获取半数以上Acceptor的访问权和对应的一组var取值
+Propose(var,V)第二阶段：采用“后者认同前者”的原则执行
+    + 在肯定旧epoch无法生成确定性取值时，新的epoch会提交自己的取值，不会冲突
+    + 一旦旧epoch形成确定性取值，新的epoch肯定可以获取到此取值，并且认同此取值，不会破坏
+  * 如果获取的var取值都为空，则旧epoch无法形成确定性取值，此时努力使<epoch,V>成为确定性取值
+    - 向epoch对应的所有acceptor提交取值<epoch,V>
+    - 如果收到半数以上成功，则返回<ok,V>
+    - 否则，返回<error>（被新epoch抢占或者acceptor故障） 
+  * 如果获取的var取值存在，认同最大accepted_epoch对应的取值f,努力使<epoch,f>成为确定性取值
+    - 如果f出现半数以上，则说明f已经是确定性取值，直接返回<ok,f>
+    - 否则，向epoch对应的所有acceptor提交取值<epoch,f>
+
+paxos算法核心思想
+  * 在抢占式访问权的基础上引入多acceptor
+  * 保证一个epoch，只有一个proposer运行，proposer安装epoch递增的顺序依次运行
+  * 新epoch的proposer采用“后者认同前者”的思想运行
+    - 在肯定旧epoch无法生成确定性取值时，新的epoch会提交自己的取值，不会冲突
+    - 一旦旧epoch形成确定性取值，新的epoch肯定可以获取到此取值，并且会认同此取值，不会破坏
+paxo算法可以满足容错要求
+  * 半数以下acceptor出现故障时，存货的acceptor仍然可以生成var的确定性取值
+  * 一旦var取值被确定，即使出现半数以下acceptor故障，此取值可以被获取，并且将不再被更改
+Paxos算法的liveness问题
+  * 新轮次的抢占会让就轮次停止运行，如果每一轮次在第二阶段执行成功之前都被新一轮抢占，则导致活锁，怎么解决？
 
 
-
-
-
-Paxos算法基本上来说是个民主选举的算法——大多数的决定会成个整个集群的统一决定。任何一个点都可以提出要修改某个数据的提案,是否通过这个提案取决于这个集群中是否有超过半数的节点同意(所以Paxos算法需要集群中的节点是单数)
 
 
 ```

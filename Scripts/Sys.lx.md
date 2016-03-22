@@ -28,6 +28,19 @@ mount -o loop disk1.iso /mntmount/iso
 库跟踪工具(Library trace): 跟踪给定命令的调用库的相关信息.
 
 
+#ulimit
+增加max open files。先查看一下:
+$ sysctl -a | grep files
+kern.maxfiles = 12288 kern.maxfilesperproc = 10240
+修改为
+$ sudo sysctl -w kern.maxfiles=65535 $ sudo sysctl -w kern.maxfilesperproc=65535
+增加 max sockets
+$ sysctl -a | grep somax
+kern.ipc.somaxconn: 128 $ sudo sysctl -w kern.ipc.somaxconn=2048
+
+launchctl limit maxfiles 2048 2048 
+
+
 ---
 #Software setup
 ## apt setting

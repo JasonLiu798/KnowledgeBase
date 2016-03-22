@@ -3,6 +3,19 @@
 #docs
 [知乎软件神器推荐](https://weavi.com/92079)
 
+---
+#mac
+```bash
+brew install
+brew list           列出已安装的软件
+brew update     更新brew
+brew home       用浏览器打开brew的官方网站
+brew info         显示软件信息
+brew deps        显示包依赖
+```
+改键
+https://pqrs.org/osx/karabiner/
+
 
 ---
 #sys系统
@@ -70,6 +83,9 @@ http://blog.csdn.net/whzhaochao/article/details/37969145
 
 
 
+---
+#PM项目管理
+[甘特图](https://www.zhihu.com/question/21493972)
 
 
 

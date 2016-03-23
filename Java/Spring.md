@@ -56,10 +56,11 @@ BeanDefinitionReader
 http://outofmemory.cn/code-snippet/3670/spring-inject-by-annotation
 
 Autowired是自动注入，自动从spring的上下文找到合适的bean来注入
-Resource用来指定名称注入
+Resource 用来指定名称注入
 Qualifier和Autowired配合使用，指定bean的名称
-Service，Controller，Repository分别标记类是Service层类，Controller层类，数据存储层的类，spring扫描注解配置时，会标记这些类要生成bean。
-Component是一种泛指，标记类是组件，spring扫描注解配置时，会标记这些类要生成bean。
+Service，Controller，Repository分别标记类是Service层类
+Controller层类，数据存储层的类，spring扫描注解配置时，会标记这些类要生成bean。
+Component 是一种泛指，标记类是组件，spring扫描注解配置时，会标记这些类要生成bean。
 
 ## 配置读取
 FileSystemXmlApplicationContext(String)

@@ -1,6 +1,22 @@
 #apache
 ---
 #setup
+use XAMP
+```
+yum install httpd
+yum install php
+
+/etc/httpd/conf/httpd.conf
+找到AddType处，并添加以下2行：
+AddType application/x-httpd-php .php .php3 .phtml .inc
+AddType application/x-httpd-php-source .phps
+
+vi /etc/php.ini
+更改以下指令为：
+register_globals = On
+
+LoadModule php5_module
+```
 
 ---
 #配置

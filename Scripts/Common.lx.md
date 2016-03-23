@@ -459,6 +459,30 @@ B 为背景色，编号40~47
         7            反白显示
         8            不可见
 
+##zsh
+```bash
+PS1="%{$fg[green]%}%m@%{$fg[magenta]%}%(?..%?%1v)%n:%{$reset_color%}%{$fg[cyan]%}%~# "  
+在来两个
+
+PROMPT='%{$fg_bold[red]%}-> %{$fg_bold[green]%}%p%{$fg[cyan]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$reset_color%}~#: '  
+  
+PROMPT='%{$fg_bold[red]%}-> %{$fg_bold[green]%}%p%{$fg[cyan]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$fg[magenta]%}%(?..%?%1v)%{$reset_color%}~#: '  
+  
+  
+PROMPT='%{$fg_bold[red]%}-> %{$fg[green]%}%m %{$fg_bold[green]%}%p%{$fg[cyan]%}%~ %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$fg[magenta]%}%(?..%?%1v)%{$fg_bold[blue]%}☺ '  
+
+%T 系统时间（时：分）
+%* 系统时间（时：分：秒）
+%D 系统日期（年-月-日）
+%n 你的用户名
+%B - %b 开始到结束使用粗体打印
+%U - %u 开始到结束使用下划线打印
+%d 你目前的工作目录
+%~ 你目前的工作目录相对于～的相对路径
+%M 计算机的主机名
+%m 计算机的主机名（在第一个句号之前截断）
+%l 你当前的tty
+```
 
 #cowsay
 http://hz.togogo.net/BrainJam/wenxian/2013/0716/818.html

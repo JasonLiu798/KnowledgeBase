@@ -48,7 +48,10 @@ godaddy
 https://www.godaddy.com/
 
 
-
+---
+#nginx
+ps -ef|grep nginx
+/usr/local/var/run/nginx.pid
 
 
 

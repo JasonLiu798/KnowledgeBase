@@ -3,9 +3,32 @@
 #docs
 [知乎软件神器推荐](https://weavi.com/92079)
 
+---
+#mac
+```bash
+brew install
+brew list           列出已安装的软件
+brew update     更新brew
+brew home       用浏览器打开brew的官方网站
+brew info         显示软件信息
+brew deps        显示包依赖
+brew edit xxx  编辑url
+```
+改键
+https://pqrs.org/osx/karabiner/
+##openssl
+./Configure darwin64-x86_64-cc --prefix=/usr/local/openssl
 
 ---
 #sys系统
+##mac
+⌘——Command ()
+⌃ ——Control
+⌥——Option (alt)
+⇧——Shift
+⇪——Caps Lock
+fn——功能键就是fn
+
 ##disk磁盘
 CCleaner：全球下载超过1000万次的磁盘清理工具；
 Defraggler：磁盘整理；
@@ -62,6 +85,9 @@ http://blog.csdn.net/whzhaochao/article/details/37969145
 
 
 
+---
+#PM项目管理
+[甘特图](https://www.zhihu.com/question/21493972)
 
 
 
@@ -160,6 +186,53 @@ http://jude.change-vision.com/jude-web/product/community.html
 https://mosh.mit.edu/#getting
 
 ##包管理
+[ubuntu]
+```
+/etc/apt/sources.list
+apt-get update #更新源
+
+中科大的）：
+deb http://mirrors.ustc.edu.cn/ubuntu/ precise-updates main restricted
+deb-src http://mirrors.ustc.edu.cn/ubuntu/ precise-updates main restricted
+deb http://mirrors.ustc.edu.cn/ubuntu/ precise universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu/ precise universe
+deb http://mirrors.ustc.edu.cn/ubuntu/ precise-updates universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu/ precise-updates universe
+deb http://mirrors.ustc.edu.cn/ubuntu/ precise multiverse
+deb-src http://mirrors.ustc.edu.cn/ubuntu/ precise multiverse
+deb http://mirrors.ustc.edu.cn/ubuntu/ precise-updates multiverse
+deb-src http://mirrors.ustc.edu.cn/ubuntu/ precise-updates multiverse
+deb http://mirrors.ustc.edu.cn/ubuntu/ precise-backports main restricted universe multiverse
+deb-src http://mirrors.ustc.edu.cn/ubuntu/ precise-backports main restricted universe multiverse
+
+比较快的源：
+搜狐源：
+deb http://mirrors.sohu.com/ubuntu/ precise-updates main restricted
+deb-src http://mirrors.sohu.com/ubuntu/ precise-updates main restricted
+deb http://mirrors.sohu.com/ubuntu/ precise universe
+deb-src http://mirrors.sohu.com/ubuntu/ precise universe
+deb http://mirrors.sohu.com/ubuntu/ precise-updates universe
+deb-src http://mirrors.sohu.com/ubuntu/ precise-updates universe
+deb http://mirrors.sohu.com/ubuntu/ precise multiverse
+deb-src http://mirrors.sohu.com/ubuntu/ precise multiverse
+deb http://mirrors.sohu.com/ubuntu/ precise-updates multiverse
+deb-src http://mirrors.sohu.com/ubuntu/ precise-updates multiverse
+deb http://mirrors.sohu.com/ubuntu/ precise-backports main restricted universe multiverse
+deb-src http://mirrors.sohu.com/ubuntu/ precise-backports main restricted universe multiverse
+网易源：
+deb http://mirrors.163.com/ubuntu/ precise-updates main restricted
+deb-src http://mirrors.163.com/ubuntu/ precise-updates main restricted
+deb http://mirrors.163.com/ubuntu/ precise universe
+deb-src http://mirrors.163.com/ubuntu/ precise universe
+deb http://mirrors.163.com/ubuntu/ precise-updates universe
+deb-src http://mirrors.163.com/ubuntu/ precise-updates universe
+deb http://mirrors.163.com/ubuntu/ precise multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise multiverse
+deb http://mirrors.163.com/ubuntu/ precise-updates multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise-updates multiverse
+deb http://mirrors.163.com/ubuntu/ precise-backports main restricted universe multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise-backports main restricted universe multiverse
+```
 [mac-Homebrew]
 homebrew常用
 ```bash

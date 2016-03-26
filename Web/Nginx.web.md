@@ -8,6 +8,26 @@ lnmp http://blog.csdn.net/mervyn1205/article/details/8054881
 ##mac
 brew install nginx --with-http_geoip_module
 brew install nginx
+/usr/local/bin/nginx
+/usr/local/etc/nginx/nginx.conf
+```
+监听80需要root权限
+sudo chown root:wheel /usr/local/Cellar/nginx/1.6.2/bin/nginx
+sudo chmod u+s /usr/local/Cellar/nginx/1.6.2/bin/nginx
+```
+nginx -V 查看版本，以及配置文件地址
+nginx -v 查看版本
+nginx -c filename 指定配置文件
+nginx -h 帮助
+nginx -s [reload\reopen\stop\quit]
+
+
+/usr/sbin/php-fpm
+brew options homebrew/php/php55
+/usr/local/etc/php/5.5/php.ini
+/usr/local/etc/php/5.5/php-fpm.conf
+php-fpm -p /private
+
 
 ##ubuntu
 sudo apt-get install nginx
@@ -39,7 +59,6 @@ sudo apt-get install php5-xdebug
 sudo vi /etc/php5/fpm/php.ini 
 将display_errors和html_errors都改为On
 
-
 #cmd-nginx
 * 测试配置是否有语法错误 校验
 ```
@@ -61,15 +80,14 @@ Nginx开机启动
 ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist     #启动
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist   #关闭
+```
 
 ##alias快捷启动命令
 alias nginx.start='launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'
 alias nginx.stop='launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'
 alias nginx.restart='nginx.stop && nginx.start'
-```
-监听80需要root权限
-sudo chown root:wheel /usr/local/Cellar/nginx/1.6.2/bin/nginx
-sudo chmod u+s /usr/local/Cellar/nginx/1.6.2/bin/nginx
+
+
 ##目录
 ```
 mkdir -p /usr/local/var/logs/nginx

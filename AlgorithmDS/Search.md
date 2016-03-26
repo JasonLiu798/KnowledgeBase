@@ -98,9 +98,40 @@ flip again
 ##Theorem
 search cost O(lgn)
 
+---
+#中位数、第K数(算法导论C9 G6)
+输入：包含n个互异数的集合A，和一个整数i，1<=i<=n
+输出：x属于A，且A中恰好有i-1个元素小于x
+O(n)
+##最大最小
+一般算法，比较n-1次
+同时找到最大最小，比较2*(n-1)次
+优化后：最多比较3*floor(n/2)
+元素两两比较，小的跟最小比，大的跟最大比，共需要3次，未优化的算法需要4次
+初值：
+    偶数，头两个元素比较初始化为max,min，，再两两对比
+    计数，第一个初始化为max,min，再两两对比
 
-
-
+##RANDOMIZED-SELECT
+以快排为模型，只处理划分的一边
+A:
+<=A(r)   >=A(r)
+ P     r   q
+    k
+```c
+//A[p..r]找第i小的元素
+RANDOMIZED-SELECT(A,p,r,i)
+    if p==i then
+        return A[p]
+    q=RANDOMIZED-PARTITION(A,p,r) //A[p..q-1]<=A[q]<=A[q+1..r]
+    k=q-p+1
+    if i==k //the pivot value is the answer
+        return A[q]
+    else if i<k
+        return RANDOMIZED-SELECT(A,p,q-1,i)
+    else
+        return RANDOMIZED-SELECT(A,q+1,r,i-k)
+```
 
 ---
 #红黑树

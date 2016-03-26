@@ -36,6 +36,10 @@ http://www.tuicool.com/articles/JraYBfr
 #包管理
 #自定义库
 PYTHONPATH=D:\yp\project\python
+```
+注：
+mac sublime text 读取的为.bashrc
+```
 #setuptools 15.0
 [download](https://pypi.python.org/pypi/setuptools#windows-simplified)
 wget https://bootstrap.pypa.io/ez_setup.py -O - | python

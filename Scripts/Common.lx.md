@@ -10,15 +10,18 @@ Ctrl + e ：与上一个快捷键相反，将光标定位到命令的结尾
 Ctrl + u ：剪切光标之前的内容，在输错命令或密码
 Ctrl + k ：与上一个快捷键相反，剪切光标之后的内容
 Ctrl + y ：粘贴以上两个快捷键所剪切的内容。Alt+y粘贴更早的内容
+
 Ctrl + w ：删除光标左边的参数（选项）或内容（实际是以空格为单位向前剪切一个word）
+Ctrl + d ：删除光标处的字符，同Del键。没有命令是表示注销用户
+Alt + \ ：删除当前光标前面所有的空白字符
+
 Ctrl + / ：撤销，同Ctrl+x u
 Ctrl + f ：按字符前移（右向），同→
 Ctrl + b ：按字符后移（左向），同←
 Alt + f ：按单词前移，标点等特殊字符与空格一样分隔单词（右向），同Ctrl+→
 Alt + b ：按单词后移（左向），同Ctrl+←
 Alt + d ：从光标处删除至字尾。可以Ctrl+y粘贴回来
-Alt + \ ：删除当前光标前面所有的空白字符
-Ctrl + d ：删除光标处的字符，同Del键。没有命令是表示注销用户
+
 Ctrl + h ：删除光标前的字符
 Ctrl + r ：逆向搜索命令历史，比history好用
 Ctrl + g ：从历史搜索模式退出，同ESC
@@ -456,6 +459,30 @@ B 为背景色，编号40~47
         7            反白显示
         8            不可见
 
+##zsh
+```bash
+PS1="%{$fg[green]%}%m@%{$fg[magenta]%}%(?..%?%1v)%n:%{$reset_color%}%{$fg[cyan]%}%~# "  
+在来两个
+
+PROMPT='%{$fg_bold[red]%}-> %{$fg_bold[green]%}%p%{$fg[cyan]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$reset_color%}~#: '  
+  
+PROMPT='%{$fg_bold[red]%}-> %{$fg_bold[green]%}%p%{$fg[cyan]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$fg[magenta]%}%(?..%?%1v)%{$reset_color%}~#: '  
+  
+  
+PROMPT='%{$fg_bold[red]%}-> %{$fg[green]%}%m %{$fg_bold[green]%}%p%{$fg[cyan]%}%~ %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$fg[magenta]%}%(?..%?%1v)%{$fg_bold[blue]%}☺ '  
+
+%T 系统时间（时：分）
+%* 系统时间（时：分：秒）
+%D 系统日期（年-月-日）
+%n 你的用户名
+%B - %b 开始到结束使用粗体打印
+%U - %u 开始到结束使用下划线打印
+%d 你目前的工作目录
+%~ 你目前的工作目录相对于～的相对路径
+%M 计算机的主机名
+%m 计算机的主机名（在第一个句号之前截断）
+%l 你当前的tty
+```
 
 #cowsay
 http://hz.togogo.net/BrainJam/wenxian/2013/0716/818.html

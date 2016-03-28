@@ -55,14 +55,25 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 
 
 ---
-##序列化
-[Protostuff序列化](http://www.cnblogs.com/549294286/p/4612601.html)
+#序列化
 [对比](https://github.com/eishay/jvm-serializers/tree/master/protowar)
 [对比](http://blog.csdn.net/smallnest/article/details/38847653)
 [对比](http://www.oschina.net/question/54100_91827)
 
 [高性能序列化框架FST](http://itindex.net/detail/51375-%E6%80%A7%E8%83%BD-%E5%BA%8F%E5%88%97%E5%8C%96-%E6%A1%86%E6%9E%B6)
 [ kryo jdk fst Serializable对比](http://my.oschina.net/chenleijava/blog/198721)
+
+##Java序列化缺点
+* 序列化后码流太大
+* 性能太低
+
+##protobuf
+[Protostuff序列化](http://www.cnblogs.com/549294286/p/4612601.html)
+* 结构化数据存储格式（XML，JSON等）
+* 搞笑的编解码性能
+* 语言无关、平台无关、扩展性好
+* 官方支持Java、C++、Python
+
 
 ---
 #钩子

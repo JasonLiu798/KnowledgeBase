@@ -73,6 +73,14 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 * 搞笑的编解码性能
 * 语言无关、平台无关、扩展性好
 * 官方支持Java、C++、Python
+优点：
+* 文本化数据结构，平台无关
+* 通过表示字段的顺序，实现协议前向兼容
+* 自动代码生成，不需要手工编写同样数据结构的C++和Java版本
+* 方便后续管理和维护
+
+##thrift
+
 
 
 ---

@@ -19,236 +19,123 @@ http://www.cnblogs.com/zou90512/p/3492287.html
 ## grizzly doc
 https://grizzly.java.net/documentation.html
 
----
-#bio/nio对比
-##BIO
-```
-client1--->acceptor-->new thread1
-client2--->        -->new thread2
-client3--->        -->new thread3
-```
-服务端线程数：客户端数量=1:1
-
-##池化BIO，伪异步IO
-线程池N：客户端M
-M可以远大于N
-* 弊端
-    - read()直到 数据传输可用/检测到文件尾/发生异常 之前会阻塞
-    - write()直到 数据完全写完 之前会阻塞
-    - 因此，阻塞IO无法解决通信线程阻塞问题
-
-##nio
-Non-block I/O
-
-
-##NIO与BIO区别
-IO             |   NIO
----------------|--------------
-面向流         |   面向缓冲
-阻塞IO         |   非阻塞IO
-无             |   选择器
-##各自适用场景
-IO适合少量的连接使用非常高的带宽，一次发送大量的数据，也许典型的IO服务器实现可能非常契合
-低负载、低并发、编程复杂度低
-NIO
-
-
 
 ---
-#NIO
-[nio教程](http://ifeve.com/overview/)
-[原文](http://tutorials.jenkov.com/java-nio/index.html)
-##channel
-* 既可以从通道中读取数据，又可以写数据到通道。但流的读写通常是单向的
-* 通道可以异步地读写
-* 通道中的数据总是要先读到一个Buffer，或者总是要从一个Buffer中写入
-
-##Buffer
-使用Buffer读写数据一般遵循以下四个步骤：
-* 写入数据到Buffer
-* 调用flip()方法
-* 从Buffer中读取数据
-* 调用clear(清空所有)方法或者compact(清空已读)方法
-###Three Property:
-* capacity
-* position         
-    init:0
-    写模式：当前位置，add->下一位置
-    max:capacity-1
-    flip:w->r,pos=0
-* limit             
-    表示最多能读/写到多少数据
-    写模式:limit等于Buffer的capacity
-    读模式:写模式下的position值
-
-###read/write
-* write         
-    从Channel写到Buffer。
-    通过Buffer的put()方法写到Buffer里。
-* read
-    从Buffer读取数据到Channel。
-    使用get()方法从Buffer中读取数据。
-
-###other
-* rewind        
-    pos=0,limit保持不变
-* clear
-    pos=0,limit=capacity,数据并未清除
-* compact       
-    未读的数据拷贝到Buffer起始处，pos=未读元素之后，limit=capacity
-* mark
-    标记position
-* reset         
-    恢复到标记position
-* equals        
-    有相同的类型（byte、char、int等）。
-    Buffer中剩余的byte、char等的个数相等。
-    Buffer中所有剩余的byte、char等都相同。
-* compareTo 比较两个Buffer的剩余元素         
-    满足下列条件，则认为一个Buffer“小于”另一个Buffer：
-    * 第一个不相等的元素小于另一个Buffer中对应的元素 。
-    * 所有元素都相等，但第一个Buffer比另一个先耗尽(第一个Buffer的元素个数比另一个少)。
-
-* Scattering Reads
+#API
 ```java
-    ByteBuffer header = ByteBuffer.allocate(128);
-    ByteBuffer body   = ByteBuffer.allocate(1024);
-    ByteBuffer[] bufferArray = { header, body };
-    channel.read(bufferArray);
+public void bind(int port) throws Exception {
+    /**
+     * EventLoopGroup
+     * 线程池，包含一组nio线程，专门用于处理网络事件，即Reactor线程组
+     * 一个处理服务端接收客户端连接
+     * 一个用于进行SocketChannel网络读写
+     */
+    EventLoopGroup bossGroup = new NioEventLoopGroup();
+    EventLoopGroup workerGroup = new NioEventLoopGroup();
+    try {
+        ServerBootstrap b = new ServerBootstrap();//用于启动NIO服务端的辅助启动类
+        b.group(bossGroup, workerGroup)//
+                .channel(NioServerSocketChannel.class)//创建channel
+                .option(ChannelOption.SO_BACKLOG, 1024)//配置channel
+                .childHandler(new ChildChannelHandler());
+        // 绑定端口，同步等待成功
+        ChannelFuture f = b.bind(port).sync();
+        // 等待服务端监听端口关闭
+        f.channel().closeFuture().sync();
+    } finally {
+        // 优雅退出，释放线程池资源
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+    }
+}
 ```
-* Gathering Writes
 ```java
-    ByteBuffer header = ByteBuffer.allocate(128);
-    ByteBuffer body   = ByteBuffer.allocate(1024);
-    //write data into buffers
-    ByteBuffer[] bufferArray = { header, body };
-    channel.write(bufferArray);
-```
-* transferFrom      
-    将数据从源通道传输到FileChannel
-* transferTo            
-    FileChannel传输到其他的channel
-
-##selector
-与Selector一起使用时，Channel必须处于非阻塞模式下
-```java
-SelectionKey.OP_CONNECT
-SelectionKey.OP_ACCEPT
-SelectionKey.OP_READ
-SelectionKey.OP_WRITE
+public class TimeServerHandler extends ChannelHandlerAdapter {
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg)
+            throws Exception {
+        ByteBuf buf = (ByteBuf) msg;
+        byte[] req = new byte[buf.readableBytes()];
+        buf.readBytes(req);
+        String body = new String(req, "UTF-8");
+        System.out.println("The time server receive order : " + body);
+        String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new java.util.Date(
+                System.currentTimeMillis()).toString() : "BAD ORDER";
+        ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
+        ctx.write(resp);//并不直接写入SocketChannel，只把待发消息发送到缓冲数组中，再通过调用flush方法将发送缓冲区中的消息全部写到SocketChannel中
+    }
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exceptio{
+        ctx.flush();
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        ctx.close();
+    }
+}
 ```
 
-* attach()
-    附加
-* key.attachment()
-    获取
-* select()
-    阻塞到至少有一个通道在你注册的事件上就绪了,返回的int值表示有多少通道已经就绪
-    select(long timeout)和select()一样，除了最长会阻塞timeout毫秒(参数)。
-* selectNow()
-    不会阻塞，不管什么通道就绪都立刻返回
-* selectedKeys
-    访问已选择键集（selected key set）”中的就绪通道
-* Selector.wakeup()
-* close()       
-    方法会关闭该Selector
+#粘包/拆包
+粘包：多个小包被封装成大数据包
+拆包：大包被封装成多个数据包
+* 原因
+    - 应用进程缓冲区 写入 大于 套接口缓冲区
+    - 进行MSS大小的TCP分段
+    - 以太网帧的payload大于MTU进行IP分片
+SO-SNDBUF
+|
+MSS大小的TCP分节，通常MSS<=MTU-40(IPv4)或MTU-60(IPv6)
+|
+MTU大小的IPv4或IPv6分组
 
-##FileChannel
+##解决策略
+* 消息定长
+* 包尾增加回车换行符进行分割
+* 消息分类头和体，头包含消息总长
+* 更复杂的应用层协议
+
+##netty
+LineBasedFrameDecoder解决粘包问题
 ```java
-write()
-    buf.clear()->buf.put()->buf.flip()->write(buf)
-size()
-position()
-close()
-truncate() 文件之后被截取
-force() 强制写入
-    true 同时将文件数据和元数据强制写到磁盘上
+private class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
+    @Override
+    protected void initChannel(SocketChannel arg0) throws Exception {
+        arg0.pipeline().addLast(new LineBasedFrameDecoder(1024));
+        arg0.pipeline().addLast(new StringDecoder());
+        arg0.pipeline().addLast(new TimeServerHandler());
+    }
+}
 ```
 
-##SocketChannel
-```java
-open();
-connect(new InetSocketAddress("http://jenkov.com", 80));
-ByteBuffer buf = ByteBuffer.allocate(48);
-int bytesRead = socketChannel.read(buf);
 
-finishConnect;
-close();
-```
-非阻塞模式
-write()
-非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()。前面已经有例子了，这里就不赘述了。
-
-read()
-非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。
-
-##ServerSocketChannel
-```java
-open()
-bind(new InetSocketAddress(9999))
-//非阻塞模式
-accept() 方法会立刻返回，需检查返回的SocketChannel 是否为空
-```
-
-##DatagramChannel
-```java
-DatagramChannel channel = DatagramChannel.open();
-channel.socket().bind(new InetSocketAddress(9999));
-
-
-ByteBuffer buf = ByteBuffer.allocate(48);
-buf.clear();
-channel.receive(buf);
-
-channel.send(buf, new InetSocketAddress("jenkov.com", 80));
-//锁住连接
-channel.connect(new InetSocketAddress("jenkov.com", 80));
-```
-
-##Pipe
-2个线程之间的单向数据连接
-Thread1->sinkChannel->sourceChannel->Thread2
-Pipe pipe = Pipe.open();
-Pipe.SinkChannel sinkChannel = pipe.sink();
-
-
-
-##Path
-Paths.get(absstractPath)
-Paths.get(basePath, relativePath)
-normalize()
-
-##Files
-Files.exists()
-Files.createDirectory
-move
-delete
-walkFileTree
-
-##AsynchronousFileChannel
+DelimiterBasedFrameDecoder
+FixedLengthFrameDecoder
 
 
 
 
 
 ---
-# netty
-## 线程模型
-### Reactor单线程模型
+# 线程模型
+
+
+
+
+## Reactor单线程模型
 Reactor
 
-### Rector多线程模型
+## Rector多线程模型
 与单线程模型最大的区别就是有一组NIO线程处理IO操作
 1）专门一个NIO线程-Acceptor线程用于监听服务端，接收客户端的TCP连接请求；
 2）网络IO操作-读、写等由一个NIO线程池负责，线程池可以采用标准的JDK线程池实现，它包含一个任务队列和N个可用的线程，由这些NIO线程负责消息的读取、解码、编码和发送；
 3）1个NIO线程可以同时处理N条链路，但是1个链路只对应1个NIO线程，防止发生并发操作问题。
 
-### 主从多线程模型
+##主从多线程模型
 服务端用于接收客户端连接的不再是个1个单独的NIO线程，而是一个独立的NIO线程池。
 Acceptor接收到客户端TCP连接请求处理完成后（可能包含接入认证等），将新创建的SocketChannel注册到IO线程池（sub reactor线程池）的某个IO线程上，由它负责SocketChannel的读写和编解码工作。
 
-### Netty线程模型
-#### 服务端线程模型
+##Netty线程模型
+###服务端线程模型
 服务端监听线程和IO线程分离
 bossGroup线程组实际就是Acceptor线程池，负责处理客户端的TCP连接请求，如果系统只有一个服务端端口需要监听，则建议bossGroup线程组线程数设置为1
 EventLoopGroup管理的线程数可以通过构造函数设置，没有设置，默认取-Dio.netty.eventLoopThreads，如果该系统参数也没有指定，则为可用的CPU内核数 × 2
@@ -256,10 +143,11 @@ EventLoopGroup管理的线程数可以通过构造函数设置，没有设置，
 ![netty4线程模型](../img/netty4-thread.png)
 
 
-#### 客户端线程模型
+###客户端线程模型
 
 
-#### NioEventLoop
+
+###NioEventLoop
 作为服务端Acceptor线程，负责处理客户端的请求接入；
 作为客户端Connecor线程，负责注册监听连接操作位，用于判断异步连接结果；
 作为IO线程，监听网络读操作位，负责从SocketChannel中读取报文；
@@ -274,12 +162,6 @@ EventLoopGroup管理的线程数可以通过构造函数设置，没有设置，
 
 
 Netty 4的串行化设计
-
-
-
-
-
-
 
 
 

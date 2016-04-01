@@ -123,6 +123,17 @@ mvn dependency:analyze
 ##跳过测试
 -Dmaven.test.skip=true
 
+##-U
+该参数能强制让Maven检查所有SNAPSHOT依赖更新，确保集成基于最新的状态，如果没有该参数，Maven默认以天为单位检查更新，而持续集成的频率应该比这高很多
+##-e 
+如果构建出现异常，该参数能让Maven打印完整的stack trace，以方便分析错误原因。
+
+##-B参数
+该参数表示让Maven使用批处理模式构建项目，能够避免一些需要人工参与交互而造成的挂起状态。
+
+##-Dmaven.repo.local参数
+如果持续集成服务器有很多任务，每个任务都会使用本地仓库，下载依赖至本地仓库，为了避免这种多线程使用本地仓库可能会引起的冲突，可以使用-Dmaven.repo.local=/home/juven/ci/foo-repo/这样的参数为每个任务分配本地仓库。
+
 ##生成源码包
 mvn source:jar
 

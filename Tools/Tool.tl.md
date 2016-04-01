@@ -36,6 +36,7 @@ Recuva：数据恢复
 Speccy：电脑硬件信息。
 
 
+
 ---
 #net网络
 ##下载
@@ -53,12 +54,10 @@ p4merge http://www.perforce.com/downloads/helix
 [mac-Mou]()
 
 
-
 ---
 #前端
 [全新理念的Web前端开发方式——AlloyDesigner](http://www.alloyteam.com/2014/03/alloydesigner-lai-zi-xing-xing-di-web-qian-duan-kai-fa-fang-shi/)
 [AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
-
 
 
 ---
@@ -73,7 +72,6 @@ https://www.gnupg.org/
 微软雅黑    Microsoft YaHei
 
 
-
 ----
 #其他
 ##时间管理
@@ -83,14 +81,9 @@ WorkRave
 http://blog.csdn.net/whzhaochao/article/details/37969145
 
 
-
-
 ---
 #PM项目管理
 [甘特图](https://www.zhihu.com/question/21493972)
-
-
-
 
 #python ide
 [ALL](http://www.jetbrains.com/pycharm)
@@ -165,8 +158,28 @@ Java Mission Control JMC
 ## 开发
 [findbugs](http://findbugs.sourceforge.net)
 
-##图像图形
+##图像图形img
 [markman 图像测量](http://www.getmarkman.com/)
+freetype
+    mac 
+    ln -sfv /usr/local/Cellar/freetype/2.5.5/include/freetype2 /usr/local/include/freetype
+    ln -sfv /usr/local/Cellar/freetype/2.5.5/lib/* /usr/local/lib
+X11
+    ln -sfv /opt/X11/include/X11 X11
+zlib
+    /usr/local/Cellar/zlib/1.2.8
+    ln -sfv /usr/local/Cellar/zlib/1.2.8/include/* /usr/local/include
+    ln -sfv /usr/local/Cellar/zlib/1.2.8/lib/* /usr/local/lib
+LITTLECMS
+```
+brew install littlecms
+ln -sfv /usr/local/Cellar/little-cms/1.19/include/* /usr/local/include
+```
+tesseract
+```
+brew install tesseract
+
+```
 
 ##文档管理 
 [mac-dash]()
@@ -175,17 +188,24 @@ Java Mission Control JMC
 
 [mac-Valgrind-内存调试、内存泄漏检测以及性能分析](http://valgrind.org/)
 
-
-#UML
-http://jude.change-vision.com/jude-web/product/community.html
+-----
+#SoftwareEngineer
+##UML
+[jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
 
-#shell
+
+
+----
+#shell终端
 [shell json 处理](https://stedolan.github.io/jq/)
 ## mosh 异步ssh 
 https://mosh.mit.edu/#getting
+[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
+[iTerm 2]()
 
-##包管理
+-----
+#包管理
 [ubuntu]
 ```
 /etc/apt/sources.list
@@ -233,6 +253,8 @@ deb-src http://mirrors.163.com/ubuntu/ precise-updates multiverse
 deb http://mirrors.163.com/ubuntu/ precise-backports main restricted universe multiverse
 deb-src http://mirrors.163.com/ubuntu/ precise-backports main restricted universe multiverse
 ```
+
+
 [mac-Homebrew]
 homebrew常用
 ```bash
@@ -257,13 +279,11 @@ brew cask list          #列出所有通过cask安装的软件
 brew cask info phpstorm #查看 phpstorm 的信息
 brew cask uninstall qq  #卸载 QQ
 brew options xxx     查看安装选项
+
+brew uninstall xxx
 ```
 
-## oh-my-zsh
-https://github.com/robbyrussell/oh-my-zsh
-自带几十个插件、自动升级的 zsh，任何开机就要开命令行的人都该尝试一下
 
-## iTerm 2
 
 ## Guard livereload
 automatically reload your browser when 'view' files are modified.

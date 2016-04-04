@@ -20,8 +20,16 @@ setter注入（Type 2 IoC）
 构造器注入（Type 3 IoC）
 
 IoC容器系列
-BeanFactory接口的简单容器系列
-ApplicationContext应用上下文，它作为容器的高级形态而存在
+##BeanFactory
+接口的简单容器系列
+Factory，是IOC容器或对象工厂
+
+##FactoryBean
+Bean
+能产生或修饰对象生成的工厂Bean
+
+##ApplicationContext
+应用上下文，它作为容器的高级形态而存在
 
 ## 流程
 启动阶段

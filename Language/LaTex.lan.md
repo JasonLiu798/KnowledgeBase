@@ -206,8 +206,21 @@ LaTeX默认自带的模板article，以及中文模板ctexart
 制作幻灯片搜beamer
 
 
+---
+#各种符号
+http://www.mohu.org/info/symbols/symbols.htm
+无限  \infty
 
-
+##希腊字母
+\alpha
+\beta
+\gamma
+\delta
+\epsilon
+\varepsilon
+\zeta
+\eta
+\theta
 
 
 

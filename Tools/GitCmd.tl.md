@@ -267,6 +267,7 @@ git config --global color.interactive auto
 co表示checkout，ci表示commit，br表示branch：
 git config --global alias.co checkout
 git config --global alias.ci commit
+git config --global alias.cam 'commit -a -m'
 git config --global alias.s status
 git config --global alias.br branch
 git config --global alias.unstage 'reset HEAD'

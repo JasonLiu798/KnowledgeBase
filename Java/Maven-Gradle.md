@@ -274,8 +274,6 @@ http://blog.csdn.net/leonzhouwei/article/details/9978771
 GRADLE_HOME
 gradle -v
 
-
-
 ## download
 https://gradle.org
 

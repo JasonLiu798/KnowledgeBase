@@ -30,33 +30,46 @@ php-fpm -p /private
 
 
 ##ubuntu
+```bash
 sudo apt-get install nginx
 sudo /etc/init.d/nginx start(或者 service nginx start)
 sudo service nginx restart
+
+```
 ###fpm
+```
 sudo apt-get install php5-fpm
 /etc/php5/fpm/pool.d/www.conf
 /var/log/php5-fpm.log
 sudo service php5-fpm start
 sudo service php5-fpm restart
+```
 ###curl
+```
 sudo apt-get install php5-curl
 sudo apt-get install php-gettext
 sudo apt-get install php5-gd
 sudo apt-get install php5-mcrypt
 sudo apt-get install memcached
+```
 ###php
+```
 sudo apt-get install php5-cli php5-cgi php5-mysql
 sudo apt-get install php5-memcache
 sudo apt-get install php5-dev php-pear libpcre3-dev
 sudo pecl install oauth
 sudo vi /etc/php5/fpm/php.ini
 extension=oauth.so
+```
 ## ssh2
+```
 sudo apt-get install libssh2-php
+```
 ## xdebug
+```
 sudo apt-get install php5-xdebug
 sudo vi /etc/php5/fpm/php.ini 
+```
 将display_errors和html_errors都改为On
 
 #cmd-nginx
@@ -102,6 +115,7 @@ sudo chmod 775 /var/www
 ##nginx.conf
 ```
 vim /usr/local/etc/nginx/nginx.conf
+
 worker_processes  1;
 error_log  /usr/local/var/logs/nginx/error.log debug;
 pid        /usr/local/var/run/nginx.pid;

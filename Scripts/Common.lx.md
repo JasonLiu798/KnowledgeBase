@@ -459,6 +459,55 @@ B 为背景色，编号40~47
         7            反白显示
         8            不可见
 
+###Xterm标题
+基本原理就是通过打印 console codes 来设置标题。控制码的详情参考
+console_codes(4) 。
+对于设置窗口标题，我们只需要从下面几个控制码序列中选一个并打印（显示）
+就可以了：
+ESC ] 0 ; txt BEL      Set icon name and window title to txt.
+ESC ] 1 ; txt BEL      Set icon name to txt.
+ESC ] 2 ; txt BEL      Set window title to txt.
+在命令行自然是无法直接输入特殊字符 ESC 和 BEL，所以就用它们的 ascii 码
+来表示。综合起来，下面这个这个命令就可以把当前窗口的标题改成字符串“txt”。
+echo -ne "\033]2;txt\007"
+试了没效？十有八九是生效了但立刻被覆盖了以至于你没看见。
+以 bash 为例，有两个环境变量 PROMPT_COMMAND 和 PS1 的设置都可能导致你对
+窗口标题所作的修改被覆盖。
+PROMPT_COMMAND 的值是一个命令，每次显示 PS1 之前都会执行它。例如：
+PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
+PS1 就不用说了吧。
+所以如果你在这两个变量中的任一个里重置窗口标题，用命令行命令修改窗口标
+题的努力都是徒劳的。 unset 上面两个变量再试应该就可以看到预期的现象了。
+设置
+现在，怎么设置就很清楚了：
+第一种办法就是直接在命令行 echo，这只能是静态的设置，而且前提是 PS1 之
+类的设置不会覆盖它。
+第二种办法是（对于bash），设置 PROMPT_COMMAND 。类似的，前提是 PS1 不会覆盖它。
+第三个选择就是设置 PS1 了。对于 bash，要注意的是所有的控制码要用 \[\]
+括起来表示其不可见。例如:
+PS1='\[\033]0;\u@\h\007\]\n\u@\h \w\n\$ '
+我目前的配置是
+PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"
+PS1='\n\[\e[32m\]\t \u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
+# set icon name and window title. If optional
+# argument missing, restore system default one
+# usage: title [text]
+title () {
+    if [ -z "$ORG_PROMPT_COMMAND" ]; then
+        # store system default
+        ORG_PROMPT_COMMAND=$PROMPT_COMMAND
+    fi
+    if [ $# -gt 0 ]; then
+        PROMPT_COMMAND="echo -ne \"\033]0;$1\007\""
+    else # restore system default
+        PROMPT_COMMAND=$ORG_PROMPT_COMMAND
+    fi
+}
+export -f title
+这样，我就可以用 title AAA 把标题设成 “AAA”， 用 title 把标题回复成默认
+的。
+
+
 ##zsh
 ```bash
 PS1="%{$fg[green]%}%m@%{$fg[magenta]%}%(?..%?%1v)%n:%{$reset_color%}%{$fg[cyan]%}%~# "  

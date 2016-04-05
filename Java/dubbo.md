@@ -87,10 +87,12 @@ DubboNamespaceHandler
 
 ## 回声测试
 所有服务自动实现EchoService接口，只需将任意服务引用强制转型为EchoService，即可使用。
-MemberService memberService = ctx.getBean("memberService"); // 远程服务引用
-EchoService echoService = (EchoService) memberService; // 强制转型为EchoService
+```
+xxService xxxService = ctx.getBean("xxxService"); // 远程服务引用
+EchoService echoService = (EchoService) xxxService; // 强制转型为EchoService
 String status = echoService.$echo("OK"); // 回声测试可用性
 assert(status.equals("OK"))
+```
 
 ## 上下文信息
 ### client

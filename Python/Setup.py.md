@@ -100,6 +100,13 @@ easy_install sqlalchemy
 #模板引擎
 easy_install jinja2
 
+#PIL
+[PIL](http://www.pythonware.com/products/pil/)
+```
+setup.py build
+sudo setup.py install
+```
+[pillow](http://pillow.readthedocs.org/en/3.1.x/)
 
 [virtkey 在Linux中使用Python模拟键盘按键](http://blog.csdn.net/zhouy1989/article/details/13997507)
 

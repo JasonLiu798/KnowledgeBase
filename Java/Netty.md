@@ -119,8 +119,6 @@ FixedLengthFrameDecoder
 # 线程模型
 
 
-
-
 ## Reactor单线程模型
 Reactor
 
@@ -193,14 +191,78 @@ NIO-在高连接数时使用
 Local-在同一个JVM内通信时使用
 Embedded-测试ChannelHandler时使用
 
-## Buffer 
-### ByteBuf
+
+
+
+
+----
+#ByteBuf
+##ByteBuffer
+缺点
+* 长度固定，不能动态扩展收缩
+* 只有一个表示位置的指针position，读写需要手工调用flip()和rewind()等
+* API功能有限
+
+##ByteBuf readerIndex writerIndex 
 0 <= readerIndex <= writerIndex <= capacity
-discardReadBytes() 复制清理   
-索引 readerIndex ,writerIndex 
-    clear()重置
-slice()
-ByteBufHolder
+
+|      readable                 |   writable bytes      |
+0=readerIndex                N=writerIndex           capacity
+
+* 读取M(<N)个字节后
+| discardable  | readable       |   writable bytes      |
+0             M=readerIndex    N=writerIndex         capacity
+
+* discardReadBytes() 复制清理 ，调用后      
+| readable     |   writable bytes                       |
+0=readerIndex  N-M=writerIndex                       capacity
+
+* clear()重置，调用后
+|   writable bytes                                      |
+0=readerIndex=writerIndex                            capacity
+
+* mark
+ByteBuffer的：
+读操作回滚
+mark=position
+调用 reset 后，恢复当前位置为mark
+
+ByteBuf的：
+markReaderIndex
+resetReaderInddex
+markWriterIndex
+resetWriterIndex
+
+* 查找
+indexOf
+bytesBefore
+forEachByte
+
+* derived buffers
+duplicate，浅拷贝，复制读写索引
+copy，深拷贝
+slice，可读子缓冲区
+
+* 转成ByteBuffer
+nioBuffer()
+
+* 随机读写
+
+---
+#ByteBuf源码分析
+
+
+
+
+
+
+
+
+
+
+
+
+----
 
 ### 零拷贝
 ByteBufAllocator.ioBuffer

@@ -83,7 +83,9 @@ NIO
     init:0
     写模式：当前位置，add->下一位置
     max:capacity-1
-    flip:w->r,pos=0
+    flip
+        读取之前写入的内容，w->r,pos=0
+    
 * limit             
     表示最多能读/写到多少数据
     写模式:limit等于Buffer的capacity

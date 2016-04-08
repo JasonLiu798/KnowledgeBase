@@ -46,7 +46,11 @@ idea默认的选中变量以后，是不会像eclipse一样提示这个变量用
 快捷键提示插件，当你点击鼠标一个功能的时候，可以提示 你这个功能快捷键是什么 ，和这个按钮你的使用频率
 ###Jrebel 热部署插件
   MyEclipse10和2014都是默认debugger模式支持热部署的。而idea需要你安装这个插件才会支持热部署，所以也算个遗憾吧
-###FindBugs for IntelliJ IDEA，
+
+###serialversion
+GenerateSerialVersionUID
+
+###FindBugs for IntelliJ IDEA
   通过FindBugs帮你找到隐藏的bug及不好的做法。
 ###TabSwitch
   通过ctrl + tab在文件，各个面板tab间切换。

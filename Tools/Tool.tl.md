@@ -108,6 +108,9 @@ YG64T-FDD7J-P6R3Q-4X4YV-7QGJP
 -----
 #DEV
 [mac 程序员必备](http://www.zhihu.com/question/20036899)
+##win 终端
+[Developers can run Bash Shell and user-mode Ubuntu Linux binaries on Windows 10](http://www.hanselman.com/blog/DevelopersCanRunBashShellAndUsermodeUbuntuLinuxBinariesOnWindows10.aspx)
+
 ##iterm2
 ###zsh
 ```

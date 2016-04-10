@@ -3,12 +3,19 @@ golang
 https://gohugo.io/
 http://blog.coderzh.com/2015/08/29/hugo/
 
+```
 hugo new site path/to/site
+```
+
+新建博文：进入目录
+```
 hugo new xxxpost.md
+```
 
 ##themes
 git clone --depth 1 --recursive https://github.com/spf13/hugoThemes.git themes
 
+hugo server --theme=hyde --buildDrafts --watch
 hugo server --theme=hyde --buildDrafts
 
 hugo help

@@ -70,6 +70,28 @@ https://pypi.python.org/pypi/setuptools#unix-wget
 wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz#md5=2a6b2901b6c265d682139345849cbf03
 python setup.py install
 ```
+###pip 报错
+pip install requests[security] --trusted-host http://pypi.douban.com/simple
+
+###使用其他源
+https://www.acgso.com/2013/08/using-mirror-accelerate-python-pypi/
+豆瓣 （推荐使用）
+http://pypi.douban.com/simple
+阿里云（推荐使用
+http://mirrors.aliyun.com/pypi/simple
+山东理工大学
+http://pypi.sdutlinux.org/simple
+清华大学
+http://e.pypi.python.org/simple
+华中理工大学
+http://pypi.hustunique.com/simple
+中国科学技术大学
+http://pypi.mirrors.ustc.edu.cn/simple
+```bash
+pip install redis --trusted-host pypi.douban.com -i http://pypi.douban.com/simple
+
+```
+
 
 ##pylint
 http://www.pylint.org/#install
@@ -99,6 +121,8 @@ easy_install MySQL-python
 easy_install sqlalchemy
 #模板引擎
 easy_install jinja2
+
+
 
 #PIL
 [PIL](http://www.pythonware.com/products/pil/)

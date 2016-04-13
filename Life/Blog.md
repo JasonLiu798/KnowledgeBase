@@ -20,9 +20,9 @@ hugo new xxxpost.md
 标准格式
 ```
 +++
-title         = "文章标题"
-tags         = ["标签1", "标签2"]
-categories    = ["分类1","分类2"]
+title = "文章标题"
+tags = ["标签1", "标签2"]
+categories = ["分类1","分类2"]
 date        = "2015-01-01"
 +++
 

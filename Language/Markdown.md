@@ -2,7 +2,13 @@
 ----
 #Editor
 #sublime text插件
+必备：
+OmniMarkupPreviewer
+markdown editing
+Markdown Preview
+
 [Sublime插件：Markdown篇](http://www.jianshu.com/p/aa30cc25c91b)
+
 ##OmniMarkupPreviewer
 [近乎完美的 Markdown 写作体验](http://blog.leanote.com/post/54bfa17b8404f03097000000)
 markdown 浏览器实时预览

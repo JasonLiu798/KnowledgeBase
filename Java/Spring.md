@@ -32,17 +32,25 @@ Bean
 ##ApplicationContext
 应用上下文，它作为容器的高级形态而存在
 
+
 ##流程
 ###BeanDefination资源定位
 ResourceLoader通过Resource接口完成
 * Resource定位
-
 
 ###BeanDefination载入
 组装成BeanDefination
 ###注册
 HashMap
 
+
+lazy-init属性实现：
+refresh
+    finishBeanFactoryInitialization(beanFactory);
+
+
+
+-----
 
 启动阶段
 PropertyPlaceholderConfigurer

@@ -196,6 +196,21 @@ brew install tesseract
 ##UML
 [jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
+StarUML.app/Contents/www/license/node
+```javascript
+function validate(PK, name, product, licenseKey) {
+        var pk, decrypted;
+        // edit by 0xcb
+        return {
+            name: "0xcb",
+            product: "StarUML",
+            licenseType: "vip",
+            quantity: "bbs.chinapyg.com",
+            licenseKey: "later equals never!"
+        };
+//....
+}
+```
 
 
 

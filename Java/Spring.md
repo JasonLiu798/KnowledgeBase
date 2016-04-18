@@ -313,6 +313,10 @@ byName、byType、constructor、autodetect
 default-init-method
 default-destroy-method
 
+@PostConstruct
+@PreDestroy
+
+
 ## <bean/>
 ### id
 ### name

@@ -125,17 +125,19 @@ lset(key, index, value)：给名称为key的list中index位置的元素赋值为
 ##删除
 lrem(key, count, value)
 删除count个名称为key的list中值为value的元素。count为0，删除所有值为value的元素，count>0从头至尾删除count个值为value的元素，count<0从尾到头删除|count|个值为value的元素
+
 lpop(key)
 返回并删除名称为key的list中的首元素
+
 rpop(key)
 返回并删除名称为key的list中的尾元素
+
 blpop(key1, key2,… key N, timeout)
 lpop命令的block版本。即当timeout为0时，若遇到名称为key i的list不存在或该list为空，则命令结束。如果timeout>0，则遇到上述情况时，等待timeout秒，如果问题没有解决，则对keyi+1开始的list执行pop操作
 brpop(key1, key2,… key N, timeout)
 rpop的block版本。参考上一命令
 rpoplpush(srckey, dstkey)
 返回并删除名称为srckey的list的尾元素，并将该元素添加到名称为dstkey的list的头部
-
 
 ##Set操作的命令
 sadd(key, member)：向名称为key的set中添加元素member

@@ -92,3 +92,7 @@ javassist.CtConstructor 构造函数
 
 
 ---
+#校验
+[JSR 303](http://beanvalidation.org/1.0/spec/)
+http://haohaoxuexi.iteye.com/blog/1812584
+

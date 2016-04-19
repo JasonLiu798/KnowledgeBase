@@ -2,6 +2,7 @@
 ---
 #Theory
 [Hibernate 3 深度解析](https://www.ibm.com/developerworks/cn/java/j-lo-hibernate3/)
+
 ##Hibernate 的对象关系映射
     @Entity
     @Table(name = "TEST", schema = "PUBLIC", catalog = "TEST")

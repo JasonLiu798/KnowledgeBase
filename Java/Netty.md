@@ -114,7 +114,6 @@ FixedLengthFrameDecoder
 
 
 
-
 ---
 # 线程模型
 
@@ -250,9 +249,18 @@ nioBuffer()
 
 ---
 #ByteBuf源码分析
+HeapByteBuf
+    内存分配回收快，需要额外内存复制
+    适合后台消息编解码
+DirectByteBuf
+    堆外分配，使用速度快
+    适合I/O通信线程的读下缓冲区
 
+基于对象池
+    维护复杂
+普通
 
-
+AbstractByteBuf
 
 
 

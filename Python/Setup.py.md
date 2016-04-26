@@ -108,7 +108,17 @@ exec $SHELL -l
 
 
 #virtualenv 
+```
+sudo easy_install virtualenv
+或更高级的:
+sudo pip install virtualenv
 
+##使用
+virtualenv venv
+. venv/bin/activate
+
+
+```
 
 ---
 #第三方库

@@ -156,7 +156,7 @@ smembers(key) ：返回名称为key的set的所有元素
 srandmember(key) ：随机返回名称为key的set的一个元素
 
 ---
-##zset（sorted set）
+##zset （sorted set）
 ###zadd(key, score, member)
 向名称为key的zset中添加元素member，score用于排序。如果该元素已经存在，则根据score更新该元素的顺序。
 ###zrem(key, member)

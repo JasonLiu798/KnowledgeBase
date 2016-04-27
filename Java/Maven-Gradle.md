@@ -281,9 +281,44 @@ http://blog.csdn.net/leonzhouwei/article/details/9978771
 
 ---
 #gradle
+http://www.jiechic.com/archives/the-idea-and-gradle-use-summary
 ##setup 
-GRADLE_HOME
+GRADLE_HOME=/opt/gradle
 gradle -v
+
+##配置本地仓库
+默认
+GRADLE_USER_HOME=~/.gradle
+
+##配置中央库
+###单个项目
+build.gradle
+allprojects {
+    repositories {
+        maven{ url 'http://maven.oschina.net/content/groups/public/'}
+    }
+}
+###总体
+USER_HOME/.gradle/init.gradle
+```
+allprojects{
+    repositories {
+        def REPOSITORY_URL = 'http://maven.oschina.net/content/groups/public'
+        all { ArtifactRepository repo ->
+            if(repo instanceof MavenArtifactRepository){
+                def url = repo.url.toString()
+                if (url.startsWith('https://repo1.maven.org/maven2') || url.startsWith('https://jcenter.bintray.com/')) {
+                    project.logger.lifecycle "Repository ${repo.url} replaced by $REPOSITORY_URL."
+                    remove repo
+                }
+            }
+        }
+        maven {
+            url REPOSITORY_URL
+        }
+    }
+}
+```
 
 ## download
 https://gradle.org

@@ -1,0 +1,3 @@
+
+mac
+/Library/Java/JavaVirtualMachines

@@ -5,3 +5,5 @@ Lucene 的QueryParser 主要负责语法分析。
 Lucene 的search 模块主要负责对索引的搜索。
 Lucene 的similarity 模块主要负责对相关性打分的实现。
 
+solar
+https://cwiki.apache.org/confluence/display/solr/Using+SolrJ

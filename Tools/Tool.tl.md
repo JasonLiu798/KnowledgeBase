@@ -29,6 +29,9 @@ https://pqrs.org/osx/karabiner/
 ⇪——Caps Lock
 fn——功能键就是fn
 
+##mac字典
+/Library/Dictionaries
+
 ##disk磁盘
 CCleaner：全球下载超过1000万次的磁盘清理工具；
 Defraggler：磁盘整理；

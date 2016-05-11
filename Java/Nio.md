@@ -236,3 +236,33 @@ delete
 walkFileTree
 
 ##AsynchronousFileChannel
+
+
+
+##最佳实践
+Reactor线程数量：核心数，核心数的两倍
+DirectBufferPool使用
+Reactor线程与异步线程池的合理使用
+```
+client-->mainReactor->acceptor-->subReactor->read,decode,compute,encode,send
+                                           ->read,decode,compute,encode,send
+                              -->subReactor->read,decode,compute,encode,send
+                                            ...
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

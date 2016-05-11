@@ -243,7 +243,8 @@ export LANG=en_US.UTF-8
 ## tar
 tar -zpcvf xxx.tar.gz --exclude=/root/etc* --exclude=/root/system.tar.bz2 /etc /root
 tar -ztvf /root/etc.tar.bz2
-
+指定目录
+tar -zxvf xxx.tar.gz -C xxxx
     参数：
     -c  ：建立打包档案，可搭配 -v 杢察看过程中被打包癿档名(filename)
     -t  ：察看打包档案癿内容吨有哪些档名，重点在察看『档名』就是了；

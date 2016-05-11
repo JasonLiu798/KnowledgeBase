@@ -95,12 +95,47 @@ BeanDefinitionReader
 注解依赖注入
 http://outofmemory.cn/code-snippet/3670/spring-inject-by-annotation
 
-Autowired是自动注入，自动从spring的上下文找到合适的bean来注入
-Resource 用来指定名称注入
+@Autowired
+默认按类型装配,自动注入，自动从spring的上下文找到合适的bean来注入，一般装配在set方法之上，也可以装配在属性上边，但是在属性上边配置，破坏了java的封装，所以一般不建议使用
+@Resource
+默认按名称装配，当找不到名称匹配的bean才会按类型装配，用来指定名称注入
+
+如果当Spring上下文中存在不止一个所要装配类型的bean时，就会抛出BeanCreationException异常；如果Spring上下文中不存在所要装配类型的bean，也会抛出BeanCreationException异常。我们可以使用@Qualifier配合@Autowired来解决这些问题。
+
 Qualifier和Autowired配合使用，指定bean的名称
 Service，Controller，Repository分别标记类是Service层类
 Controller层类，数据存储层的类，spring扫描注解配置时，会标记这些类要生成bean。
 Component 是一种泛指，标记类是组件，spring扫描注解配置时，会标记这些类要生成bean。
+```
+@Autowired    
+public void setUserDao(@Qualifier("userDao") UserDao userDao) {     
+   this.userDao = userDao;  
+
+@Autowired(required = false)     
+public void setUserDao(UserDao userDao) {     
+    this.userDao = userDao;   
+
+```
+
+@Resource
+JSR-250标准注解
+@Resource的作用相当于@Autowired，只不过@Autowired按byType自动注入，而@Resource默认按byName自动注入罢了。@Resource有两个属性是比较重要的，分别是name和type，Spring将@Resource注解的name属性解析为bean的名字，而type属性则解析为bean的类型。所以如果使用name属性，则使用byName的自动注入策略，而使用type属性时则使用byType自动注入策略。如果既不指定name也不指定type属性，这时将通过反射机制使用byName自动注入策略
+
+@Resource装配顺序
+1 如果同时指定了name和type，则从Spring上下文中找到唯一匹配的bean进行装配，找不到则抛出异常
+2 如果指定了name，则从上下文中查找名称（id）匹配的bean进行装配，找不到则抛出异常
+3 如果指定了type，则从上下文中找到类型匹配的唯一bean进行装配，找不到或者找到多个，都会抛出异常
+4 如果既没有指定name，又没有指定type，则自动按照byName方式进行装配（见2）；如果没有匹配，则回退为一个原始类型（UserDao）进行匹配，如果匹配则自动装配；
+
+@PostConstruct（JSR-250）
+在方法上加上注解@PostConstruct，这个方法就会在Bean初始化之后被Spring容器执行（注：Bean初始化包括，实例化Bean，并装配Bean的属性（依赖注入））。
+它的一个典型的应用场景是，当你需要往Bean里注入一个其父类中定义的属性，而你又无法复写父类的属性或属性的setter方法时，如：
+
+@Component注解定义的Bean，默认的名称（id）是小写开头的非限定类名。如这里定义的Bean名称就是userDaoImpl。你也可以指定Bean的名称：
+@Component("userDao")
+@Component是所有受Spring管理组件的通用形式，Spring还提供了更加细化的注解形式：@Repository、@Service、@Controller，它们分别对应存储层Bean，业务层Bean，和展示层Bean。目前版本（2.5）中，这些注解与@Component的语义是一样的，完全通用，在Spring以后的版本中可能会给它们追加更多的语义。所以，我们推荐使用@Repository、@Service、@Controller来替代@Component。
+6.使用<context:component-scan />让Bean定义注解工作起来
+
 
 ## 配置读取
 FileSystemXmlApplicationContext(String)
@@ -332,6 +367,10 @@ default-autowire=no
 byName、byType、constructor、autodetect
 default-init-method
 default-destroy-method
+
+@PostConstruct
+@PreDestroy
+
 
 ## <bean/>
 ### id

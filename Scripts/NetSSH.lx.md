@@ -227,7 +227,14 @@ ibus-daemon -d
 sshkey-gen,expect,建立ssh/scp通道
 
 
+---
+#ping
+```
+#win
+比如发一个1500的包，不允许分片 
+ping -l 1500 -f 1.1.1.1
 
+```
 
 
 

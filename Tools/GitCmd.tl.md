@@ -150,9 +150,12 @@ git push
 git branch
 git branch -av      #查看远程分支
 git br -vv #查看本地分支跟踪的远程分支
+
 ```
+
 ##切换分支
     git checkout [branch name]
+
 ## git checkout 签出分支
     git checkout <name>
     git checkout -b <name>      #change & new

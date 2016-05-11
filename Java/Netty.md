@@ -260,13 +260,33 @@ DirectByteBuf
     维护复杂
 普通
 
-AbstractByteBuf
+##AbstractByteBuf
+readBytes
+    getBytes
+    readerIndex+=length;
+writeBytes
+    setBytes
+    writerIndex+=length;
+倍增或步进算法
+较小的倍增，浪费空间小，倍增到较大数值后浪费空间较多
 
+重用缓冲区
+discardReadByte
+    未读取的字节数组复制到缓冲区的起始位置
+    setBytes(0,this,readerIndex,writerIndex-readerIndex)
 
+##AbstractReferenceCountedByteBuf
+对象引用计数器
+retain
+    自旋，refCnt+1
 
+##UnpooledHeapByteBuf
+基于堆内存分配字节缓冲区
 
-
-
+##PooledByteBuf内存池原理
+PoolArena
+    Chunk
+        Page
 
 
 

@@ -29,6 +29,9 @@ https://pqrs.org/osx/karabiner/
 ⇪——Caps Lock
 fn——功能键就是fn
 
+##mac字典
+/Library/Dictionaries
+
 ##disk磁盘
 CCleaner：全球下载超过1000万次的磁盘清理工具；
 Defraggler：磁盘整理；
@@ -196,6 +199,21 @@ brew install tesseract
 ##UML
 [jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
+StarUML.app/Contents/www/license/node
+```javascript
+function validate(PK, name, product, licenseKey) {
+        var pk, decrypted;
+        // edit by 0xcb
+        return {
+            name: "0xcb",
+            product: "StarUML",
+            licenseType: "vip",
+            quantity: "bbs.chinapyg.com",
+            licenseKey: "later equals never!"
+        };
+//....
+}
+```
 
 
 

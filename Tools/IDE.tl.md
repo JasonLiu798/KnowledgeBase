@@ -88,6 +88,8 @@ GenerateSerialVersionUID
 ## keyMap 快捷键
 [所有](http://www.itjhwd.com/intellij-ideakjj)
 ### 常用
+    ctrl + F12 -> ctrl + \ file structure
+
 #### 代码生成
     Shift + F6    (Alt + Shift + R)        重构rename   
     Alt + Insert    (Alt + Shift + Z)      自动创建getter/setter   
@@ -99,7 +101,6 @@ GenerateSerialVersionUID
     Ctrl+Alt+ left/right  返回至上次浏览的位置
     双击Shift   全局查找     
     ctrl-E      最近编辑文件 
-    ctrl-F12    文档结构        
     ctrl-H      查看类继承层次
     Ctrl+Q      显示注释文档
     ctrl-alt-H  调用层次

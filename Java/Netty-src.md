@@ -67,17 +67,86 @@ ByteBuf容器
 
 ##ByteBufAllocator
 字节缓冲区分配器
+[I]ByteBufAllocator
+    AbstractByteBufAllocator
+        PooledByteBufAllocator
+        UnpooledByteBufAllocator
 
-
-----
-
-### 零拷贝
+零拷贝
 ByteBufAllocator.ioBuffer
 
 
-### debug tool
+##CompositeByteBuf
+将多个ByteBuf实例组装到一起，形成统一视图
+
+##ByteBufUtil
+###debug tool
 ByteBufUtil
     hexDump()
+
+
+
+----
+#Channel
+接口层，Facade模式统一封装
+定义尽量大而全
+具体实现采用聚合而非包含
+
+##AbstractChannel源码分析
+AbstractNioByteChannel
+```java
+    @Override
+    protected void doWrite(ChannelOutboundBuffer in) throws Exception {
+        int writeSpinCount = -1;
+        boolean setOpWrite = false;//写半包标识
+        for (;;) {
+            Object msg = in.current();
+            if (msg == null) {
+                // Wrote all messages.
+                clearOpWrite();
+                // Directly return here so incompleteWrite(...) is not called.
+                return;
+            }
+            if (msg instanceof ByteBuf) {
+                ByteBuf buf = (ByteBuf) msg;
+                int readableBytes = buf.readableBytes();
+                if (readableBytes == 0) {
+                    in.remove();
+                    continue;
+                }
+                boolean done = false;//是否结束
+                long flushedAmount = 0;//发送的总消息字节数
+                //writeSpinCount 循环发送次数
+                if (writeSpinCount == -1) {
+                    writeSpinCount = config().getWriteSpinCount();
+                }
+                for (int i = writeSpinCount - 1; i >= 0; i --) {
+                    int localFlushedAmount = doWriteBytes(buf);
+                    if (localFlushedAmount == 0) {//TCP缓冲区已满
+                        setOpWrite = true;//空循环提前退出
+                        break;
+                    }
+                    flushedAmount += localFlushedAmount;
+                    if (!buf.isReadable()) {
+                        done = true;
+                        break;
+                    }
+                }
+                in.progress(flushedAmount);
+                if (done) {
+                    in.remove();
+                } else {
+                    // Break the loop and so incompleteWrite(...) is called.
+                    break;
+                }
+            }
+            //else 处理文件...
+        }
+        incompleteWrite(setOpWrite);//处理半包
+    }
+```
+
+AbstractNioMessageChannel
 
 ## channel
 channelRegistered->channelActive->channelInactive->channelUnregistered

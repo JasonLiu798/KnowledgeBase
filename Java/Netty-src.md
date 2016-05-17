@@ -146,7 +146,45 @@ AbstractNioByteChannel
     }
 ```
 
-AbstractNioMessageChannel
+##AbstractNioMessageChannel
+
+
+##NioServerSocketChannel
+doReadMessages
+
+
+##NioSocketChannel
+connect
+```java
+protected boolean doConnect(SocketAddress remoteAddress, SocketAddress localAddress) throws Exception {
+        if (localAddress != null) {
+            javaChannel().socket().bind(localAddress);
+        }
+
+        boolean success = false;
+        try {
+            boolean connected = javaChannel().connect(remoteAddress);
+            if (!connected) {
+                selectionKey().interestOps(SelectionKey.OP_CONNECT);
+            }
+            success = true;
+            return connected;
+        } finally {
+            if (!success) {
+                doClose();
+            }
+        }
+    }
+    //1.连接成功，返回true
+    //2.暂时没有连接上，服务器无ack，不确定，返回false
+    //3.连接失败，抛出异常
+```
+
+
+
+
+
+
 
 ## channel
 channelRegistered->channelActive->channelInactive->channelUnregistered

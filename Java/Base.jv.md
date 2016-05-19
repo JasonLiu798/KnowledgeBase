@@ -11,7 +11,8 @@
 另外，对于包装器类型，equals方法并不会进行类型转换。
 
 
-
+##数组
+http://blog.csdn.net/orzlzro/article/details/7017435
 
 
 

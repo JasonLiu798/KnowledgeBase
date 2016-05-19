@@ -9,7 +9,7 @@ HSF框架
 ##部分失败
 网络错误，发送者无法知道接收者是否收到消息，收到后是否进程正常
 
-
+[a note on distributed computing 笔记摘录](http://blog.csdn.net/qiaofeiw/article/details/21305871)
 
 ----
 #一致性问题

@@ -200,6 +200,7 @@ brew install tesseract
 [jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
 StarUML.app/Contents/www/license/node
+[crack](http://www.360doc.com/content/15/1115/01/9437165_513270982.shtml)
 ```javascript
 function validate(PK, name, product, licenseKey) {
         var pk, decrypted;
@@ -279,6 +280,8 @@ deb-src http://mirrors.163.com/ubuntu/ precise-backports main restricted univers
 [mac-Homebrew]
 homebrew常用
 ```bash
+curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo tar xvz -C/usr/local --strip 1
+
 安装 ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
 brew update
 brew search xxx

@@ -11,7 +11,6 @@ http://blog.csdn.net/chszs/article/details/8219189
 ## lifecycle
 http://www.cnblogs.com/zrtqsk/p/3735273.html
 
-
 ---
 #theory
 

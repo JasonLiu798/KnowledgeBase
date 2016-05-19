@@ -102,7 +102,7 @@ pssh -h /root/all -l root -i 'nohup kafka-server-start.sh $KAFKA_HOME/config/ser
 
 
 ---
-#operation
+#command
 ##topic
 ###create
 kafka-topics.sh --create --topic gpsraw --replication-factor 3 --partitions 2 --zookeeper namenode:2181
@@ -114,8 +114,17 @@ kafka-topics.sh --zookeeper namenode:2181 --delete --topic {topic name}
 kafka-topics.sh --create --topic gpsraw --replication-factor 3 --partitions 3 --zookeeper namenode:2181
 
 ###list
+```
+#list-all
+kafka-list-topic.sh --zookeeper 192.168.197.170:2181,192.168.197.171:2181 
+#list-single
+kafka-list-topic.sh --zookeeper 192.168.197.170:2181,192.168.197.171:2181 
+#list-single
 kafka-topics.sh --zookeeper namenode:2181,datanode1:2181,datanode2:2181 --delete --topic {topic name}
+
 kafka-topics.sh --zookeeper zk_host:port/chroot --alter --topic my_topic_name --config x=y
+
+```
 
 ###alter
 * add partion

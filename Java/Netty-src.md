@@ -179,6 +179,145 @@ protected boolean doConnect(SocketAddress remoteAddress, SocketAddress localAddr
     //2.暂时没有连接上，服务器无ack，不确定，返回false
     //3.连接失败，抛出异常
 ```
+doWrite
+```java
+protected void doWrite(ChannelOutboundBuffer in) throws Exception {
+        for (;;) {
+            int size = in.size();
+            if (size == 0) {
+                // All written so clear OP_WRITE
+                clearOpWrite();
+                break;
+            }
+            long writtenBytes = 0;
+            boolean done = false;
+            boolean setOpWrite = false;
+
+            // Ensure the pending writes are made of ByteBufs only.
+            ByteBuffer[] nioBuffers = in.nioBuffers();
+            int nioBufferCnt = in.nioBufferCount();//需要发送的ByteBuffer数组个数
+            long expectedWrittenBytes = in.nioBufferSize();//需要发送的总字节数
+            SocketChannel ch = javaChannel();
+
+            // Always us nioBuffers() to workaround data-corruption.
+            // See https://github.com/netty/netty/issues/2761
+            switch (nioBufferCnt) {
+                case 0:
+                    // We have something else beside ByteBuffers to write so fallback to normal writes.
+                    super.doWrite(in);
+                    return;
+                case 1:
+                    // Only one ByteBuf so use non-gathering write
+                    ByteBuffer nioBuffer = nioBuffers[0];
+                    //对selector轮询写操作次数进行上限控制，如果TCP缓冲区满，TCP处于Keep-alive状态，消息无法发送出去，停留在此状态，reactor线程无法处理读取其他消息和执行排队task
+                    for (int i = config().getWriteSpinCount() - 1; i >= 0; i --) {
+                        final int localWrittenBytes = ch.write(nioBuffer);
+                        if (localWrittenBytes == 0) {//TCP缓冲区可能满，无法再次写进去
+                            setOpWrite = true;//设置半包标记为true
+                            break;
+                        }
+                        expectedWrittenBytes -= localWrittenBytes;//发送字节总数 - 已发送字节
+                        writtenBytes += localWrittenBytes;//发送字节总数 + 已发送字节数
+                        if (expectedWrittenBytes == 0) {
+                            done = true;//设置发送完标记
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    for (int i = config().getWriteSpinCount() - 1; i >= 0; i --) {
+                        final long localWrittenBytes = ch.write(nioBuffers, 0, nioBufferCnt);//参数(要发是的ByteBuffer，数组偏移量，ByteBuffer个数)
+                        if (localWrittenBytes == 0) {
+                            setOpWrite = true;//设置半包标记为true
+                            break;
+                        }
+                        expectedWrittenBytes -= localWrittenBytes;
+                        writtenBytes += localWrittenBytes;
+                        if (expectedWrittenBytes == 0) {
+                            done = true;
+                            break;
+                        }
+                    }
+                    break;
+            }
+
+            // Release the fully written buffers, and update the indexes of the partially written buffer.
+            in.removeBytes(writtenBytes);
+
+            if (!done) {
+                // Did not write all buffers completely.
+                incompleteWrite(setOpWrite);
+                break;
+            }
+        }
+    }
+```
+
+```java
+//AbstractNioByteChannel
+    /**
+     * 处理半包
+     * @param setOpWrite
+     */
+    protected final void incompleteWrite(boolean setOpWrite) {
+        // Did not write completely.
+        if (setOpWrite) {
+            setOpWrite();
+        } else {
+            // Schedule flush again later so other tasks can be picked up in the meantime
+            Runnable flushTask = this.flushTask;
+            if (flushTask == null) {
+                flushTask = this.flushTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        flush();
+                    }
+                };
+            }
+            eventLoop().execute(flushTask);
+        }
+    }
+```
+###doReadBytes
+```java
+    protected int doReadBytes(ByteBuf byteBuf) throws Exception {
+        final RecvByteBufAllocator.Handle allocHandle = unsafe().recvBufAllocHandle();
+        allocHandle.attemptedBytesRead(byteBuf.writableBytes());
+        return byteBuf.writeBytes(javaChannel(), allocHandle.attemptedBytesRead());
+    }
+```
+
+##Unsafe
+register
+
+
+write,消息发送到环形数组
+flush，缓冲区消息全部写入channel，并发送给通信对方
+
+
+##AbstractNioUnsafe
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

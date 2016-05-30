@@ -116,8 +116,6 @@ FixedLengthFrameDecoder
 
 ---
 # 线程模型
-
-
 ## Reactor单线程模型
 Reactor
 

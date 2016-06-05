@@ -19,6 +19,14 @@ HSF框架
 
 [uber-ringpop](http://uber.github.io/ringpop/)
 
+木桶延迟
+多个节点同时计算
+
+数据中心宕机
+解决方案，将相关信息存储在client，数据中心宕机后，把相关信息发送到备份数据中心，便能继续提供服务
+
+tchannel
+
 ----
 #一致性问题
 Vector Clock

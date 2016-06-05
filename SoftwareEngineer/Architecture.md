@@ -1,11 +1,13 @@
 #Architecture
 ---
-#theory
+#doc
 [架构之路（一）：目标](http://www.csdn.net/article/2015-09-22/2825768)
 [架构之路（二）：性能](http://www.csdn.net/article/2015-09-22/2825773)
 [架构之路（三）：单元测试](http://www.csdn.net/article/2015-09-22/2825774)
 [架构之路（四）：测试驱动]()
 [淘宝大秒系统设计详解](http://geek.csdn.net/news/detail/59847)
+[途牛网站无线架构变迁实践](http://geek.csdn.net/news/detail/55369)
+
 
 ---
 #面对的问题

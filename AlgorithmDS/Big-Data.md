@@ -9,9 +9,9 @@
 [大数据计数：如何仅用1.5KB内存为十亿对象计数](http://www.csdn.net/article/2012-12-21/2813063-big-data-counting-how-to-count-a-objects)
 
 
+[大数据学习](https://github.com/oldratlee/big-data-study)
 
-
-
+[深入理解Apache Flink核心技术](http://geek.csdn.net/news/detail/56272)
 #算法
 Bloom filter/Hash/bit-map/堆/数据库或倒排索引/trie树
 分而治之/hash映射 + hash统计 + 堆/快速/归并排序；

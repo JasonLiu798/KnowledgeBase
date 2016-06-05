@@ -1,6 +1,8 @@
 #Paxos算法
 [前百度牛人李海磊](http://www.tudou.com/programs/view/e8zM8dAL6hM/)
 [paxos算法之粗浅理解](http://blog.csdn.net/flyforfreedom2008/article/details/45542583)
+[Paxos By Example](https://angus.nyc/2012/paxos-by-example/)
+
 
 #目的
 paxos用来确定一个不可变变量的取值

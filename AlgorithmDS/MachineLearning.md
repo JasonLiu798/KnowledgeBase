@@ -13,6 +13,7 @@ http://download.csdn.net/detail/flybirds98/1934334
 [深度学习2015年文章整理（CVPR2015）](http://blog.csdn.net/u010402786/article/details/50548996)
 [CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的内部网络结构有什么区别？](https://www.zhihu.com/question/34681168#answer-29055567)
 [Using Deep Q-Network to Learn How To Play Flappy Bird](https://github.com/yenchenlin1994/DeepLearningFlappyBird.git)
+[25个Java机器学习工具&库](http://www.csdn.net/article/2015-12-25/2826560)
 ---
 #book
 统计学习方法

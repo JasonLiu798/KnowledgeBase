@@ -80,11 +80,7 @@ mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321
 ```sql
 show variables like 'character%';
 show variables like 'collation%';
-<<<<<<< HEAD
 character_set_client
-=======
-character_set_client 
->>>>>>> 6248ce492c51e654f7b9bd279be549212211986d
 character_set_connection  为建立连接使用的编码；
 character_set_database    数据库的编码；
 character_set_results   结果集的编码；

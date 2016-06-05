@@ -29,16 +29,17 @@ utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8
 ---
 #引擎
 MyISAM 表级并发控制锁
-BDB 页面级并发控制锁
 InnoDB 记录级并发控制锁
-内存存储引擎 HEAP表
-合并存储引擎 
-archive storage engine
-fedreted storage engine
-cluster storage engine
-csv
-blackhole storage engine
-custom storage engine
+
+BDB 页面级并发控制锁
+内存存储引擎 HEAP表，适合查找表，周期性缓存聚合数据，保存中间数据，表级锁，并发写入差，每行长度固定，
+merge 合并存储引擎，
+archive，只支持insert select，zlib压缩，针对高速插入和压缩优化的简单引擎
+cluster，
+csv，不支持索引
+blackhole，
+fedreted，访问其他mysql的代理
+custom storage engine，
 
 ##InnoDB MyISAM 引擎选择
 [InnoDB还是MyISAM 再谈MySQL存储引擎的选择](http://database.51cto.com/art/200905/124370.htm)
@@ -85,6 +86,8 @@ innodb_old_blocks_time
 
 
 
+---
+#索引
 
 
 
@@ -100,6 +103,7 @@ read committed   |  N   |   Y       |   Y    |  N
 repeatable read  |  N   |   N       |   Y    |  N
 serializable     |  N   |   N       |   N    |  N
 
+间隙锁 next-key locking，防止幻读
 
 
 

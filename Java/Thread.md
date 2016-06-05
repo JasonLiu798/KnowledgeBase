@@ -20,8 +20,22 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 　　第四是阻塞状态。线程正在运行的时候，被暂停，通常是为了等待某个时间的发生(比如说某项资源就绪)之后再继续运行。sleep,suspend，wait等方法都可以导致线程阻塞。
 　　第五是死亡状态。如果一个线程的run方法执行结束或者调用stop方法后，该线程就会死亡。对于已经死亡的线程，无法再使用start方法令其进入就绪。
 
+
+---
+#threadpool 线程池
+大小：硬件性能、线程任务类型（CPU密集，IO密集）、是否有其他任务
+
+
 ---
 #资源同步
+#volatile
+线程可见性：其他线程可以看到最新的修改
+指令重排：
+
+只解决了可见性问题，没有解决互斥性
+适合：
+一个线程写，其他线程读
+
 #Synchronized
 [synchronized关键字详解](http://www.cnblogs.com/mengdd/archive/2013/02/16/2913806.html)
 从语法角度来说就是Obj.wait(),Obj.notify必须在synchronized(Obj){...}语句块内
@@ -61,6 +75,36 @@ synchronized method 就等价于 synchronized (this) block
 
 ##synchronized lock对比
 [synchronized 与 Lock 的那点事](http://www.cnblogs.com/benshan/p/3551987.html)
+synchronized的限制
+1.一个线程因为等待内置锁而进入，就无法中断该线程
+2.尝试获取内置锁，无法设置超时
+3.获取内置锁，必须使用synchronized块
+
+Lock
+```java
+//1.获取锁可以中断
+final ReetrantLock l1 = new ReentrantLock();
+l1.lockInterruptibly();
+//2.设置获取锁失败超时机制
+if(l1.tryLock(1000,TimeUnit.MILLISECONDS)){
+}
+```
+tryLock避免了无尽死锁，会受到活锁影响
+减小活锁几率：为每个线程设置不同超时时间
+
+
+##Lock
+交替锁
+链表
+
+
+
+
+
+#CAS指令
+
+
+
 
 
 ---
@@ -73,6 +117,16 @@ wait方法有：wait()，wait(long timeout)，wait(long timeout, long nanos)，�
 wait()：等待有其它的线程调用notify()或notifyAll()进入调度状态，与其它线程共同争夺监视。wait()相当于wait(0)，wait(0, 0)。
 wait(long timeout)：当其它线程调用notify()或notifyAll()，或时间到达timeout亳秒，或有其它某线程中断该线程，则该线程进入调度状态。
 wait(long timeout, long nanos)：相当于wait(1000000*timeout + nanos)，只不过时间单位为纳秒。
+
+###注意点
+始终使用while循环来调用wait方法，原因是尽管不满足被唤醒条件，但由于其他线程调用notifyAll会导致被阻塞线程意外唤醒，将破坏锁保护的约定关系，导致约束失效，引起意想不到的结果
+```java
+synchronized(this){
+    while(condition)
+        Object.wait;
+    ...
+}
+```
 
 ##wait/notify/notifyAll
 ##CountdownLatch
@@ -151,6 +205,12 @@ livelock
 
 CopyOnWrite的缺点
 CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题。
+
+ArrayBlockingQueue
+在必要是阻塞，队列为满，调用put会阻塞，队列为空，调用take会阻塞
+生产者消费者模式为什么不用 ConcurrentLinkedQueue？
+如果生产、消费速度不同，生产过快，使用ConcurrentLinkedQueue会导致队列大小不断增加，可能会超过内存容量。
+
 
 
 ---

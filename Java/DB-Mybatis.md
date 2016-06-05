@@ -117,6 +117,10 @@ Access denied for user 'root'@'10.185.8.159' (using password: YES)
 尝试更换datasource实现类为com.mchange.v2.c3p0.ComboPooledDataSource后正常，原因暂时认定为BasicDataSource bug
 
 
+---
+#分库 分表
+[插件m-shard 基于mybatis的shard方案（分表分库、读写分离）](http://blog.csdn.net/xingkong0128/article/details/18268635)
+
 
 ----
 #源码学习

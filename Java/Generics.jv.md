@@ -1,5 +1,9 @@
 #Generics
 ---
+http://blog.csdn.net/jinuxwu/article/details/6771121
+[java泛型（二）、泛型的内部原理：类型擦除以及类型擦除带来的问题](http://blog.csdn.net/lonelyroamer/article/details/7868820)
+
+
 泛型是JDK 1.5的一项新特性，它的本质是参数化类型（Parameterized Type）的应用，也就是说所操作的数据类型被指定为一个参数，在用到的时候在指定具体的类型。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口和泛型方法。
 
 ##类型膨胀 真实泛型 
@@ -127,9 +131,12 @@ public class Pair<T extends Comparable& Serializable> {
 #类型擦除引起的问题及解决方法
 ##1、先检查，在编译，以及检查编译的对象和引用传递的问题
 java编译器是通过先检查代码中泛型的类型，然后再进行类型擦除，在进行编译的
-
-ArrayList<String> arrayList1=new ArrayList(); //第一种 情况  
-ArrayList arrayList2=new ArrayList<String>();//第二种 情况  
+```java
+//第一种 情况，涉及类型检查的是它的引用
+ArrayList<String> arrayList1=new ArrayList();
+//第二种 情况，没有效果
+ArrayList arrayList2=new ArrayList<String>();
+```
 这样是没有错误的，不过会有个编译时警告。
 不过在第一种情况，可以实现与 完全使用泛型参数一样的效果，第二种则完全没效果。
 
@@ -276,6 +283,8 @@ public class Test2<T> {
 }    
 
 #通配符
+[java泛型（三）、通配符的使用](http://blog.csdn.net/lonelyroamer/article/details/7927212)
+
 有三种：
 1、无限定通配符   形式<?>
 2、上边界限定通配符 形式< ? extends Number>    //用Number举例

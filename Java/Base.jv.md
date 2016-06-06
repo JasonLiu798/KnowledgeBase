@@ -123,8 +123,11 @@ An asynchronous I/O operation does not cause the requesting process to be blocke
 
 
 ---
-#泛型
-http://blog.csdn.net/jinuxwu/article/details/6771121
+#[泛型](./Generics.jv.md)
+
+
+
+
 
 ---
 ## 引用

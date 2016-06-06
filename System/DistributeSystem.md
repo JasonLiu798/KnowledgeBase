@@ -5,7 +5,7 @@
 [分布式系统的事务处理](http://tech.dezai.cn/Detail.Aspx?AI=90001)
 [《七周七并发模型》作者 Paul Butcher：用并发计算实现最大效率](http://segmentfault.com/a/1190000002801864)
 HSF框架
-
+[分布式计算编程模型之RPC](http://www.infoq.com/cn/news/2016/04/Distributed-compute-program-RPC)
 ##部分失败
 网络错误，发送者无法知道接收者是否收到消息，收到后是否进程正常
 

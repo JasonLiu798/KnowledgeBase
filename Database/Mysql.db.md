@@ -135,6 +135,10 @@ default-character-set = utf8
 ```
 
 
+
+[mysql online DDL](http://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-overview.html)
+
+
 ----
 #theory
 ##character set 和 collation

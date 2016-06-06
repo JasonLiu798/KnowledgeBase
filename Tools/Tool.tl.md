@@ -13,6 +13,7 @@ brew home       用浏览器打开brew的官方网站
 brew info         显示软件信息
 brew deps        显示包依赖
 brew edit xxx  编辑url
+brew link xxx
 ```
 改键
 https://pqrs.org/osx/karabiner/

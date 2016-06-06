@@ -156,6 +156,31 @@ ps -Af | grep agent
 /etc/ssh/sshd_config 
 PermitRootLogin yes
 
+###代理，跳板机
+```bash
+vi ~/.ssh/config
+Host dxx.sxx-bastion
+    hostname 54.65.xx.2xx
+    Port 18330
+    User ec2-user
+Host dxx.sxx-web1
+    hostname 10.0.x.xx
+    ProxyCommand ssh dxx.sxx-bastion -W %h:%p
+    User ubuntu
+```
+保存后,进行登录验证
+ps:
+%h 表示 hostname
+%p 表示 portal
+
+```bash
+#~/.ssh/config
+Host 10.205.*
+User javaguest
+ProxyCommand ssh -p 123 user@ip -i ~/.ssh/id_rsa -W %h:%p
+
+```
+
 ###重启
 ubuntu
 service ssh start

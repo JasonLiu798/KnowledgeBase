@@ -13,6 +13,23 @@ intellij安装目录下bin\idea.exe.vmoptions文件，加上
 -Dfile.encoding=UTF8
 [关于Idea testng单元测试乱码的解决](http://www.iteye.com/topic/1131087)
 
+##配色
+动态相关：
+接口，紫色，D072F3
+实例field,粉红，E868CD
+局部变量，浅红，FF939A
+
+静态相关：
+constant(final)，浅绿，8DF66A
+key word，橘黄色，FFA21C
+line comment，灰绿，97C47C
+java doc comment，灰绿，7AC668
+静态变量，浅绿蓝，36C596
+静态方法，浅蓝绿，2EEBFF
+分号，6DC89F
+注解名，深绿，169F5B
+普通方法调用，蓝色，A19FFF
+
 
 ###代码检查配置
 ####泛型提示

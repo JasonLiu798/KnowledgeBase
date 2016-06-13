@@ -454,6 +454,20 @@ acrobat
 
 
 ---
+#foxmail
+##gmail
+接收邮件 (IMAP) 服务器：    imap.gmail.com
+要求 SSL：是
+端口：993
+发送邮件 (SMTP) 服务器：    smtp.gmail.com
+使用身份验证：是
+SSL 端口：465 或 587
+设置与接收邮件服务器的设置相同
+
+
+
+
+---
 #linux
 #[web压测](http://www.oschina.net/question/12_6110)
 siege

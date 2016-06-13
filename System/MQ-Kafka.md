@@ -1,6 +1,7 @@
 #kafka
 ---
 # doc
+http://kafka.apache.org
 [消息系统Kafka介绍](http://dongxicheng.org/search-engine/kafka/)
 [Updated Kafka PHP client library - Lorenzo Alberton](http://www.tuicool.com/articles/zIzyq2)
 [日志：每个软件工程师都应该知道的有关实时数据的统一概念](http://www.oschina.net/translate/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
@@ -18,6 +19,8 @@
 消息
 指的是通信的基本单位。由消息生产者（producer）发布关于某话题（topic）的消息，这句话的意思是，消息以一种物理方式被发送给了作为代理（broker）的服务器（可能是另外一台机器）。若干的消息使用者（consumer）订阅（subscribe）某个话题，然后生产者所发布的每条消息都会被发送给所有的使用者。
 
+Producers 写数据到 Brokers
+Consumers 从 Brokers 读数据
 
 订阅机制
 
@@ -34,12 +37,33 @@
 变更日志（changelog）101：表与事件的二象性（duality）
 
 
+##Topics
+Queue：同一个小组
+Topic：不同小组
+Producer一直往后追加
+Consume通过offset控制消费进度
 
+##Partitions
+一个topic由多个partitions组成
+有序+不可变的消息不断往后追加
+每个Partition相当于一个文件夹
 
+##Replicas
+Partition的备份
+防止数据丢失&高可用
+replication-factor=2可容忍1个broker宕机
 
+消息传递语义
+最多一次，不会重复，故障情况下会导致丢失
+最少一次，默认，消息不会丢失，故障情况会重复
+仅仅一次，不会重复也不回丢失
 
-
-
+##有序性
+单分区有序
+1.producer send指定分区
+2.consumer指定分区消费，自行实现fail-over
+3.replication-factor设置为N（N为broker数量），保证broker n-1宕机容忍度
+Apache Samza=Kafka+Yarn+SamzaJob
 
 
 ---

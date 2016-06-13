@@ -43,9 +43,21 @@ ResourceLoader通过Resource接口完成
 HashMap
 
 
-lazy-init属性实现：
+
+
+##2.5 容器其他相关特性实现
+* lazy-init属性实现：
 refresh
     finishBeanFactoryInitialization(beanFactory);
+
+* FactoryBean实现
+getObjectForBeanInstance
+    getCachedObjectForFactoryBean
+
+* BeanPostProcessor实现
+
+
+
 
 
 

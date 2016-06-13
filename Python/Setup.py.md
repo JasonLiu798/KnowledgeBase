@@ -98,6 +98,8 @@ http://www.pylint.org/#install
 
 ---
 #pyenv
+[Python 多版本共存之 pyenv](http://seisman.info/python-pyenv.html)
+
 ```bash
 git clone git://github.com/yyuu/pyenv.git ~/.pyenv
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc

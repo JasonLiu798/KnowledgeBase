@@ -114,11 +114,8 @@ FixedLengthFrameDecoder
 
 
 
-
 ---
 # 线程模型
-
-
 ## Reactor单线程模型
 Reactor
 
@@ -143,8 +140,6 @@ EventLoopGroup管理的线程数可以通过构造函数设置，没有设置，
 
 ###客户端线程模型
 
-
-
 ###NioEventLoop
 作为服务端Acceptor线程，负责处理客户端的请求接入；
 作为客户端Connecor线程，负责注册监听连接操作位，用于判断异步连接结果；
@@ -160,8 +155,6 @@ EventLoopGroup管理的线程数可以通过构造函数设置，没有设置，
 
 
 Netty 4的串行化设计
-
-
 
 
 ---
@@ -249,90 +242,15 @@ nioBuffer()
 * 随机读写
 
 ---
-#ByteBuf源码分析
+#性能
 
 
+#可靠性
+心跳检测，链路空闲检测
+读空闲
+写空闲
 
 
-
-
-
-
-
-
-
-
-----
-
-### 零拷贝
-ByteBufAllocator.ioBuffer
-
-
-### debug tool
-ByteBufUtil
-    hexDump()
-
-## channel
-channelRegistered->channelActive->channelInactive->channelUnregistered
-### ChannelHandler
-handlerAdded    当 ChannelHandler 添加到 ChannelPipeline 调用
-handlerRemoved  当 ChannelHandler 从 ChannelPipeline 移除时调用
-exceptionCaught 当 ChannelPipeline 执行发生错误时调用
-    ChannelInboundHandler
-        channelRegistered 
-        channelUnregistere
-        channelActive  
-        channelInactive 
-        channelReadComplete
-        channelRead
-        channelWritabilityChanged
-        userEventTriggered
-    ChannelOutboundHandler
-        bind    
-        connect 
-        disconne
-        close   
-        deregist
-        read    
-        flush   
-        write
-
-### resource manage
-ResourceLeakDetector
-    Disables
-    SIMPLE  
-    ADVANCED
-    PARANOID
-io.netty.leakDetectionLevel
-
-
-
-## ChannelPipeline
-addFirst addBefore addAfter addLast 
-Remove  
-Replace
-
-get(...)    
-context(...)    
-names() iterator()
-
-fireChannelRegistered
-
-##ChannelHandlerContext
-
-# codec
-## Decoder
-
-ReferenceCountUtil.release(message) 
-ReferenceCountUtil.retain(message)
-
-
-ReplayingDecoder
-自动检测缓冲区是否有足够的字节
-
-
-public class CombinedChannelDuplexHandler<I extends ChannelInboundHandler,O extends ChannelOutboundHandler>
-这提供了一个容器,单独的解码器和编码器类合作而无需直接扩展抽象的编解码器类。
 
 ---
 #XMPP

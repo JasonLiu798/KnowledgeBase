@@ -251,8 +251,16 @@ ibus-daemon -d
 [自动ssh登录的几种方法](http://blueicer.blog.51cto.com/395686/88175)
 sshkey-gen,expect,建立ssh/scp通道
 
+[SSH bouncing update – getting rid of Killed by signal 1](http://simon.zekar.com/2013/03/07/ssh-bouncing-update-killed-by-signal-1/)
 
+---
+#ping
+```
+#win
+比如发一个1500的包，不允许分片 
+ping -l 1500 -f 1.1.1.1
 
+```
 
 
 

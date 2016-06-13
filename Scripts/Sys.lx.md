@@ -1,7 +1,9 @@
 ---
 #system setting
 ##system version
+发行版本
 cat /etc/issue
+
 ##date
 date -s 11:25:00
 

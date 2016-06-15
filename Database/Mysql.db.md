@@ -24,18 +24,18 @@ mysql -h 192.168.143.113 -u root -proot
 vi /Library/LaunchDaemons/com.mysql.plist
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-        <key>Label</key>
-        <string>com.mysql</string>
-        <key>ProgramArguments</key>
-        <array>
-                <string>/usr/local/mysql/bin/mysqld_safe</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <false/>
-</dict>
+  <dict>
+    <key>Label</key>
+    <string>com.mysql</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/mysql/bin/mysqld_safe</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+  </dict>
 </plist>
 ```
 检查格式
@@ -102,12 +102,12 @@ alter database name character set utf8;
 
 --表编码
 CREATE TABLE `type` (
-`id` int(10) unsigned NOT NULL auto_increment,
-`flag_deleted` enum('Y','N') character set utf8 NOT NULL default 'N',
-`flag_type` int(5) NOT NULL default '0',
-`type_name` varchar(50) character set utf8 NOT NULL default '',
-PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `flag_deleted` enum('Y','N') character set utf8 NOT NULL default 'N',
+  `flag_type` int(5) NOT NULL default '0',
+  `type_name` varchar(50) character set utf8 NOT NULL default '',
+  PRIMARY KEY (`id`)
+  ) DEFAULT CHARSET=utf8;
 --修改表编码
 alter table type character set utf8;
 
@@ -159,16 +159,16 @@ SELECT *, COUNT(DISTINCT nowamagic) FROM table GROUP BY now
 ##差集
 //子查询
 select table1.id from table1 
-  where not exists 
-    (select 1 from table2 
-     where table1.id = table2.id
-    );
+where not exists 
+(select 1 from table2 
+where table1.id = table2.id
+);
 
 //外连接
 ```sql
 select table1.id from table1 
-  left join table2
-  on table1.id=table2.id
+left join table2
+on table1.id=table2.id
 where table2.id is null;
 ```
 
@@ -206,6 +206,20 @@ select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_nam
 
 ---
 #PerformanceTuning
+##慢查询日志
+
+show status
+
+##间歇性问题
+
+show global status
+show processlist
+观察线程处于的状态
+
+##其他profile工具
+1.USER_STATISTICS表
+2.strace
+
 ##explain
 [mysql explain用法和结果的含义 ](http://blog.chinaunix.net/uid-540802-id-3419311.html)
 
@@ -248,3 +262,44 @@ filesort
 
 
 ---
+#performance-schema
+##data type
+更小的通常更好
+简单就好
+尽量避免NULL
+  缺点：索引、索引统计、值比较 更复杂
+  好处：innodb使用单独的位bit存储NULL
+
+##整数
+tinyint|smallint|mediumint| int     | bigint
+8     |   16    |   24    |   32    |   64
+
+##text blob
+tinytext,smalltext=text,mediumtext,longtext
+tinyblob,smallblob=blob,mediumblob,longblob
+只对每个列前max_sort_length字节排序
+
+##枚举代替字符串
+
+##时间
+datetime
+
+timestamp
+4字节
+1970~2038
+
+##位数据类型
+
+
+
+
+
+
+
+
+
+
+
+
+
+

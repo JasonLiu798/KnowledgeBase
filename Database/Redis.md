@@ -3,6 +3,7 @@
 #文档
 [JIMDB：一个大规模分布式内存存储的演进之路](http://www.infoq.com/cn/articles/JMDB-liuhaifeng)
 [Redis GEO 特性简介](http://blog.huangz.me/diary/2015/redis-geo.html)
+[redis performace](http://my.oschina.net/pblack/blog/102394)
 
 ---
 #setup

@@ -50,6 +50,11 @@ fgrep=grep -F
 
 ---
 #awk
+```bash
+##获取第N(示例为7)段之后所有内容
+awk '{i=0;s=""; while(i<=NF){ i++; if (i>=7) s=s" "$i;}print s}'
+```
+[常用-语法](http://man.linuxde.net/awk)
 
 
 

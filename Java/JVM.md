@@ -2,7 +2,9 @@
 ---
 #doc
 [编程语言与高级语言虚拟机杂谈](http://zhuanlan.zhihu.com/hllvm)
+[IntelliJ IDEA设置JVM运行参数](http://blog.csdn.net/sdujava2011/article/details/50086933)
 
+[ JCONSOLE的连接问题](http://blog.csdn.net/blade2001/article/details/7742574)
 ---
 #theory
 [栈式虚拟机和寄存器式虚拟机](http://www.zhihu.com/question/35777031)
@@ -15,6 +17,9 @@
 
 ##memory
 方法区，堆，方法栈，本地方法栈，PC寄存器
+
+
+
 ###分配
 栈上
 TLAB分配

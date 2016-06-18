@@ -22,6 +22,8 @@ https://pqrs.org/osx/karabiner/
 
 ---
 #sys系统
+##linux
+[nmon](http://nmon.sourceforge.net/pmwiki.php)
 ##mac
 ⌘——Command ()
 ⌃ ——Control

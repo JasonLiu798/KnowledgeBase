@@ -365,7 +365,7 @@ void monitorLock(Monitor *mon, Thread *self) {
 
 [threadlocal](http://blog.csdn.net/lufeng20/article/details/24314381)
 
-
+[指令重排](https://www.zhihu.com/question/39458585)
 
 
 

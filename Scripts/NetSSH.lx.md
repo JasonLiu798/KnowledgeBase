@@ -152,9 +152,24 @@ ps -Af | grep agent
 ```
 [ssh多秘钥共存](http://www.111cn.net/sys/linux/71236.htm)
 
-###配置
+##/etc/ssh配置
 /etc/ssh/sshd_config 
 PermitRootLogin yes
+
+
+##~/.ssh/config
+###指定不同key
+```bash
+Host *.workdomain.com  
+    IdentityFile ~/.ssh/id_rsa.work  
+    User lee  
+   
+Host github.com  
+    IdentityFile ~/.ssh/id_rsa.github  
+    User git  
+```
+
+
 
 ###代理，跳板机
 ```bash

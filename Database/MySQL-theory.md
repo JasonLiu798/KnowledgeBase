@@ -88,8 +88,55 @@ innodb_old_blocks_time
 
 ---
 #索引
+##优点
+* 减少服务器扫描的数据量
+* 帮助服务器避免排序和临时表
+* 将随机IO变为顺序IO
 
 
+##b-tree
+```sql
+create table people(
+    last_name varhcar(50) not null,
+    first_name varhcar(50) not null,
+    dob     data not null,
+    gender  enum('m','f') not null,
+    key(last_name,first_name,dob)
+    );
+```
+索引有效情况
+* 全值匹配
+* 匹配最左前缀，如给出last_name值
+* 匹配列前缀，如 last name以J开头
+* 匹配范围值，
+* 精确匹配某一列并范围匹配另外一列，如last name=allen,first name开头为K
+* 只访问索引的查询
+索引还可满足排序需求
+
+###限制
+* 不是从最左列开始查找，或某个字母结尾的
+* 不能跳过索引中的列，如给出了last_name，dob，但没有给出first_name
+* 查询中有某个列的范围查询，则右边的所有列都无法使用索引优化查找，如last_name='Smith' AND first_name LIKE 'J%' AND dob='1976-12-23'，只能使用到last_name,first_name
+PS:以上限制，在未来版本可能变更
+
+##哈希索引
+###限制
+* 只包含哈希值和行指针，不存储字段值，不能避免行读取
+* 不是按照所有值顺序存储，无法排序
+* 不支持部分索引列匹配查找，如索引(A,B)，查询值只有A,则无法使用索引
+* 只支持等值比较查询，包括=、IN()、<=>，不支持任何范围
+* 速度很快，除非有很多哈希冲突
+* 冲突很多情况下，维护索引操作代价较高
+
+innoDB自适应哈希索引
+
+自定义哈希索引，如：较长的字符串+crc(字符串)
+    手动维护、触发器维护
+
+##空间树索引
+地理数据存储
+##全文索引
+##分形树索引
 
 
 

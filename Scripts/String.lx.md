@@ -52,7 +52,8 @@ fgrep=grep -F
 #awk
 
 
-
+排序
+awk -Fm '{print $1}'|sort -n
 
 
 

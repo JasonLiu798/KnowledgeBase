@@ -13,6 +13,7 @@ brew home       用浏览器打开brew的官方网站
 brew info         显示软件信息
 brew deps        显示包依赖
 brew edit xxx  编辑url
+brew link xxx
 ```
 改键
 https://pqrs.org/osx/karabiner/
@@ -21,6 +22,8 @@ https://pqrs.org/osx/karabiner/
 
 ---
 #sys系统
+##linux
+[nmon](http://nmon.sourceforge.net/pmwiki.php)
 ##mac
 ⌘——Command ()
 ⌃ ——Control
@@ -200,6 +203,7 @@ brew install tesseract
 [jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
 StarUML.app/Contents/www/license/node
+[crack](http://www.360doc.com/content/15/1115/01/9437165_513270982.shtml)
 ```javascript
 function validate(PK, name, product, licenseKey) {
         var pk, decrypted;
@@ -279,6 +283,8 @@ deb-src http://mirrors.163.com/ubuntu/ precise-backports main restricted univers
 [mac-Homebrew]
 homebrew常用
 ```bash
+curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo tar xvz -C/usr/local --strip 1
+
 安装 ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
 brew update
 brew search xxx
@@ -447,6 +453,20 @@ acrobat
 1118-0732-7889-3385-4819-5335
 1118-0833-3524-0475-2122-4564
 1118-0413-0660-6186-6863-8213
+
+
+---
+#foxmail
+##gmail
+接收邮件 (IMAP) 服务器：    imap.gmail.com
+要求 SSL：是
+端口：993
+发送邮件 (SMTP) 服务器：    smtp.gmail.com
+使用身份验证：是
+SSL 端口：465 或 587
+设置与接收邮件服务器的设置相同
+
+
 
 
 ---

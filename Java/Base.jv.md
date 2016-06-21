@@ -3,6 +3,8 @@
 [关于Java你可能不知道的10件事](https://github.com/oldratlee/translations/blob/master/10-things-you-didnt-know-about-java/README.md)
 [class文件结构](http://blog.csdn.net/dc_726/article/details/7944154)
 
+[jvm se7 Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)
+[instance of ](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5.instanceof)
 ----
 #变量
 [自动拆箱装箱](http://www.cnblogs.com/danne823/archive/2011/04/22/2025332.html)
@@ -10,8 +12,11 @@
 当 "=="运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象，而如果其中有一个操作数是表达式（即包含算术运算）则比较的是数值（即会触发自动拆箱的过程）
 另外，对于包装器类型，equals方法并不会进行类型转换。
 
+[share/vm/oops下的代码做fast subtype check的问题](http://hllvm.group.iteye.com/group/topic/26896)
+[OpenJDK / jdk7u / jdk7u / langtools](http://hg.openjdk.java.net/jdk7u/jdk7u/langtools/file/tip/src/share/classes/com/sun/tools/javac/parser/Token.java)
 
-
+##数组
+http://blog.csdn.net/orzlzro/article/details/7017435
 
 
 
@@ -123,8 +128,11 @@ An asynchronous I/O operation does not cause the requesting process to be blocke
 
 
 ---
-#泛型
-http://blog.csdn.net/jinuxwu/article/details/6771121
+#[泛型](./Generics.jv.md)
+
+
+
+
 
 ---
 ## 引用

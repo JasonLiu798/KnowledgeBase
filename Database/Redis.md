@@ -3,6 +3,7 @@
 #文档
 [JIMDB：一个大规模分布式内存存储的演进之路](http://www.infoq.com/cn/articles/JMDB-liuhaifeng)
 [Redis GEO 特性简介](http://blog.huangz.me/diary/2015/redis-geo.html)
+[redis performace](http://my.oschina.net/pblack/blog/102394)
 
 ---
 #setup
@@ -183,6 +184,39 @@ srandmember(key) ：随机返回名称为key的set的一个元素
 删除名称为key的zset中score >= min且score <= max的所有元素
 ###zunionstore / zinterstore(dstkeyN, key1,…,keyN, WEIGHTS w1,…wN, AGGREGATE SUM|MIN|MAX)
 对N个zset求并集和交集，并将最后的集合保存在dstkeyN中。对于集合中每一个元素的score，在进行AGGREGATE运算前，都要乘以对于的WEIGHT参数。如果没有提供WEIGHT，默认为1。默认的AGGREGATE是SUM，即结果集合中元素的score是所有集合对应元素进行SUM运算的值，而MIN和MAX是指，结果集合中元素的score是所有集合对应元素中最小值和最大值。
+
+
+
+<type>(<scope>): <subject>
+fix(loader): add missing "$timeout" 
+
+<body>
+More detailed explanatory text, if necessary.  Wrap it to 
+about 72 characters or so. 
+
+<footer>
+1.不兼容变动
+如果当前代码与上一个版本不兼容，则 Footer 部分以BREAKING CHANGE开头，后面是对变动的描述、以及变动理由和迁移方法。
+2.关闭 Issue
+如果当前 commit 针对某个issue，那么可以在 Footer 部分关闭这个 issue 
+
+还有一种特殊情况，如果当前 commit 用于撤销以前的 commit，则必须以revert:开头，后面跟着被撤销 Commit 的 Header。
+
+type
+feat：新功能（feature）
+fix：修补bug
+docs：文档（documentation）
+style： 格式（不影响代码运行的变动）
+refactor：重构（即不是新增功能，也不是修改bug的代码变动）
+test：增加测试
+chore：构建过程或辅助工具的变动
+
+scope 数据层、控制层、视图层等等，视项目不同而不同。
+
+subject是 commit 目的的简短描述，不超过50个字符。
+
+
+
 
 
 ##Hash操作的命令

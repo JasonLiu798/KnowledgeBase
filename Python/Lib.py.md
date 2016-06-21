@@ -95,5 +95,8 @@ pip install rsa
 [pydes github](https://github.com/toddw-as/pyDes)
 
 
-
+---
+#curses
+[doc.CN](http://www.bkjia.com/Pythonjc/1042999.html)
+[doc.EN](https://docs.python.org/2/howto/curses.html#for-more-information)
 

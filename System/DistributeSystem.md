@@ -5,11 +5,15 @@
 [分布式系统的事务处理](http://tech.dezai.cn/Detail.Aspx?AI=90001)
 [《七周七并发模型》作者 Paul Butcher：用并发计算实现最大效率](http://segmentfault.com/a/1190000002801864)
 HSF框架
+<<<<<<< HEAD
+[分布式计算编程模型之RPC](http://www.infoq.com/cn/news/2016/04/Distributed-compute-program-RPC)
+=======
 [ICE简单介绍及使用示例](http://ronbay.iteye.com/blog/1697217)
+>>>>>>> 0959f80561b217456f2f54fe40172e31643f1315
 ##部分失败
 网络错误，发送者无法知道接收者是否收到消息，收到后是否进程正常
 
-
+[a note on distributed computing 笔记摘录](http://blog.csdn.net/qiaofeiw/article/details/21305871)
 
 
 

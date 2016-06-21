@@ -6,6 +6,8 @@
 The Hitchhiker’s Guide to Python!
 Python 源码剖析
 
+#中文
+http://blog.csdn.net/mayflowers/article/details/1568852
 
 ----
 #语法-变量

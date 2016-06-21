@@ -131,6 +131,30 @@ default-character-set = utf8
 ```
 
 
+<<<<<<< HEAD
+
+[mysql online DDL](http://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-overview.html)
+
+
+----
+#theory
+##character set 和 collation
+character set， 即字符集
+collation, 即比对方法 指定数据集如何排序，以及字符串的比对规则
+mysql> show collation;
+ollation 名字的规则可以归纳为这两类：
+1. <character set>_<language/other>_<ci/cs>
+2. <character set>_bin</li>
+ci 是 case insensitive 的缩写， cs 是 case sensitive 的缩写，bin 二进制排序
+###utf8_general_ci和utf8_unicode_ci的区别
+[utf8_general_ci和utf8_unicode_ci的区别](http://www.nowamagic.net/academy/detail/32161544)
+当前，utf8_unicode_ci校对规则仅部分支持Unicode校对规则算法
+utf8_unicode_ci的最主要的特色是支持扩展
+utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8_general_ci校对规则进行的比较速度很快，但是与使用utf8_unicode_ci的 校对规则相比，比较正确性较差
+
+
+=======
+>>>>>>> 0959f80561b217456f2f54fe40172e31643f1315
 ---
 #common grammer
 show databases;

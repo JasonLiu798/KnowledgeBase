@@ -6,7 +6,7 @@
 ##框架
 php55-phalcon C语言
 php55-swoole 国产的PHP高性能网络通信框架
-
+mq-beanstalk
 
 ---
 #变量

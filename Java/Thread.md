@@ -13,7 +13,6 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 线程也有就绪、阻塞和运行三种基本状态
 当所有用户线程执行完毕的时候，JVM自动关闭。但是守候线程却独立于JVM，守候线程一般是由操作系统或者用户自己创建的
 
-
 线程的几种状态
 　　在Java当中，线程通常都有五种状态，创建、就绪、运行、阻塞和死亡。
 　　第一是创建状态。在生成线程对象，并没有调用该对象的start方法，这是线程处于创建状态。
@@ -212,15 +211,72 @@ livelock
 
 ---
 # 集合类
-[LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
+##CopyOnWrite
 [CopyOnWrite](http://ifeve.com/java-copy-on-write/)
 添加的时候是需要加锁的，否则多线程写的时候会Copy出N个副本出来
 读的时候不需要加锁，如果读的时候有多个线程正在向ArrayList添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的ArrayList。
+适用：读多写少的并发场景
+实现
+```java
+public boolean add(T e) {
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        Object[] elements = getArray();
+        int len = elements.length;
+        // 复制出新数组
+        Object[] newElements = Arrays.copyOf(elements, len + 1);
+        // 把新元素添加到新数组里
+        newElements[len] = e;
+        // 把原数组引用指向新数组
+        setArray(newElements);
+        return true;
+    } finally {
+        lock.unlock();
+    }
+}
+final void setArray(Object[] a) {
+    array = a;
+}
+```
+读的时候不需要加锁，如果读的时候有多个线程正在向ArrayList添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的ArrayList。
 
-CopyOnWrite的缺点
-CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题。
+CopyOnWriteMap
+```java
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+public class CopyOnWriteMap<K, V> implements Map<K, V>, Cloneable {
+    private volatile Map<K, V> internalMap;
+    public CopyOnWriteMap() {
+        internalMap = new HashMap<K, V>();
+    }
+    public V put(K key, V value) {
+        synchronized (this) {
+            Map<K, V> newMap = new HashMap<K, V>(internalMap);
+            V val = newMap.put(key, value);
+            internalMap = newMap;
+            return val;
+        }
+    }
+    public V get(Object key) {
+        return internalMap.get(key);
+    }
+    public void putAll(Map<? extends K, ? extends V> newData) {
+        synchronized (this) {
+            Map<K, V> newMap = new HashMap<K, V>(internalMap);
+            newMap.putAll(newData);
+            internalMap = newMap;
+        }
+    }
+}
+```
+###缺点
+CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题
 
-ArrayBlockingQueue
+
+##BlockingQueue
+[LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
 在必要是阻塞，队列为满，调用put会阻塞，队列为空，调用take会阻塞
 生产者消费者模式为什么不用 ConcurrentLinkedQueue？
 如果生产、消费速度不同，生产过快，使用ConcurrentLinkedQueue会导致队列大小不断增加，可能会超过内存容量。
@@ -321,7 +377,7 @@ void monitorLock(Monitor *mon, Thread *self) {
 
 [threadlocal](http://blog.csdn.net/lufeng20/article/details/24314381)
 
-
+[指令重排](https://www.zhihu.com/question/39458585)
 
 
 

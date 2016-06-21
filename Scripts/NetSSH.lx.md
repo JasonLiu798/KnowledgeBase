@@ -152,9 +152,49 @@ ps -Af | grep agent
 ```
 [ssh多秘钥共存](http://www.111cn.net/sys/linux/71236.htm)
 
-###配置
+##/etc/ssh配置
 /etc/ssh/sshd_config 
 PermitRootLogin yes
+
+
+##~/.ssh/config
+###指定不同key
+```bash
+Host *.workdomain.com  
+    IdentityFile ~/.ssh/id_rsa.work  
+    User lee  
+   
+Host github.com  
+    IdentityFile ~/.ssh/id_rsa.github  
+    User git  
+```
+
+
+
+###代理，跳板机
+```bash
+vi ~/.ssh/config
+Host dxx.sxx-bastion
+    hostname 54.65.xx.2xx
+    Port 18330
+    User ec2-user
+Host dxx.sxx-web1
+    hostname 10.0.x.xx
+    ProxyCommand ssh dxx.sxx-bastion -W %h:%p
+    User ubuntu
+```
+保存后,进行登录验证
+ps:
+%h 表示 hostname
+%p 表示 portal
+
+```bash
+#~/.ssh/config
+Host 10.205.*
+User javaguest
+ProxyCommand ssh -p 123 user@ip -i ~/.ssh/id_rsa -W %h:%p
+
+```
 
 ###重启
 ubuntu
@@ -226,6 +266,7 @@ ibus-daemon -d
 [自动ssh登录的几种方法](http://blueicer.blog.51cto.com/395686/88175)
 sshkey-gen,expect,建立ssh/scp通道
 
+[SSH bouncing update – getting rid of Killed by signal 1](http://simon.zekar.com/2013/03/07/ssh-bouncing-update-killed-by-signal-1/)
 
 ---
 #ping

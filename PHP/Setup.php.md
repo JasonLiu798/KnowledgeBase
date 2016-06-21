@@ -4,6 +4,13 @@
 vagrant+vbox
 docker
 
+
+php.ini
+```bash
+#超时时间
+max_execution_time = 10
+
+```
 #环境变量
 export PATH="$(brew --prefix python3)/bin:$PATH"
 
@@ -16,6 +23,15 @@ echo 'export PATH="$(brew --prefix php55)/sbin:$PATH"' >> ~/.bash_profile
 for other brew install soft
 echo 'export PATH="/usr/local/bin:/usr/local/sbib:$PATH"' >> ~/.bash_profile 
 
+
+#command
+##ubuntu
+```bash
+service php5-fpm status
+service php5-fpm start
+service php5-fpm restart
+service php5-fpm reload
+```
 
 
 #setup

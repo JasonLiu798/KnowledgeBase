@@ -1,8 +1,15 @@
+#Hadoop
+[Hadoop2.6.0中YARN底层状态机实现分析](http://blog.csdn.net/beliefer/article/details/51190842)
+
+
+----
+#deploy
+```
 10.185.3.238 nameNode
 10.185.3.239 secondarynameNode
 10.185.3.245 dataNode1
 10.185.3.246 dataNode2
-
+```
 
 pssh -h /root/other.txt -l root -i 'service iptables status'
 pssh -h /root/zk.txt -l root -i 'zkServer.sh status'
@@ -12,109 +19,7 @@ pssh -h /root/ot.txt -l root -i 'tar -zpxvf /opt/project/lib.tar.gz -C /opt/proj
 pssh -h /root/ot.txt -l root -i 'mkdir -p /home/project'
 pssh -h /root/ot.txt -l root -i 'ln -sfv /home/project /opt/project'
 
-基础 http://www.jb51.net/article/31172.htm
 
-Row Key |column-family1 | column-family2 | column-family3
-------- | ------------- | -------------- | ------------- 
-        |col1  col2     | col1    col2   |  col3  | col1
-key1    |                    
-key2    |                    
-key3    |
-
-
-# command
-## 1 hadoop 
-hadoop fsck / -files -blocks
-
-### chk size
-hadoop dfsadmin -report
-
-### file operation
-hadoop fs -copyFromLocal localfile hdfs://localhost/xxx
-
-
-http://zy19982004.iteye.com/blog/2024467
-
-
-## 2 hbase
-hbase shell
-status
-version
-list
-
-### DDL
-### table
-#### create table
-create 'tablename','column1','column2','column3'...
-create 'gpsInfo', 'baseInfo'
-create 'gpsInfoTest', 'baseInfo'
-
-count 'test_gpsinfo'
-
-describe 'tablename'
-describe 'gpsInfo'
-hbase(main):002:0> describe 'gpsInfo'
-DESCRIPTION                                                                         ENABLED
- 'gpsInfo', {NAME => 'baseInfo', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'NON true E', REPLICATION_SCOPE => '0', VERSIONS => '3', COMPRESSION => 'NONE', MIN_VERSIONS  => '0', TTL => '2147483647', KEEP_DELETED_CELLS => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', ENCODE_ON_DISK => 'true', BLOCKCACHE => 'true'}
-
-
-
-
-#### del table
-disable 'tablename'
-drop 'tablename'
-
-#### scan table
-scan 'gpsInfo',{LIMIT=>100}
-scan 'gpsInfo123',{LIMIT=>5}
-scan 'D_AREAQUERY',{LIMIT=>10}
-
-#### other oper
-exists 'tablename'
-is_enabled 'tablename'
-is_disabled 'tablename'
-
-
-### column
-
-#### del column
-* disable table : disable 'tablename'
-* alter table:  alter 'tablename',{NAME=>'columnname',METHOD=>'delete'}
-* enable 'tablename'
-
-### DML
-#### add data
-put <table>,<rowkey>,<family:column>,<value>,<timestamp>
-put 'gpsInfoTest','0000000320101227','baseInfo:081351','01010200202010000003\x00;2010-12-27 08:13:51\x00;109.10437\x00;36.64465\x00;',1293408831000
-
-put 'user','andieguo','info:age','27'
-
-#### get data
-get <table>,<rowkey>,[<family:column>,....]
-get 'gpsInfoTest','0000000320101227','baseInfo:081351'
-
-get 'user','andieguo',{COLUMN=>'info:age',TIMESTAMP=>1409304}
-
-get 'gpsInfoTest','0000000320101227','info'
-
-#### del data
-delete  '表名' ,'行名称' , '列名称'
-delete 'test_gpsinfo','0101024050602010796620150325','baseInfo'
-
-delete 'test_gpsinfo','0101024050602010796620150325','baseInfo:113922'
-
-put '表名称', '行名称', '列名称:', '值'
-status
-version
-
-##### del row
-deleteall 'gpsInfoTest','null20150611'
-
-#### truncate table
-truncate 'tablename'
-
-#### hbase分页
-http://ronxin999.blog.163.com/blog/static/422179202013621111545534/
 
 
 ## 3 zookeeper
@@ -125,6 +30,7 @@ pssh -h /root/zk.txt -l root -i 'zkServer.sh status'
 [zookeeper日志清理，转换](http://w.gdu.me/wiki/Cloud/zookeeper_log_snapshot.)html
 zklog2txt /opt/zookeeper/zookeeperdir/logs/version-2/log.300000001 /opt/zookeeper|more
 
+```
         #!/bin/sh
         # scriptname: zkLog2txt
         # zookeeper事务日志为二进制格式，使用LogFormatter方法转换为可阅读的日志
@@ -146,7 +52,7 @@ zklog2txt /opt/zookeeper/zookeeperdir/logs/version-2/log.300000001 /opt/zookeepe
         #org.apache.zookeeper.server.LogFormatter "$LogFile"
         JAVA_OPTS="$JAVA_OPTS -Djava.ext.dirs=$zkDir:$zkDir/lib"
         java $JAVA_OPTS org.apache.zookeeper.server.LogFormatter "$LogFile"
-
+```
 
 
 ---
@@ -212,7 +118,6 @@ pssh -h other.txt -l root -i 'rpm -ivh /mnt/iso/Packages/expect-5.44.1.15-5.el6_
 pssh -h other.txt -l root -i 'cat /root/.ssh/authorized_keys'
 pssh -h other.txt -l root -i 'cat /root/.ssh/id_rsa.pub'
 pscp -h other.txt -l root .ssh/authorized_keys /root/.ssh/authorized_keys
-
 
 
 #挂盘
@@ -441,7 +346,6 @@ pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/hbase-env.sh'
 pssh -h /root/other.txt -l root -i 'mkdir -p /opt/hbase/pids'
 
 
-
 ##hbase-site.xml
 pscp -h /root/other.txt -l root /opt/hbase/conf/hbase-site.xml /opt/hbase/conf
 
@@ -475,7 +379,6 @@ pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/regionservers'
 # Q&A
 ## NoServerForRegionException: Unable to find region for xxxx
 hbase jar包版本问题
-
 
 
 

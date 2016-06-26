@@ -131,7 +131,6 @@ default-character-set = utf8
 ```
 
 
-<<<<<<< HEAD
 
 [mysql online DDL](http://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-overview.html)
 
@@ -152,9 +151,6 @@ ci 是 case insensitive 的缩写， cs 是 case sensitive 的缩写，bin 二�
 utf8_unicode_ci的最主要的特色是支持扩展
 utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8_general_ci校对规则进行的比较速度很快，但是与使用utf8_unicode_ci的 校对规则相比，比较正确性较差
 
-
-=======
->>>>>>> 0959f80561b217456f2f54fe40172e31643f1315
 ---
 #common grammer
 show databases;
@@ -224,18 +220,77 @@ select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_nam
 
 
 
-
-
-
-
 ---
 #PerformanceTuning
-##慢查询日志
+网络、CPU计算、生成统计信息执行计划、锁等待、
 
+##2.优化数据访问
+查询不需要的数据 limit
+多表关联 返回全部列
+总是取出全部列
+重复查询相同数据
+
+##3.重构查询方式
+分散大事务的数据量
+切分查询
+  尽量让数据库来做查询的原因：传统认为网络通信、查询解析和优化是代价很高的事
+  网络速度比以前快，运行多个小查询已经不是大问题
+  * 让缓存效率更高，更方便的缓存单表查询结果对象
+  * 查询分解，减少锁竞争
+  * 更容易拆库，高性能，可扩展
+  * 查询效率提升，比随机关联更高效
+  * 减少冗余记录查询
+  * 应用中实现了哈希关联
+
+##4.查询执行的基础
+###客户端/服务器通信协议
+  mysql同常要等所有数据都已经发送给客户端才能释放[这条查询所占用的资源] ，因此减少查询数据，使用limit限制数据量，尽早结束查询，尽早释放资源
+    查询占用的资源包括：
+      结果集的内存消耗
+###查询缓存
+大小写敏感的哈希表
+###查询优化处理
+语法解析，预处理
+查询优化
+  静态优化
+    IN,转换为ORmysql log(n)
+  动态优化
+
+###查询执行引擎
+
+###返回结果
+增量逐步返回
+
+##5.优化器的局限性
+关联子查询
+  外层表查询被压缩进子查询
+  推荐：用实际数据来验证
+union限制
+  union的limit放到外层，会最后再取出所需数据
+等值传递
+
+##6.查询优化器提示hint
+high_prority
+low_prority
+
+##7.优化特定类型查询
+count()
+  count(*)查询行数
+  覆盖索引
+  汇总表
+
+关联查询
+limit
+  限制分页能查询的历史
+  限制总数量
+  书签记录上次取数据位置
+  搜索引擎
+  SQL_CALC_FOUND_ROWS hint
+
+##慢查询日志
 show status
 
 ##间歇性问题
-
 show global status
 show processlist
 观察线程处于的状态

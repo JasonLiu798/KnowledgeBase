@@ -44,10 +44,21 @@ JVM会同步分配对象和内存空间清零操作
 #volatile
 线程可见性：其他线程可以看到最新的修改
 指令重排：
+第二个操作是volatile写，不管第一个操作是什么，都不能重排序
+第一个操作是volatile读，不管第二个操作是什么，都不能重排序
+第一个操作是volatile写，第二个操作是读，不能重排序
 
-只解决了可见性问题，没有解决互斥性
+##内存屏障插入策略
+保守策略
+每个volatiel写操作之前插入一个StoreStore屏障（普通写刷入主存）
+每个volatiel写操作之后插入一个StoreLoad屏障（或者在每个读之前插入StoreLoad，效率低）
+每个volatiel读操作之后插入一个LoadLoad屏障（禁止之后普通读和上面的volatile读重排）
+每个volatiel读操作之后插入一个LoadStore屏障（禁止之后普通写和上面的volatile读重排）
+
+##只解决了可见性问题，没有解决互斥性
 适合：
 一个线程写，其他线程读
+
 
 #Synchronized
 [synchronized关键字详解](http://www.cnblogs.com/mengdd/archive/2013/02/16/2913806.html)

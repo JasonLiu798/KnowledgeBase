@@ -1,10 +1,10 @@
 #Java Thread/Concurrent
 ---
-#doc
+#1.doc
 [fucking-java-concurrency](https://github.com/oldratlee/fucking-java-concurrency)
 
 ---
-#theory
+#2.theory
 一个Thread类实例只是一个对象，像Java中的任何其他对象一样，具有变量和方法，生死于堆上。
 Java中，每个线程都有一个调用栈，即使不在程序中创建任何新的线程，线程也在后台运行着，比如GC中的线程。
 
@@ -32,7 +32,7 @@ http://www.oracle.com/technetwork/java/threads-140302.html
 
 
 ---
-#java内存模型
+#3.java内存模型
 ##顺序一致模型
 保证单线程内操作按照程序顺序执行
 保证所有线程只看到一致的操作执行顺序
@@ -42,10 +42,6 @@ http://www.oracle.com/technetwork/java/threads-140302.html
 线程执行时读取到的值，要么是之前某个线程写入的值，要么是默认值
 JVM会同步分配对象和内存空间清零操作
 不保证Long，double类型 内存读写的原子性（JSR-133之后，读操作必须原子性，写操作可以拆分）
-
----
-#threadpool 线程池
-大小：硬件性能、线程任务类型（CPU密集，IO密集）、是否有其他任务
 
 
 
@@ -229,6 +225,8 @@ ConditionObject是同步器AbstractQueuedSynchronizer内部类
 
 
 
+
+
 ---
 #线程调度
 ##wait /sleep
@@ -318,8 +316,11 @@ stave
 livelock
 
 
+
+
+
 ---
-# 集合类
+#集合类
 ##CopyOnWrite
 [CopyOnWrite](http://ifeve.com/java-copy-on-write/)
 添加的时候是需要加锁的，否则多线程写的时候会Copy出N个副本出来
@@ -384,15 +385,46 @@ public class CopyOnWriteMap<K, V> implements Map<K, V>, Cloneable {
 CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题
 
 
-##BlockingQueue
+
+##ConcurrentHashMap
+HashTable锁粒度太大，put同时，无法get
+Segment数组，ReentrantLock
+HashEntry数组
+
+get不加锁
+    使用volatile
+    transient volatile int count;
+    volatile V value;
+put
+    1.是否需要扩容
+    2.添加元素位置，放入HashEntry数组
+
+##ConcurrentLinkedQueue
+wait-free算法 CAS
+入队：
+    1.insertnode设为尾节点下一个节点
+    2.更新tail，如果tail.next为null，则将 insertnode 设为tail
+
+
+##ArrayBlockingQueue
+不保证线程公平访问
+
+
+##LinkedBlockingQueue
 [LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
 在必要是阻塞，队列为满，调用put会阻塞，队列为空，调用take会阻塞
 生产者消费者模式为什么不用 ConcurrentLinkedQueue？
 如果生产、消费速度不同，生产过快，使用ConcurrentLinkedQueue会导致队列大小不断增加，可能会超过内存容量。
 
+PriorityBlockingQueue
 
+##DelayQueue
+支持延时获取元素的无界阻塞队列
+适合：缓存系统设计，定式调度任务
 
-
+SynchronousQueue
+LinkedTransferQueue
+LinkedBlockingDeque
 
 
 
@@ -400,6 +432,19 @@ CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存
 #测试
 [模拟并发测试](http://forrest420.iteye.com/blog/1169071)
 [Future/Callable/Runnable基本](http://www.cnblogs.com/dolphin0520/p/3949310.html)
+
+
+---
+#threadpool 线程池
+大小：硬件性能、线程任务类型（CPU密集，IO密集）、是否有其他任务
+FixedThreadPool
+SingleThreadExecutor
+CachedThreadPool
+    new ThreadPoolExecutor(0,Integer.MAX_VALUE,
+    60L, TimeUnit.SECONDS,
+    new SynchronousQueue<Runnable>());
+ScheduledThreadPoolExecutor
+
 
 
 ---

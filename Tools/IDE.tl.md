@@ -9,7 +9,7 @@ http://linux.chinaunix.net/techdoc/desktop/2009/07/06/1122020.shtml
 ###乱码
 File->setting->encoding改
 intellij安装目录下bin\idea.exe.vmoptions文件，加上 
--Dfile.encoding=UTF-8
+-Dfile.encoding=UTF-8 (无法识别)
 -Dfile.encoding=UTF8
 [关于Idea testng单元测试乱码的解决](http://www.iteye.com/topic/1131087)
 

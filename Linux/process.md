@@ -34,3 +34,50 @@ pthread_spin_lock (lock)
 }
 
 ```
+
+
+#fork
+[一个fork的面试题](http://coolshell.cn/articles/7965.html)
+题目：请问下面的程序一共输出多少个“-”？
+```c
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+ 
+int main(void)
+{
+   int i;
+   for(i=0; i<2; i++){
+      fork();
+      printf("-");
+   }
+ 
+   wait(NULL);
+   wait(NULL);
+ 
+   return 0;
+}
+//printf("-\n");
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

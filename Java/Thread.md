@@ -2,6 +2,9 @@
 ---
 #1.doc
 [fucking-java-concurrency](https://github.com/oldratlee/fucking-java-concurrency)
+[构建高性能服务（一）ConcurrentSkipListMap和链表构建高性能Java Memcached](http://maoyidao.iteye.com/blog/1559420)
+
+
 
 ---
 #2.theory
@@ -494,7 +497,9 @@ block
 
 
 
-
+---
+#distriputor
+[构建高性能服务（三）Java高性能缓冲设计 vs Disruptor vs LinkedBlockingQueue](http://maoyidao.iteye.com/blog/1663193)
 
 
 

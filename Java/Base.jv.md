@@ -7,6 +7,11 @@
 [instance of ](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5.instanceof)
 ----
 #变量
+##基本类型
+
+##引用类型
+类、接口类型、数组类型、枚举类型、注解类型
+
 [自动拆箱装箱](http://www.cnblogs.com/danne823/archive/2011/04/22/2025332.html)
 [自动拆箱装箱原理](http://www.cnblogs.com/dolphin0520/p/3780005.html)
 当 "=="运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象，而如果其中有一个操作数是表达式（即包含算术运算）则比较的是数值（即会触发自动拆箱的过程）
@@ -20,7 +25,8 @@ http://blog.csdn.net/orzlzro/article/details/7017435
 
 
 
-
+a------>b
+          b--------->c
 
 
 
@@ -58,6 +64,11 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 使用JDK提供的不变类(immutable class)作为Map的键可以避免为我们自己的类实现hashCode()和equals()方法。
 编程的时候接口优于实现。
 底层的集合实际上是空的情况下，返回长度是0的集合或者是数组，不要返回null。
+
+
+##hashmap
+[Java HashMap的死循环](http://coolshell.cn/articles/9606.html)
+
 
 
 ---

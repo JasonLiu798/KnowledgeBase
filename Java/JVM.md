@@ -89,8 +89,57 @@ jhat：JDK自带的java heap analyze tool
 
 
 
+---
+#GC
+##Serial gc
+扫描，复制均为单线程
+
+minor gc
+eden---(存活)---->To space(s0)
+minor gc
+To space(s1) From space(s0)
+
+To space满
+
+多次minro gc存活 ->old
 
 
+
+##并行回收GC Parallel Scavenge
+扫描，复制多线程
+server级（CPU核数>2，内存>2G）默认GC方式
+eden空间不够，对象大小等于enden space一半大小，直接在旧生代分配
+
+##并行GC ParNew
+必须配合旧生代使用CMS GC
+CMS回收旧生代的时候有些过程为并发进行，此时发送Minor GC需要相应处理，并行回收GC 无此操作，因此ParNew不可以与并行的旧生代GC同时使用
+
+##旧生代
+* 串行GC
+三色着色标记
+遍历未标记，回收
+滑动压缩（sliding compaction）
+
+* 并行GC
+Mark-Compact
+划分并行region
+三色着色标记
+大部分情况下，左边region为活跃对象，压缩移动不值得，继续向右扫描到值得压缩移动的region，找到后 region左边作为高密度区dense prefix，这些区域不回收，继续向右扫描，压缩移动
+
+* 并发GC CMS
+free-list记录空闲
+I.Initial Marking ，暂停应用
+II.Concurrent Marking 
+标记对象
+Mod Union Table记录 Minor GC后修改的Card信息
+浮动垃圾
+III.final Marking (remark)
+IV.Concurrent Sweeping
+
+
+##G1
+jvm heap划分为 多个固定大小region
+扫描采用Snapshot-at-the-beginning 并发marking算法对整个heap中region进行mark
 
 
 

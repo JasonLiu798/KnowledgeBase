@@ -58,6 +58,9 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 编程的时候接口优于实现。
 底层的集合实际上是空的情况下，返回长度是0的集合或者是数组，不要返回null。
 
+[hashmap](http://www.jameswxx.com/java/hashmap%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90/)
+
+
 
 ---
 #序列化
@@ -66,7 +69,34 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 [对比](http://www.oschina.net/question/54100_91827)
 
 [高性能序列化框架FST](http://itindex.net/detail/51375-%E6%80%A7%E8%83%BD-%E5%BA%8F%E5%88%97%E5%8C%96-%E6%A1%86%E6%9E%B6)
-[ kryo jdk fst Serializable对比](http://my.oschina.net/chenleijava/blog/198721)
+
+[fast-serialization](https://github.com/RuedigerMoeller/fast-serialization)
+[kryo](https://github.com/EsotericSoftware/kryo)
+
+[kryo jdk fst Serializable 使用对比](http://my.oschina.net/chenleijava/blog/198721)
+
+fst增加字段
+https://github.com/RuedigerMoeller/fast-serialization/issues/103
+General remark:
+
+Versioning is always an issue which needs to be handled explicitely, there is no magical solution. "serialversionId" is a bad and slow approach as it puts a penalty for each object written (even tiny ones), in addition it enlarges message size (+ ~8 bytes per object ref).
+serialversionId just throws an exception in case it does not match, so what have you gained ?.
+even half baked handling of versioning requires extra tags inside the binary object representations, approaches like "extension blocks" destroy linear memory write access (=cache misses).
+more advanced handling of versioning requires additional metadata such as with SBE or protobuf message files. Both libraries have significant limitations in message structure, often leading to an additional transfer step in order to create application-level objects from message objects. This overhead usually is not included in benchmarks.
+You need to plan ahead regarding version issues, there are several aproaches which do not impose a performance/message size penalty:
+
+for RPC, at connect time put in a version checking at application level.
+for persistence: write a version id first before writing your objects.
+strategies for backward compatibility:
+1) Do not modify classes but instead subclass from version 1. E.g. MyDataV1 extends MyData. 
+2) I have also used package renaming to deal with different versions (my.package.v1, mypackage.v2). 
+3) put in a "Object extraData", which can be used as a container for additions later on (simple cases)
+
+There is no such thing like automatical versioning, you have to deal with it explicitely at application level most of the time.
+
+I'll still try to figure out a scheme to solve the issue without hurting use cases of fst handling versioning e.g. at connect time.
+
+
 
 ##Java序列化缺点
 * 序列化后码流太大

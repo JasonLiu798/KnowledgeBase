@@ -115,10 +115,9 @@ FixedLengthFrameDecoder
 
 
 ---
-# 线程模型
+#Netty线程模型
 ## Reactor单线程模型
 Reactor
-
 ## Rector多线程模型
 与单线程模型最大的区别就是有一组NIO线程处理IO操作
 1）专门一个NIO线程-Acceptor线程用于监听服务端，接收客户端的TCP连接请求；
@@ -129,11 +128,16 @@ Reactor
 服务端用于接收客户端连接的不再是个1个单独的NIO线程，而是一个独立的NIO线程池。
 Acceptor接收到客户端TCP连接请求处理完成后（可能包含接入认证等），将新创建的SocketChannel注册到IO线程池（sub reactor线程池）的某个IO线程上，由它负责SocketChannel的读写和编解码工作。
 
-##Netty线程模型
-###服务端线程模型
+##服务端线程模型
 服务端监听线程和IO线程分离
 bossGroup线程组实际就是Acceptor线程池，负责处理客户端的TCP连接请求，如果系统只有一个服务端端口需要监听，则建议bossGroup线程组线程数设置为1
 EventLoopGroup管理的线程数可以通过构造函数设置，没有设置，默认取-Dio.netty.eventLoopThreads，如果该系统参数也没有指定，则为可用的CPU内核数 × 2
+
+##无锁化的串行设计理念
+Netty的NioEventLoop读取到消息之后，直接调用ChannelPipeline的fireChannelRead(Object msg)，只要用户不主动切换线程，一直会由NioEventLoop调用到用户的Handler，期间不进行线程切换，这种串行化处理方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。
+
+
+
 
 ![netty4线程模型](../img/netty4-thread.png)
 

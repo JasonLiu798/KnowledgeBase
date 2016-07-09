@@ -1,6 +1,6 @@
 
 [深入分析Docker镜像原理](http://www.csdn.net/article/2015-08-21/2825511)
-
+[镜像存储结构](http://www.open-open.com/lib/view/open1414222312419.html)
 
 docker history registry.aliyuncs.com/yueber/nginx-php
 镜像文件内容 /var/lib/docker/aufs/diff/

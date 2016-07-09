@@ -16,7 +16,10 @@ http://download.csdn.net/detail/flybirds98/1934334
 [25个Java机器学习工具&库](http://www.csdn.net/article/2015-12-25/2826560)
 [贝叶斯深度学习——基于PyMC3的变分推理](http://geek.csdn.net/news/detail/80255)
 
+[kNN算法python实现和简单数字识别的方法](http://www.jb51.net/article/57553.htm)
+[Python验证码识别处理实例](http://www.jb51.net/article/77100.htm)
 
+[blog machine learing](http://www.cnblogs.com/jerrylead/tag/Machine%20Learning/)
 
 ---
 #book

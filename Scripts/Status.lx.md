@@ -55,6 +55,7 @@ done
 ----
 #进程状态
 #top
+[top命令的用法详细详解](http://www.jb51.net/article/40807.htm)
 
 #htop
 [index](http://hisham.hm/htop/index.php?page=downloads#sources)

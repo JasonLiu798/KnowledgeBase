@@ -1,5 +1,6 @@
 #Java Thread Concurrent
 ---
+[Disruptor](http://ifeve.com/locks-are-bad/)
 
 [fucking-java-concurrency](https://github.com/oldratlee/fucking-java-concurrency)
 #theory
@@ -362,10 +363,38 @@ void monitorLock(Monitor *mon, Thread *self) {
 
 
 ----
-
+#threadlocal
 [threadlocal](http://blog.csdn.net/lufeng20/article/details/24314381)
+[Java并发编程：深入剖析ThreadLocal](http://www.cnblogs.com/dolphin0520/p/3920407.html)
+ThreadLocalMap
+
 
 [指令重排](https://www.zhihu.com/question/39458585)
+
+
+
+---
+#Disruptor
+[剖析Disruptor:为什么会这么快？(一)锁的缺点(1)](http://developer.51cto.com/art/201306/398864.htm)
+http://developer.51cto.com/art/201306/399082.htms
+
+http://developer.51cto.com/art/201306/398232.htm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

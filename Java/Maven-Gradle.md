@@ -340,4 +340,27 @@ https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/56
 
 
 
+http://tianya23.blog.51cto.com/1081650/386908/
+1、maven 仓库地址：
+共有的仓库
+http://repo1.maven.org/maven2/
+http://repository.jboss.com/maven2/
+http://repository.sonatype.org/content/groups/public/
+http://mirrors.ibiblio.org/pub/mirrors/maven2/org/acegisecurity/
+
+私有的仓库
+http://repository.codehaus.org/
+http://snapshots.repository.codehaus.org/
+http://people.apache.org/repo/m2-snapshot-repository
+http://people.apache.org/repo/m2-incubating-repository/
+ 
+同时可以搭建自己的maven仓库：私服， 搭建的方式参考如下：
+http://juvenshun.javaeye.com/blog/349534
+2、收集的外部仓库地址
+http://www.ibiblio.org/maven/mule/dependencies/maven2/
+
+
+
+
+
 

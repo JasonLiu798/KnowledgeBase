@@ -1,6 +1,11 @@
 #dubbo
 ---
 [dangdang dubbox](https://github.com/dangdangdotcom/dubbox)
+[dubbo-async](https://github.com/kubbo/dubbo-async)
+[HSF](http://www.cnblogs.com/zhwl/p/3642472.html)
+
+
+---
 #theory
 [Dubbo架构设计详解](http://shiyanjun.cn/archives/325.html)
 ##层次划分

@@ -25,7 +25,8 @@ http://blog.csdn.net/orzlzro/article/details/7017435
 
 
 
-
+##static
+[Java中的static关键字解析](http://www.cnblogs.com/dolphin0520/p/3799052.html)
 
 
 

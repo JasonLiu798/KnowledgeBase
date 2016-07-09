@@ -8,7 +8,6 @@
 ---
 #setup
 
-
 ##mac环境
 ```bash
 brew --prefix redis /
@@ -217,8 +216,6 @@ subject是 commit 目的的简短描述，不超过50个字符。
 
 
 
-
-
 ##Hash操作的命令
 hset(key, field, value)：向名称为key的hash中添加元素field<—>value
 hget(key, field)：返回名称为key的hash中field对应的value
@@ -323,6 +320,14 @@ redis自己实现VM，主要OS的VM换入换出是基于Page概念，无法控�
 
 ##监控
 https://github.com/LittlePeng/redis-monitor
+
+
+###缓存控制策略
+TTL
+显示失效
+     写——失效，写——更新
+读时失效
+     对象版本控制
 
 
 

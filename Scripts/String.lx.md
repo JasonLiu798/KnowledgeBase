@@ -57,7 +57,8 @@ awk '{i=0;s=""; while(i<=NF){ i++; if (i>=7) s=s" "$i;}print s}'
 [常用-语法](http://man.linuxde.net/awk)
 
 
-
+排序
+awk -Fm '{print $1}'|sort -n
 
 
 

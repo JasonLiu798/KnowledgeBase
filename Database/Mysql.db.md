@@ -24,18 +24,18 @@ mysql -h 192.168.143.113 -u root -proot
 vi /Library/LaunchDaemons/com.mysql.plist
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-        <key>Label</key>
-        <string>com.mysql</string>
-        <key>ProgramArguments</key>
-        <array>
-                <string>/usr/local/mysql/bin/mysqld_safe</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <false/>
-</dict>
+  <dict>
+    <key>Label</key>
+    <string>com.mysql</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/mysql/bin/mysqld_safe</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+  </dict>
 </plist>
 ```
 检查格式
@@ -102,12 +102,12 @@ alter database name character set utf8;
 
 --表编码
 CREATE TABLE `type` (
-`id` int(10) unsigned NOT NULL auto_increment,
-`flag_deleted` enum('Y','N') character set utf8 NOT NULL default 'N',
-`flag_type` int(5) NOT NULL default '0',
-`type_name` varchar(50) character set utf8 NOT NULL default '',
-PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `flag_deleted` enum('Y','N') character set utf8 NOT NULL default 'N',
+  `flag_type` int(5) NOT NULL default '0',
+  `type_name` varchar(50) character set utf8 NOT NULL default '',
+  PRIMARY KEY (`id`)
+  ) DEFAULT CHARSET=utf8;
 --修改表编码
 alter table type character set utf8;
 
@@ -131,7 +131,6 @@ default-character-set = utf8
 ```
 
 
-<<<<<<< HEAD
 
 [mysql online DDL](http://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-overview.html)
 
@@ -152,9 +151,6 @@ ci 是 case insensitive 的缩写， cs 是 case sensitive 的缩写，bin 二�
 utf8_unicode_ci的最主要的特色是支持扩展
 utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8_general_ci校对规则进行的比较速度很快，但是与使用utf8_unicode_ci的 校对规则相比，比较正确性较差
 
-
-=======
->>>>>>> 0959f80561b217456f2f54fe40172e31643f1315
 ---
 #common grammer
 show databases;
@@ -183,16 +179,16 @@ SELECT *, COUNT(DISTINCT nowamagic) FROM table GROUP BY now
 ##差集
 //子查询
 select table1.id from table1 
-  where not exists 
-    (select 1 from table2 
-     where table1.id = table2.id
-    );
+where not exists 
+(select 1 from table2 
+where table1.id = table2.id
+);
 
 //外连接
 ```sql
 select table1.id from table1 
-  left join table2
-  on table1.id=table2.id
+left join table2
+on table1.id=table2.id
 where table2.id is null;
 ```
 
@@ -224,12 +220,85 @@ select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_nam
 
 
 
-
-
-
-
 ---
 #PerformanceTuning
+网络、CPU计算、生成统计信息执行计划、锁等待、
+
+##2.优化数据访问
+查询不需要的数据 limit
+多表关联 返回全部列
+总是取出全部列
+重复查询相同数据
+
+##3.重构查询方式
+分散大事务的数据量
+切分查询
+  尽量让数据库来做查询的原因：传统认为网络通信、查询解析和优化是代价很高的事
+  网络速度比以前快，运行多个小查询已经不是大问题
+  * 让缓存效率更高，更方便的缓存单表查询结果对象
+  * 查询分解，减少锁竞争
+  * 更容易拆库，高性能，可扩展
+  * 查询效率提升，比随机关联更高效
+  * 减少冗余记录查询
+  * 应用中实现了哈希关联
+
+##4.查询执行的基础
+###客户端/服务器通信协议
+  mysql同常要等所有数据都已经发送给客户端才能释放[这条查询所占用的资源] ，因此减少查询数据，使用limit限制数据量，尽早结束查询，尽早释放资源
+    查询占用的资源包括：
+      结果集的内存消耗
+###查询缓存
+大小写敏感的哈希表
+###查询优化处理
+语法解析，预处理
+查询优化
+  静态优化
+    IN,转换为ORmysql log(n)
+  动态优化
+
+###查询执行引擎
+
+###返回结果
+增量逐步返回
+
+##5.优化器的局限性
+关联子查询
+  外层表查询被压缩进子查询
+  推荐：用实际数据来验证
+union限制
+  union的limit放到外层，会最后再取出所需数据
+等值传递
+
+##6.查询优化器提示hint
+high_prority
+low_prority
+
+##7.优化特定类型查询
+count()
+  count(*)查询行数
+  覆盖索引
+  汇总表
+
+关联查询
+limit
+  限制分页能查询的历史
+  限制总数量
+  书签记录上次取数据位置
+  搜索引擎
+  SQL_CALC_FOUND_ROWS hint
+
+##慢查询日志
+show status
+
+##间歇性问题
+show global status
+show processlist
+观察线程处于的状态
+
+##其他profile工具
+1.USER_STATISTICS表
+2.strace
+
 ##explain
 [mysql explain用法和结果的含义 ](http://blog.chinaunix.net/uid-540802-id-3419311.html)
 
@@ -272,3 +341,92 @@ filesort
 
 
 ---
+#performance-schema
+##data type
+更小的通常更好
+简单就好
+尽量避免NULL
+  缺点：索引、索引统计、值比较 更复杂
+  好处：innodb使用单独的位bit存储NULL
+
+##整数
+tinyint|smallint|mediumint| int     | bigint
+8     |   16    |   24    |   32    |   64
+
+##text blob
+tinytext,smalltext=text,mediumtext,longtext
+tinyblob,smallblob=blob,mediumblob,longblob
+只对每个列前max_sort_length字节排序
+
+##枚举代替字符串
+
+##时间
+datetime
+
+timestamp
+4字节
+1970~2038
+
+##位数据类型
+
+
+##identifier
+存储类型，还要考虑mysql内部怎么执行比较和计算
+类型一致，混用会导致隐式转换，影响性能
+满足需求的情况下，选择最小的数据类型
+字符串
+  通常很耗空间，尤其是myisam，压缩索引，性能更差
+  随机的字符串如md5，插入新值分布在很大的空间，索引会被写入不同位置，导致插入很慢，（磁盘随机访问、页分裂），select也会变慢，缓存局部原理失效
+UUID可以通过unhex转为binary(16)
+
+##坑
+太多的列，数千个列
+太多的关联，每个关联最多61张表
+全能的枚举
+变相的枚举
+非此发明（not invent here)的NULL
+
+##范式/反范式
+范式优点
+  更新操作比反范式快
+  重复数据少，修改只要改很少数据
+  表更小
+  更少需要distinct group by
+缺点
+  需要关联，可能会使索引无效
+
+反范式优点
+  查询不需要关联表，避免随机IO
+  索引策略更有效
+
+
+##缓存表和汇总表
+物化视图
+  flexviews
+计数器表
+  分散值到多行，随机选一行更新
+
+##加快alter table 操作的速度
+facebook,online schema change
+shlomi naoch,openark toolkit
+percona toolkit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

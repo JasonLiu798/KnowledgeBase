@@ -82,15 +82,28 @@ NIO
 * 调用flip()方法
 * 从Buffer中读取数据
 * 调用clear(清空所有)方法或者compact(清空已读)方法
+
 ###Three Property:
 * capacity
 * position         
     init:0
     写模式：当前位置，add->下一位置
     max:capacity-1
-    flip
-        读取之前写入的内容，w->r,pos=0
-    
+
+* flip
+```java
+public final Buffer flip() {
+    limit = position;
+    position = 0;
+    mark = -1;
+    return this;
+}
+```
+读取之前写入的内容，w->r,pos=0
+反转缓冲区。首先将限制设置为当前位置，然后将位置设置为 0
+如果已定义了标记，则丢弃该标记。
+常与compact方法一起使用。通常情况下，在准备从缓冲区中读取数据时调用flip方法。
+
 * limit             
     表示最多能读/写到多少数据
     写模式:limit等于Buffer的capacity
@@ -106,11 +119,29 @@ NIO
 
 ###other
 * rewind        
-    pos=0,limit保持不变
+```
+public final Buffer rewind() {
+    position = 0;
+    mark = -1;
+    return this;
+}
+```
+pos=0,limit保持不变，数据重写入Buffer前调用
+
 * clear
-    pos=0,limit=capacity,数据并未清除
+```
+public final Buffer clear(){
+    position = 0; //重置当前读写位置
+    limit = capacity; 
+    mark = -1;  //取消标记
+    return this;
+}
+```
+pos=0,limit=capacity,数据并未清除
+
 * compact       
     未读的数据拷贝到Buffer起始处，pos=未读元素之后，limit=capacity
+
 * mark
     标记position
 * reset         
@@ -119,7 +150,9 @@ NIO
     有相同的类型（byte、char、int等）。
     Buffer中剩余的byte、char等的个数相等。
     Buffer中所有剩余的byte、char等都相同。
-* compareTo 比较两个Buffer的剩余元素         
+
+* compareTo 
+    比较两个Buffer的剩余元素         
     满足下列条件，则认为一个Buffer“小于”另一个Buffer：
     * 第一个不相等的元素小于另一个Buffer中对应的元素 。
     * 所有元素都相等，但第一个Buffer比另一个先耗尽(第一个Buffer的元素个数比另一个少)。
@@ -131,6 +164,7 @@ NIO
     ByteBuffer[] bufferArray = { header, body };
     channel.read(bufferArray);
 ```
+
 * Gathering Writes
 ```java
     ByteBuffer header = ByteBuffer.allocate(128);
@@ -139,10 +173,13 @@ NIO
     ByteBuffer[] bufferArray = { header, body };
     channel.write(bufferArray);
 ```
+
 * transferFrom      
     将数据从源通道传输到FileChannel
+
 * transferTo            
     FileChannel传输到其他的channel
+
 
 ##selector
 与Selector一起使用时，Channel必须处于非阻塞模式下
@@ -192,7 +229,7 @@ close();
 ```
 非阻塞模式
 write()
-非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()。前面已经有例子了，这里就不赘述了。
+非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()
 
 read()
 非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。
@@ -214,7 +251,6 @@ channel.socket().bind(new InetSocketAddress(9999));
 ByteBuffer buf = ByteBuffer.allocate(48);
 buf.clear();
 channel.receive(buf);
-
 channel.send(buf, new InetSocketAddress("jenkov.com", 80));
 //锁住连接
 channel.connect(new InetSocketAddress("jenkov.com", 80));
@@ -225,7 +261,6 @@ channel.connect(new InetSocketAddress("jenkov.com", 80));
 Thread1->sinkChannel->sourceChannel->Thread2
 Pipe pipe = Pipe.open();
 Pipe.SinkChannel sinkChannel = pipe.sink();
-
 
 
 ##Path
@@ -241,7 +276,6 @@ delete
 walkFileTree
 
 ##AsynchronousFileChannel
-
 
 
 ##最佳实践

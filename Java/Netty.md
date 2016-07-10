@@ -51,6 +51,7 @@ public void bind(int port) throws Exception {
     }
 }
 ```
+
 ```java
 public class TimeServerHandler extends ChannelHandlerAdapter {
     @Override
@@ -155,7 +156,6 @@ Netty的NioEventLoop读取到消息之后，直接调用ChannelPipeline的fireCh
 作为线程执行器可以执行普通的任务线程（Runnable）。
 
 
-
 时间轮工作原理
 管理和维护大量的timer调度
 
@@ -193,13 +193,12 @@ Embedded-测试ChannelHandler时使用
 
 
 
-
 ----
 #ByteBuf
 ##ByteBuffer
 缺点
 * 长度固定，不能动态扩展收缩
-* 只有一个表示位置的指针position，读写需要手工调用flip()和rewind()等
+* 只有一个表示位置的指针position，读写需要手工调用 flip() 和 rewind()等
 * API功能有限
 
 ##ByteBuf readerIndex writerIndex 

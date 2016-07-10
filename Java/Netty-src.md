@@ -148,11 +148,10 @@ AbstractNioByteChannel
 ```
 
 ##AbstractNioMessageChannel
+```
 
 
-##NioServerSocketChannel
-doReadMessages
-
+```
 
 ##NioSocketChannel
 connect
@@ -287,6 +286,23 @@ protected void doWrite(ChannelOutboundBuffer in) throws Exception {
         return byteBuf.writeBytes(javaChannel(), allocHandle.attemptedBytesRead());
     }
 ```
+
+
+##NioServerSocketChannel
+private static final ChannelMetadata METADATA = new ChannelMetadata(false);
+
+doConnect
+
+
+doReadMessages
+
+
+
+
+
+
+
+
 
 ##Unsafe
 register

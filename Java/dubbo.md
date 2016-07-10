@@ -166,7 +166,9 @@ codecAdapter = new MinaCodecAdapter(getCodec(), getUrl(), this);acceptor.getFilt
 内核是需要ByteBuf.release的，继续通过byteBuf的一个实现PooledByteBuf分析源码，原来是实现了一个基于简单计数应用计数的循环使用的缓冲区，一旦计数变为1，该缓冲区被归还到netty4内核，被后面的数据读取线程重新使用
 
 
-
+---
+#Q
+[解决dubbo问题：forbid consumer](http://www.jameswxx.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E8%A7%A3%E5%86%B3dubbo%E9%97%AE%E9%A2%98%EF%BC%9Aforbid-consumer/)
 
 ---
 # Performance Test

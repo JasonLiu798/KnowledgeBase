@@ -5,10 +5,14 @@
 [IntelliJ IDEA设置JVM运行参数](http://blog.csdn.net/sdujava2011/article/details/50086933)
 
 [ JCONSOLE的连接问题](http://blog.csdn.net/blade2001/article/details/7742574)
+[内存模型barrier](http://ifeve.com/jmm-cookbook-mb/)
 ---
 #theory
 [栈式虚拟机和寄存器式虚拟机](http://www.zhihu.com/question/35777031)
 [寄存器分配问题](http://www.zhihu.com/question/29355187)
+
+[JVM系列三:JVM参数设置、分析](http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html)
+
 
 ##procedure
 编译
@@ -45,6 +49,13 @@ G1
 
 ---
 #tools
+##jinfo
+jinfo 33673|more
+可以输出并修改运行时的java 进程的opts。 
+
+##jps
+与unix上的ps类似，用来显示本地的java进程，可以查看本地运行着几个java程序，并显示他们的进程号。 
+
 ##jps
 -q only lvmid
 -m parameter passed to main()
@@ -52,38 +63,74 @@ G1
 -v init parameter
 jps -lv
 
-##内存分析
-###jconsole
-###visualvm
-###jmap
+##jconsole
+
+##visualvm
+
+##jmap
+输出所有内存中对象的工具，甚至可以将VM 中的heap，以二进制输出成文本
 jmap -dump:format=b,file=heap.bin <pid>
 
-###MAT
+###jstat
+监视VM内存工具。可以用来监视VM内存内的各种堆和非堆的大小及其内存使用量
+```bash
+jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]
+```
+* 常用选项
+jstat -gccapacity 33673 1000 10
+可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。
+
+jstat -gcutil {pid} {interval} {count}
+jstat -gcutil 529 1000 30
+```
+   S0: Survivor space 0 utilization as a percentage of the space's current capacity.
+
+   S1: Survivor space 1 utilization as a percentage of the space's current capacity.
+
+   E: Eden space utilization as a percentage of the space's current capacity.
+
+   O: Old space utilization as a percentage of the space's current capacity.
+
+   M: Metaspace utilization as a percentage of the space's current capacity.
+
+   CCS: Compressed class space utilization as a percentage.
+
+   YGC: Number of young generation GC events.
+
+   YGCT: Young generation garbage collection time.
+
+   FGC: Number of full GC events.
+
+   FGCT: Full garbage collection time.
+
+   GCT: Total garbage collection time.
+```
+jstat -class pid:显示加载class的数量，及所占空间等信息。 
+jstat -compiler pid:显示VM实时编译的数量等信息。 
+jstat -gc pid:可以显示gc的信息，查看gc的次数，及时间。其中最后五项，分别是young gc的次数，young gc的时间，full gc的次数，full gc的时间，gc的总时间。 
+jstat -gccapacity:可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。 
+jstat -gcnew pid:new对象的信息。 
+jstat -gcnewcapacity pid:new对象的信息及其占用量。 
+jstat -gcold pid:old对象的信息。 
+jstat -gcoldcapacity pid:old对象的信息及其占用量。 
+jstat -gcpermcapacity pid: perm对象的信息及其占用量。 
+jstat -util pid:统计gc信息统计。 
+jstat -printcompilation pid:当前VM执行的信息。 
+
+##jhat
+
+##MAT
 mat: eclipse memory analyzer, 基于eclipse RCP的内存分析工具。
 详细信息参见：http://www.eclipse.org/mat/
 jhat：JDK自带的java heap analyze tool
 
 
-###jstat
--class
--compiler
--gc
--gccapacity
--gccause
--gcnew
--gcnewcapacity
--gcold
--gcoldcapacity
--gcpermcapacity
--gcutil
--printcompilation
+##jstack
+[jstack和线程dump分析](http://jameswxx.iteye.com/blog/1041173)
+[Java自带的性能监测工具用法简介——jstack、jconsole、jinfo、jmap、jdb、jsta、jvisualvm](http://blog.csdn.net/feihong247/article/details/7874063)
 
-##jhat
 
-###MAT
 
-##线程分析
-###jstack
 
 ###TDA
 
@@ -240,6 +287,40 @@ new threshold 7即标识新的存活周期的阈值为7。
 -Xint，在解释模式下运行 JVM（对于测试 JIT 编译器实际上是否对您的代码起
 作用或者验证是否 JIT 编译器中有一个 bug， 这都很有用）。
 -Xloggc:，和 -verbose:gc 做同样的事，但是记录一个文件而不输出到命令行窗口。
+
+
+
+---
+#GC
+##CMS
+Mark-Sweep
+第一次标记（Initial Marking）
+该步聚须暂停整个应用，扫描从根集合对象到旧生代中可直接访问的对象，并对这些对象进行着色。对于着色的对象CMS采用一个外部的bit数组来进行记录。
+
+
+
+
+
+
+
+---
+#dev
+空闲内存： 
+Runtime.getRuntime().freeMemory() 
+总内存： 
+Runtime.getRuntime().totalMemory() 
+最大内存： 
+Runtime.getRuntime().maxMemory() 
+已占用的内存： 
+Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() 
+
+
+
+
+
+
+
+
 
 
 ---

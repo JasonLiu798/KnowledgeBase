@@ -14,6 +14,13 @@
 
 平滑的数据迁移
 
+
+[一种可以避免数据迁移的分库分表scale-out扩容方式](http://www.cnblogs.com/tommyli/p/3767362.html)
+
+
+
+
+
 ---
 #Transaction
 第一类丢失更新：撤销一个事务时，把其他事务已提交的更新数据覆盖。　

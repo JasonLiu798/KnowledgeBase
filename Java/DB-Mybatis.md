@@ -80,6 +80,12 @@ ehcache
 ---
 #config
 ## result map
+[Mybatis的ResultMap的使用](http://www.cnblogs.com/rollenholt/p/3365866.html)
+resultType
+<select id="selectUsers" parameterType="int" resultType="com.someapp.model.User">
+
+###简单使用
+```xml
 <resultMap type="TrainRecord" id="trainRecordResultMap">  
     <id column="id" property="id" jdbcType="BIGINT" />  
     <result column="add_time" property="addTime" jdbcType="VARCHAR" />  
@@ -87,6 +93,61 @@ ehcache
     <result column="activity_id" property="activityId" jdbcType="BIGINT" />  
     <result column="flag" property="status" jdbcType="VARCHAR" />  
 </resultMap> 
+```
+###complex one 
+```xml
+<resultMap id="detailedBlogResultMap" type="Blog">
+  <constructor>
+    <idArg column="blog_id" javaType="int"/>
+  </constructor>
+  <result property="title" column="blog_title"/>
+  <association property="author" javaType="Author">
+    <id property="id" column="author_id"/>
+    <result property="username" column="author_username"/>
+    <result property="password" column="author_password"/>
+    <result property="email" column="author_email"/>
+    <result property="bio" column="author_bio"/>
+    <result property="favouriteSection" column="author_favourite_section"/>
+  </association>
+  <collection property="posts" ofType="Post">
+    <id property="id" column="post_id"/>
+    <result property="subject" column="post_subject"/>
+    <association property="author" javaType="Author"/>
+    <collection property="comments" ofType="Comment">
+      <id property="id" column="comment_id"/>
+    </collection>
+    <collection property="tags" ofType="Tag" >
+      <id property="id" column="tag_id"/>
+    </collection>
+    <discriminator javaType="int" column="draft">
+      <case value="1" resultType="DraftPost"/>
+    </discriminator>
+  </collection>
+</resultMap>
+```
+resultMap
+* constructor - 类在实例化时,用来注入结果到构造方法中
+    - idArg - ID 参数;标记结果作为 ID 可以帮助提高整体效能
+    - arg - 注入到构造方法的一个普通结果
+* id – 一个 ID 结果;标记结果作为 ID 可以帮助提高整体效能
+* result – 注入到字段或 JavaBean 属性的普通结果
+* association – 一个复杂的类型关联;许多结果将包成这种类型
+    - 嵌入结果映射 – 结果映射自身的关联,或者参考一个
+* collection – 复杂类型的集
+    - 嵌入结果映射 – 结果映射自身的集,或者参考一个
+* discriminator – 使用结果值来决定使用哪个结果映射
+    - case – 基于某些值的结果映射
+        + 嵌入结果映射 – 这种情形结果也映射它本身,因此可以包含很多相 同的元素,或者它可以参照一个外部的结果映射。
+
+###鉴别器
+```xml
+<discriminator javaType="int" column="draft">
+    <case value="1" resultType="DraftPost"/>
+</discriminator>
+```
+
+有时一个单独的数据库查询也许返回很多不同 (但是希望有些关联) 数据类型的结果集。 鉴别器元素就是被设计来处理这个情况的, 还有包括类的继承层次结构。 鉴别器非常容易理 解,因为它的表现很像 Java 语言中的 switch 语句。
+
 
 
 ## batch insert 
@@ -115,6 +176,10 @@ Access denied for user 'root'@'10.185.8.159' (using password: YES)
     interface javax.sql.DataSource;
 无异常
 尝试更换datasource实现类为com.mchange.v2.c3p0.ComboPooledDataSource后正常，原因暂时认定为BasicDataSource bug
+
+
+
+
 
 
 ---

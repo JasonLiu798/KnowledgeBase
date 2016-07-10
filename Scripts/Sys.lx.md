@@ -1,4 +1,14 @@
 ---
+#monitor
+网络流量
+/proc/net/dev
+平均负载
+/proc/loadavg
+内存
+/proc/meminfo
+CPU利用率
+/proc/stat
+
 #system setting
 ##system version
 发行版本

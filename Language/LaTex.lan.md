@@ -168,8 +168,10 @@ d&=e+f+g
 \right.
 \]
 
-
-
+##排列组合
+```latex
+$\binom{n}{k}$
+```
 
 ##测试
 This expression $\sqrt{3x-1}+(1+x)^2$ is an example of a $\LaTeX$ inline equation. 

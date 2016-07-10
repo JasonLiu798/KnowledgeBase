@@ -138,7 +138,7 @@ boot2docker up ~/Downloads
 #To connect the Docker client to the Docker daemon, please set:
 export DOCKER_TLS_VERIFY=1
 export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=/Users/liujianlong/.boot2docker/certs/boot2docker-vm
+export DOCKER_CERT_PATH=/Users/xxx/.boot2docker/certs/boot2docker-vm
 ```
 
 自启动

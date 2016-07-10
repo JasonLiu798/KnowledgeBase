@@ -83,6 +83,14 @@ git push
     git fetch --all  
     git reset --hard origin/master
 
+```
+#远端回退c3
+提交c1->c2->c3
+git reset --hard c2
+git reset --soft c3
+
+```
+[revert](http://christoph.ruegg.name/blog/git-howto-revert-a-commit-already-pushed-to-a-remote-reposit.html)
 
 ##checkout
     git checkout -- filename        #not commit
@@ -283,7 +291,10 @@ git config --global alias.lg "log "
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 `git log颜色版`
-git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --graph --abbrev-commit"
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --graph --abbrev-commit --date-order"
+
+--graph 默认 --topo-order
+按主分支排序
 
 `git log无颜色版（moba颜色显示有问题）`
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit" 

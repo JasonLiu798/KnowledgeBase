@@ -299,11 +299,6 @@ doReadMessages
 
 
 
-
-
-
-
-
 ##Unsafe
 register
 
@@ -313,23 +308,6 @@ flush，缓冲区消息全部写入channel，并发送给通信对方
 
 
 ##AbstractNioUnsafe
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -377,7 +355,9 @@ io.netty.leakDetectionLevel
 
 
 
-## ChannelPipeline
+
+---
+#ChannelPipeline 
 addFirst addBefore addAfter addLast 
 Remove  
 Replace
@@ -388,9 +368,18 @@ names() iterator()
 
 fireChannelRegistered
 
+
+
+##ChannelPipeline的inbound事件
+
+##ChannelPipeline的outbound事件
+
+##ChannelHandlerAdapter
+
+
 ##ChannelHandlerContext
 
-# codec
+#codec
 ## Decoder
 
 ReferenceCountUtil.release(message) 
@@ -403,3 +392,181 @@ ReplayingDecoder
 
 public class CombinedChannelDuplexHandler<I extends ChannelInboundHandler,O extends ChannelOutboundHandler>
 这提供了一个容器,单独的解码器和编码器类合作而无需直接扩展抽象的编解码器类。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+#EventLoop EventLoopGroup
+##NioEventLoop
+```java
+
+    protected void run() {
+        for (;;) {
+            boolean oldWakenUp = wakenUp.getAndSet(false);
+            try {
+                if (hasTasks()) {
+                    selectNow();
+                } else {
+                    select(oldWakenUp);
+                     if (wakenUp.get()) {
+                        selector.wakeup();
+                    }
+                }
+
+                cancelledKeys = 0;
+                needsToSelectAgain = false;
+                final int ioRatio = this.ioRatio;
+                if (ioRatio == 100) {
+                    processSelectedKeys();
+                    runAllTasks();
+                } else {
+                    final long ioStartTime = System.nanoTime();
+                    processSelectedKeys();
+                    final long ioTime = System.nanoTime() - ioStartTime;
+                    runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+                }
+
+                if (isShuttingDown()) {
+                    closeAll();
+                    if (confirmShutdown()) {
+                        break;
+                    }
+                }
+            } catch (Throwable t) {
+                logger.warn("Unexpected exception in the selector loop.", t);
+
+                // Prevent possible consecutive immediate failures that lead to
+                // excessive CPU consumption.
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
+            }
+        }
+    }
+
+
+    private void select(boolean oldWakenUp) throws IOException {
+        Selector selector = this.selector;
+        try {
+            int selectCnt = 0;
+            long currentTimeNanos = System.nanoTime();
+            long selectDeadLineNanos = currentTimeNanos + delayNanos(currentTimeNanos);
+            for (;;) {
+                long timeoutMillis = (selectDeadLineNanos - currentTimeNanos + 500000L) / 1000000L;
+                if (timeoutMillis <= 0) {
+                    if (selectCnt == 0) {
+                        selector.selectNow();
+                        selectCnt = 1;
+                    }
+                    break;
+                }
+
+                int selectedKeys = selector.select(timeoutMillis);
+                selectCnt ++;
+
+                if (selectedKeys != 0 || oldWakenUp || wakenUp.get() || hasTasks() || hasScheduledTasks()) {
+                    // - Selected something,
+                    // - waken up by user, or
+                    // - the task queue has a pending task.
+                    // - a scheduled task is ready for processing
+                    break;
+                }
+                if (Thread.interrupted()) {
+                    // Thread was interrupted so reset selected keys and break so we not run into a busy loop.
+                    // As this is most likely a bug in the handler of the user or it's client library we will
+                    // also log it.
+                    //
+                    // See https://github.com/netty/netty/issues/2426
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Selector.select() returned prematurely because " +
+                                "Thread.currentThread().interrupt() was called. Use " +
+                                "NioEventLoop.shutdownGracefully() to shutdown the NioEventLoop.");
+                    }
+                    selectCnt = 1;
+                    break;
+                }
+
+                long time = System.nanoTime();
+                if (time - TimeUnit.MILLISECONDS.toNanos(timeoutMillis) >= currentTimeNanos) {
+                    // timeoutMillis elapsed without anything selected.
+                    selectCnt = 1;
+                } else if (SELECTOR_AUTO_REBUILD_THRESHOLD > 0 &&
+                        selectCnt >= SELECTOR_AUTO_REBUILD_THRESHOLD) {
+                    // The selector returned prematurely many times in a row.
+                    // Rebuild the selector to work around the problem.
+                    logger.warn(
+                            "Selector.select() returned prematurely {} times in a row; rebuilding selector.",
+                            selectCnt);
+
+                    rebuildSelector();
+                    selector = this.selector;
+
+                    // Select again to populate selectedKeys.
+                    selector.selectNow();
+                    selectCnt = 1;
+                    break;
+                }
+                currentTimeNanos = time;
+            }
+
+            if (selectCnt > MIN_PREMATURE_SELECTOR_RETURNS) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Selector.select() returned prematurely {} times in a row.", selectCnt - 1);
+                }
+            }
+        } catch (CancelledKeyException e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(CancelledKeyException.class.getSimpleName() + " raised by a Selector - JDK bug?", e);
+            }
+            // Harmless exception - log anyway
+        }
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

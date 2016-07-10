@@ -1,5 +1,6 @@
-
-
+#HTTP HTTPS
+---
+#
 GET      请求获取由Request-URI所标识的资源。
 POST 在Request-URI所标识的资源后附加新的数据。
 PUT 请求服务器存储一个资源，并用Request-URI作为其标识。
@@ -15,6 +16,7 @@ OPTIONS 请求查询服务器的性能，或查询与资源相关的选项和需
 
 ---
 #HTTPS
+[SSL/TLS协议运行机制的概述](http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html)
 不使用SSL/TLS的HTTP通信，就是不加密的通信。所有信息明文传播，带来了三大风险
 （1） 窃听风险（eavesdropping）：第三方可以获知通信内容。
 （2） 篡改风险（tampering）：第三方可以修改通信内容。
@@ -125,8 +127,8 @@ TLS握手过程中如果有任何错误，都会使加密连接断开，从而�
 
 
 
-
-
+##漏洞
+[HTTPS和SSL协议存在安全漏洞](http://netsecurity.51cto.com/art/201007/215356.htm)
 
 
 

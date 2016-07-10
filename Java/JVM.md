@@ -317,6 +317,74 @@ Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
 
 
 
+---
+#OOM分析
+[深入理解OutOfMemoryError](http://blog.csdn.net/wisgood/article/details/21939495)
+[plumbr](https://plumbr.eu/)
+##I.OutOfMemoryError： PermGen space
+发生这种问题的原意是程序中使用了大量的jar或class，使java虚拟机装载类的空间不够，与Permanent Generation space有关。
+
+解决这类问题有以下两种办法：
+1. 增加java虚拟机中的XX:PermSize和XX:MaxPermSize参数的大小，其中XX:PermSize是初始永久保存区域大小，XX:MaxPermSize是最大永久保存区域大小。如针对tomcat6.0，在catalina.sh 或catalina.bat文件中一系列环境变量名说明结束处（大约在70行左右） 增加一行：
+JAVA_OPTS=" -XX:PermSize=64M -XX:MaxPermSize=128m"
+如果是windows服务器还可以在系统环境变量中设置。感觉用tomcat发布sprint+struts+hibernate架构的程序时很容易发生这种内存溢出错误。使用上述方法，我成功解决了部署ssh项目的tomcat服务器经常宕机的问题。
+2. 清理应用程序中web-inf/lib下的jar，如果tomcat部署了多个应用，很多应用都使用了相同的jar，可以将共同的jar移到tomcat共同的lib下，减少类的重复加载。这种方法是网上部分人推荐的，我没试过，但感觉减少不了太大的空间，最靠谱的还是第一种方法。
+
+##II.OutOfMemoryError：  Java heap space
+发生这种问题的原因是java虚拟机创建的对象太多，在进行垃圾回收之间，虚拟机分配的到堆内存空间已经用满了，与Heap space有关。
+1.内存中加载的数据量过于庞大，如一次从数据库取出过多数据；
+2.集合类中有对对象的引用，使用完后未清空，使得JVM不能回收；
+3.代码中存在死循环或循环产生过多重复的对象实体；
+4.使用的第三方软件中的BUG；
+5.启动参数内存值设定的过小；
+
+解决这类问题有两种思路：
+  1)检查代码中是否有死循环或递归调用。
+  2)检查是否有大循环重复产生新对象实体。
+  3)检查对数据库查询中，是否有一次获得全部数据的查询。一般来说，如果一次取十万条记录到内存，就可能引起内存溢出。这个问题比较隐蔽，在上线前，数据库中数据较少，不容易出问题，上线后，数据库中数据多了，一次查询就有可能引起内存溢出。因此对于数据库查询尽量采用分页的方式查询。
+  4)检查List、MAP等集合对象是否有使用完后，未清除的问题。List、MAP等集合对象会始终存有对对象的引用，使得这些对象不能被GC回收。
+增加Java虚拟机中Xms（初始堆大小）和Xmx（最大堆大小）参数的大小。如：set JAVA_OPTS= -Xms256m -Xmx1024m
+
+##III.OutOfMemoryError：unable to create new native thread
+这种错误在Java线程个数很多的情况下容易发生
+这个限制的大小跟平台相关，如果你对这个限制的大小好奇的话，可以用下面这小段代码做下试验。在我的64位的Mac OSX上使用最新的JDK7，当创建的线程到2032时的就会报错。
+```
+while(true){
+    new Thread(new Runnable(){
+        public void run() {
+            try {
+                Thread.sleep(10000000);
+            } catch(InterruptedException e) { }        
+        }   
+    }).start();
+}
+```
+
+
+##IV.java.lang.OutOfMemoryError: GC overhead limit exceeded
+这个问题有点特殊。这里没有提示说堆还是持久代有问题，虚拟机只是告诉你你的程序花在垃圾回收上的时间太多了，却没有什么见效。默认的话，如果你98%的时间都花在GC上并且回收了才不到2%的空间的话，虚拟机才会抛这个异常。这是一个快速失败的安全保障的很好的实践。一般来说禁用它也没有太大用处，如果需要的话你可以把-XX:-UseGCOverheadLimit加到启动脚本里。
+
+##V.java.lang.OutOfMemoryError: nativeGetNewTLA
+指当虚拟机不能分配新的线程本地空间(Thread Local Area）的时候错误信息。
+这个异常只有在jRockit虚拟机时才会碰到。
+线程本地空间是多线程程序里面为了更有效的进行内存分配而建立的缓存。每一个线程都有一份自己的缓存，当这个线程要创建对象的时候，就在这上面分配。如果你有很多线程同时并发，又要创建大量的对象，可能会出现这个问题，这种情况下你可以调整一下-XXtlaSize这个参数。
+
+
+##VI.java.lang.OutOfMemoryError: Requested array size exceeds VM limit
+当你正准备创建一个超过虚拟机允许的大小的数组时，这条错误就会出现在你眼前。在我的64位Mac系统上的最新的JDK7，我发现如果数组的长度是Integer.MAXINT-2的时候，是正常的，但只要再增加一个，也就是Integer.MAXINT-1,就成为那最后一根稻草了。在老的32位机器上，由于堆比较小，限制数组的大小是有好处的。不过在现代的64位机器上感觉有点多余。
+
+##VII.java.lang.OutOfMemoryError: request bytes for . Out of swap space？
+这个错误是当虚拟机向本地操作系统申请内存失败时抛出的。
+这和你用完了堆或者持久化中的内存的情况有些不同。这个错误通常是在你的程序已经逼近平台限制的时候产生的。这个信息告诉你的是你可能已经用光了物理内存以及虚拟内存了。由于虚拟内存通常是用磁盘作为交换分区，因此你最先想到的解决方法可能是先增加交换分区的大小。不过我从没见过一个程序在频繁进行内存交换还能正常运行的，所以这个方法可能不会起到什么作用。
+
+##IX.java.lang.OutOfMemoryError: (Native method)
+，现在是时候找你开发C语言的小伙伴请求帮助了。因为现在你看到的错误信息是来自本地代码的，相对于刚才的出错信息，这次异常是在JNI或者 本地方法中检测到的，而不是在虚拟机执行的代码中。
+
+
+
+
+
+
 
 
 
@@ -326,3 +394,29 @@ Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
 ---
 #内存分析
 [使用 Eclipse Memory Analyzer 进行堆转储文件分析](http://www.ibm.com/developerworks/cn/opensource/os-cn-ecl-ma/index.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

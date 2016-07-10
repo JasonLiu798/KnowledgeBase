@@ -5,6 +5,10 @@
 
 [jvm se7 Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)
 [instance of ](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5.instanceof)
+[Java程序员不要错过的7款新工具](https://www.evget.com/article/2014/7/8/21289.html)
+
+
+
 ----
 #变量
 ##基本类型

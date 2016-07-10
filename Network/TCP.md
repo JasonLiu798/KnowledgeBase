@@ -1,9 +1,6 @@
 #TCP协议
 ---
-
-
 [TCP 的那些事儿（上）](http://kb.cnblogs.com/page/209100/)
-
 
 Sequence Number是包的序号，用来解决网络包乱序（reordering）问题。
 Acknowledgement Number就是ACK——用于确认收到，用来解决不丢包的问题。

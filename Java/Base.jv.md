@@ -12,14 +12,21 @@
 ----
 #变量
 ##基本类型
-
-##引用类型
-类、接口类型、数组类型、枚举类型、注解类型
-
 [自动拆箱装箱](http://www.cnblogs.com/danne823/archive/2011/04/22/2025332.html)
 [自动拆箱装箱原理](http://www.cnblogs.com/dolphin0520/p/3780005.html)
 当 "=="运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象，而如果其中有一个操作数是表达式（即包含算术运算）则比较的是数值（即会触发自动拆箱的过程）
 另外，对于包装器类型，equals方法并不会进行类型转换。
+
+```
+Integer a = 1;或Integer a = Integer.valueOf(1); //值介于-128至127直接时，作为基本类型
+Integer a = new Integer(1); //无论值是多少，都作为对象
+```
+
+##引用类型
+类、接口类型、数组类型、枚举类型、注解类型
+
+
+
 
 [share/vm/oops下的代码做fast subtype check的问题](http://hllvm.group.iteye.com/group/topic/26896)
 [OpenJDK / jdk7u / jdk7u / langtools](http://hg.openjdk.java.net/jdk7u/jdk7u/langtools/file/tip/src/share/classes/com/sun/tools/javac/parser/Token.java)
@@ -28,18 +35,11 @@
 http://blog.csdn.net/orzlzro/article/details/7017435
 
 
-
-a------>b
-          b--------->c
-
-
-
-
 ##static
 [Java中的static关键字解析](http://www.cnblogs.com/dolphin0520/p/3799052.html)
 
 
-
+---
 #编码
 https://github.com/alibaba/dubbo
 [中文编码](http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/)

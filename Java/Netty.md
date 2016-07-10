@@ -5,6 +5,8 @@
 [nio](https://www.gitbook.com/book/lukangping/java-nio/details)
 [4.0 user guide](https://github.com/waylau/netty-4-user-guide)
 [Essential Netty in Action](https://www.gitbook.com/book/waylau/essential-netty-in-action/details)
+[Netty系列之Netty高性能之道](http://www.infoq.com/cn/articles/netty-high-performance#anch118008)
+
 
 ## netty3.x->4.x升级问题
 [Netty版本升级血泪史之线程篇](http://www.infoq.com/cn/articles/netty-version-upgrade-history-thread-part)

@@ -381,6 +381,14 @@ while(true){
 ，现在是时候找你开发C语言的小伙伴请求帮助了。因为现在你看到的错误信息是来自本地代码的，相对于刚才的出错信息，这次异常是在JNI或者 本地方法中检测到的，而不是在虚拟机执行的代码中。
 
 
+##X.OOM但老年区还有空间
+Native Memory的例外，如果你在以下场景：
+* 使用了NIO或者NIO框架（Mina/Netty）
+* 使用了DirectByteBuffer分配字节缓冲区
+* 使用了MappedByteBuffer做内存映射
+由于Native Memory只能通过FullGC（或是CMS GC）回收，所以除非你非常清楚这时真的有必要，否则不要轻易调用System.gc()，且行且珍惜。
+
+
 
 
 

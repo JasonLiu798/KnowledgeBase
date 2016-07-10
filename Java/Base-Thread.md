@@ -1,9 +1,18 @@
-#Java Thread Concurrent
+#Java Thread/Concurrent
 ---
+<<<<<<< HEAD
+#1.doc
+=======
 [Disruptor](http://ifeve.com/locks-are-bad/)
 
+>>>>>>> c05971b83580ad7224befe5aa2ca3c973c00b4dc
 [fucking-java-concurrency](https://github.com/oldratlee/fucking-java-concurrency)
-#theory
+[构建高性能服务（一）ConcurrentSkipListMap和链表构建高性能Java Memcached](http://maoyidao.iteye.com/blog/1559420)
+
+
+
+---
+#2.theory
 一个Thread类实例只是一个对象，像Java中的任何其他对象一样，具有变量和方法，生死于堆上。
 Java中，每个线程都有一个调用栈，即使不在程序中创建任何新的线程，线程也在后台运行着，比如GC中的线程。
 
@@ -22,9 +31,16 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 　　第四是阻塞状态。线程正在运行的时候，被暂停，通常是为了等待某个时间的发生(比如说某项资源就绪)之后再继续运行。sleep,suspend，wait等方法都可以导致线程阻塞。
 　　第五是死亡状态。如果一个线程的run方法执行结束或者调用stop方法后，该线程就会死亡。对于已经死亡的线程，无法再使用start方法令其进入就绪。
 
+##实现
+1:1（内核线程）、N:1（用户态线程）、M:N（混合）模型
+HotSpot VM
+在这个JVM的较新版本所支持的所有平台上，它都是使用1:1线程模型的——除了Solaris之外
+http://www.oracle.com/technetwork/java/threads-140302.html
+
+
 
 ---
-#java内存模型
+#3.java内存模型
 ##顺序一致模型
 保证单线程内操作按照程序顺序执行
 保证所有线程只看到一致的操作执行顺序
@@ -35,9 +51,6 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 JVM会同步分配对象和内存空间清零操作
 不保证Long，double类型 内存读写的原子性（JSR-133之后，读操作必须原子性，写操作可以拆分）
 
----
-#threadpool 线程池
-大小：硬件性能、线程任务类型（CPU密集，IO密集）、是否有其他任务
 
 
 ---
@@ -61,6 +74,7 @@ JVM会同步分配对象和内存空间清零操作
 一个线程写，其他线程读
 
 
+---
 #Synchronized
 [synchronized关键字详解](http://www.cnblogs.com/mengdd/archive/2013/02/16/2913806.html)
 从语法角度来说就是Obj.wait(),Obj.notify必须在synchronized(Obj){...}语句块内
@@ -68,12 +82,9 @@ wait功能：线程在获取对象锁后，主动释放对象锁，同时本线�
 notify()就是对对象锁的唤醒操作
 notify()调用后，并不是马上就释放对象锁的，而是在相应的synchronized(){}语句块执行结束，自动释放锁后，JVM会在wait()对象锁的线程中随机选取一线程，赋予其对象锁，唤醒线程，继续执行。
 
-##synchronized的实现方式
-[synchronized的实现方式](http://blog.csdn.net/feelang/article/details/40134631)
-synchronized method
+##用法
+synchronized method，等价于 synchronized (this) block
 synchronized block
-
-synchronized method 就等价于 synchronized (this) block
 ```java
     public synchronized void fun1() {  
         // do something here  
@@ -93,6 +104,45 @@ synchronized method 就等价于 synchronized (this) block
     }
 ```
 
+##实现
+[synchronized的实现方式](http://blog.csdn.net/feelang/article/details/40134631)
+```java
+typedef struct monitor {  
+pthread_mutex_t lock;  
+Thread *owner;  
+Object *obj;  
+int count;  
+int in_wait;  
+uintptr_t entering;  
+int wait_count;  
+Thread *wait_set;  
+struct monitor *next;  
+} Monitor;  
+
+
+void monitorLock(Monitor *mon, Thread *self) {  
+    if(mon->owner == self)  
+        mon->count++;  
+    else {  
+        if(pthread_mutex_trylock(&mon->lock)) {  
+            disableSuspend(self);  
+              
+            self->blocked_mon = mon;  
+            self->blocked_count++;  
+            self->state = BLOCKED;//
+              
+            pthread_mutex_lock(&mon->lock);  
+              
+            self->state = RUNNING;  
+            self->blocked_mon = NULL;  
+              
+            enableSuspend(self);  
+        }  
+        mon->owner = self;  
+    }  
+}  
+```
+
 
 ##关于synchronized string
 [使用Synchronized块同步变量](http://itlab.idcquan.com/Java/line/808077.html)
@@ -105,7 +155,10 @@ synchronized的限制
 2.尝试获取内置锁，无法设置超时
 3.获取内置锁，必须使用synchronized块
 
-Lock
+
+
+---
+#Lock
 ```java
 //1.获取锁可以中断
 final ReetrantLock l1 = new ReentrantLock();
@@ -118,15 +171,65 @@ tryLock避免了无尽死锁，会受到活锁影响
 减小活锁几率：为每个线程设置不同超时时间
 
 
-##Lock
-交替锁
-链表
+##队列同步器 AbstractQueuedSynchronizer
+排他式获取
+
+
+
+共享式获取
+acquireShared
+释放
+releaseShared
+
+
+###独占式超时获取同步状态
+doAcquireNanos
+
+##重入锁 ReentrantLock
+Mutex不支持重进入锁，重获取会阻塞自身
+公平：绝对时间上，先对锁获取的请求一定先满足；等待时间最长线程最优先获取锁
+    减少饥饿
+
+nonfairTryAcquire
+    再次获取锁，增加 同步状态值
+
+
+##读写锁 readWriteLock
+高16位 读，低16位写；位运算确定读写各自状态
+各个线程获取读锁的次数，保存在ThreadLocal中
+锁降级
+    当前拥有写锁，获取读锁，在释放写锁
+    获取读锁，保证数据可见性，如果直接释放写锁，其他线程获取写锁后，当前线程无法感知数据更新。
+
+
+##LockSupport工具
+
+
+##Condition接口
+await，当前线程进入等待状态知道被通知或中断，当前线程进入运行状态且从await方法返回的情况包括：
+    其他线程调用该Condition的signal()或singalAll()方法
+
+signal，唤醒一个等待在Condition上的线程，该线程从等待方法返回前必须获得与Condition相关联的锁
+signalAll，唤醒所有等待Condition线程，能从等待方法返回的，必须获得与Condition相关联的锁
+
+###实现
+ConditionObject是同步器AbstractQueuedSynchronizer内部类
+等待队列
+    首节点firstWaiter，尾节点lastWaiter
+等待
+    相当于 同步队列首节点移动到 等待队列中
+通知
+    唤醒等待队列中 等待时间最长节点（首节点），唤醒前将节点移动到同步队列中
 
 
 
 
 
-#CAS指令
+
+
+
+
+
 
 
 
@@ -221,8 +324,11 @@ stave
 livelock
 
 
+
+
+
 ---
-# 集合类
+#集合类
 ##CopyOnWrite
 [CopyOnWrite](http://ifeve.com/java-copy-on-write/)
 添加的时候是需要加锁的，否则多线程写的时候会Copy出N个副本出来
@@ -287,11 +393,46 @@ public class CopyOnWriteMap<K, V> implements Map<K, V>, Cloneable {
 CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题
 
 
-##BlockingQueue
+
+##ConcurrentHashMap
+HashTable锁粒度太大，put同时，无法get
+Segment数组，ReentrantLock
+HashEntry数组
+
+get不加锁
+    使用volatile
+    transient volatile int count;
+    volatile V value;
+put
+    1.是否需要扩容
+    2.添加元素位置，放入HashEntry数组
+
+##ConcurrentLinkedQueue
+wait-free算法 CAS
+入队：
+    1.insertnode设为尾节点下一个节点
+    2.更新tail，如果tail.next为null，则将 insertnode 设为tail
+
+
+##ArrayBlockingQueue
+不保证线程公平访问
+
+
+##LinkedBlockingQueue
 [LinkedBlockingQueue](http://blog.csdn.net/mazhimazh/article/details/19242767)
 在必要是阻塞，队列为满，调用put会阻塞，队列为空，调用take会阻塞
 生产者消费者模式为什么不用 ConcurrentLinkedQueue？
 如果生产、消费速度不同，生产过快，使用ConcurrentLinkedQueue会导致队列大小不断增加，可能会超过内存容量。
+
+PriorityBlockingQueue
+
+##DelayQueue
+支持延时获取元素的无界阻塞队列
+适合：缓存系统设计，定式调度任务
+
+SynchronousQueue
+LinkedTransferQueue
+LinkedBlockingDeque
 
 
 
@@ -299,6 +440,20 @@ CopyOnWrite容器有很多优点，但是同时也存在两个问题，即内存
 #测试
 [模拟并发测试](http://forrest420.iteye.com/blog/1169071)
 [Future/Callable/Runnable基本](http://www.cnblogs.com/dolphin0520/p/3949310.html)
+
+
+---
+#threadpool 线程池
+大小：硬件性能、线程任务类型（CPU密集，IO密集）、是否有其他任务
+FixedThreadPool
+SingleThreadExecutor
+CachedThreadPool
+    new ThreadPoolExecutor(0,Integer.MAX_VALUE,
+    60L, TimeUnit.SECONDS,
+    new SynchronousQueue<Runnable>());
+ScheduledThreadPoolExecutor
+
+
 
 
 ---
@@ -321,7 +476,6 @@ Thread thread = new Thread(new Runnable(){
 
 
 
-
 ---
 # performance
 ## Amdahl's law
@@ -336,53 +490,6 @@ context switch
 memory barrier
 block
 ## decrease lock compete 
-
-
----
-#实现
-1:1（内核线程）、N:1（用户态线程）、M:N（混合）模型
-HotSpot VM
-在这个JVM的较新版本所支持的所有平台上，它都是使用1:1线程模型的——除了Solaris之外
-
-http://www.oracle.com/technetwork/java/threads-140302.html
-
-##synchronized
-```java
-typedef struct monitor {  
-pthread_mutex_t lock;  
-Thread *owner;  
-Object *obj;  
-int count;  
-int in_wait;  
-uintptr_t entering;  
-int wait_count;  
-Thread *wait_set;  
-struct monitor *next;  
-} Monitor;  
-
-
-void monitorLock(Monitor *mon, Thread *self) {  
-    if(mon->owner == self)  
-        mon->count++;  
-    else {  
-        if(pthread_mutex_trylock(&mon->lock)) {  
-            disableSuspend(self);  
-              
-            self->blocked_mon = mon;  
-            self->blocked_count++;  
-            self->state = BLOCKED;//
-              
-            pthread_mutex_lock(&mon->lock);  
-              
-            self->state = RUNNING;  
-            self->blocked_mon = NULL;  
-              
-            enableSuspend(self);  
-        }  
-        mon->owner = self;  
-    }  
-}  
-```
 
 
 ----
@@ -423,7 +530,9 @@ http://developer.51cto.com/art/201306/398232.htm
 
 
 
-
+---
+#distriputor
+[构建高性能服务（三）Java高性能缓冲设计 vs Disruptor vs LinkedBlockingQueue](http://maoyidao.iteye.com/blog/1663193)
 
 
 

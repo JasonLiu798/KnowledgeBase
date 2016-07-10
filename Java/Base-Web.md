@@ -1,6 +1,13 @@
+#Web
+---
+#常用容器，默认servlet名字
+Tomcat, Jetty, JBoss, and GlassFish 默认 Servlet的名字 – “default”
+Google App Engine 默认 Servlet的名字 – “_ah_default”
+Resin 默认 Servlet的名字 – “resin-file”
+WebLogic 默认 Servlet的名字 – “FileServlet”
+WebSphere 默认 Servlet的名字 – “SimpleFileServlet”
 
-
-
+Terracotta，JVM级集群框架，共享JVM堆对象
 
 #servlet
 [为什么不应该重写service方法？](http://my.oschina.net/dtkking/blog/89443)

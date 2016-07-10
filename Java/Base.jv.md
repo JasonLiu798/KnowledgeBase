@@ -18,6 +18,9 @@ Integer a = 1;或Integer a = Integer.valueOf(1); //值介于-128至127直接时�
 Integer a = new Integer(1); //无论值是多少，都作为对象
 ```
 
+##引用类型
+类、接口类型、数组类型、枚举类型、注解类型
+
 
 
 
@@ -28,17 +31,11 @@ Integer a = new Integer(1); //无论值是多少，都作为对象
 http://blog.csdn.net/orzlzro/article/details/7017435
 
 
-
-
-
-
-
-
 ##static
 [Java中的static关键字解析](http://www.cnblogs.com/dolphin0520/p/3799052.html)
 
 
-
+---
 #编码
 https://github.com/alibaba/dubbo
 [中文编码](http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/)
@@ -69,6 +66,11 @@ native2ascii -encoding UTF-8 displaytag_zh_CN.properties displaytag_zh_CN_2.prop
 底层的集合实际上是空的情况下，返回长度是0的集合或者是数组，不要返回null。
 
 [hashmap](http://www.jameswxx.com/java/hashmap%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90/)
+
+
+
+##hashmap
+[Java HashMap的死循环](http://coolshell.cn/articles/9606.html)
 
 
 

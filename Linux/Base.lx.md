@@ -146,6 +146,7 @@ Linux内核提供了clone系统调用，创建进程时使用clone取代fork即�
 
 ##进程间通信 Interprocess Communication
 ###管道(Pipe)
+[linux管道的那点事 ](http://blog.chinaunix.net/uid-27034868-id-3394243.html)
 管道是进程间通信最简单的方式，任何进程的标准输出都可以作为其他进程的输入。
 
 ###信号(Signal)

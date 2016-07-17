@@ -1,6 +1,43 @@
 #netty源码学习
 ----
 [Netty5 Read事件处理过程_源码讲解](http://www.open-open.com/lib/view/open1433299979104.html)
+
+----------
+#数据流
+
+ServerBootstrap bind
+    AbstractBootstrap bind
+    AbstractBootstrap doBind
+    AbstractBootstrap doBind0
+        eventLoop. new runnable
+            AbstractChannel bind
+                DefaultChannelPipeline bind
+                    AbstractChannelHandlerContext tail.bind
+                    AbstractChannelHandlerContext invokeBind
+                        ChannelOutboundHandler bind
+
+
+
+Bootstrap connect->doConnect->doConnect0
+    eventLoop. new runnable
+        Channel connect
+            DefaultChannelPipeline connect
+                AbstractChannelHandlerContext tail.connect -> invokeConnect
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
 #ByteBuf源码分析
 HeapByteBuf
     内存分配回收快，需要额外内存复制

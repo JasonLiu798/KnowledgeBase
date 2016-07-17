@@ -415,8 +415,31 @@ percona toolkit
 
 
 
+---
+#HA
+galera for mysql集群
+percona-cluster
+mariadb cluster
 
 
+##MySQL Replication
+###Master-Slaves
+[构建高性能web之路------mysql读写分离实战](http://blog.csdn.net/cutesource/article/details/5710645)
+SlaveC不可用时，读和写都不会中断，等SlaveC恢复后会自动同步丢失的数据，又能重新投入运转，可维护性非常好。但如果Master有问题就麻烦了，因此它只解决了读的高可用性，但不保证写的高可用性
+
+###Master-Master
+一般说来都向MasterA写，MasterA同步数据到MasterB，当MasterA有问题时，会自动切换到MasterB，等MasterA恢复时，MasterB同步数据到MasterA
+
+###Master-Master-Salves
+Master-Master-Salves是结合上面两种方案，是一种同时提供读和写高可用的复制架构
+
+
+##MySQL Cluster
+SQL服务器节点
+  SQL处理层次上，比较容易做集群，因为这些SQL处理是无状态性的，完全可以通过增加机器的方式增强可用性
+NDB数据存储节点
+  通过对每个节点进行备份的形式增加存储的可用性，这类似与MySQL Replication
+监控和管理节点
 
 
 

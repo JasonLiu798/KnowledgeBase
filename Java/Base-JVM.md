@@ -138,6 +138,75 @@ jhat：JDK自带的java heap analyze tool
 
 ---
 #GC
+##minor gc
+因为young GC只收集young gen，但full GC会收集整个GC堆。 
+HotSpot VM的full GC会收集整个Java堆，包括其中的young gen与old gen；
+同时也会顺便收集不属于Java堆的perm gen。 
+Young + old + perm构成了HotSpot VM的整个GC堆。
+
+##标记-清除算法
+[标记-清除算法](http://www.jianshu.com/p/b0f5d21fe031)
+collector指的就是垃圾收集器
+mutator是指除了垃圾收集器之外的部分，比如说我们应用程序本身
+mutator的职责一般是NEW(分配内存),READ(从内存中读取内容),WRITE(将内容写入内存)，而collector则就是回收不再使用的内存来供mutator进行NEW操作的使用。
+
+在标记阶段，collector从mutator根对象开始进行遍历，对从mutator根对象可以访问到的对象都打上一个标识，一般是在对象的header中，将其记录为可达对象。
+而在清除阶段，collector对堆内存(heap memory)从头到尾进行线性的遍历，如果发现某个对象没有标记为可达对象-通过读取对象的header信息，则就将其回收。
+
+下面是mutator进行NEW操作的伪代码：
+```
+New():
+    ref <- allocate()  //分配新的内存到ref指针
+    if ref == null
+       collect()  //内存不足，则触发垃圾收集
+       ref <- allocate()
+       if ref == null
+          throw "Out of Memory"   //垃圾收集后仍然内存不足，则抛出Out of Memory错误
+          return ref
+
+atomic collect():
+    markFromRoots()
+    sweep(HeapStart,HeapEnd)
+```
+而下面是对应的mark算法:
+```
+markFromRoots():
+    worklist <- empty
+    for each fld in Roots  //遍历所有mutator根对象
+        ref <- *fld
+        if ref != null && isNotMarked(ref)  //如果它是可达的而且没有被标记的，直接标记该对象并将其加到worklist中
+           setMarked(ref)
+           add(worklist,ref)
+           mark()
+mark():
+    while not isEmpty(worklist)
+          ref <- remove(worklist)  //将worklist的最后一个元素弹出，赋值给ref
+          for each fld in Pointers(ref)  //遍历ref对象的所有指针域，如果其指针域(child)是可达的，直接标记其为可达对象并且将其加入worklist中
+          //通过这样的方式来实现深度遍历，直到将该对象下面所有可以访问到的对象都标记为可达对象。
+                child <- *fld
+                if child != null && isNotMarked(child)
+                   setMarked(child)
+                   add(worklist,child)
+```
+在mark阶段结束后，sweep算法就比较简单了，它就是从堆内存起始位置开始，线性遍历所有对象直到堆内存末尾，如果该对象是可达对象的（在mark阶段被标记过的），那就直接去除标记位（为下一次的mark做准备），如果该对象是不可达的，直接释放内存。
+```
+sweep(start,end):
+    scan <- start
+   while scan < end
+       if isMarked(scan)
+          setUnMarked(scan)
+      else
+          free(scan)
+      scan <- nextObject(scan)
+```
+
+###缺点
+垃圾收集后有可能会造成大量的内存碎片，像上面的图片所示，垃圾收集后内存中存在三个内存碎片，假设一个方格代表1个单位的内存，如果有一个对象需要占用3个内存单位的话，那么就会导致Mutator一直处于暂停状态，而Collector一直在尝试进行垃圾收集，直到Out of Memory。
+
+
+
+
+
 ##Serial gc
 扫描，复制均为单线程
 
@@ -184,6 +253,10 @@ III.final Marking (remark)
 IV.Concurrent Sweeping
 
 
+##CMS
+CMS在并发模式工作的时候是只收集old gen的。但一旦并发模式失败（发生concurrent mode failure）就有选择性的会进行全堆收集，也就是退回到full GC。 
+
+
 ##G1
 jvm heap划分为 多个固定大小region
 扫描采用Snapshot-at-the-beginning 并发marking算法对整个heap中region进行mark
@@ -191,19 +264,129 @@ jvm heap划分为 多个固定大小region
 
 
 ---
-#参数调优
-http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
+#gc触发时间
+##minorgc
 
 
-##JVM参数的含义
+##FullGC
+
+
+
+
+
+
+----
+#gc调优
+[Attila Szegedi on JVM and GC Performance Tuning at Twitter](https://www.infoq.com/interviews/szegedi-performance-tuning)
+[Sun以前出的HotSpot VM的GC调优白皮书](http://www.oracle.com/technetwork/java/javase/memorymanagement-whitepaper-150215.pdf)
+[Gil Tene谈GC](http://www.infoq.com/presentations/Understanding-Java-Garbage-Collection)
+##新生代和老年代 比例
+[新生代和老年代怎样的比例比较合适呢](http://hllvm.group.iteye.com/group/topic/34664)
+大小分配怎样才合理取决于某个具体应用的对象的存活模式
+堆大小
 -Xms    初始堆大小
 -Xmx    最大堆大小
+年轻代
+-Xmn    年轻代大小(1.4or lator)
+
+java object demography
+
+举例：可能很多人都有一种印象，young gen应该比old gen小。
+笼统说确实如此，因为在最坏情况下young gen里可能所有对象都还活着，而如果它们全部都要晋升到old gen的话，那old gen里的剩余空间必须能容纳下这些对象才行，这就需要old gen比young gen大（否则young GC就无法进行，而必须做full GC才能应付了）。 
+实际上却不总是这样的。所谓“最坏情况”在很多系统里是永远不会出现的。
+调优就是要针对实际应用里对象的存活模式来破除这些“最坏情况”的假设带来的限制。 
+
+许多Web应用里对象会有这样的特征： 
+·(a) 有一部分对象几乎一直活着。这些可能是常用数据的cache之类的 
+·(b) 有一部分对象创建出来没多久之后就没用了。这些很可能会响应一个请求时创建出来的临时对象 
+·(c) 最后可能还有一些中间的对象，创建出来之后不会马上就死，但也不会一直活着。 
+
+如果是这样的模式，那young gen可以设置得非常大，大到每次young GC的时候里面的多数对象(b)最好已经死了。 
+想像一下，如果young gen太小，每次满了就触发一次young GC，那么young GC就会很频繁，或许很多临时对象(b)正好还在被是使用（还没死），这样的话young GC的收集效率就会比较低。要避免这样的情况，最好是就是把young gen设大一些。 
+
+那old gen怎么办？如果是上面说的情况，那old gen至少要足以装下所有长期存活的对象(a)；同时也要留出一定的余地用来容纳young GC没能清理掉的临时对象。 
+
+这样，最后调整出来的结果很可能young GC反而比old gen大许多。这完全没问题。 
+
+只有(a)和(b)的话就完美了，现实中最头疼的就是针对(c)对象的调优。它们或许会经历多次young GC之后仍然存活，于是晋升到old gen；但晋升上去之后或许很快就又死掉了。 
+这种对象最好能不让晋升到old gen（可以让它们在survivor space里多来回倒腾几次再晋升，也就是想办法增加tenuring threshold；不过HotSpot VM里的GC不让外界对此多插手，想减小MaxTenuringThreshold很容易，想增加实际有效的tenuring threshold就没那么容易了）。
+但如果真的不让它们晋升，young GC的暂停时间就会增长（在survivor space里来回倒腾对象意味着要来回拷贝，这会花时间）。 
+所以有一种策略是尽量让这种对象的大部分在young GC中消耗掉（在保持young GC的暂停时间不超过某个预期值的前提下），而“漏”到old gen的那些让诸如CMS之类的并发GC来解决。 
+总之这里要做一定的tradeoff就是了。 
+
+实践
+首先得了解硬性限制：某个服务器总共有多少内存，其中最多可以分配多少给某个应用程序；有没有一些服务对响应时间有严格要求，有的话限制是多少，之类的。 
+
+然后看看应用的特征是怎样的。可以借助一些工具来了解对象的存活情况，例如NetBeans的profiler就有这样的功能（老文档）；许多其它主流Java profiler也有类似的功能。 
+这些工具的精度和性能开销各异，总之自己摸索下看看吧。 
+
+情况了解清楚了就可以开始迭代调整各种参数看实际运行的表现如何。迭代到满意为止。 
+要分析实际GC的运行状况，首要切入点就是分析GC日志。
+
+
+
+So when go and deal with a performance problem with some team within Twitter, are you looking at the code first or do you tend to look at the way the garbage collector's configured or where do you start?
+
+Well, a garbage collector is a global service for a particular JVM and as such, its own operation is affected by the operation of all the code in the JVM which is the Java libraries, third party libraries that have been used and so on, which means that, you can’t really, or, let me put it this way: if you need to look at the application code in order to tune the garbage collector, then you are doing it wrong because from the point of view of the application, garbage collectors are a blackbox and vice-versa.
+
+From the point of view of the garbage collector, the application is a blackbox. You only just see the statistical behavior basically: allocation rates, the typical duration of life of the objects and so on. So, the correct way to tune the GC is to actually inspect the GC logs, see the overall utilization of memory, memory patterns, GC frequencies - observe it over time and tune with that in mind.
+
+
+.What are the main factors that contribute to that within HotSpot. Do you use HotSpot? So within the HotSpot collector?
+Yes. So, within HotSpot, the frequency and duration of the garbage collector pauses; well, generally: if you had a JVM with infinite memory, then you will never have to GC, right? And if you have a JVM with a single byte of free memory then you are GC-ing all the time. And between the two extremes, you have an asymptotically decreasing proportion of your CPU going towards GC which basically means that the best way to minimize the frequencies of your GC is to give your JVM as much memory as you can. Specifically, the frequency of minor GCs is pretty much exactly inversely proportional to the size of the new generation. And as for the old generation GCs, but you really want to avoid those altogether. So, you want to tune your systems so that those never happen. It’s another question whether it’s actually possible to achieve in a non-trivial system with a HotSpot, it’s hard.
+
+
+
+
+##tools
+[Gchisto](https://java.net/projects/gchisto/)
+[twitter jvmgcprof](git@github.com:twitter/jvmgcprof.git)
+
+
+---
+#参数调优
+http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
+[从一次 FULL GC 卡顿谈对服务的影响](http://blog.csdn.net/weiguang_123/article/details/48577175)
+
+----
+#JVM参数的含义
+##-Xms
+初始堆大小初始堆的大小，也是堆大小的最小值，默认值是总共的物理内存/64（且小于1G），默认情况下，当堆中可用内存小于40%(这个值可以用-XX: MinHeapFreeRatio 调整，如-X:MinHeapFreeRatio=30)时，堆内存会开始增加，一直增加到-Xmx的大小；
+
+##-Xmx 最大堆大小
+堆的最大值，默认值是总共的物理内存/64（且小于1G），如果Xms和Xmx都不设置，则两者大小会相同，默认情况下，当堆中可用内存大于70%（这个值可以用-XX: MaxHeapFreeRatio 调整，如-X:MaxHeapFreeRatio=60）时，堆内存会开始减少，一直减小到-Xms的大小；
+
+整个堆的大小=年轻代大小+年老代大小，堆的大小不包含持久代大小，如果增大了年轻代，年老代相应就会减小，官方默认的配置为年老代大小/年轻代大小=2/1左右（使用-XX:NewRatio可以设置-XX:NewRatio=5，表示年老代/年轻代=5/1）；
+
+建议在开发测试环境可以用Xms和Xmx分别设置最小值最大值，但是在线上生产环境，Xms和Xmx设置的值必须一样，原因与年轻代一样——防止抖动；
+
 -Xmn    年轻代大小(1.4or lator)
 -XX:NewSize 设置年轻代大小(for 1.3/1.4)    
 -XX:MaxNewSize  年轻代最大值(for 1.3/1.4)
 -XX:PermSize    设置持久代(perm gen)初始值
 -XX:MaxPermSize 设置持久代最大值
--Xss    每个线程的堆栈大小
+
+##-Xss 每个线程的堆栈大小
+这个参数用于设置每个线程的栈内存，默认1M，一般来说是不需要改的。除非代码不多，可以设置的小点，另外一个相似的参数是-XX:ThreadStackSize，这两个参数在1.6以前，都是谁设置在后面，谁就生效；1.6版本以后，-Xss设置在后面，则以-Xss为准，-XXThreadStackSize设置在后面，则主线程以-Xss为准，其它线程以-XX:ThreadStackSize为准。
+
+##-Xrs
+减少JVM对操作系统信号（OS Signals）的使用（JDK1.3.1之后才有效），当此参数被设置之后，jvm将不接收控制台的控制handler，以防止与在后台以服务形式运行的JVM冲突（这个用的比较少，参考：http://www.blogjava.net/midstr/archive/2008/09/21/230265.html）。
+
+##-Xprof
+跟踪正运行的程序，并将跟踪数据在标准输出输出；适合于开发环境调试。
+
+##-Xnoclassgc
+关闭针对class的gc功能；因为其阻止内存回收，所以可能会导致OutOfMemoryError错误，慎用；
+
+##-Xincgc
+开启增量gc（默认为关闭）；这有助于减少长时间GC时应用程序出现的停顿；但由于可能和应用程序并发执行，所以会降低CPU对应用的处理能力。
+
+##-Xloggc:file
+与-verbose:gc功能类似，只是将每次GC事件的相关情况记录到一个文件中，文件的位置最好在本地，以避免网络的潜在问题。
+
+若与verbose命令同时出现在命令行中，则以-Xloggc为准。
+
+
 -XX:ThreadStackSize Thread Stack Size
 -XX:NewRatio    年轻代(包括Eden和两个Survivor区)与年老代的比值(除去持久代)
 -XX:SurvivorRatio   Eden区与Survivor区的大小比值
@@ -394,6 +577,9 @@ Native Memory的例外，如果你在以下场景：
 
 
 
+----
+#safepoint
+[safepoint时如何让Java线程全部阻塞](http://blog.csdn.net/iter_zc/article/details/41892567?utm_source=tuicool&utm_medium=referral)
 
 
 
@@ -402,17 +588,74 @@ Native Memory的例外，如果你在以下场景：
 ---
 #内存分析
 [使用 Eclipse Memory Analyzer 进行堆转储文件分析](http://www.ibm.com/developerworks/cn/opensource/os-cn-ecl-ma/index.html)
+```
+0x01b6d627: call   0x01b2b210         ; OopMap{[60]=Oop off=460}      
+                                       ;*invokeinterface size      
+                                       ; - Client1::main@113 (line 23)      
+                                       ;   {virtual_call}      
+ 0x01b6d62c: nop                       ; OopMap{[60]=Oop off=461}      
+                                       ;*if_icmplt      
+                                       ; - Client1::main@118 (line 23)      
+ 0x01b6d62d: test   %eax,0x160100      ;   {poll}      
+ 0x01b6d633: mov    0x50(%esp),%esi      
+ 0x01b6d637: cmp    %eax,%esi     
+```
+test  %eax,0x160100 就是一个safepoint polling page操作。当JVM要停止所有的Java线程时会把一个特定内存页设置为不可读，那么当Java线程读到这个位置的时候就会被挂起
+
+[Points on Safepoints](http://javaagile.blogspot.jp/2012/11/points-on-safepoints.html) 这篇文章说明了一些问题。首先是关于一些safepoint的观点
+
+* All commercial GCs use safepoints.
+* The GC reigns in all threads at safepoints. This is when it has exact knowledge of things touched by the threads.
+* They can also be used for non-GC activity like optimization.
+* A thread at a safepoint is not necessarily idle but it often is.
+* Safepoint opportunities should be frequent. 
+* All threads need to reach a global safepoint typically every dozen or so instructions (for example, at the end of loops).
+
+safepoint机制可以stop the world，不仅仅是在GC的时候用，
+有很多其他地方也会用它来stop the world，阻塞所有Java线程，从而可以安全地进行一些操作。
+
+OpenJDK里面关于safepoint的一些说明
+```
+// Begin the process of bringing the system to a safepoint.    
+// Java threads can be in several different states and are    
+// stopped by different mechanisms:    
+//    
+//  1. Running interpreted    
+//     The interpeter dispatch table is changed to force it to    
+//     check for a safepoint condition between bytecodes.    
+//  2. Running in native code    
+//     When returning from the native code, a Java thread must check    
+//     the safepoint _state to see if we must block.  If the    
+//     VM thread sees a Java thread in native, it does    
+//     not wait for this thread to block.  The order of the memory    
+//     writes and reads of both the safepoint state and the Java    
+//     threads state is critical.  In order to guarantee that the    
+//     memory writes are serialized with respect to each other,    
+//     the VM thread issues a memory barrier instruction    
+//     (on MP systems).  In order to avoid the overhead of issuing    
+//     a mem barrier for each Java thread making native calls, each Java    
+//     thread performs a write to a single memory page after changing    
+//     the thread state.  The VM thread performs a sequence of    
+//     mprotect OS calls which forces all previous writes from all    
+//     Java threads to be serialized.  This is done in the    
+//     os::serialize_thread_states() call.  This has proven to be    
+//     much more efficient than executing a membar instruction    
+//     on every call to native code.    
+//  3. Running compiled Code    
+//     Compiled code reads a global (Safepoint Polling) page that    
+//     is set to fault if we are trying to get to a safepoint.    
+//  4. Blocked    
+//     A thread which is blocked will not be allowed to return from the    
+//     block condition until the safepoint operation is complete.    
+//  5. In VM or Transitioning between states    
+//     If a Java thread is currently running in the VM or transitioning    
+//     between states, the safepointing code will wait for the thread to    
+//     block itself when it attempts transitions to a new state.    
+```
 
 
 
-
-
-
-
-
-
-
-
+---
 
 
 

@@ -587,7 +587,9 @@ public  String delete( @PathVariable  Integer whiteListId) {
 
 
 
-
+---
+#schedule
+[解析spring schedule](http://blog.csdn.net/cutesource/article/details/4900020)
 
 
 

@@ -96,7 +96,7 @@ WebSphere | 收费  | J2EE全部支持
 ---
 #Jetty
 [Jetty 的工作原理以及与 Tomcat 的比较](http://www.ibm.com/developerworks/cn/java/j-lo-jetty/index.html)
-
+[从Jetty、Tomcat和Mina中提炼NIO构架网络服务器的经典模式（一）](http://blog.csdn.net/cutesource/article/details/6192016)
 
 ##与tomcat性能对比
 Jetty 可以同时处理大量连接而且可以长时间保持这些连接

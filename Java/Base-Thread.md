@@ -30,6 +30,7 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 　　第五是死亡状态。如果一个线程的run方法执行结束或者调用stop方法后，该线程就会死亡。对于已经死亡的线程，无法再使用start方法令其进入就绪。
 
 ##状态转换
+[一张图让你看懂JAVA线程间的状态转换](http://my.oschina.net/mingdongcheng/blog/139263)
 1 new ------t.start()------> 2
 2 runnable----OS选中-------> 3
 3 runing,obtain my timeslice ----时间片用完，yield-----------> 2
@@ -41,6 +42,11 @@ Java中，每个线程都有一个调用栈，即使不在程序中创建任何�
 5 锁池 lock pool ----拿到锁标识----> 2
 6 阻塞 不释放锁 ------输入完成，sleep结束，t2结束---------> 2
 7 dead
+PS：
+sleep 让进程从 running -> 阻塞 时间结束/interrupt -> runnable
+wait 让进程从 running -> 等待队列 notify 等待队列->锁池 ->runable
+
+
 ##实现
 1:1（内核线程）、N:1（用户态线程）、M:N（混合）模型
 HotSpot VM

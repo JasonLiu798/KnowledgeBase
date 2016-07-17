@@ -9,3 +9,6 @@
 
 
 移位归约解析器
+
+
+[学习编程语言与编译优化的一个书单](https://zhuanlan.zhihu.com/p/20130808?refer=hllvm)

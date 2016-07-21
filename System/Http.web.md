@@ -11,6 +11,100 @@ timd_wait时延和短裤耗尽
 
 # 幂等率
 [HTTP幂等性概念和应用](http://coolshell.cn/articles/4787.html)
+绝大部分网络上对幂等性的解释类似于:
+"幂等性是指重复使用同样的参数调用同一方法时总能获得同样的结果。比如对同一资源的GET请求访问结果都是一样的。"
+我认为这种解释是非常错误的, 幂等性强调的是外界通过接口对系统内部的影响, 外界怎么看系统和幂等性没有关系. 就上面这种解释, System.getCPULoad(), 这两次调用返回能一样吗？ 但因为是只读接口, 对系统内部状态没有影响, 所以这个函数还是幂等性的.
+首先了解一下什么是幂等性，如果你没有兴趣可以直接跳过这段代数概念解释 :)
+
+##定义
+幂等(idempotence)是来自于高等代数中的概念。
+定义如下(加入了自己理解)：
+单目运算, x为某集合内的任意数, f为运算子如果满足f(x)=f(f(x)), 那么我们称f运算为具有幂等性(idempotent)
+
+比如在实数集中,绝对值运算就是一个例子: abs(a)=abs(abs(a))
+双目运算，x为某集合内的任意数, f为运算子如果满足f(x,x)=x, f运算的前提是两个参数都同为x, 那么我们也称f运算为具有幂等性
+
+比如在实数集中,求两个数的最大值的函数: max(x,x) = x, 还有布尔代数中,逻辑运算 "与", "或" 也都是幂等运算, 因为他们符合AND(0,0) = 0, AND(1,1) = 1, OR(0,0) = 0, OR(1,1) = 1
+
+在将幂等性应用到软件开发中,需要一些更深的理解. 我的理解如下:
+数学处理的是运算和数值, 程序开发中往往处理的是对象和函数. 但是我们不能简单地理解为数学幂等中的运算就是函数,而数值就是对象!!
+
+比如有Person对象有两个属性weight和age,但是所有的function只能对其中一个属性操作. 所以从这个层面我们可以理解为: 函数只对该函数所操作的对象某个属性具有幂等性, 而不是说对整个对象有运算幂等性.
+```java
+Person {  
+ private int weight;  
+ private int age;  
+ //是幂等函数  
+ public void setAge(int v){  
+     this.age = v;   
+ }  
+ //不是幂等函数  
+ public void increaseAge(){  
+     this.age++;  
+ }   
+ //是幂等函数  
+ public void setWeight(int v){  
+     this.weight=v+10;//故意加10斤!!  
+ }  
+}
+```
+还有一点必须要澄清的是: 幂等性所表达的概念关注的是数学层面的运算和数值, 并没有提及到数值的安全性问题.
+比如上面的Person的setAge函数, 有两种case不是幂等性所关心的, 但程序开发却又必须要关心的:
+1. 两个线程同时调用
+2. 因为age从业务上讲不可能递减, 如果前一次调用设置是30岁, 后一次调用变成了10岁或是更离谱的 -1 岁
+所以RESTful设计中将幂等性和安全性是作为两个不同的指标来衡量POST,PUT,GET,DELETE操作的:
+
+重要方法 |  安全? | 幂等 
+---------|--------|----------
+GET      |  是    |  是
+DELETE   |  否    |  是
+PUT      |  否    |  是
+POST     |  否    |  否
+
+幂等性是系统的接口对外一种承诺(而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的. 声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试.
+就象cache有cache基本实现范式一样, 幂等也有自己的固定外部调用范式
+cache实现范式:
+```java
+value getValue(key){  
+    value = getValueFromCache(key);  
+  
+    if( value == null ){  
+        value = readFromPersistence(key);  
+        saveValueIntoCache(key,value);  
+    }  
+  
+    return value;  
+}
+```
+幂等外部调用范式
+```java
+client.age = 30;
+while(一些退出条件){
+    try{  
+        if(socket.setPersonAge(person,client.age) == FAILED){
+            int newAge = socket.getPersonAge();  
+            //处理冲突问题: 因为age只可能越来越大,所以将client的age更新为server端更大的age  
+            if(newAge>30){ 
+              client.age = newAge;  
+              break;
+            }
+        } else {
+            //无法进行冲突解决,再次尝试  
+        }  
+        //} else return;  
+    } catch(Exception){  
+        //发生网络异常, 再次尝试  
+    }
+}
+```
+幂等接口的内部实现需要有对内保护机制, 一般情况是用类似于乐观锁的版本机制.版本重点是体现时间的先后.
+
+
+
+
+
+
+
 操作本身幂等
 ##方法1
 如果是对参数X（比如5），我们只允许减一次，后面重复的，我们就直接返回。

@@ -129,7 +129,17 @@ jhat：JDK自带的java heap analyze tool
 [jstack和线程dump分析](http://jameswxx.iteye.com/blog/1041173)
 [Java自带的性能监测工具用法简介——jstack、jconsole、jinfo、jmap、jdb、jsta、jvisualvm](http://blog.csdn.net/feihong247/article/details/7874063)
 
+32598
 
+top -Hp 32598
+32678 work      20   0 4539m 456m 6036 S  0.0 11.9  23:36.49 java
+32614 work      20   0 4539m 456m 6036 S  0.3 11.9  16:57.43 java
+32627 work      20   0 4539m 456m 6036 S  0.0 11.9   7:42.35 java
+
+printf "%x\n" 32678
+7fa6
+
+jstack 32598 |grep 7fa6
 
 
 ###TDA
@@ -253,11 +263,37 @@ III.final Marking (remark)
 IV.Concurrent Sweeping
 
 
-##CMS
+---
+#CMS
 CMS在并发模式工作的时候是只收集old gen的。但一旦并发模式失败（发生concurrent mode failure）就有选择性的会进行全堆收集，也就是退回到full GC。 
 
+##过程
+初始标记 ：在这个阶段，需要虚拟机停顿正在执行的任务，官方的叫法STW(Stop The Word)。这个过程从垃圾回收的"根对象"开始，只扫描到能够和"根对象"直接关联的对象，并作标记。所以这个过程虽然暂停了整个JVM，但是很快就完成了。
+并发标记 ：这个阶段紧随初始标记阶段，在初始标记的基础上继续向下追溯标记。并发标记阶段，应用程序的线程和并发标记的线程并发执行，所以用户不会感受到停顿。
+并发预清理 ：并发预清理阶段仍然是并发的。在这个阶段，虚拟机查找在执行并发标记阶段新进入老年代的对象(可能会有一些对象从新生代晋升到老年代， 或者有一些对象被分配到老年代)。通过重新扫描，减少下一个阶段"重新标记"的工作，因为下一个阶段会Stop The World。
+重新标记 ：这个阶段会暂停虚拟机，收集器线程扫描在CMS堆中剩余的对象。扫描从"跟对象"开始向下追溯，并处理对象关联。
+并发清理 ：清理垃圾对象，这个阶段收集器线程和应用程序线程并发执行。
+并发重置 ：这个阶段，重置CMS收集器的数据结构，等待下一次垃圾回收。
 
-##G1
+##缺点
+* CMS回收器采用的基础算法是Mark-Sweep
+所有CMS不会整理、压缩堆空间。这样就会有一个问题：经过CMS收集的堆会产生空间碎片。 CMS不对堆空间整理压缩节约了垃圾回收的停顿时间，但也带来的堆空间的浪费。为了解决堆空间浪费问题，CMS回收器不再采用简单的指针指向一块可用堆空 间来为下次对象分配使用。而是把一些未分配的空间汇总成一个列表，当JVM分配对象空间的时候，会搜索这个列表找到足够大的空间来hold住这个对象。
+* 需要更多的CPU资源
+从上面的图可以看到，为了让应用程序不停顿，CMS线程和应用程序线程并发执行，这样就需要有更多的CPU，单纯靠线程切 换是不靠谱的。并且，重新标记阶段，为空保证STW快速完成，也要用到更多的甚至所有的CPU资源。当然，多核多CPU也是未来的趋势！
+* CMS的另一个缺点是它需要更大的堆空间
+因为CMS标记阶段应用程序的线程还是在执行的，那么就会有堆空间继续分配的情况，为了保证在CMS回 收完堆之前还有空间分配给正在运行的应用程序，必须预留一部分空间。也就是说，CMS不会在老年代满的时候才开始收集。相反，它会尝试更早的开始收集，已 避免上面提到的情况：在回收完成之前，堆没有足够空间分配！默认当老年代使用68%的时候，CMS就开始行动了。 – XX:CMSInitiatingOccupancyFraction =n 来设置这个阀值。
+总得来说，CMS回收器减少了回收的停顿时间，但是降低了堆空间的利用率。
+
+##适用场景
+如果你的应用程序对停顿比较敏感，并且在应用程序运行的时候可以提供更大的内存和更多的CPU(也就是硬件牛逼)，那么使用CMS来收集会给你带来好处。还有，如果在JVM中，有相对较多存活时间较长的对象(老年代比较大)会更适合使用CMS。
+
+
+
+
+
+---
+#G1
+[JVM中的G1垃圾回收器](http://www.importnew.com/15311.html)
 jvm heap划分为 多个固定大小region
 扫描采用Snapshot-at-the-beginning 并发marking算法对整个heap中region进行mark
 
@@ -280,6 +316,7 @@ jvm heap划分为 多个固定大小region
 [Attila Szegedi on JVM and GC Performance Tuning at Twitter](https://www.infoq.com/interviews/szegedi-performance-tuning)
 [Sun以前出的HotSpot VM的GC调优白皮书](http://www.oracle.com/technetwork/java/javase/memorymanagement-whitepaper-150215.pdf)
 [Gil Tene谈GC](http://www.infoq.com/presentations/Understanding-Java-Garbage-Collection)
+[JVM调优总结 -Xms -Xmx -Xmn -Xss](http://www.cnblogs.com/likehua/p/3369823.html)
 ##新生代和老年代 比例
 [新生代和老年代怎样的比例比较合适呢](http://hllvm.group.iteye.com/group/topic/34664)
 大小分配怎样才合理取决于某个具体应用的对象的存活模式

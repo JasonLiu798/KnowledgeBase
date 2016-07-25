@@ -216,6 +216,10 @@ mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase -Dversion
 
 ---
 #plugins
+##check-type
+http://blog.csdn.net/kongxx/article/details/7750015
+
+
 assembly
 http://blueram.iteye.com/blog/1684070
 ## main class

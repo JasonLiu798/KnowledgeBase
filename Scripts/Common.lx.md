@@ -171,15 +171,16 @@ http://os.51cto.com/art/201003/187533.htm
 
 ---
 #date时间相关
+```bash
 ntpdate asia.pool.ntp.org >> /var/log/ntpdate.log
 ntpdate time.windows.com
 asia.pool.ntp.org
-中科院授时中心(西安)
+#中科院授时中心(西安)
 ntpdate -s 210.72.145.44
-网通授时中心(北京)
+#网通授时中心(北京)
 ntpdate 219.158.14.130
-
 date -s '11:16:18 2014-01-07'
+```
 
 [Linux 下的服务器时间同步方案有哪些](http://www.zhihu.com/question/20089241)
 大多数应用场景中,使用ntpd的-g参数令其在启动时允许大步长同步就足够了
@@ -200,6 +201,7 @@ date -s '11:16:18 2014-01-07'
 ---
 #file search 文件搜索相关
 ##find
+```bash
 find /tmp -mtime +30 -type f -name *.sh[ab] -exec rm -f
 find . -mtime +30 -type f | xargs rm -rf
  find /home/oracle/test6 -cmin +20 -type f -name *.xml -exec rm -f
@@ -208,14 +210,20 @@ ctime(change time, 而不是create time), atime(access time), mtime(modify time)
 
 find . -name "*.c"  -exec grep array /dev/null {} \;
 find . -name "message*.xml" -print |xargs grep 'AlertDataQ'
+```
 
 查找最近24小时更新的文件
+```bash
 find . -mtime -1 -type f -print
+```
 
 参数列表过长
+```bash
 find . "*.nasl" | xargs rm -f
-or
+#or
 find . -name "*.nasl" -exec rm {} \;
+find . -name '*xxx' -print -exec rm -rf '{}' \;  #文件名带特殊字符
+```
 
 find: paths must precede expression
 关键字中有*，* 被展开为当前目录下所有的文件，关键字要单引号，不转义*

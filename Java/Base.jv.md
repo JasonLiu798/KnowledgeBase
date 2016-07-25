@@ -212,20 +212,54 @@ http://www.tuicool.com/articles/IfeUfq
 
 ---
 #Exception
+[深入理解java异常处理机制](http://blog.csdn.net/hguisu/article/details/6155636)
+```
+Throwable
+    Exception
+        RuntimeException
+            NullPointerException
+            IndexOutOfBoundsException
+            ArithmeticException
+                MathArithmeticException
+        IOException
+        ...
+    Error
+        Abort
+        FatalError
+        InternalError
+        NoSuchClassError
+        ReflectionError
+        VirtualMachineError
+            StackOverflowError
+            OutOfMemoryError
+
+```
+Error:
+1．总是不可控制的(unchecked)。
+2．经常用来用于表示系统错误或低层资源的错误。 
+3．如何可能的话，应该在系统级被捕捉。
+这些错误表示故障发生于虚拟机自身、或者发生在虚拟机试图执行应用时，如Java虚拟机运行错误（Virtual MachineError）、类定义错误（NoClassDefFoundError）等。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。
+
+Exception：
 [检查异常和未检查异常不同之处](http://blog.csdn.net/randomnet/article/details/7764579)
-java中异常分为两类:
-checked exception(检查异常)
-unchecked exception(未检查异常)对于未检查异常也叫RuntimeException(运行时异常).
-对未检查的异常(unchecked exception )的几种处理方式：
-1、捕获
-2、继续抛出
-3、不处理
-对检查的异常(checked exception，除了RuntimeException，其他的异常都是checked exception )的几种处理方式：
+1．可以是可被控制(checked) 或不可控制的(unchecked)。
+2．表示一个由程序员导致的错误。
+3．应该在应用程序级被处理。
+
+##checked exception(检查异常)
+除了RuntimeException，其他的异常都是checked exception )的几种处理方式：
 1、继续抛出，消极的方法，一直可以抛到java虚拟机来处理
 2、用try...catch捕获
 注意，对于检查的异常必须处理，或者必须捕获或者必须抛出
 
-##unchecked异常,即RuntimeException（运行时异常） 
+##unchecked exception(未检查异常)对于未检查异常也叫RuntimeException(运行时异常).
+对未检查的异常(unchecked exception )的几种处理方式：
+1、捕获
+2、继续抛出
+3、不处理
+
+
+##unchecked异常,即 RuntimeException（运行时异常） 
 常见RuntimeException:
 ArithmeticException int a=0; 
 int b= 3/a;
@@ -311,6 +345,9 @@ public class Test {
     }
 }
 ```
+
+
+
 
 ---
 #junit

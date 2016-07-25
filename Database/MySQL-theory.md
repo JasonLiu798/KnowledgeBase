@@ -15,9 +15,9 @@
 character set， 即字符集
 collation, 即比对方法 指定数据集如何排序，以及字符串的比对规则
 mysql> show collation;
-ollation 名字的规则可以归纳为这两类：
+collation 名字的规则可以归纳为这两类：
 1. <character set>_<language/other>_<ci/cs>
-2. <character set>_bin</li>
+2. <character set>_bin
 ci 是 case insensitive 的缩写， cs 是 case sensitive 的缩写，bin 二进制排序
 ###utf8_general_ci和utf8_unicode_ci的区别
 [utf8_general_ci和utf8_unicode_ci的区别](http://www.nowamagic.net/academy/detail/32161544)
@@ -85,14 +85,12 @@ innodb_old_blocks_time
 
 
 
-
 ---
 #索引
 ##优点
 * 减少服务器扫描的数据量
 * 帮助服务器避免排序和临时表
 * 将随机IO变为顺序IO
-
 
 ##b-tree
 ```sql
@@ -189,13 +187,6 @@ repeatable read  |  N   |   N       |   Y    |  N
 serializable     |  N   |   N       |   N    |  N
 
 间隙锁 next-key locking，防止幻读
-
-
-
-
-
-
-
 
 
 

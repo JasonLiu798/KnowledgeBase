@@ -262,6 +262,24 @@ showlog-max-len 循环写大小
 [Redis学习手册(事务)](http://www.cnblogs.com/stephen-liu74/archive/2012/03/28/2357783.html)
 [redis分布式锁-SETNX实现](http://my.oschina.net/u/1995545/blog/366381)
 [Redis数据库高级实用特性：事务控制](http://tech.it168.com/a2012/0730/1378/000001378719_1.shtml)
+[Redis核心解读–事务(Multi和CAS)的实现](http://www.wzxue.com/redis%E6%A0%B8%E5%BF%83%E8%A7%A3%E8%AF%BB-%E4%BA%8B%E5%8A%A1multi%E5%92%8Ccas%E7%9A%84%E5%AE%9E%E7%8E%B0/)
+##特点
+* 在multi和exec之间的命令作为事务处理，所有命令视为原子性操作，不能打断。
+* 在multi和exec之间的命令如果某条命令发生错误不回滚事务，也就是说，除了出错的命令，其他正常执行。
+* 如果开启AOF机制，那么multi和exec的之间的命令也会用一条write命令写到硬盘。如果在写时被硬中断(停电或管理员强制kill)，Redis重启时会检测到错误，可以用redis-check-aof工具修复。
+* 支持CAS(check and set)操作，watch命令可以锁定某个key，unwatch命令取消锁定，在事务执行时如果检测到watch的key被修改，事务失败。事务成功执行后，会unwatch掉所有观察的keys。
+
+为什么Redis提供的事务不支持错误回滚？原因是Redis作为缓存系统，命令被编程到程序里一般不会出错(错误如参数个数出错，类型出错等)，如果发生出错，说明是程序出现了问题，在生产环境下一般不会这类问题。并且这样的事务在Redis实现非常简单，因为Redis是单线程程序，所以只要存储事务操作最后一起执行就实现了原子性操作，如果增加回滚会影响Redis性能。
+
+CAS操作应用于下面这个场景
+watch stringA
+stringA_r = stringA + “abcd”
+multi
+set stringA string_r
+exec
+这类场景很常见，当stringA被watch后如果发生变动，那么下面的事务就会失败。
+
+
 
 命令原型   |时间复杂度|    命令描述       |    返回值
 ----------|--------|------------------|----------

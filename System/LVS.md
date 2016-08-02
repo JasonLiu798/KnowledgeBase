@@ -1,5 +1,6 @@
-
-
+#LVS
+---
+---
 #LVS主要组成部分
 ##负载调度器(load balancer/ Director)
 它是整个集群对外面的前端机，负责将客户的请求发送到一组服务器上执行，而客户认为服务是来自一个IP地址(我们可称之为虚拟IP地址)上的。
@@ -7,6 +8,196 @@
 一组真正执行客户请求的服务器，执行的服务一般有WEB、MAIL、FTP和DNS等。
 ##共享存储(shared storage)
 它为服务器池提供一个共享的存储区，这样很容易使得服务器池拥有相同的内容，提供相同的服务。
+
+
+
+
+
+---
+#DR模式：(Direct Routing)直接路由模式
+##工作过程
+当一个client发送一个WEB请求到VIP，LVS服务器根据VIP选择对应的real-server的Pool，根据算法，在Pool中选择一台Real-server，LVS在hash表中记录该次连接，然后将client的请求包发给选择的Real-server，最后选择的Real-server把应答包直接传给client；当client继续发包过来时，LVS根据更才记录的hash表的信息，将属于此次连接的请求直接发到刚才选择的Real-server上；当连接中止或者超时，hash表中的记录将被删除。
+
+##细节：
+* LVS和Real-server必须在相同的网段
+DR模式在转发client的包时，只修改了包目的MAC地址为选定的Real-server的mac地址，所以如果LVS和Real-server在不通的广播域内，那么Real-server就没办法接收到转发的包。下面是mac地址的修改过程：
+
+* LVS不需要开启路由转发
+LVS的DR模式不需要开启路由转发功能，就可以正常的工作，出于安全考虑，如果不需要转发功能，最好关闭。
+
+* ARP问题
+通常，DR模式需要在Real-server上配置VIP，配置的方式为：
+/sbin/ifconfig lo:0 inet VIP netmask 255.255.255.255
+原因在于，当LVS把client的包转发给Real-server时，因为包的目的IP地址是VIP，那么如果Real-server收到这个包后，发现包的目的IP不是自己的系统IP，那么就会认为这个包不是发给自己的，就会丢弃这个包，所以需要将这个IP地址绑到网卡上；
+当发送应答包给client时，Real-server就会把包的源和目的地址调换，直接回复给client
+
+* 关于ARP广播
+上面绑定VIP的掩码是”255.255.255.255″，说明广播地址是其本身，那么他就不会将ARP发送到实际的自己该属于的广播域了，这样防止与LVS上VIP冲突，而导致IP冲突。
+另外在Linux的Real-server上，需要设置ARP的sysctl选项:（下面是举例说明设置项的）
+假设服务器上ip地址如下所示:
+```
+System Interface MAC Address IP Address
+HN eth0 00:0c:29:b3:a2:54 192.168.18.10
+HN eth3 00:0c:29:b3:a2:68 192.168.18.11
+HN eth4 00:0c:29:b3:a2:5e 192.168.18.12
+client eth0 00:0c:29:d2:c7:aa 192.168.18.129
+```
+
+当我从192.168.18.129 ping 192.168.18.10时，tcpdump抓包发现:
+```
+00:0c:29:d2:c7:aa > ff:ff:ff:ff:ff:ff, ARP, length 60: arp who-has 192.168.18.10 tell 192.168.18.129
+00:0c:29:b3:a2:5e > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:5e
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:54
+00:0c:29:b3:a2:68 > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:68
+00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:5e, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32313, seq 1, length 64
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32313, seq 1, length 64
+00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:5e, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32313, seq 2, length 64
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32313, seq 2, length 64
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp who-has 192.168.18.129 tell 192.168.18.10
+00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, ARP, length 60: arp reply 192.168.18.129 is-at 00:0c:29:d2:c7:aa
+```
+三个端口都发送了arp的reply包，但是192.168.18.129使用的第一个回应的eth4的mac地址作为ping请求的端口，由于192.168.18.10是icmp包中的目的地址，那么ping的应答包，会从eth0端口发出。
+如果Real-server有个多个网卡，每个网卡在不同的网段，那么可以过滤掉非本网卡ARP请求的回应；但是如果多个网卡的ip在一个网段，那么就不行了。
+```
+sysctl -w net.ipv4.conf.all.arp_filter=1
+```
+对于多个接口在相同网段可以设置下面的来防止：
+```
+sysctl -w net.ipv4.conf.all.arp_ignore=1
+sysctl -w net.ipv4.conf.all.arp_announce=2
+```
+还是从192.168.18.129 ping 192.168.18.10时，tcpdump抓包发现:
+```
+00:0c:29:d2:c7:aa > ff:ff:ff:ff:ff:ff, ARP, length 60: arp who-has 192.168.18.10 tell 192.168.18.129
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:54
+00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32066, seq 1, length 64
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32066, seq 1, length 64
+00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32066, seq 2, length 64
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32066, seq 2, length 64
+00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp who-has 192.168.18.129 tell 192.168.18.10
+00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, ARP, length 60: arp reply 192.168.18.129 is-at 00:0c:29:d2:c7:aa
+```
+看到了么，现在只有eth0会回应arp请求了。
+
+arp报文格式：
+请求报文：MAC地址字段是空的。 应答报文：所有字段都又内容。:
+```
+The arp_announce/arp_ignore reference：
+
+arp_announce – INTEGER
+Define different restriction levels for announcing the local
+source IP address from IP packets in ARP requests sent on
+interface:
+0 – (default) Use any local address, configured on any interface
+1 – Try to avoid local addresses that are not in the target’s
+subnet for this interface. This mode is useful when target
+hosts reachable via this interface require the source IP
+address in ARP requests to be part of their logical network
+configured on the receiving interface. When we generate the
+request we will check all our subnets that include the
+target IP and will preserve the source address if it is from
+such subnet. If there is no such subnet we select source
+address according to the rules for level 2.
+2 – Always use the best local address for this target.
+In this mode we ignore the source address in the IP packet
+and try to select local address that we prefer for talks with
+the target host. Such local address is selected by looking
+for primary IP addresses on all our subnets on the outgoing
+interface that include the target IP address. If no suitable
+local address is found we select the first local address
+we have on the outgoing interface or on all other interfaces,
+with the hope we will receive reply for our request and
+even sometimes no matter the source IP address we announce.
+
+The max value from conf/{all,interface}/arp_announce is used.
+
+Increasing the restriction level gives more chance for
+receiving answer from the resolved target while decreasing
+the level announces more valid sender’s information.
+```
+arp_announce 用来限制，是否使用发送的端口的ip地址来设置ARP的源地址：
+
+“0″代表是用ip包的源地址来设置ARP请求的源地址。
+“1″代表不使用ip包的源地址来设置ARP请求的源地址，如果ip包的源地址是和该端口的IP地址相同的子网，那么用ip包的源地址，来设置ARP请求的源地址，否则使用”2″的设置。
+“2″代表不使用ip包的源地址来设置ARP请求的源地址，而由系统来选择最好的接口来发送。
+当内网的机器要发送一个到外部的ip包，那么它就会请求路由器的Mac地址，发送一个arp请求，这个arp请求里面包括了自己的ip地址和Mac地址，而linux默认是使用ip的源ip地址作为arp里面的源ip地址，而不是使用发送设备上面的 ，这样在lvs这样的架构下，所有发送包都是同一个VIP地址，那么arp请求就会包括VIP地址和设备 Mac，而路由器收到这个arp请求就会更新自己的arp缓存，这样就会造成ip欺骗了，VIP被抢夺，所以就会有问题。
+
+现在假设一个场景来解释 arp_announce ：
+```
+Real-server的ip地址：202.106.1.100(public local address)，
+172.16.1.100(private local address)，
+202.106.1.254(VIP)
+```
+如果发送到client的ip包产生的arp请求的源地址是202.106.1.254(VIP),那么LVS上的VIP就会被冲掉，因为交换机上现在的arp对应关系是Real-server上的VIP对应自己的一个MAC，那么LVS上的VIP就失效了。:
+```
+arp_ignore – INTEGER
+Define different modes for sending replies in response to
+received ARP requests that resolve local target IP addresses:
+0 – (default): reply for any local target IP address, configured
+on any interface
+1 – reply only if the target IP address is local address
+configured on the incoming interface
+2 – reply only if the target IP address is local address
+configured on the incoming interface and both with the
+sender’s IP address are part from same subnet on this interface
+3 – do not reply for local addresses configured with scope host,
+only resolutions for global and link addresses are replied
+4-7 – reserved
+8 – do not reply for all local addresses
+
+The max value from conf/{all,interface}/arp_ignore is used
+when ARP request is received on the {interface}
+```
+
+“0″,代表对于arp请求，任何配置在本地的目的ip地址都会回应，不管该arp请求的目的地址是不是接口的ip；如果有多个网卡，并且网卡的ip都是一个子网，那么从一个端口进来的arp请求，别的端口也会发送回应。 “1″,代表如果arp请求的目的地址，不是该arp请求包进入的接口的ip地址，那么不回应。 “2″,要求的更苛刻，除了”1″的条件外，还必须要求arp发送者的ip地址和arp请求进入的接口的ip地址是一个网段的。 (后面略)
+
+---
+#IP Tunneling模式
+##IP Tunneling的工作过程
+1> client 发送request包到LVS服务器的VIP上。
+2> VIP按照算法选择后端的一个Real-server，并将记录一条消息到hash表中，然后将client的request包封装到一个 *新的IP包* 里，新IP包的目的IP是Real-server的IP，然后转发给Real-server。
+3> Real-server收到包后，解封装，取出client的request包，发现他的目的地址是VIP，而Real-server发现在自己的lo:0口上有这个IP地址，于是处理client的请求，然后将relpy这个request包直接发给client。
+4> 该client的后面的request包，LVS直接按照hash表中的记录直接转发给Real-server，当传输完毕或者连接超时，那么将删除hash表中的记录。
+
+##细节问题
+* LVS和Real-server不需要在一个网段 	
+由于通过IP Tunneling 封装后，封装后的IP包的目的地址为Real-server的IP地址，那么只要Real-server的地址能路由可达，Real-server在什么网络里都可以，这样可以减少对于公网IP地址的消耗，但是因为要处理IP Tunneling封装和解封装的开销，那么效率不如DR模式。
+
+* Real-server的系统设置
+由于需要Real-server支持IP Tunneling，所以设置与DR模式不太一样，LVS不需要设置tunl设备，LVS本身可以进行封装 i) 需要配置VIP在tunl设备上：(VIP：172.16.1.254)
+```
+shell> ifconfig tunl0 172.16.1.254 netmask 255.255.255.255
+shell> ifconfig tunl0
+tunl0 Link encap:IPIP Tunnel HWaddr
+inet addr:172.16.1.254 Mask:255.255.255.255
+UP RUNNING NOARP MTU:1480 Metric:1
+RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:0
+RX bytes:0 (0.0 b) TX bytes:0 (0.0 b)
+```
+当添加tunl0设备时，自动载入需要的模块：
+```
+shell> lsmod |grep ipip
+ipip 7516 0
+tunnel4 2700 1 ipip
+```
+其中，ipip依赖于tunnel4，假如现在删除tunnel4的话：
+```
+shell> rmmod tunnel4
+ERROR: Module tunnel4 is in use by ipip
+```
+如果添加tunl0失败，那么可能是内核没有开启tunneling功能，默认是以模块形式，加载到内核里的
+
+* ARP问题
+如果LVS和Real-server不在一个网络内，不需要处理ARP问题，如果在相同网络，那么处理方法和DR模式一样，但是如果一样，我就不知道选择tun模式有什么好理由了，DR似乎效率更高些吧。
+
+* 内核的包转发
+IP Tunneling模式不需要开启ip_forward功能。
+
+
+
+
 
 
 

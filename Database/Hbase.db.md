@@ -1,8 +1,35 @@
 #hbase
+---
+#基本架构
+
+
 
 
 ---
-#table structure
+#HBase访问接口
+1. Native Java API，最常规和高效的访问方式，适合Hadoop MapReduce Job并行批处理HBase表数据
+2. HBase Shell，HBase的命令行工具，最简单的接口，适合HBase管理使用
+3. Thrift Gateway，利用Thrift序列化技术，支持C++，PHP，Python等多种语言，适合其他异构系统在线访问HBase表数据
+4. REST Gateway，支持REST 风格的Http API访问HBase, 解除了语言限制
+5. Pig，可以使用Pig Latin流式编程语言来操作HBase中的数据，和Hive类似，本质最终也是编译成MapReduce Job来处理HBase表数据，适合做数据统计
+6. Hive，当前Hive的Release版本尚没有加入对HBase的支持，但在下一个版本Hive 0.7.0中将会支持HBase，可以使用类似SQL语言来访问HBase
+
+
+---
+#HBase存储模型
+##基本概念
+* RowKey
+Byte array，是表中每条记录的“主键”，方便快速查找，Rowkey的设计非常重要，因为根据rowkey查找数据效率极高。
+* Column Family
+列族，拥有一个名称(string)，包含一个或者多个相关列，创建一个表的时候列族要事先定义并不能动态更改，类似关系数据库的Schema
+* Column
+属于某一个columnfamily，familyName:columnName，每个列族中的列无需事先定义，可动态增加（HBase表动态拓展的关键）
+* Version Number
+类型为Long，默认值是系统时间戳，可由用户自定义
+* Value(Cell) 
+Byte array
+
+##逻辑模型 table structure
 Row Key |column-family1 | column-family2 | column-family3
 ------- | ------------- | -------------- | ------------- 
         |col1  col2     | col1    col2   |  col3  | col1
@@ -10,18 +37,35 @@ key1    |
 key2    |                    
 key3    |
 
+可以看到每一行都有一个rowkey作为主键唯一标识一行，并且列族是固定的。
+同一个列族，但是不同的行，所包含的列并不一样，只存储有值的列。
+每一个值可能有多个版本，默认以时间戳作为区分。
+所有值都是以字节数组的形式被存储。
+
+##物理上如何存储（HRegion，Store，MemStore，StoreFile，HFile，HLog）
+(1) Table中所有行都按照row key的字典序排列；
+(2) Table按照行被分割为多个Region。当Table随着记录数不断增加而变大后，会逐渐分裂成多份splits，成为regions，一个region由[startkey,endkey)表示，不同的region会被Master分配给相应的RegionServer进行管理。
+(3) Region按大小分割的，每个表开始只有一个Region，随着数据增多，Region不断增大，当增大到一个阀值的时候，Region就会等分会两个新的Region，之后会有越来越多的Region；
+(4) Region是Hbase中分布式存储和负载均衡的最小单元，不同Region分布到不同RegionServer上。
 
 
 
-hbase shell
-status
-version
-list
+
+
+
+
+
+
 
 
 ---
 #command
 [hbase shell基础和常用命令详解](http://www.jb51.net/article/31172.htm)
+
+hbase shell
+status
+version
+list
 
 ## 1 hadoop 
 hadoop fsck / -files -blocks

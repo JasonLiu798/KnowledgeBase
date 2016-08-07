@@ -597,6 +597,78 @@ JDK的线程池实现的非常灵活，并提供了很多功能，一些场景�
 * 是否有其他任务
 
 ##ThreadPoolExecutor
+* 状态
+```java
+    volatile int runState;
+     /* 线程池正在运行，可以正常的接收新任务，同时执行任务队列中缓存的任务 */
+    static final int RUNNING    = 0;  
+     /* 线程池处于关闭状态，暂停接受新任务，但是会继续执行缓存队列中的旧任务     */
+    static final int SHUTDOWN   = 1;  
+    /*
+     * 线程池处于停止状态，暂停接受新的任务，也不会去执行缓存队列中的旧任务
+     */
+    static final int STOP       = 2;
+    /*
+     * 线程池处于终止状态，不接受新任务，也不执行缓存队列中的旧任务，同时关闭所有执行线程
+     */
+    static final int TERMINATED = 3;
+```
+状态只能从RUNNING->SHUTDOWN->STOP->TERMINATED，不能反向跳转状态
+
+线程池刚创建时，处于RUNNING状态
+当使用者调用shutdown()方法后，线程池被设置为SHUTDOWN状态
+当使用者调用shutdownNow()方法后，线程池被设置为STOP状态
+当线程处于SHUTDOWN或STOP状态，并且所有工作线程已经销毁，任务缓存队列已经清空或执行结束后，线程池被设置为TERMINATED状态
+
+
+* 任务队列
+private final BlockingQueue<Runnable> workQueue;
+
+* 核心线程池
+ThreadPoolExecutor 使用一个HashSet对象保存执行任务的线程，这些线程，从任务缓存队列中获取任务，并进行执行。任务执行线程是可伸缩的，有三个参数和线程池的大小相关，分别为corePoolSize、maximumPoolSize以及poolSize，线程池在工作时，可以根据上述参数，动态调整线程池的大小。
+```java
+    /**
+     * 核心线程池大小
+     * 线程池在工作时，核心线程池大小是可以调整的，将核心线程池从大调小时，线程池会尝试关闭已经不再使用的线程
+     */
+    private volatile int   corePoolSize;
+    /**
+     * 最大线程池大小
+     * 线程池在工作时，最大线程池大小也是可以调整的，将最大线程池从大调小是，线程池会尝试关闭不再使用的线程
+     */
+    private volatile int   maximumPoolSize;
+    /**
+     * 当前线程池大小
+     * 对于此变量的修改，必须在mainLock的保护下进行
+     */
+    private volatile int   poolSize;
+```
+
+* 执行任务
+每个线程池，都必须有三样元素构成:
+    - 任务缓存队列：用于缓存需要执行的任务，新加入的任务，放到队列尾部，执行线程从队列头部获取新的任务，并进行执行
+    - 主控线程：用来控制任务的分发，即从 任务缓存队列 头部，获取一个任务，分发到其中一个 任务执行线程中执行，相当于管理者或监工的角色
+    - 任务执行线程：用来接受主控线程分发的任务并完成任务，相当于工人的角色。
+
+ThreadPoolExecutor中有没有主控线程，只有任务缓存队列和任务执行线程，每个任务执行线程，自行从任务缓存队列中获取任务，并且执行，类似于某些公司吹嘘的“员工自我管理与提高”
+
+```java
+    public void execute(Runnable command) {
+        if (command == null)
+            throw new NullPointerException();
+        if (poolSize >= corePoolSize || !addIfUnderCorePoolSize(command)) {
+            /*
+             * 如果当前任务执行线程大小比核心线程大，或创建新的线程失败
+             */
+            if (runState == RUNNING && workQueue.offer(command)) {
+                //因为当前线程未加锁，所以这里需要再次判断线程池状态
+                if (runState != RUNNING || poolSize == 0)
+                    ensureQueuedTaskHandled(command);
+            }else if (!addIfUnderMaximumPoolSize(command))//如果这里创建了新的线程，那么无法保证新入队的任务，先执行，后入队的任务后执行，这是ThreadPoolExecutor的调度策略
+                reject(command); // is shutdown or saturated
+        }
+    }
+```
 
 
 ##FixedThreadPool

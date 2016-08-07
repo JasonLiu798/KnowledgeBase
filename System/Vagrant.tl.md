@@ -3,6 +3,7 @@
 #command
 ## add box
 vagrant box add [boxname] [boxurl/boxpath] 
+
 ## init new vm
 vagrant init ubuntu/trusty64
 ## open & close
@@ -25,7 +26,7 @@ vagrant destroy
 vagrant box list
 vagrant global-status
 
-
+vagrant provision
 
 ---
 #setup

@@ -246,7 +246,7 @@ select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_nam
 ###客户端/服务器通信协议
   mysql同常要等所有数据都已经发送给客户端才能释放[这条查询所占用的资源] ，因此减少查询数据，使用limit限制数据量，尽早结束查询，尽早释放资源
     查询占用的资源包括：
-      结果集的内存消耗
+    结果集的内存消耗
 ###查询缓存
 大小写敏感的哈希表
 ###查询优化处理
@@ -440,8 +440,6 @@ SQL服务器节点
 NDB数据存储节点
   通过对每个节点进行备份的形式增加存储的可用性，这类似与MySQL Replication
 监控和管理节点
-
-
 
 
 

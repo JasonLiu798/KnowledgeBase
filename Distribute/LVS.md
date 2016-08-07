@@ -15,7 +15,17 @@
 
 ---
 #DR模式：(Direct Routing)直接路由模式
+##要求
+1、各个集群节点必须和Director在同一个物理网络中
+2、RIP地址不能为私有地址，可以实现便捷的远程管理和监控
+3、Director仅仅负责处理入站请求，响应报文则由Real Server直接发往客户端
+4、集群节点Real Server 的网关一定不能指向DIP，而是指向外部路由
+5、Director不支持端口映射
+6、Director能够支持比NAT多很多的Real Server
+注意：由于在负载均衡集群和高可用集群的时候要求服务器的时间必须一致，否则将会出现服务不协调等致命性的错误，我们这里把DR设置成为时间服务器，来为RS1和RS2提供时间校准，从而来保证负载均衡集群的正常运行！（关于时间服务器NTP-SERVER的搭建和配置我会在后两天的时间里发表博文详细介绍时间服务器的安装和配置），当然如果没有时间服务器也可以自己手动设置各个服务器的时间来保证时间的一致性！
 ##工作过程
+client----------->VIP[LVS]----选择realserver(dst mac改为 real mac)---->realserver---->client
+
 当一个client发送一个WEB请求到VIP，LVS服务器根据VIP选择对应的real-server的Pool，根据算法，在Pool中选择一台Real-server，LVS在hash表中记录该次连接，然后将client的请求包发给选择的Real-server，最后选择的Real-server把应答包直接传给client；当client继续发包过来时，LVS根据更才记录的hash表的信息，将属于此次连接的请求直接发到刚才选择的Real-server上；当连接中止或者超时，hash表中的记录将被删除。
 
 ##细节：
@@ -27,54 +37,77 @@ LVS的DR模式不需要开启路由转发功能，就可以正常的工作，出
 
 * ARP问题
 通常，DR模式需要在Real-server上配置VIP，配置的方式为：
+```
 /sbin/ifconfig lo:0 inet VIP netmask 255.255.255.255
+```
 原因在于，当LVS把client的包转发给Real-server时，因为包的目的IP地址是VIP，那么如果Real-server收到这个包后，发现包的目的IP不是自己的系统IP，那么就会认为这个包不是发给自己的，就会丢弃这个包，所以需要将这个IP地址绑到网卡上；
 当发送应答包给client时，Real-server就会把包的源和目的地址调换，直接回复给client
 
 * 关于ARP广播
-上面绑定VIP的掩码是”255.255.255.255″，说明广播地址是其本身，那么他就不会将ARP发送到实际的自己该属于的广播域了，这样防止与LVS上VIP冲突，而导致IP冲突。
-另外在Linux的Real-server上，需要设置ARP的sysctl选项:（下面是举例说明设置项的）
+上面绑定VIP的掩码是255.255.255.255，说明广播地址是其本身，那么他就不会将ARP发送到实际的自己该属于的广播域了，这样防止与LVS上VIP冲突，而导致IP冲突。
+另外在Linux的Real-server上，需要设置ARP的sysctl选项:
+（下面是举例说明设置项的）
 假设服务器上ip地址如下所示:
 ```
-System Interface MAC Address IP Address
-HN eth0 00:0c:29:b3:a2:54 192.168.18.10
-HN eth3 00:0c:29:b3:a2:68 192.168.18.11
-HN eth4 00:0c:29:b3:a2:5e 192.168.18.12
-client eth0 00:0c:29:d2:c7:aa 192.168.18.129
+System 	| Interface | MAC Address 		| IP Address
+HN 		| eth0 		| 00:0c:29:b3:a2:54 | 192.168.18.10
+HN 		| eth3 		| 00:0c:29:b3:a2:68 | 192.168.18.11
+HN 		| eth4 		| 00:0c:29:b3:a2:5e | 192.168.18.12
+
+client  | eth0 		| 00:0c:29:d2:c7:aa | 192.168.18.129
 ```
 
 当我从192.168.18.129 ping 192.168.18.10时，tcpdump抓包发现:
 ```
+//arp-ask
 00:0c:29:d2:c7:aa > ff:ff:ff:ff:ff:ff, ARP, length 60: arp who-has 192.168.18.10 tell 192.168.18.129
-00:0c:29:b3:a2:5e > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:5e
+//arp-reply
+00:0c:29:b3:a2:5e > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:5e (HN-eth4)
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:54
 00:0c:29:b3:a2:68 > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:68
+
+//client->eth4
 00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:5e, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32313, seq 1, length 64
+//eth0->client
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32313, seq 1, length 64
+//client->eth4
 00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:5e, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32313, seq 2, length 64
+//eth0->client
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32313, seq 2, length 64
+
+//arp-ask
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp who-has 192.168.18.129 tell 192.168.18.10
+//arp-reply
 00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, ARP, length 60: arp reply 192.168.18.129 is-at 00:0c:29:d2:c7:aa
 ```
 三个端口都发送了arp的reply包，但是192.168.18.129使用的第一个回应的eth4的mac地址作为ping请求的端口，由于192.168.18.10是icmp包中的目的地址，那么ping的应答包，会从eth0端口发出。
 如果Real-server有个多个网卡，每个网卡在不同的网段，那么可以过滤掉非本网卡ARP请求的回应；但是如果多个网卡的ip在一个网段，那么就不行了。
-```
+```bash
 sysctl -w net.ipv4.conf.all.arp_filter=1
 ```
 对于多个接口在相同网段可以设置下面的来防止：
-```
+```bash
 sysctl -w net.ipv4.conf.all.arp_ignore=1
 sysctl -w net.ipv4.conf.all.arp_announce=2
 ```
+
 还是从192.168.18.129 ping 192.168.18.10时，tcpdump抓包发现:
-```
+```bash
+//arp-ask
 00:0c:29:d2:c7:aa > ff:ff:ff:ff:ff:ff, ARP, length 60: arp who-has 192.168.18.10 tell 192.168.18.129
+//arp-reply eth0
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp reply 192.168.18.10 is-at 00:0c:29:b3:a2:54
+//client-eth0
 00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32066, seq 1, length 64
+//eth0->client
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32066, seq 1, length 64
+//client->eth0
 00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, IPv4, length 98: 192.168.18.129 > 192.168.18.10: ICMP echo request, id 32066, seq 2, length 64
+//eth0->client
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, IPv4, length 98: 192.168.18.10 > 192.168.18.129: ICMP echo reply, id 32066, seq 2, length 64
+//arp-ask
 00:0c:29:b3:a2:54 > 00:0c:29:d2:c7:aa, ARP, length 60: arp who-has 192.168.18.129 tell 192.168.18.10
+//arp-reply eth0
 00:0c:29:d2:c7:aa > 00:0c:29:b3:a2:54, ARP, length 60: arp reply 192.168.18.129 is-at 00:0c:29:d2:c7:aa
 ```
 看到了么，现在只有eth0会回应arp请求了。
@@ -84,11 +117,12 @@ arp报文格式：
 ```
 The arp_announce/arp_ignore reference：
 
-arp_announce – INTEGER
+//arp_announce – INTEGER
 Define different restriction levels for announcing the local
 source IP address from IP packets in ARP requests sent on
 interface:
 0 – (default) Use any local address, configured on any interface
+
 1 – Try to avoid local addresses that are not in the target’s
 subnet for this interface. This mode is useful when target
 hosts reachable via this interface require the source IP
@@ -98,6 +132,7 @@ request we will check all our subnets that include the
 target IP and will preserve the source address if it is from
 such subnet. If there is no such subnet we select source
 address according to the rules for level 2.
+
 2 – Always use the best local address for this target.
 In this mode we ignore the source address in the IP packet
 and try to select local address that we prefer for talks with
@@ -116,19 +151,29 @@ receiving answer from the resolved target while decreasing
 the level announces more valid sender’s information.
 ```
 arp_announce 用来限制，是否使用发送的端口的ip地址来设置ARP的源地址：
-
 “0″代表是用ip包的源地址来设置ARP请求的源地址。
 “1″代表不使用ip包的源地址来设置ARP请求的源地址，如果ip包的源地址是和该端口的IP地址相同的子网，那么用ip包的源地址，来设置ARP请求的源地址，否则使用”2″的设置。
-“2″代表不使用ip包的源地址来设置ARP请求的源地址，而由系统来选择最好的接口来发送。
+“2″代表不使用ip包的源地址来设置ARP请求的源地址，而由系统来选择最好的接口来发送
+
 当内网的机器要发送一个到外部的ip包，那么它就会请求路由器的Mac地址，发送一个arp请求，这个arp请求里面包括了自己的ip地址和Mac地址，而linux默认是使用ip的源ip地址作为arp里面的源ip地址，而不是使用发送设备上面的 ，这样在lvs这样的架构下，所有发送包都是同一个VIP地址，那么arp请求就会包括VIP地址和设备 Mac，而路由器收到这个arp请求就会更新自己的arp缓存，这样就会造成ip欺骗了，VIP被抢夺，所以就会有问题。
 
 现在假设一个场景来解释 arp_announce ：
 ```
-Real-server的ip地址：202.106.1.100(public local address)，
+Real-server的ip地址：
+202.106.1.100(public local address)，
 172.16.1.100(private local address)，
 202.106.1.254(VIP)
 ```
-如果发送到client的ip包产生的arp请求的源地址是202.106.1.254(VIP),那么LVS上的VIP就会被冲掉，因为交换机上现在的arp对应关系是Real-server上的VIP对应自己的一个MAC，那么LVS上的VIP就失效了。:
+如果发送到client的ip包产生的arp请求的源地址是202.106.1.254(VIP),那么LVS上的VIP就会被冲掉，因为交换机上现在的arp对应关系是Real-server上的VIP对应自己的一个MAC，那么LVS上的VIP就失效了。
+
+arp_announce
+0（默认值）-- 允许使用任一网络接口配置的IP地址（即任一本地地址），通常就是待发送的IP数据包的源IP地址。
+1 -- 尽量避免使用不属于该网络接口（即发送数据包的网络接口）子网的本地地址作为发送方IP地址。根据我对官方原文的理解，就是说如果主机包含多个子网，而IP数据包的源IP地址属于其中一个子网，虽然该IP地址不属于本网口的子网，但是也可以作为ARP请求数据包的发送方IP地址，否则就会按照取值为2的方式选择发送方IP地址。
+2 -- 忽略IP数据包的源IP地址，总是选择网口所配置的最合适的IP地址作为ARP请求数据包的发送方IP地址（一个网口可能会配置多个IP地址）。
+
+
+
+
 ```
 arp_ignore – INTEGER
 Define different modes for sending replies in response to
@@ -149,7 +194,19 @@ The max value from conf/{all,interface}/arp_ignore is used
 when ARP request is received on the {interface}
 ```
 
-“0″,代表对于arp请求，任何配置在本地的目的ip地址都会回应，不管该arp请求的目的地址是不是接口的ip；如果有多个网卡，并且网卡的ip都是一个子网，那么从一个端口进来的arp请求，别的端口也会发送回应。 “1″,代表如果arp请求的目的地址，不是该arp请求包进入的接口的ip地址，那么不回应。 “2″,要求的更苛刻，除了”1″的条件外，还必须要求arp发送者的ip地址和arp请求进入的接口的ip地址是一个网段的。 (后面略)
+
+arp_ignore
+0（默认值）-- 允许使用任一网络接口配置的IP地址（即任一本地地址），通常就是待发送的IP数据包的源IP地址。
+1 -- 尽量避免使用不属于该网络接口（即发送数据包的网络接口）子网的本地地址作为发送方IP地址。根据我对官方原文的理解，就是说如果主机包含多个子网，而IP数据包的源IP地址属于其中一个子网，虽然该IP地址不属于本网口的子网，但是也可以作为ARP请求数据包的发送方IP地址，否则就会按照取值为2的方式选择发送方IP地址。
+2 -- 忽略IP数据包的源IP地址，总是选择网口所配置的最合适的IP地址作为ARP请求数据包的发送方IP地址（一个网口可能会配置多个IP地址）。
+    arp_ignore参数是定义linux主机在收到ARP请求数据包后，发送ARP响应数据包的条件级别，该参数的取值范围是0～8，各取值的意义分别是：
+0（默认值）-- 只要ARP请求数据包所请求的IP地址属于任一本地地址（即任意一个本机配置的IP地址），就会回应ARP响应数据包，即使该IP地址不属于接收到ARP请求数据包的网卡。
+1 -- 只有ARP请求数据包所请求的IP地址属于当前网卡的IP地址，才会回应ARP响应数据包。
+2 -- 除了满足1的条件外，还要满足ARP请求数据包的发送方IP地址也属于当前网卡所属子网，这样才会回应ARP响应数据包。
+3 -- 如果ARP请求数据包所请求的IP地址对应的本地地址其作用域（scope）为主机（host），则不回应ARP响应数据包，如果作用域为全局（global）或链路（link），则回应ARP响应数据包。
+4~7 -- 保留
+8 -- 即使ARP请求数据所请求的IP地址属于任何一个本地地址，也不回应ARP响应数据包。
+
 
 ---
 #IP Tunneling模式
@@ -194,6 +251,63 @@ ERROR: Module tunnel4 is in use by ipip
 
 * 内核的包转发
 IP Tunneling模式不需要开启ip_forward功能。
+
+---
+#NAT模式
+##条件
+1、LVS上面需要双网卡：DIP和VIP
+2、内网的Real Server主机的IP必须和DIP在同一个网络中，并且要求其网关都需要指向DIP的地址
+3、RIP都是私有IP地址，仅用于各个节点之间的通信
+4、Director位于client和Real Server之间，负载处理所有的进站、出站的通信
+5、支持端口映射
+6、通常应用在较大规模的应用场景中，但Director易成为整个架构的瓶颈！
+
+##NAT模式的工作过程
+1> client发送request到LVS的VIP上，VIP选择一个Real-server，并记录连接信息到hash表中，然后 *修改client的request的目的IP地址* 为Real-server的地址，将请求发给Real-server;
+2> Real-server收到request包后，发现目的IP是自己的IP，于是处理请求，然后发送reply给LVS;
+3> LVS收到reply包后，修改reply包的的源地址为VIP，发送给client;
+4>从client来的属于本次连接的包，查hash表，然后发给对应的Real-server。
+5>当client发送完毕，此次连接结束或者连接超时，那么LVS自动从hash表中删除此条记录。
+
+##NAT模式的几个细节问题
+* NAT模式的Bugs
+	- 在Linux的2.6版本，LVS-NAT不能做防火墙，在只有一个网关的情况下，没有任何问题
+	- 防火墙不兼容：LVS的架构中，LVS的前端不能设置防火墙，修复的补丁”NFCT” patch
+	- 源路由问题
+
+* ICMP重定向问题
+一. 对于路由器来说，只有当如下条件同时满足的时候，才进行重定向
+	- 数据包的入接口和路由后的指定的出接口是同一个接口。
+	- 数据包的源IP地址和该包应走的下一跳IP地址属于同一个网段。
+	- 数据报非源路由的（这种情况应该比较少见了，源路由多见于Token Ring）。
+	- 系统开启重定向功能
+例如：
+两个路由器都开启了IP重定向功能。HostA 的默认网关为1.1.1.1。当HostA要和不在同一网段中的HostB通信的时候，会把数据报递交给默认网关RT1。然而RT1经过查找发现到达3.3.3.3的路径下一跳恰恰是经由自己的E0/1口的RT2接口1.1.1.2。满足上述条件，将会发生重定向。
+
+二. LVS为什么会产生ICMP重定向问题： * 在LVS-NAT模式下，如果LVS的各个成员，client，LVS，Real-server在同一个网段(比如：192.168.1.*/24)；
+
+当Real-server将Reply发送回LVS时，Reply包是 RIP -> CIP的，LVS看到RIP-> CIP实际上根本没必要经过LVS，直接到网关就行了，因为大家在一个网段，所以产生ICMP重定向发送给Real-server；
+Real-server收到ICMP重定向包后，如果Real-server的ICMP重定向开启了，Real-server就会处理ICMP重定向包，直接将Reply包发给网关，这时Reply包头并没有被LVS重写，所以LVS负载出现了问题。
+注意：这种情况只会出现在所有的LVS的成员都在一个网段的情况下。
+
+重定向的处理办法（Real-server的配置）：
+1> 关闭Real-server的重定向，忽略LVS发来的重定向包
+2> 删除到网段的路由：
+http://farm7.static.flickr.com/6105/6324754200_9780818531_z.jpg
+执行：
+realserver:/etc/lvs#route del -net 192.168.1.0 netmask 255.255.255.0 dev eth0
+路由已经被删除了
+3> LVS-NAT模式支持四层的端口重写： LVS-DR，LVS-TUN不能修改client发来的请求的目的端口，但是LVS-NAT可以，参考命令：
+shell> ipvsadm -a -t VIP:PORT -r RIP:NEWPORT -m -w 1
+LVS的三种转发模式就先说到这吧，具体的细节可以参考LVS的HOWTO文档。
+
+
+
+
+
+
+
+
 
 
 

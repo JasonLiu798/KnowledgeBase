@@ -88,6 +88,10 @@ Ctrl + Alt + Down
 #peference备份
 ##settings
 "font_face": "Courier New",
+
+//tab中文出现方块
+"dpi_scale": 1.0,
+
 ```javascript
 {
     "auto_complete": false,

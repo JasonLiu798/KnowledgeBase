@@ -23,36 +23,7 @@ pssh -h /root/ot.txt -l root -i 'ln -sfv /home/project /opt/project'
 
 
 ## 3 zookeeper
-pssh -h /root/zk.txt -l root -i 'zkServer.sh start'
-pssh -h /root/zk.txt -l root -i 'zkServer.sh stop'
-pssh -h /root/zk.txt -l root -i 'zkServer.sh status'
-
-[zookeeper日志清理，转换](http://w.gdu.me/wiki/Cloud/zookeeper_log_snapshot.)html
-zklog2txt /opt/zookeeper/zookeeperdir/logs/version-2/log.300000001 /opt/zookeeper|more
-
-```
-        #!/bin/sh
-        # scriptname: zkLog2txt
-        # zookeeper事务日志为二进制格式，使用LogFormatter方法转换为可阅读的日志
-        if [ -z "$1" -o "$1" = "-h" ];then
-            echo "Useage: $0 <LogFile> [zkDir]"
-            echo "eg:
-        $0 /opt/zpdata/version-2/log.3000002c7 /opt/Timasync/zookeeper \\
-        |grep '^7/24/13'|grep -A 10 -B 10 GAEI_AF_NotifyServer|more"
-            exit 0
-        fi
-        #LogFile=/dfs/zpdata/version-2/log.100000001
-        LogFile=$1
-        zkDir=$2
-        [ -z "$zkDir" ] && zkDir=/opt/zookeeper
-        [ ! -f "$LogFile" ] && echo "LogFile:$LogFile not exist!" && exit 1
-        [ ! -d "$zkDir" ] && echo "zkDir:$zkDir not exist!" && exit 1
-        [ ! -d "$zkDir/lib" ] && echo "zkDir:$zkDir/lib not exist!" && exit 1
-        #java -cp $zkDir/zookeeper.jar:$zkDir/lib/slf4j-api-1.6.1.jar:$zkDir/lib/slf4j-log4j12-1.6.1.jar:$zkDir/lib/log4j-1.2.15.jar \
-        #org.apache.zookeeper.server.LogFormatter "$LogFile"
-        JAVA_OPTS="$JAVA_OPTS -Djava.ext.dirs=$zkDir:$zkDir/lib"
-        java $JAVA_OPTS org.apache.zookeeper.server.LogFormatter "$LogFile"
-```
+见[zookeeper](../Distribute/Zookeeper.md)
 
 
 ---
@@ -142,20 +113,7 @@ pssh -h other.txt -l root -i 'rm -f /opt/hadoop'
 
 
 ##zookeeper
-wget -P /opt/rpm http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz &
-pscp -h other.txt -l root /opt/rpm/zookeeper-3.4.6.tar.gz /opt/rpm
-pssh -h other.txt -l root -i 'tar -zpxvf /opt/rpm/zookeeper-3.4.6.tar.gz -C /opt/rpm'
-pssh -h other.txt -l root -i 'ln -sfv /opt/rpm/zookeeper-3.4.6 /opt/zookeeper'
-pssh -h /root/all -l root -i 'ln -sfv /opt/tools/zookeeper-3.3.6 /opt/zookeeper'
-pssh -h other.txt -l root -i 'ls -l /opt/rpm'
-pssh -h other.txt -l root -i 'df -h'
-myid
 
-##hbase
-wget -P /opt/rpm http://mirror.bit.edu.cn/apache/hbase/stable/hbase-1.0.1-bin.tar.gz &
-pscp -h other.txt -l root /opt/rpm/hbase-1.0.1-bin.tar.gz /opt/rpm
-pssh -h other.txt -l root -i 'tar -zpxvf /opt/rpm/hbase-1.0.1-bin.tar.gz -C /opt/rpm'
-pssh -h other.txt -l root -i 'ln -sfv /opt/rpm/hbase-1.0.1 /opt/hbase'
 
 
 ---
@@ -182,11 +140,12 @@ hdfs namenode -format
 pssh -h /root/other.txt -l root -i 'rm -rf /opt/hadoop/dfs/* /opt/hadoop/tmp/* '
 pssh -h /root/other.txt -l root -i 'rm -rf /opt/hadoop/dfs/* /opt/hadoop/tmp/* '
 
-
-## conf
-### hadoop env 
+---
+#conf
+##hadoop env 
 Hadoop 2.6.0分布式部署参考手册 http://blog.csdn.net/zhu_xun/article/details/42077311
 
+##配置双向ssh无密码登录
 ### ip.txt
 10.185.3.224:hyxt2015
 10.185.3.238:hyxt2015
@@ -207,12 +166,13 @@ Hadoop 2.6.0分布式部署参考手册 http://blog.csdn.net/zhu_xun/article/det
 10.185.3.245
 10.185.3.246
 
-### disk status
+##硬件情况检查
+###disk status
 10.185.3.238 200G
 10.185.3.239 200G 
 10.185.3.245 200G
 10.185.3.246 100G
-
+###hosts
 /etc/hosts
 10.185.3.238 nameNode  hmaster2 ResourceManager
 10.185.3.239 secondarynameNode hmaster manage manage.cloud.com ganglia
@@ -220,19 +180,28 @@ Hadoop 2.6.0分布式部署参考手册 http://blog.csdn.net/zhu_xun/article/det
 10.185.3.246 dataNode2 nodeManager02 regionServer2
 pscp -h /root/slave -l root /etc/hosts /etc
 pssh -h other.txt -l root -i 'cat /etc/hosts'
-
 cp -r /opt/hadoop/etc/hadoop /etc/
-
 ### .bashrc
 HDP=/opt/hadoop
 HADOOP_HOME=$HDP
 HADOOP_PREFIX=$HDP
-
 ### xml
 doc http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterSetup.html
 csdn http://blog.csdn.net/zhu_xun/article/details/42077311
-core-site.xml
-hdfs-site.xml
+./etc/hadoop/core-site.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--Configurations for NameNode(SecondaryNameNode)、DataNode、NodeManager:-->
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://NameNode:9000</value>
+    <description>NameNode URI</description>
+  </property>
+</configuration>
+```
+./etc/hadoop/hdfs-site.xml
     dfs.namenode.name.dir
     dfs.datanode.data.dir
 mapred-site.xml

@@ -7,6 +7,7 @@ http://kafka.apache.org
 [日志：每个软件工程师都应该知道的有关实时数据的统一概念](http://www.oschina.net/translate/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
 [分布式发布订阅消息系统 Kafka 架构设计](http://www.oschina.net/translate/kafka-design?lang=chs&page=1#)-[原文](http://kafka.apache.org/documentation.html#design)
 
+
 ---
 #架构
 [Kafka剖析（一）：Kafka背景及架构介绍](http://www.infoq.com/cn/articles/kafka-analysis-part-1)

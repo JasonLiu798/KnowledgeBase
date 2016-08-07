@@ -30,6 +30,17 @@ Byte array，是表中每条记录的“主键”，方便快速查找，Rowkey�
 Byte array
 
 ##逻辑模型 table structure
+```java
+SortedMap<
+	RowKey,List<
+		SortedMap<
+			Column,List<
+				Value,Timestamp
+			>
+		>
+	>
+>
+```
 Row Key |column-family1 | column-family2 | column-family3
 ------- | ------------- | -------------- | ------------- 
         |col1  col2     | col1    col2   |  col3  | col1
@@ -47,25 +58,71 @@ key3    |
 (2) Table按照行被分割为多个Region。当Table随着记录数不断增加而变大后，会逐渐分裂成多份splits，成为regions，一个region由[startkey,endkey)表示，不同的region会被Master分配给相应的RegionServer进行管理。
 (3) Region按大小分割的，每个表开始只有一个Region，随着数据增多，Region不断增大，当增大到一个阀值的时候，Region就会等分会两个新的Region，之后会有越来越多的Region；
 (4) Region是Hbase中分布式存储和负载均衡的最小单元，不同Region分布到不同RegionServer上。
+(5) Region虽然是分布式存储的最小单元，但并不是存储的最小单元。HRegion由一个或者多个Store组成
+Store存储是HBase存储的核心了，其中由两部分组成，一部分是MemStore，一部分是StoreFiles
 
+* MemStore缓存用户写入的数据
+MemStore是Sorted Memory Buffer，用户写入的数据首先会放入MemStore。
+* StoreFile最终存储这些数据
+当MemStore满了以后会Flush成一个StoreFile（底层实现是HFile），当StoreFile文件数量增长到一定阈值，会触发Compact合并操作，将多个StoreFiles合并成一个StoreFile，合并过程中会进行版本合并和数据删除，因此可以看出HBase其实只有增加数据，所有的更新和删除操作都是在后续的compact过程中进行的，这使得用户的写操作只要进入内存中就可以立即返回，保证了HBase I/O的高性能。当StoreFiles Compact后，会逐步形成越来越大的StoreFile，当单个StoreFile大小超过一定阈值后，会触发Split操作，同时把当前Region Split成2个Region，父Region会下线，新Split出的2个孩子Region会被HMaster分配到相应的HRegionServer上，使得原先1个Region的压力得以分流到2个Region上。
+```
+Table
+	Region
+		Store
+			MemStore
+			StoreFiles
+```
 
+关于列族的存储：
+每个HStore对应了Table中的一个Column Family的存储，每个Column Family其实就是一个集中的存储单元，因此最好将具备共同IO特性的column放在一个ColumnFamily中，这样最高效。
+我理解这句话的意思是这样的： 不论是Region，Store，还是构成Store的一个MemStore和多个StoreFile，他们都是逻辑上的概念，在HBase中都描述为一个类，最终真实存储数据的物理存储对象是HDFS上的HFile。
+一个Store对应一个列族，意思就是一个特定的列族是用一个Store对象描述，通过这个Store对象可以访问到这个列族的所有信息。
 
+###HFile
+一个列族对应于一个HStore，其中又包含一个写缓存MemStore，多个存储数据的HFile，实际上还有一个读缓存BlockCache。
+一个列族在存储到其HStore的时候，是先写满一个HFile，再写下一个HFile。所以针对任意一行，其一个列族的数据必定存储在一个HFile文件中，所以说访问一个列族的数据比较高效。另外任意一行的所有列族的数据一定存储在一个region中。
 
+HBase是面向列的数据库：列族中的每一列，若没有数据则不会存储。
+HBase是按列族存储的数据库： 一行中 同一个列族中的数据必定存放在一起（一个HFile中）。
 
+###HLog
+用于防止写入MemStore的数据丢失：
+在分布式系统环境中，无法避免系统出错或者宕机，因此一旦HRegionServer意外退出，MemStore中的内存数据将会丢失，这就需要引入HLog了。每个HRegionServer中都有一个HLog对象，HLog是一个实现Write Ahead Log的类，在每次用户操作写入MemStore的同时，也会写一份数据到HLog文件中（HLog文件格式见后续），HLog文件定期会滚动出新的，并删除旧的文件（已持久化到StoreFile中的数据）。当HRegionServer意外终止后，HMaster会通过Zookeeper感知到，HMaster首先会处理遗留的 HLog文件，将其中不同Region的Log数据进行拆分，分别放到相应region的目录下，然后再将失效的region重新分配，领取 到这些region的HRegionServer在Load Region的过程中，会发现有历史HLog需要处理，因此会Replay HLog中的数据到MemStore中，然后flush到StoreFiles，完成数据恢复。
 
-
-
+备注：上面提到两个概念，即HFile和HLog，HBase中的所有数据文件都存储在Hadoop HDFS文件系统上，主要包括这两种文件类型：
+1.HFile， HBase中KeyValue数据的存储格式，HFile是Hadoop的二进制格式文件，实际上StoreFile就是对HFile做了轻量级包装，即StoreFile底层就是HFile
+2.HLog File，HBase中WAL（Write Ahead Log）的存储格式，物理上是Hadoop的Sequence File
 
 
 
 ---
-#command
-[hbase shell基础和常用命令详解](http://www.jb51.net/article/31172.htm)
+#HBase架构及组件
+Client
+HBaseClient使用HBase的RPC机制与HMaster和HRegionServer进行通信.
+对于管理类操作，Client与HMaster进行RPC；对于数据读写类操作，Client与HRegionServer进行RPC。
+HBaseClient包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息
 
-hbase shell
-status
-version
-list
+Zookeeper
+HBase中有两张特殊的Table，-ROOT-和.META.
+Ø .META.：记录了用户表的Region信息，.META.可以有多个regoin
+Ø -ROOT-：记录了.META.表的Region信息，-ROOT-只有一个region
+Ø Zookeeper中记录了-ROOT-表的location
+(1) Client访问用户数据之前需要首先访问zookeeper，拿到-ROOT表的位置信息，然后访问-ROOT-表，拿到对应的.META表的位置信息，接着访问.META.表，最后才能找到用户数据的位置去访问，中间需要多次网络操作，不过client端会做cache缓存。
+(2)ZookeeperQuorum中除了存储了-ROOT-表的地址和HMaster的地址，HRegionServer也会把自己以Ephemeral方式注册到Zookeeper中，使得HMaster可以随时感知到各个HRegionServer的健康状态。此外，Zookeeper也避免了HMaster的单点问题
+
+##HMaster
+HMaster没有单点问题，HBase中可以启动多个HMaster，通过Zookeeper的MasterElection机制保证总有一个Master运行，HMaster在功能上主要负责Table和Region的管理工作：
+1.管理用户对Table的增、删、改、查操作
+2.管理HRegionServer的负载均衡，调整Region分布
+3.在RegionSplit后，负责新Region的分配
+4.在HRegionServer停机后，负责失效HRegionServer上的Regions迁移
+
+HRegionServer
+HRegionServer维护region，处理对这些region的IO请求，向HDFS文件系统中读写数据，是HBase中最核心的模块。
+
+
+
+
 
 ## 1 hadoop 
 hadoop fsck / -files -blocks
@@ -79,74 +136,19 @@ hadoop fs -copyFromLocal localfile hdfs://localhost/xxx
 http://zy19982004.iteye.com/blog/2024467
 
 ## 2 hbase
-### DDL
-### table
-#### create table
-create 'tablename','column1','column2','column3'...
-create 'gpsInfo', 'baseInfo'
-create 'gpsInfoTest', 'baseInfo'
-
-count 'test_gpsinfo'
-
-describe 'tablename'
-describe 'gpsInfo'
-hbase(main):002:0> describe 'gpsInfo'
-DESCRIPTION                                                                         ENABLED
- 'gpsInfo', {NAME => 'baseInfo', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'NON true E', REPLICATION_SCOPE => '0', VERSIONS => '3', COMPRESSION => 'NONE', MIN_VERSIONS  => '0', TTL => '2147483647', KEEP_DELETED_CELLS => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', ENCODE_ON_DISK => 'true', BLOCKCACHE => 'true'}
 
 
-#### del table
-disable 'tablename'
-drop 'tablename'
+---
+#setup
 
-#### scan table
-scan 'gpsInfo',{LIMIT=>100}
-scan 'gpsInfo123',{LIMIT=>5}
-scan 'D_AREAQUERY',{LIMIT=>10}
-
-#### other oper
-exists 'tablename'
-is_enabled 'tablename'
-is_disabled 'tablename'
+wget -P /opt/rpm http://mirror.bit.edu.cn/apache/hbase/stable/hbase-1.0.1-bin.tar.gz &
+pscp -h other.txt -l root /opt/rpm/hbase-1.0.1-bin.tar.gz /opt/rpm
+pssh -h other.txt -l root -i 'tar -zpxvf /opt/rpm/hbase-1.0.1-bin.tar.gz -C /opt/rpm'
+pssh -h other.txt -l root -i 'ln -sfv /opt/rpm/hbase-1.0.1 /opt/hbase'
 
 
-### column
 
-#### del column
-* disable table : disable 'tablename'
-* alter table:  alter 'tablename',{NAME=>'columnname',METHOD=>'delete'}
-* enable 'tablename'
 
-### DML
-#### add data
-put <table>,<rowkey>,<family:column>,<value>,<timestamp>
-put 'gpsInfoTest','0000000320101227','baseInfo:081351','01010200202010000003\x00;2010-12-27 08:13:51\x00;109.10437\x00;36.64465\x00;',1293408831000
 
-put 'user','andieguo','info:age','27'
 
-#### get data
-get <table>,<rowkey>,[<family:column>,....]
-get 'gpsInfoTest','0000000320101227','baseInfo:081351'
 
-get 'user','andieguo',{COLUMN=>'info:age',TIMESTAMP=>1409304}
-
-get 'gpsInfoTest','0000000320101227','info'
-
-#### del data
-delete  '表名' ,'行名称' , '列名称'
-delete 'test_gpsinfo','0101024050602010796620150325','baseInfo'
-
-delete 'test_gpsinfo','0101024050602010796620150325','baseInfo:113922'
-
-put '表名称', '行名称', '列名称:', '值'
-status
-version
-
-##### del row
-deleteall 'gpsInfoTest','null20150611'
-
-#### truncate table
-truncate 'tablename'
-
-#### hbase分页
-http://ronxin999.blog.163.com/blog/static/422179202013621111545534/

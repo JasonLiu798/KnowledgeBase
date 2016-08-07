@@ -13,11 +13,16 @@ timd_wait时延和短裤耗尽
 [HTTP幂等性概念和应用](http://coolshell.cn/articles/4787.html)
 [高并发的核心技术-幂等的实现方案](http://825635381.iteye.com/blog/2276077)
 ##概念
+=======
 绝大部分网络上对幂等性的解释类似于:
 "幂等性是指重复使用同样的参数调用同一方法时总能获得同样的结果。比如对同一资源的GET请求访问结果都是一样的。"
 我认为这种解释是非常错误的, 幂等性强调的是外界通过接口对系统内部的影响, 外界怎么看系统和幂等性没有关系. 就上面这种解释, System.getCPULoad(), 这两次调用返回能一样吗？ 但因为是只读接口, 对系统内部状态没有影响, 所以这个函数还是幂等性的.
 首先了解一下什么是幂等性，如果你没有兴趣可以直接跳过这段代数概念解释 :)
 
+<<<<<<< HEAD
+=======
+##定义
+>>>>>>> fa4095d0072925f02063a9191bee8be3325529b1
 幂等(idempotence)是来自于高等代数中的概念。
 定义如下(加入了自己理解)：
 单目运算, x为某集合内的任意数, f为运算子如果满足f(x)=f(f(x)), 那么我们称f运算为具有幂等性(idempotent)
@@ -32,21 +37,21 @@ timd_wait时延和短裤耗尽
 
 比如有Person对象有两个属性weight和age,但是所有的function只能对其中一个属性操作. 所以从这个层面我们可以理解为: 函数只对该函数所操作的对象某个属性具有幂等性, 而不是说对整个对象有运算幂等性.
 ```java
-Person {  
- private int weight;  
- private int age;  
- //是幂等函数  
- public void setAge(int v){  
-     this.age = v;   
- }  
- //不是幂等函数  
- public void increaseAge(){  
-     this.age++;  
- }   
- //是幂等函数  
- public void setWeight(int v){  
-     this.weight=v+10;//故意加10斤!!  
- }  
+Person {
+ private int weight;
+ private int age;
+ //是幂等函数
+ public void setAge(int v){
+     this.age = v;
+ }
+ //不是幂等函数
+ public void increaseAge(){
+     this.age++;
+ }
+ //是幂等函数
+ public void setWeight(int v){
+     this.weight=v+10;//故意加10斤!!
+ }
 }
 ```
 还有一点必须要澄清的是: 幂等性所表达的概念关注的是数学层面的运算和数值, 并没有提及到数值的安全性问题.
@@ -55,7 +60,11 @@ Person {
 2. 因为age从业务上讲不可能递减, 如果前一次调用设置是30岁, 后一次调用变成了10岁或是更离谱的 -1 岁
 所以RESTful设计中将幂等性和安全性是作为两个不同的指标来衡量POST,PUT,GET,DELETE操作的:
 
-重要方法 |  安全?  | 幂等 
+<<<<<<< HEAD
+重要方法 |  安全?  | 幂等
+=======
+重要方法 |  安全? | 幂等
+>>>>>>> fa4095d0072925f02063a9191bee8be3325529b1
 ---------|--------|----------
 GET      |  是    |  是
 DELETE   |  否    |  是
@@ -66,98 +75,100 @@ POST     |  否    |  否
 就象cache有cache基本实现范式一样, 幂等也有自己的固定外部调用范式
 cache实现范式:
 ```java
-value getValue(key){  
-    value = getValueFromCache(key);  
-  
-    if( value == null ){  
-        value = readFromPersistence(key);  
-        saveValueIntoCache(key,value);  
-    }  
-  
-    return value;  
+value getValue(key){
+    value = getValueFromCache(key);
+
+    if( value == null ){
+        value = readFromPersistence(key);
+        saveValueIntoCache(key,value);
+    }
+
+    return value;
 }
 ```
 幂等外部调用范式
 ```java
 client.age = 30;
 while(一些退出条件){
-    try{  
+    try{
         if(socket.setPersonAge(person,client.age) == FAILED){
-            int newAge = socket.getPersonAge();  
-            //处理冲突问题: 因为age只可能越来越大,所以将client的age更新为server端更大的age  
-            if(newAge>30){ 
-              client.age = newAge;  
+            int newAge = socket.getPersonAge();
+            //处理冲突问题: 因为age只可能越来越大,所以将client的age更新为server端更大的age
+            if(newAge>30){
+              client.age = newAge;
               break;
             }
         } else {
-            //无法进行冲突解决,再次尝试  
-        }  
-        //} else return;  
-    } catch(Exception){  
-        //发生网络异常, 再次尝试  
+            //无法进行冲突解决,再次尝试
+        }
+        //} else return;
+    } catch(Exception){
+        //发生网络异常, 再次尝试
     }
 }
 ```
 幂等接口的内部实现需要有对内保护机制, 一般情况是用类似于乐观锁的版本机制.版本重点是体现时间的先后.
 
-##幂等实现1：唯一索引，防止新增脏数据 
-要点： 
-唯一索引或唯一组合索引来防止新增数据存在脏数据 
-（当表存在唯一索引，并发时新增报错时，再查询一次就可以了，数据应该已经存在了，返回结果即可） 
+##幂等实现1：唯一索引，防止新增脏数据
+要点：
+唯一索引或唯一组合索引来防止新增数据存在脏数据
+（当表存在唯一索引，并发时新增报错时，再查询一次就可以了，数据应该已经存在了，返回结果即可）
 
-##幂等实现2：token机制，防止页面重复提交 
-业务要求： 页面的数据只能被点击提交一次 
-发生原因： 由于重复点击或者网络重发，或者nginx重发等情况会导致数据被重复提交 
-解决办法： 
-集群环境：采用token加redis（redis单线程的，处理需要排队） 
-单JVM环境：采用token加redis或token加jvm内存 
-处理流程： 
-1. 数据提交前要向服务的申请token，token放到redis或jvm内存，token有效时间 
-2. 提交后后台校验token，同时删除token，生成新的token返回 
-token特点： 
-要申请，一次有效性，可以限流 
+##幂等实现2：token机制，防止页面重复提交
+业务要求： 页面的数据只能被点击提交一次
+发生原因： 由于重复点击或者网络重发，或者nginx重发等情况会导致数据被重复提交
+解决办法：
+集群环境：采用token加redis（redis单线程的，处理需要排队）
+单JVM环境：采用token加redis或token加jvm内存
+处理流程：
+1. 数据提交前要向服务的申请token，token放到redis或jvm内存，token有效时间
+2. 提交后后台校验token，同时删除token，生成新的token返回
+token特点：
+要申请，一次有效性，可以限流
 
-注意：redis要用删除操作来判断token，删除成功代表token校验通过，如果用select+delete来校验token，存在并发问题，不建议使用 
+注意：redis要用删除操作来判断token，删除成功代表token校验通过，如果用select+delete来校验token，存在并发问题，不建议使用
 
-##幂等实现3：悲观锁 
-获取数据的时候加锁获取 
-select * from table_xxx where id='xxx' for update; 
-注意：id字段一定是主键或者唯一索引，不然是锁表，会死人的 
-悲观锁使用时一般伴随事务一起使用，数据锁定时间可能会很长，根据实际情况选用 
+##幂等实现3：悲观锁
+获取数据的时候加锁获取
+select * from table_xxx where id='xxx' for update;
+注意：id字段一定是主键或者唯一索引，不然是锁表，会死人的
+悲观锁使用时一般伴随事务一起使用，数据锁定时间可能会很长，根据实际情况选用
 
-##幂等实现4：乐观锁 
-乐观锁只是在更新数据那一刻锁表，其他时间不锁表，所以相对于悲观锁，效率更高。 
-乐观锁的实现方式多种多样可以通过version或者其他状态条件： 
-1. 通过版本号实现 
-update table_xxx set name=#name#,version=version+1 where version=#version# 
-2. 通过条件限制 
-update table_xxx set avai_amount=avai_amount-#subAmount# where avai_amount-#subAmount# >= 0 
-要求：quality-#subQuality# >= ，这个情景适合不用版本号，只更新是做数据安全校验，适合库存模型，扣份额和回滚份额，性能更高 
+##幂等实现4：乐观锁
+乐观锁只是在更新数据那一刻锁表，其他时间不锁表，所以相对于悲观锁，效率更高。
+乐观锁的实现方式多种多样可以通过version或者其他状态条件：
+1. 通过版本号实现
+update table_xxx set name=#name#,version=version+1 where version=#version#
+2. 通过条件限制
+update table_xxx set avai_amount=avai_amount-#subAmount# where avai_amount-#subAmount# >= 0
+要求：quality-#subQuality# >= ，这个情景适合不用版本号，只更新是做数据安全校验，适合库存模型，扣份额和回滚份额，性能更高
 
-注意：乐观锁的更新操作，最好用主键或者唯一索引来更新,这样是行锁，否则更新时会锁表，上面两个sql改成下面的两个更好 
-update table_xxx set name=#name#,version=version+1 where id=#id# and version=#version# 
-update table_xxx set avai_amount=avai_amount-#subAmount# where id=#id# and avai_amount-#subAmount# >= 0 
+注意：乐观锁的更新操作，最好用主键或者唯一索引来更新,这样是行锁，否则更新时会锁表，上面两个sql改成下面的两个更好
+update table_xxx set name=#name#,version=version+1 where id=#id# and version=#version#
+update table_xxx set avai_amount=avai_amount-#subAmount# where id=#id# and avai_amount-#subAmount# >= 0
 
-##幂等实现5：分布式锁 
-还是拿插入数据的例子，如果是分布是系统，构建全局唯一索引比较困难，例如唯一性的字段没法确定，这时候可以引入分布式锁，通过第三方的系统(redis或zookeeper)，在业务系统插入数据或者更新数据，获取分布式锁，然后做操作，之后释放锁，这样其实是把多线程并发的锁的思路，引入多多个系统，也就是分布式系统中得解决思路。 
+##幂等实现5：分布式锁
+还是拿插入数据的例子，如果是分布是系统，构建全局唯一索引比较困难，例如唯一性的字段没法确定，这时候可以引入分布式锁，通过第三方的系统(redis或zookeeper)，在业务系统插入数据或者更新数据，获取分布式锁，然后做操作，之后释放锁，这样其实是把多线程并发的锁的思路，引入多多个系统，也就是分布式系统中得解决思路。
 
-要点：某个长流程处理过程要求不能并发执行，可以在流程执行之前根据某个标志(用户ID+后缀等)获取分布式锁，其他流程执行时获取锁就会失败，也就是同一时间该流程只能有一个能执行成功，执行完成后，释放分布式锁(分布式锁要第三方系统提供) 
+要点：某个长流程处理过程要求不能并发执行，可以在流程执行之前根据某个标志(用户ID+后缀等)获取分布式锁，其他流程执行时获取锁就会失败，也就是同一时间该流程只能有一个能执行成功，执行完成后，释放分布式锁(分布式锁要第三方系统提供)
 
-##幂等实现6：select + insert 
-并发不高的后台系统，或者一些任务JOB，为了支持幂等，支持重复执行，简单的处理方法是，先查询下一些关键数据，判断是否已经执行过，在进行业务处理，就可以了 
-注意：核心高并发流程不要用这种方法 
+##幂等实现6：select + insert
+并发不高的后台系统，或者一些任务JOB，为了支持幂等，支持重复执行，简单的处理方法是，先查询下一些关键数据，判断是否已经执行过，在进行业务处理，就可以了
+注意：核心高并发流程不要用这种方法
 
-##幂等实现7：状态机幂等 
-在设计单据相关的业务，或者是任务相关的业务，肯定会涉及到状态机(状态变更图)，就是业务单据上面有个状态，状态在不同的情况下会发生变更，一般情况下存在有限状态机，这时候，如果状态机已经处于下一个状态，这时候来了一个上一个状态的变更，理论上是不能够变更的，这样的话，保证了有限状态机的幂等。 
-注意：订单等单据类业务，存在很长的状态流转，一定要深刻理解状态机，对业务系统设计能力提高有很大帮助 
+##幂等实现7：状态机幂等
+在设计单据相关的业务，或者是任务相关的业务，肯定会涉及到状态机(状态变更图)，就是业务单据上面有个状态，状态在不同的情况下会发生变更，一般情况下存在有限状态机，这时候，如果状态机已经处于下一个状态，这时候来了一个上一个状态的变更，理论上是不能够变更的，这样的话，保证了有限状态机的幂等。
+注意：订单等单据类业务，存在很长的状态流转，一定要深刻理解状态机，对业务系统设计能力提高有很大帮助
 
-##幂等实现8：对外提供接口的api如何保证幂等 
-如银联提供的付款接口：需要接入商户提交付款请求时附带：source来源，seq序列号 
-source+seq在数据库里面做唯一索引，防止多次付款，(并发时，只能处理一个请求) 
-重点： 
-对外提供接口为了支持幂等调用，接口有两个字段必须传，一个是来源source，一个是来源方序列号seq，这个两个字段在提供方系统里面做联合唯一索引，这样当第三方调用时，先在本方系统里面查询一下，是否已经处理过，返回相应处理结果；没有处理过，进行相应处理，返回结果。注意，为了幂等友好，一定要先查询一下，是否处理过该笔业务，不查询直接插入业务系统，会报错，但实际已经处理了。 
+##幂等实现8：对外提供接口的api如何保证幂等
+如银联提供的付款接口：需要接入商户提交付款请求时附带：source来源，seq序列号
+source+seq在数据库里面做唯一索引，防止多次付款，(并发时，只能处理一个请求)
+重点：
+对外提供接口为了支持幂等调用，接口有两个字段必须传，一个是来源source，一个是来源方序列号seq，这个两个字段在提供方系统里面做联合唯一索引，这样当第三方调用时，先在本方系统里面查询一下，是否已经处理过，返回相应处理结果；没有处理过，进行相应处理，返回结果。注意，为了幂等友好，一定要先查询一下，是否处理过该笔业务，不查询直接插入业务系统，会报错，但实际已经处理了。
 
 
+=======
+>>>>>>> fa4095d0072925f02063a9191bee8be3325529b1
 
 
 
@@ -257,7 +268,7 @@ HTTP1.1(RFC2616)详细展开地描述了Cache机制，详见13节
 POST     |     /uri     |     创建     |       非幂等     |     与GET区别，主要是为了提交
 DELETE  |     /uri/xxx      |     删除        |     幂等
 PUT       |     /uri/xxx      |     更新/创建  |     幂等    |    创建与POST区别，uri可以在客户端确定
-GET       |     /uri/xxx      |     查看       |     幂等 
+GET       |     /uri/xxx      |     查看       |     幂等
 
 ##无状态
 REST 架构要求客户端的所有的操作在本质上是无状态的，即从客户到服务器的每个 Request 都必须包含理解该 Request 的所有必需信息。这种无状态性的规范提供了如下几点好处：
@@ -287,7 +298,7 @@ HTTP1.0则没有这个域。
 ##date/time stamp (日期时间戳)
 (接收方向)
 无论是HTTP1.0还是HTTP1.1，都要能解析下面三种date/time stamp：
- 
+
       Sun, 06 Nov 1994 08:49:37 GMT  ; RFC 822, updated by RFC 1123
       Sunday, 06-Nov-94 08:49:37 GMT ; RFC 850, obsoleted by RFC 1036
       Sun Nov  6 08:49:37 1994       ; ANSI C's asctime() format
@@ -303,10 +314,10 @@ HTTP1.0则没有。
 
 ##Quality Values
 HTTP1.1多了个qvalue域：
- 
+
        qvalue  = ( "0" [ "." 0*3DIGIT ] )
              | ( "1" [ "." 0*3("0") ] )
- 
+
 ##Entity Tags
 用于Cache。
 
@@ -319,7 +330,7 @@ HTTP1.1支持传送内容的一部分。比方说，当客户端已经有内容�
 Expect: 100-continue
 Server看到之后呢如果回100 (Continue) 这个状态代码，客户端就继续发request body。
 这个是HTTP1.1才有的。
- 
+
 ##Request method
 HTTP1.1增加了OPTIONS, PUT, DELETE, TRACE, CONNECT这些Request方法.
 
@@ -355,7 +366,7 @@ HTTP1.1 增加的新的status code：
 303 See Other
 305 Use Proxy
 307 Temporary Redirect
- 
+
 405 Method Not Allowed
 406 Not Acceptable
 407 Proxy Authentication Required
@@ -369,11 +380,11 @@ HTTP1.1 增加的新的status code：
 415 Unsupported Media Type
 416 Requested Range Not Satisfiable
 417 Expectation Failed
- 
+
 504 Gateway Timeout
 505 HTTP Version Not Supported
- 
- 
+
+
 ##Content Negotiation
     HTTP1.1增加了Content Negotiation，分为Server-driven Negotiation，Agent-driven Negotiation和Transparent Negotiation三种。
 

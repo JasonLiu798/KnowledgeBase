@@ -40,7 +40,10 @@ PS：
 * 缓冲区为内存列表，程序停止，如未发送RPC，则数据会丢失
 * 内存占用，预估：hbase.client.write.buffer x hbase.regionserver.handler.count x region服务器数量
 * 如果只存储大单元，则缓冲区左右不大，主要时间在传输
-
+###CAS 原子操作
+```java
+boolean checkAndPut(byte[] row,byte[] family,byte[] qualifier,byte[] value,Put put) throws IOException
+```
 
 ##GET
 默认按版本降序存储，scan,get只返回一个版本
@@ -66,9 +69,16 @@ isEmpty
 numFamilies
 size
 ```
+Get(byte[] row);
+Get(byte[] row,RowLock rowLock);
 
-
-
+筛选用
+Get addFamily(byte[] family);
+Get addColumn(byte[] family,byte[] qualifier);
+Get setTimeRange(long minStamp,long maxStamp) throws IOException;
+Get setTimeStamp(long timeStamp);
+Get setMaxVersions();//返回这个单元格中所有的版本
+Get setMaxVersions(int maxVersions) throws IOException;
 
 ##导数据
 [ Bulk Load－HBase数据导入最佳实践](http://blog.csdn.net/opensure/article/details/47054861)

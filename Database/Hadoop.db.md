@@ -26,6 +26,19 @@ pssh -h /root/ot.txt -l root -i 'ln -sfv /home/project /opt/project'
 见[zookeeper](../Distribute/Zookeeper.md)
 
 
+## 1 hadoop 
+hadoop fsck / -files -blocks
+
+### chk size
+hadoop dfsadmin -report
+
+### file operation
+hadoop fs -copyFromLocal localfile hdfs://localhost/xxx
+
+http://zy19982004.iteye.com/blog/2024467
+
+
+
 ---
 # env
 

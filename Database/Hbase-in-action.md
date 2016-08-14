@@ -81,6 +81,47 @@ Get setMaxVersions();//返回这个单元格中所有的版本
 Get setMaxVersions(int maxVersions) throws IOException;
 
 
+##行锁
+RowLock
+
+hbase-site.xml
+```xml
+<name>hbase.regionserver.lease.period</name>
+<value>120000</value>
+```
+
+RowLock lock = table.lockRow(ROW1);
+lock.getLockId();
+table.unlockRow(lock);
+
+手动设定的时间戳被put，如果遇到锁等待，时间戳不会改变，
+
+##Scan
+扫描器租约
+```xml
+<name>hbase.regionserver.lease.period</name>
+<value>120000</value>
+```
+以上值同时适用于租约锁和扫描器租约；延长租约时间，服务端设定有效
+
+* 扫描器缓存
+每个next调用一次RPC
+setScannerCaching(int scannerCaching)
+int getScannerCaching()
+
+范围：扫描层面，本次扫描实例；表层面，这个表所有扫描实例
+
+hbase-site.xml 设置所有扫描器缓存大小
+```xml
+<property>
+	<name>hbase.client.scanner.caching</name>
+	<value>10</value>
+</property>
+```
+默认值1
+
+值过高，会导致每次next()调用占用时间更长，过高还会OOM
+
 
 ---
 #过滤器
@@ -186,12 +227,11 @@ FilterList filterList1 = new FilterList(filters);//默认MUST_PASS_ALL
 FilterList filterList2 = new FilterList(FilterList.Operator.MUST_PASS_ONE,filters);
 
 ##自定义过滤器
+FilterBase
 
 
-
-
------------
-
+-------
+#计数器
 
 
 
@@ -211,6 +251,20 @@ FilterList filterList2 = new FilterList(FilterList.Operator.MUST_PASS_ONE,filter
 #开发
 [开发环境搭建](http://blog.csdn.net/chicm/article/details/41787797)
 
+
+---
+#setup
+wget -P /opt/rpm http://mirror.bit.edu.cn/apache/hbase/stable/hbase-1.0.1-bin.tar.gz &
+pscp -h other.txt -l root /opt/rpm/hbase-1.0.1-bin.tar.gz /opt/rpm
+pssh -h other.txt -l root -i 'tar -zpxvf /opt/rpm/hbase-1.0.1-bin.tar.gz -C /opt/rpm'
+pssh -h other.txt -l root -i 'ln -sfv /opt/rpm/hbase-1.0.1 /opt/hbase'
+
+
+
+
+
+
+
 ---
 #shell
 [hbase shell基础和常用命令详解](http://www.jb51.net/article/31172.htm)
@@ -222,7 +276,7 @@ version
 list
 ```
 
-### DDL
+##DDL
 ### table
 #### create table
 create 'tablename','column1','column2','column3'...
@@ -260,14 +314,14 @@ is_disabled 'tablename'
 * alter table:  alter 'tablename',{NAME=>'columnname',METHOD=>'delete'}
 * enable 'tablename'
 
-### DML
-#### add data
+##DML
+###add data
 put <table>,<rowkey>,<family:column>,<value>,<timestamp>
 put 'gpsInfoTest','0000000320101227','baseInfo:081351','01010200202010000003\x00;2010-12-27 08:13:51\x00;109.10437\x00;36.64465\x00;',1293408831000
 
 put 'user','andieguo','info:age','27'
 
-#### get data
+###get data
 get <table>,<rowkey>,[<family:column>,....]
 get 'gpsInfoTest','0000000320101227','baseInfo:081351'
 
@@ -275,7 +329,7 @@ get 'user','andieguo',{COLUMN=>'info:age',TIMESTAMP=>1409304}
 
 get 'gpsInfoTest','0000000320101227','info'
 
-#### del data
+###del data
 delete  '表名' ,'行名称' , '列名称'
 delete 'test_gpsinfo','0101024050602010796620150325','baseInfo'
 
@@ -285,14 +339,39 @@ put '表名称', '行名称', '列名称:', '值'
 status
 version
 
-##### del row
+####del row
 deleteall 'gpsInfoTest','null20150611'
 
-#### truncate table
+####truncate table
 truncate 'tablename'
 
-#### hbase分页
+####hbase分页
 http://ronxin999.blog.163.com/blog/static/422179202013621111545534/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

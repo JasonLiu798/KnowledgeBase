@@ -113,6 +113,11 @@ mvn archetype:generate
 ##create
 mvn archetype:create -DgroupId=com.jason -DartifactId=jersey -DarchetypeArtifactId=maven-archetype-webapp
 
+##导出依赖jar包
+mvn dependency:copy-dependencies
+mvn dependency:copy-dependencies -DoutputDirectory=lib
+mvn dependency:copy-dependencies -DoutputDirectory=lib   -DincludeScope=compile
+
 ##指定项目
 -pl xxx,xxx
 ## 导出jar包

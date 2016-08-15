@@ -105,7 +105,7 @@ GenerateSerialVersionUID
 ## keyMap 快捷键
 [所有](http://www.itjhwd.com/intellij-ideakjj)
 ### 常用
-    ctrl + F12 -> ctrl + \ file structure
+    ctrl + F12 -> ctrl + \    file structure  ，outline，查看文件所有函数，快速查找
 
 #### 代码生成
     Shift + F6    (Alt + Shift + R)        重构rename
@@ -287,6 +287,7 @@ File | Invalidate Caches is the first thing you should try in case of such issue
 ---
 #eclipse
 ##快捷键
+ctrl+t: 查看实现
 ctrl+shift+r：打开资源
 ctrl+o：快速outline
 ctrl+e：快速转换编辑器

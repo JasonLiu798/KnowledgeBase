@@ -40,7 +40,10 @@ PS：
 * 缓冲区为内存列表，程序停止，如未发送RPC，则数据会丢失
 * 内存占用，预估：hbase.client.write.buffer x hbase.regionserver.handler.count x region服务器数量
 * 如果只存储大单元，则缓冲区左右不大，主要时间在传输
-
+###CAS 原子操作
+```java
+boolean checkAndPut(byte[] row,byte[] family,byte[] qualifier,byte[] value,Put put) throws IOException
+```
 
 ##GET
 默认按版本降序存储，scan,get只返回一个版本
@@ -66,6 +69,137 @@ isEmpty
 numFamilies
 size
 ```
+Get(byte[] row);
+Get(byte[] row,RowLock rowLock);
+
+筛选用
+Get addFamily(byte[] family);
+Get addColumn(byte[] family,byte[] qualifier);
+Get setTimeRange(long minStamp,long maxStamp) throws IOException;
+Get setTimeStamp(long timeStamp);
+Get setMaxVersions();//返回这个单元格中所有的版本
+Get setMaxVersions(int maxVersions) throws IOException;
+
+
+
+---
+#过滤器
+##比较运算符
+LESS
+LESS_OR_EQUAL
+EQUAL
+NOT_EQUAL
+GREATER_OR_EQUAL
+GREATER
+NO_OP		排除一切值
+
+##比较器
+comparator
+WritableByteArrayComparable implement Writable,Comparable
+
+BinaryComparator 	使用Bytes.compareTo()比较
+BinaryPrefixComparator
+NullComparator
+
+以下三种只能与EQUAL,NOT_EQUAL运算符搭配
+BitComparator 		按位比较
+RegexStringComparator
+SubstringComparator
+
+##比较过滤器 comparison filter
+* RowFilter
+Filter filter1 = new RowFilter(CompareFilter.CompareOp.LESS_OR_EQUAL,new BinaryComparator(Bytes.toBytes("row-22")));
+
+* FamilyFilter
+Filter filter1 = new FamilyFilter(CompareFilter.CompareOp.LESS,new BinaryComparator(Bytes.toBytes("colfam3")));
+
+* QualifierFilter
+Filter filter1 = new QualifierFilter(CompareFilter.CompareOp.LESS_OR_EQUAL,new BinaryComparator(Bytes.toBytes("col-2")));
+
+* ValueFilter
+Filter filter1 = new ValueFilter(CompareFilter.CompareOp.EQUAL,new SubstringComparator(".4"));
+
+* DependentColumnFilter 参考列过滤器
+ValueFilter+时间戳过滤器
+
+private static void filter(boolean frop,CompareFilter.CompareOp operator,WritableByteArrayComparable comparator){
+	Filter filter1 = new DependentColumnFilter(Bytes.toBytes("colfam1"),Bytes.toBytes("col-5"),drop,operator);
+}
+
+##专用过滤器
+* 单列值过滤器 SingleColumnValueFilter
+SingleColumnValueFilter filter = new SingleColumnValueFilter(
+Bytes.toBytes("colfam1"),
+Bytes.toBytes("col-5"),
+CompareFilter.CompareOp.NOT_EQUAL,
+new SubstringComparator("val-5")
+);
+filter.setFilterIfMissing(true);
+
+* SingleColumnValueExcludeFilter 单列排除过滤器
+参考列不被包含在结果中
+
+* PrefixFilter 前缀过滤器
+Filter filter = new PrefixFilter(Bytes.toBytes("row-1"));
+
+* PageFilter 分页过滤器
+
+* KeyOnlyFilter 行健过滤器
+只返回行键
+
+* FirstKeyOnlyFilter 首次行键过滤器
+
+* InclusiveStopFIlter 
+包含结束行
+
+* TimestampsFilter
+
+* ColumnCountGetFilter 列计数过滤器
+
+* ColumnPaginationFilter 列分页过滤器
+Filter filter = new ColumnPaginationFilter(5,15);
+
+* ColumnPrefixFilter
+
+* RandomRowFIlter
+
+##附加过滤器
+* SkipFilter
+扩展并过滤整行数据
+Filter filter1 = new ValueFilter(CompareFilter.CompareOp.NOT_EQUAL,new BinaryComparator(Bytes.toBytes("val-0")));
+
+Filter filter2 = new SkipFilter(filter1);
+
+* WhileMatchFilter
+有数据不匹配时，放弃扫描
+Filter filter1 = new RowFilter(CompareFilter.CompareOp.NOT_EQUAL,new BinaryComparator(Bytes.toBytes("row-05")));
+
+Filter filter2 = new WhileMatchFilter(filter1);
+
+##FilterList
+List<Filter> filters = new ArrayList<Filter>();
+filters.add(filter1);
+...
+
+FilterList filterList1 = new FilterList(filters);//默认MUST_PASS_ALL
+
+FilterList filterList2 = new FilterList(FilterList.Operator.MUST_PASS_ONE,filters);
+
+##自定义过滤器
+
+
+
+
+-----------
+
+
+
+
+
+
+
+
+
 
 
 

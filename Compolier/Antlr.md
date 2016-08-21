@@ -11,7 +11,7 @@
 
 ---
 #自定义语法
-[](http://blog.csdn.net/xiyue_ruoxi/article/details/38687213)
+[ANTLR4权威指南 - 第5章 设计语法](http://blog.csdn.net/xiyue_ruoxi/article/details/38687213)
 单词之间的顺序和依赖性约束是来自于自然语言的，基本上可以总结成四种抽象的计算机语言模式
 l  序列：是由许多元素组成的一个序列，比如数组初始化句法中的数值。
 l  选项：是指在多个可选的短语中的选择，比如编程语言中的不同语句。

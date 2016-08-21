@@ -2,7 +2,7 @@
 ----
 #doc
 [某互联网大厂kafka最佳实践](http://www.jianshu.com/p/8689901720fd)
-
+[go client](https://github.com/wvanbergen/kafka)
 
 ---
 #一、硬件考量
@@ -82,9 +82,72 @@ flush.messages：强制刷新写入的最大缓存消息数。
 flust.ms：强制刷新写入的最大等待时长。
 还有segment.bytes、segment.ms、retention.bytes、retention.ms和segment.jitter.ms。详见官方解释。
 
-#六、性能优化技巧
-##6.1、配置合适的partitons数量。
-这似乎是kafka新手必问得问题。首先，我们必须理解，partiton是kafka的并行单元。从producer和broker的视角看，向不同的partition写入是完全并行的；而对于consumer，并发数完全取决于partition的数量，即，如果consumer数量大于partition数量，则必有consumer闲置。所以，我们可以认为kafka的吞吐与partition时线性关系。partition的数量要根据吞吐来推断，假定p代表生产者写入单个partition的最大吞吐，c代表消费者从单个partition消费的最大吞吐，我们的目标吞吐是t，那么partition的数量应该是t/p和t/c中较大的那一个。实际情况中，p的影响因素有批处理的规模，压缩算法，确认机制和副本数等，然而，多次benchmark的结果表明，单个partition的最大写入吞吐在10MB/sec左右；c的影响因素是逻辑算法，需要在不同场景下实测得出。
+
+
+
+
+
+
+
+
+
+
+---
+#高可用
+##broker宕机
+
+##zookeeper宕机
+
+##数据一致性
+
+
+---
+#可靠性
+##Producer到broker
+把request.required.acks设为1，丢会重发，丢的概率很小
+##Broker
+###落盘的数据
+除非磁盘坏了，不会丢的
+###对于内存中没有flush的数据
+broker重启会丢
+可以通过log.flush.interval.messages和log.flush.interval.ms来配置flush间隔，interval大丢的数据多些，小会影响性能
+但在0.8版本，可以通过replica机制保证数据不丢，代价就是需要更多资源，尤其是磁盘资源，kafka当前支持GZip和Snappy压缩，来缓解这个问题看，是否使用replica取决于在可靠性和资源代价之间的balance
+
+##Consumer 旧版API 0.8.3之前
+###High-level consumer
+* 定期自动commit offset，这样可能会丢数据的，因为consumer可能拿到数据没有处理完crash
+* 改客户端增加手动commit接口
+kafka.javaapi.consumer.ZookeeperConsumerConnector
+High-level接口的特点，就是简单，但是对kafka的控制不够灵活
+
+###Simple consumer，low-level
+这套接口比较复杂的，你必须要考虑很多事情，优点就是对Kafka可以有完全的控制 
+You must keep track of the offsets in your application to know where you left off consuming. 
+You must figure out which Broker is the lead Broker for a topic and partition 
+You must handle Broker leader changes
+在考虑如何将storm和kafka结合的时候，有一些开源的库，基于high-level和low-level接口的都有
+我比较了一下，还是kafka官方列的storm-kafka-0.8-plus比较靠谱些 
+这个库是基于simple consumer接口实现的，看着挺复杂，所以我先读了遍源码，收获挺大，除了发现我自己代码的问题，还学到些写storm应用的技巧呵呵
+这个库会自己管理spout线程和partition之间的对应关系和每个partition上的已消费的offset(定期写到zk) 
+并且只有当这个offset被storm ack后，即成功处理后，才会被更新到zk，所以基本是可以保证数据不丢的 
+即使spout线程crash，重启后还是可以从zk中读到对应的offset
+kafka和storm的结合可靠性还是可以的，你真心不想丢数据，还是可以做到的 
+Kafka只是能保证at-least once逻辑，即数据是可能重复的，这个在应用上需要可以容忍 
+当然通过Storm transaction也是可以保证only once逻辑的，但是代价比较大，后面如果有这样的需求可以继续深入调研一下 
+对于kafka consumer，一般情况下推荐使用high-level接口，最好不要直接使用low-level，太麻烦
+当前其实Kafka对consumer的设计不太到位，high-level太不灵活，low-level又太难用，缺乏一个medium-level 
+所以在0.9中consumer会被重新design，https://cwiki.apache.org/confluence/display/KAFKA/Consumer+Client+Re-Design
+
+
+
+
+
+---
+#性能优化技巧
+##partitons数量
+首先，我们必须理解，partiton是kafka的并行单元。
+从producer和broker的视角看，向不同的partition写入是完全并行的；
+而对于consumer，并发数完全取决于partition的数量，即，如果consumer数量大于partition数量，则必有consumer闲置。所以，我们可以认为kafka的吞吐与partition时线性关系。partition的数量要根据吞吐来推断，假定p代表生产者写入单个partition的最大吞吐，c代表消费者从单个partition消费的最大吞吐，我们的目标吞吐是t，那么partition的数量应该是t/p和t/c中较大的那一个。实际情况中，p的影响因素有批处理的规模，压缩算法，确认机制和副本数等，然而，多次benchmark的结果表明，单个partition的最大写入吞吐在10MB/sec左右；c的影响因素是逻辑算法，需要在不同场景下实测得出。
 
 这个结论似乎太书生气和不实用。我们通常建议partition的数量一定要大于等于消费者的数量来实现最大并发。官方曾测试过1万个partition的情况，所以不需要太担心partition过多的问题。下面的知识会有助于读者在生产环境做出最佳的选择：
 
@@ -102,7 +165,20 @@ i、partition的数量是可以动态增加的（只能加不能减）。
 我们建议的做法是，如果是3个broker的集群，有5个消费者，那么建议partition的数量是15，也就是broker和consumer数量的最小公倍数。当然，也可以是一个大于消费者的broker数量的倍数，比如6或者9，还请读者自行根据实际环境裁定。
 
 
+##consumer
+###consumer数量
+如果你的分区数是N，那么最好线程数也保持为N，这样通常能够达到最大的吞吐量。超过N的配置只是浪费系统资源，因为多出的线程不会被分配到任何分区。
+topic下的一个分区只能被同一个consumer group下的一个consumer线程来消费，但反之并不成立，即一个consumer线程可以消费多个分区的数据，比如Kafka提供的ConsoleConsumer，默认就只是一个线程来消费所有分区的数据。
 
+
+
+Kafka提供的两种分配策略： range和roundrobin，由参数partition.assignment.strategy指定，默认是range策略。本文只讨论range策略。所谓的range其实就是按照阶段平均分配。举个例子就明白了，假设你有10个分区，P0 ~ P9，consumer线程数是3， C0 ~ C2，那么每个线程都分配哪些分区呢？
+
+
+
+###参数调优
+如果是高吞吐量数据，设置每次拿取消息(fetch.min.bytes)大些，
+拿取消息频繁(fetch.wait.max.ms)些(或时间间隔短些)，如果是低延时要求，则设置时间时间间隔小，每次从kafka broker拿取消息尽量小些。
 
 
 

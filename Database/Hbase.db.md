@@ -1,14 +1,11 @@
 #hbase
 ---
-#基本架构
-
-
-
-
-
-
-
+#docs
+[Facebook的HBase解决方案](http://www.infoq.com/cn/presentations/facebook-HBase-solutions)
 [HBASE在淘宝网的应用和优化小结](http://www.eygle.com/digest/2012/03/hbase_at_taobao.html)
+
+---
+#基本架构
 优点
 数据100%可靠 己经证明了hdfs集群的安全性，以及服务于海量数据的能力。其次hbase本身的数据读写服务没有单点的限制，服务能力可以随服务器的增长而线性增长， 达到几十上百台的规模。LSM-Tree模式的设计让hbase的写入性能非常良好，单次写入通常在1-3ms内即可响应完成，且性能不随数据量的增长而 下降。region（相当于数据库的分表）可以ms级动态的切分和移动，保证了负载均衡性。由于hbase上的数据模型是按rowkey排序存储的，而读 取时会一次读取连续的整块数据做为cache，因此良好的rowkey设计可以让批量读取变得十分容易，甚至只需要１次io就能获取几十上百条用户想要的 数据。
 
@@ -219,8 +216,7 @@ hbase块和HDFS块之间没有匹配关系
 KeyLength | ValueLength | RowLength | Row... | ColumnFaimilyLength | ColumnFamily... | ColumnQualifier... | Timestamp | KeyType | Value
 
 
----
-#WAL
+#8.3WAL
 ##HLog类
 实现了WAL
 setWriteToWAL(false)
@@ -247,7 +243,7 @@ hbase.regionserver.hlog.blocksize，默认32MB，文件系统默认块大小
 
 hbase.regionserver.logroll.multiplier 0.95
 
-##回放
+##8.3.7回放
 ###单文件
 所有数据更新都会写入到region服务器中一个基于HLog的日志文件中
 如果每个region分开写，会导致同时写入太多文件，且要保留滚动日志，影响扩展性
@@ -259,6 +255,66 @@ hbase.regionserver.logroll.multiplier 0.95
 hbase.master.distributed.log.splitting
 
 ###持久性
+
+
+#8.4读路径
+GET实现
+底层Scan实现
+开始行=指定行，结束行=start row+1
+
+###RegionScanner
+
+#8.5region查找
+root region位置信息节点
+	-ROOT-表中查找对应 meta retion位置
+		.META.表查找 用户表对应region位置
+
+#8.6 region生命周期
+AssignmentManager
+Offline
+Pending Open
+Opening
+Open
+Pending Close
+Closing
+Closed
+Splitting
+Split
+
+#8.7 zookeeper
+/hbase
+/hbase/hbaseid
+	cluster ID
+/hbase/master
+	服务器名
+/hbase/replication
+	副本信息
+/hbase/root-region-server
+	region服务器机器名
+/hbase/rs
+	所有region服务器根节点，跟踪服务器异常
+/hbase/shutdown
+	跟踪集群状态信息，包括启动时间，关闭时空状态
+/hbase/splitlog
+	协调日志拆分相关父节点
+/hbase/table
+	当表被禁用，信息添加到这个znode下
+/hbase/unassigned
+	AssignmentManager用来跟踪集群region状态，包含未打开的region的znode
+
+#8.8复制
+主推送
+异步
+##LogEdit生命周期
+
+
+
+
+
+
+
+
+
 
 
 

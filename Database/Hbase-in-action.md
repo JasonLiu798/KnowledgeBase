@@ -4,7 +4,59 @@
 所有修改操作行级原子性
 创建HTable实例需要扫描.META表，推荐只创建一次，每个线程创建一个，生存期复用这个对象；需要多个HTable实例，考虑使用HTablePool
 
-##CRUD
+
+---
+#命名空间Namespace
+在关系数据库系统中，命名空间，namespace指的是一个 表的逻辑分组 ，同一组中的表有类似的用途。命名空间的概念为 即将到来 的多租户特性打下基础：
+配额管理Quota Management (HBASE-8410)：限制一个namespace可以使用的资源，资源包括region和table等； 
+命名空间安全管理Namespace Security Administration (HBASE-9206)：提供了另一个层面的多租户安全管理； 
+Region服务器组Region server groups (HBASE-6721)：一个命名空间或一张表，可以被固定到一组regionservers上，从而保证了数据隔离性。 
+##命名空间管理
+命名空间可以被创建、移除、修改。
+表和命名空间的隶属关系 在在创建表时决定，通过以下格式指定：
+<namespace>:<table>
+
+Example：hbase shell中创建命名空间、创建命名空间中的表、移除命名空间、修改命名空间
+```shell
+#Create a namespace
+create_namespace 'my_ns'
+            
+#create my_table in my_ns namespace
+create 'my_ns:my_table', 'fam'
+          
+#drop namespace
+drop_namespace 'my_ns'
+          
+#alter namespace
+alter_namespace 'my_ns', {METHOD => 'set', 'PROPERTY_NAME' => 'PROPERTY_VALUE'}
+```
+##预定义的命名空间
+有两个系统内置的预定义命名空间：
+hbase ：系统命名空间，用于包含hbase的内部表 
+default ： 所有未指定命名空间的表都自动进入该命名空间
+Example：指定命名空间和默认命名空间
+```shell
+#namespace=foo and table qualifier=bar
+create 'foo:bar', 'fam'
+
+#namespace=default and table qualifier=bar
+create 'bar', 'fam'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
+#CRUD
 HbaseConfiguration
 ```
 static Configuration create();//尝试从classpath家中hbase-default.xml，hbase-site.xml

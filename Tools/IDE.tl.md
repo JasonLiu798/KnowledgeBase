@@ -281,6 +281,8 @@ idea jdk无法识别，重导入项目无效
 http://stackoverflow.com/questions/10612813/intellij-idea-cant-setup-jdk
 File | Invalidate Caches is the first thing you should try in case of such issues.
 
+##key
+http://idea.qinxi1992.cn/
 
 
 

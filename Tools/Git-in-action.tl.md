@@ -297,7 +297,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 按主分支排序
 
 `git log无颜色版（moba颜色显示有问题）`
-git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit" 
+git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit  --date-order" 
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit --graph"
 
 ###--pretty=format参数

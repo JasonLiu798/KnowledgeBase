@@ -8,7 +8,7 @@ vim
 http://linux.chinaunix.net/techdoc/desktop/2009/07/06/1122020.shtml
 ###乱码
 File->setting->encoding改
-intellij安装目录下bin\idea.exe.vmoptions文件，加上 
+intellij安装目录下bin\idea.exe.vmoptions文件，加上
 -Dfile.encoding=UTF-8 (无法识别)
 -Dfile.encoding=UTF8
 [关于Idea testng单元测试乱码的解决](http://www.iteye.com/topic/1131087)
@@ -33,7 +33,7 @@ java doc comment，灰绿，7AC668
 
 ###代码检查配置
 ####泛型提示
-raw use of 
+raw use of
 ####不开的
 feature envy
 
@@ -55,11 +55,11 @@ default:
 ${SOURCEPATH}/test/${PACKAGE}/${FILENAME}
 maven:
 ${SOURCEPATH}/../../test/java/${PACKAGE}/${FILENAME}
-###Identifier Highlighter 
+###Identifier Highlighter
 高亮显示选中变量插件（idea14报错无法使用）
 不安装插件的时的快捷键是选中这个变量然后按Ctrl+F7
 idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
-###Key Promoter   
+###Key Promoter
 快捷键提示插件，当你点击鼠标一个功能的时候，可以提示 你这个功能快捷键是什么 ，和这个按钮你的使用频率
 ###Jrebel 热部署插件
   MyEclipse10和2014都是默认debugger模式支持热部署的。而idea需要你安装这个插件才会支持热部署，所以也算个遗憾吧
@@ -72,31 +72,31 @@ GenerateSerialVersionUID
 ###TabSwitch
   通过ctrl + tab在文件，各个面板tab间切换。
 ###Mybatis
-  收费，改用mini版 
+  收费，改用mini版
 ###UpperLowerCapitalize
-大小写转换插件 
+大小写转换插件
 安装后快捷键alt+P全部大写     alt+L全部小写      alt+C开头字母大写
-###generate serialversionuid 
+###generate serialversionuid
 生成uuid 的插件，安装后快捷键 alt+insert，有冲突
 ###idea vim
 [IdeaVim插件使用技巧](http://kidneyball.iteye.com/blog/1828427)
 模拟linux下 vi编辑器的插件支持vi的命令
 ###generateO2O    自动对象转换插件。
   方法体内可以生成对应的get set方法把一个对象对等拷贝到另一个对象里  快捷键 alt+insert
-###EncodingPlugin 
+###EncodingPlugin
   可按项目指定其默认编码，非常有用
-###Equals and hashCode 
+###Equals and hashCode
 重写equals和hashcode方法的自定义模板
-###unitTest 
+###unitTest
 在指定的方法上按下shift + cmd + t 即可为这个方法生成单元测试代码模板。
-###GenerateToString 
+###GenerateToString
 自动生成toString方法, toString方法是可定制的
 ###angularjs
 
 
 不好用，不可用的
 ###FileBrowser 在IDEA中查看项目外的文件 [不可用]（目前13.1.2以上好像不支持不知道其他人怎么样）
-###sql query plugin    
+###sql query plugin
 数据库插件（这个13版本已经自带了database插件，比这个好用。可以不安装了）默认快捷键是ctrl+alt+v  ，但是和其他的快捷键冲突了， 建议修改为ctrl+等号
 ###maven repo search
 
@@ -105,19 +105,19 @@ GenerateSerialVersionUID
 ## keyMap 快捷键
 [所有](http://www.itjhwd.com/intellij-ideakjj)
 ### 常用
-    ctrl + F12 -> ctrl + \ file structure
+    ctrl + F12 -> ctrl + \    file structure  ，outline，查看文件所有函数，快速查找
 
 #### 代码生成
-    Shift + F6    (Alt + Shift + R)        重构rename   
-    Alt + Insert    (Alt + Shift + Z)      自动创建getter/setter   
-    Alt + Enter     解决错误     
-    Ctrl + Alt + L     (Ctrl + Shift + F)  自动格式化代码     
-    Ctrl + Alt + O (Ctrl + Shift + O)   自动去除无用的import语句 
+    Shift + F6    (Alt + Shift + R)        重构rename
+    Alt + Insert    (Alt + Shift + Z)      自动创建getter/setter
+    Alt + Enter     解决错误
+    Ctrl + Alt + L     (Ctrl + Shift + F)  自动格式化代码
+    Ctrl + Alt + O (Ctrl + Shift + O)   自动去除无用的import语句
     Shift+F6  重构-重命名
 #### 查找/查看
     Ctrl+Alt+ left/right  返回至上次浏览的位置
-    双击Shift   全局查找     
-    ctrl-E      最近编辑文件 
+    双击Shift   全局查找
+    ctrl-E      最近编辑文件
     ctrl-H      查看类继承层次
     Ctrl+Q      显示注释文档
     ctrl-alt-H  调用层次
@@ -125,8 +125,8 @@ GenerateSerialVersionUID
 
 #### 移动
     Alt+ left/right 切换代码视图
-    在方法间快速移动                        Alt + 上下键 
-    在定位当前文件到左边结构树的节点上      Alt + F1 
+    在方法间快速移动                        Alt + 上下键
+    在定位当前文件到左边结构树的节点上      Alt + F1
 
 ```
 mac
@@ -255,22 +255,22 @@ jetty:run
       </plugin>
 
 ### tomcat 配置
-####  1 配置tomcat应用服务器 
-File->Settings... 
-Build,Execution,Deployment ->Application Servers 
-点击"+"号，选择"Tomcat Server" 
-选中tomcat 的地址，点击OK 
+####  1 配置tomcat应用服务器
+File->Settings...
+Build,Execution,Deployment ->Application Servers
+点击"+"号，选择"Tomcat Server"
+选中tomcat 的地址，点击OK
 
-#### 2 配置web应用 
-Defaults->TomcatServer 
-点击"+"号， 
-Server tab页，修改Name ,Applicaton server 下拉框选择刚才配置的Tomcat应用服务器。 
-Deployment目录选择要部署的web应用，注意此处一定要选到WebContent文件夹，即WEB-INF上的上一级目录： 
-点击OK，并配置应用的上下文路径： 
+#### 2 配置web应用
+Defaults->TomcatServer
+点击"+"号，
+Server tab页，修改Name ,Applicaton server 下拉框选择刚才配置的Tomcat应用服务器。
+Deployment目录选择要部署的web应用，注意此处一定要选到WebContent文件夹，即WEB-INF上的上一级目录：
+点击OK，并配置应用的上下文路径：
 
-#### 3 修改编译输出路径。 
-工程->右键->Open Module Settings 
-选择Paths tab页，将output path:配置到WEB-INF\classes中，否则会找不到类。 
+#### 3 修改编译输出路径。
+工程->右键->Open Module Settings
+选择Paths tab页，将output path:配置到WEB-INF\classes中，否则会找不到类。
 
 ### tomcat热部署
 JRebel Plugin
@@ -288,6 +288,15 @@ http://idea.qinxi1992.cn/
 
 ---
 #eclipse
+##快捷键
+ctrl+t: 查看实现
+ctrl+shift+r：打开资源
+ctrl+o：快速outline
+ctrl+e：快速转换编辑器
+ctrl+2，L：为本地变量赋值
+开发过程中，我常常先编写方法，如Calendar.getInstance()，然后通过ctrl+2快捷键将方法的计算结果赋值于一个本地变量之上。 这样我节省了输入类名，变量名以及导入声明的时间。Ctrl+F的效果类似，不过效果是把方法的计算结果赋值于类中的域。
+
+
 
 ##eclipse.ini
 ### 指定jdk
@@ -297,7 +306,7 @@ C:/Program Files (x86)/Java/jdk1.7.0_79/bin/javaw.exe
 
 ### 日期格式
 -Duser.language=zh-cn
--Duser.language=en 
+-Duser.language=en
 
 
 ### 自动补齐

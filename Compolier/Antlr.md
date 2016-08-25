@@ -1,9 +1,15 @@
-
-
-
+#antlr Another Tool for Language Recognition
+---
+#doc
 [antlr4权威参考 读书笔记](http://codemany.com/blog/reading-notes-the-definitive-antlr4-reference-part1/)
 
 
+---
+#左递归消除
+A -> Aa | b
+消除后
+A -> bA'
+A' -> aA'|ε
 
 
 
@@ -235,8 +241,6 @@ WS : (''|'\t'|'\r'|'\n')+ -> skip ; // match 1-or-more whitespace but discard
 WS : [\t\r\n]+ -> skip ; // match 1-or-more whitespace but discard
 
 当换行符既是需要忽略的空白字符又是作为命令的结束符时，我们就会遇到一个问题。换行符是上下文相关的。在一个语法结构中，我们需要忽略换行符，但是再另外一个语法结构中，我们又需要将换行符传递给语法分析器，这样语法分析器才能知道一条命令是否结束。例如，在Python中，f()后面跟一个换行符意味着我们需要执行指令，调用f()。但是我们又可以在圆括号中插入一个额外的换行符。Python会等到遇到“)”后面的换行符才会执行函数调用。
-
-
 
 
 

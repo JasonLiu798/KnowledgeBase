@@ -4,7 +4,7 @@
 ## eclipse.ini
 -vm
 C:\Program Files\Java\jdk1.7.0_75\bin\javaw.exe
-## Q 
+## Q
     <dependency>
       <groupId>jdk.tools</groupId>
       <artifactId>jdk.tools</artifactId>
@@ -60,7 +60,7 @@ system
       <id>snapshots</id>
       <username>aaa</username>
       <password>aaa</password>
-    </server> 
+    </server>
 </servers>
 
 ##local
@@ -113,6 +113,11 @@ mvn archetype:generate
 ##create
 mvn archetype:create -DgroupId=com.jason -DartifactId=jersey -DarchetypeArtifactId=maven-archetype-webapp
 
+##导出依赖jar包
+mvn dependency:copy-dependencies
+mvn dependency:copy-dependencies -DoutputDirectory=lib
+mvn dependency:copy-dependencies -DoutputDirectory=lib   -DincludeScope=compile
+
 ##指定项目
 -pl xxx,xxx
 ## 导出jar包
@@ -128,7 +133,7 @@ mvn dependency:analyze
 
 ##-U
 该参数能强制让Maven检查所有SNAPSHOT依赖更新，确保集成基于最新的状态，如果没有该参数，Maven默认以天为单位检查更新，而持续集成的频率应该比这高很多
-##-e 
+##-e
 如果构建出现异常，该参数能让Maven打印完整的stack trace，以方便分析错误原因。
 
 ##-B参数
@@ -137,7 +142,7 @@ mvn dependency:analyze
 ##-Dmaven.repo.local参数
 如果持续集成服务器有很多任务，每个任务都会使用本地仓库，下载依赖至本地仓库，为了避免这种多线程使用本地仓库可能会引起的冲突，可以使用-Dmaven.repo.local=/home/juven/ci/foo-repo/这样的参数为每个任务分配本地仓库。
 
-##生成源码包 
+##source 生成源码包
 mvn source:jar
 ##发布源码
 ```xml
@@ -164,9 +169,7 @@ mvn source:jar
 
 ```
 
-
-
-### 下源码/文档
+##source 下源码/文档
 mvn dependency:sources
 mvn dependency:resolve -Dclassifier=javadoc
 
@@ -212,7 +215,7 @@ mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase -Dversion
         <artifactId>jdk.tools</artifactId>
         <version>1.6</version>
     </dependency>
-        
+
 
 ---
 #plugins
@@ -265,16 +268,16 @@ http://tomcat.apache.org/maven-plugin-2.0-beta-1/
     </plugin>
 
 ##jdk
-<plugin> 
-<groupId>org.apache.maven.plugins</groupId> 
+<plugin>
+<groupId>org.apache.maven.plugins</groupId>
 <artifactId>maven-compiler-plugin</artifactId>
-<version>3.1</version> 
-<configuration> 
-<source>1.7</source> 
-<target>1.7</target> 
-<encoding>UTF8</encoding> 
-</configuration> 
-</plugin> 
+<version>3.1</version>
+<configuration>
+<source>1.7</source>
+<target>1.7</target>
+<encoding>UTF8</encoding>
+</configuration>
+</plugin>
 
 ---
 #eclipse setting
@@ -315,7 +318,7 @@ http://blog.csdn.net/leonzhouwei/article/details/9978771
 ---
 #gradle
 http://www.jiechic.com/archives/the-idea-and-gradle-use-summary
-##setup 
+##setup
 GRADLE_HOME=/opt/gradle
 gradle -v
 
@@ -383,7 +386,7 @@ http://repository.codehaus.org/
 http://snapshots.repository.codehaus.org/
 http://people.apache.org/repo/m2-snapshot-repository
 http://people.apache.org/repo/m2-incubating-repository/
- 
+
 同时可以搭建自己的maven仓库：私服， 搭建的方式参考如下：
 http://juvenshun.javaeye.com/blog/349534
 2、收集的外部仓库地址

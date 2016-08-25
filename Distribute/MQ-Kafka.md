@@ -57,7 +57,7 @@ kafka:由生产者将数据Push给代理，然后由使用者将数据代理那�
 
 ##消息
 指的是通信的基本单位。由消息生产者（producer）发布关于某话题（topic）的消息，这句话的意思是，消息以一种物理方式被发送给了作为代理（broker）的服务器（可能是另外一台机器）。若干的消息使用者（consumer）订阅（subscribe）某个话题，然后生产者所发布的每条消息都会被发送给所有的使用者。
-Producers 
+Producers
 写数据到 Brokers
 Consumers
 从 Brokers 读数据
@@ -72,7 +72,7 @@ Consumers
 是进程保存在机器上的任何数据，在进程处理结束的时候，这些数据要么保存在内存里，要么保存在磁盘上
 
 分布式系统文献通常把处理和复制（processing and replication）方案宽泛地分成两种。
-『状态机器模型』常常被称为主-主模型（active-active model）， 记录输入请求的日志，各个复本处理每个请求。 
+『状态机器模型』常常被称为主-主模型（active-active model）， 记录输入请求的日志，各个复本处理每个请求。
 对这个模型做了细微的调整称为『主备模型』（primary-backup model），即选出一个副本做为leader，让leader按请求到达的顺序处理请求，并输出它请求处理的状态变化日志。 其他的副本按照顺序应用leader的状态变化日志，保持和leader同步，并能够在leader失败的时候接替它成为leader。
 
 变更日志（changelog）101：表与事件的二象性（duality）
@@ -109,6 +109,23 @@ Apache Samza=Kafka+Yarn+SamzaJob
 
 
 
+---
+#实现分析
+
+每个日志文件都是一个log entrie序列，每个log entrie包含一个4字节整型数值（值为N+5），1个字节的"magic value"，4个字节的CRC校验码，其后跟N个字节的消息体。每条消息都有一个当前Partition下唯一的64字节的offset，它指明了这条消息的起始位置。磁盘上存储的消息格式如下：
+
+message length ： 4 bytes (value: 1+4+n)
+"magic" value ： 1 byte
+crc ： 4 bytes
+payload ： n bytes
+
+
+
+
+
+
+
+
 
 
 ---
@@ -116,53 +133,53 @@ Apache Samza=Kafka+Yarn+SamzaJob
 ##copy tgz
 pscp -h /root/ot.txt -l root kafka_2.8.0-0.8.1.1.tgz /opt/rpm/
 
-
 pssh -h /root/ot.txt -l root -i 'tar -zpxvf /opt/rpm/kafka_2.8.0-0.8.1.1.tgz -C /opt/rpm'
 pssh -h /root/ot.txt -l root -i 'ln -sfv /home/rpm/kafka_2.8.0-0.8.1.1 /opt/kafka'
+
 ##edit profile
  /etc/profile
     export KAFKA_HOME=/opt/kafka
     export ZK_HOME=/opt/zookeeper
-    export CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar  
-    export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$KAFKA_HOME/bin:$ZK_HOME/bin:$PATH  
+    export CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar
+    export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$KAFKA_HOME/bin:$ZK_HOME/bin:$PATH
 
 pscp -h /root/ot.txt -l root /root/.bashrc /root
 
-##setup zookeeper
-##conf
-zoo.cfg
-server.1=namenode:2888:3888
-server.2=datanode1:2888:3888
-server.3=datanode2:2888:3888
+##[setup zookeeper](Zookeeper.md)
 
-###namenode->server.properties
-broker.id=0  
+##server.properties
+###node1
+```
+broker.id=0
 port=9092
-host.name=namenode
-advertised.host.name=namenode
-    ...  
+host.name=node0
+advertised.host.name=node0
 num.partitions=2
-    ...
-zookeeper.connect=namenode:2181,datanode1:2181,datanode2:2181
-
+zookeeper.connect=zk1:2181,zk2:2181,zk3:2181
+```
 pscp -h /root/zk.txt -l root /opt/kafka/config/server.properties /opt/kafka/config
 
-###datanode1->server.properties
+###node1
+```
 broker.id=1
-host.name=datanode1
-advertised.host.name=datanode1
+host.name=node1
+advertised.host.name=node1
+```
 
-###datanode2->server.properties
+###node2
+```
 broker.id=2
 host.name=datanode2
 advertised.host.name=datanode2
+```
+
 
 ---
 #startup
 ##start zookeeper
 ##start kafka
 pssh -h /root/all -l root -i 'nohup kafka-server-start.sh $KAFKA_HOME/config/server.properties > $KAFKA_HOME/logs/kafka.out 2>&1 &'
-    
+
     *Q*
     Java HotSpot(TM) 64-Bit Server VM warning: INFO: os::commit_memory(0x00000000c5330000, 986513408, 0) failed; error='Cannot allocate memory' (errno=12)
     kafka-server-start.sh
@@ -185,9 +202,9 @@ kafka-topics.sh --create --topic gpsraw --replication-factor 3 --partitions 3 --
 ###list
 ```
 #list-all
-kafka-list-topic.sh --zookeeper 192.168.197.170:2181,192.168.197.171:2181 
+kafka-list-topic.sh --zookeeper 192.168.197.170:2181,192.168.197.171:2181
 #list-single
-kafka-list-topic.sh --zookeeper 192.168.197.170:2181,192.168.197.171:2181 
+kafka-list-topic.sh --zookeeper 192.168.197.170:2181,192.168.197.171:2181
 #list-single
 kafka-topics.sh --zookeeper namenode:2181,datanode1:2181,datanode2:2181 --delete --topic {topic name}
 

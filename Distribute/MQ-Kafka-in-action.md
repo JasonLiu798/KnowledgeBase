@@ -3,7 +3,8 @@
 #doc
 [某互联网大厂kafka最佳实践](http://www.jianshu.com/p/8689901720fd)
 
-
+[Kafka 0.9 新消费者API](http://www.cnblogs.com/admln/p/5446361.html)
+[kafka 可靠性思考](http://www.java123.net/975509.html)
 ---
 #一、硬件考量
 ##1.1、内存
@@ -102,6 +103,24 @@ i、partition的数量是可以动态增加的（只能加不能减）。
 我们建议的做法是，如果是3个broker的集群，有5个消费者，那么建议partition的数量是15，也就是broker和consumer数量的最小公倍数。当然，也可以是一个大于消费者的broker数量的倍数，比如6或者9，还请读者自行根据实际环境裁定。
 
 
+
+
+---
+#监控
+##KafkaOffsetMonitor
+http://www.cnblogs.com/Leo_wl/p/4564699.html
+
+* 启动
+java -cp KafkaOffsetMonitor-assembly-0.2.0.jar com.quantifind.kafka.offsetapp.OffsetGetterWeb --zk 10.202.125.16:2181 --port 8089 --refresh 10.seconds --retain 1.days
+
+- Topic：创建Topic名称
+- Partition：分区编号
+- Offset：表示该Parition已经消费了多少Message
+- LogSize：表示该Partition生产了多少Message
+- Lag：表示有多少条Message未被消费
+- Owner：表示消费者
+- Created：表示该Partition创建时间
+- Last Seen：表示消费状态刷新最新时间
 
 
 

@@ -313,11 +313,63 @@ var s : Set[Int] = Set(1,3,5,7)
 or 
 var s = Set(1,3,5,7)
 ```
+##串联集合：
+可以使用++运算符或集。++()方法来连接两个或多个集，但同时增加了集它会删除重复的元素。以下是这个例子来连接两个集合：
+```scala
+object Test {
+   def main(args: Array[String]) {
+      val fruit1 = Set("apples", "oranges", "pears")
+      val fruit2 = Set("mangoes", "banana")
+
+      // use two or more sets with ++ as operator
+      var fruit = fruit1 ++ fruit2
+      println( "fruit1 ++ fruit2 : " + fruit )
+
+      // use two sets with ++ as method
+      fruit = fruit1.++(fruit2)
+      println( "fruit1.++(fruit2) : " + fruit )
+   }
+}
+```
+
+#Map[K, V]
+默认情况下，Scala中使用不可变的映射
+如果想使用可变集，必须明确地导入scala.collection.mutable.Map类
 
 
+#元组
+元组的实际类型取决于它包含的元素和这些元素的类型的数目。因此，该类型 (99, "Luftballons") 是 Tuple2[Int, String].  ('u', 'r', "the", 1, 4, "me") 的类型是 Tuple6[Char, Char, String, Int, Int, String]
 
+元组类型Tuple1，Tuple2，Tuple3等。至少目前为22的上限在Scala，如果需要更多，那么可以使用一个集合，而不是一个元组。对于每个TupleN类型，其中1<= N <= 22，Scala定义了许多元素的访问方法。
+##交换元素：
+可以使用Tuple.swap方法来交换一个Tuple2的元素。以下为例子来说明的用法：
+```scala
+object Test {
+   def main(args: Array[String]) {
+      val t = new Tuple2("Scala", "hello")
+      println("Swapped Tuple: " + t.swap )
+   }
+}
+```
 
+#Option
+Option[T]是容器对于给定的类型的零个或一个元件
+Option[T]可以是一些[T]或None对象，它代表一个缺失值。
+##使用getOrElse()方法:
+以下是演示如何使用getOrElse()来访问值或使用默认值
 
+#迭代器
+迭代器不是集合，而是一种由一个访问的集合之一的元素
+```scala
+object Test {
+   def main(args: Array[String]) {
+      val it = Iterator("a", "number", "of", "words")
+      while (it.hasNext){
+         println(it.next())
+      }
+   }
+}
+```
 
 ---
 #访问修饰符

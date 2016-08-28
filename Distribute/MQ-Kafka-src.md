@@ -479,7 +479,7 @@ class AssignmentContext(group: String, val consumerId: String, excludeInternalTo
     val myTopicCount = TopicCount.constructTopicCount(group, consumerId, zkUtils, excludeInternalTopics)
     myTopicCount.getConsumerThreadIdsPerTopic
   }
-  // 属于某个topic的所有partitions. 当然topic是当前消费者订阅的范围内,其他topic并不关心
+  //属于某个topic的所有partitions. 当然topic是当前消费者订阅的范围内,其他topic并不关心
   val partitionsForTopic: collection.Map[String, Seq[Int]] = zkUtils.getPartitionsForTopics(myTopicThreadIds.keySet.toSeq)
 
   // 在当前消费组内,属于某个topic的所有consumers
@@ -488,34 +488,259 @@ class AssignmentContext(group: String, val consumerId: String, excludeInternalTo
 }
 ```
 
+/brokers/topics/topic_name记录的是topic的partition分配情况.获取partition信息,读取的是partitions字段(partitionMap).
+```scala
+def getPartitionsForTopics(topics: Seq[String]): mutable.Map[String, Seq[Int]] = {
+  getPartitionAssignmentForTopics(topics).map { topicAndPartitionMap =>
+    val topic = topicAndPartitionMap._1
+    val partitionMap = topicAndPartitionMap._2
+    (topic -> partitionMap.keys.toSeq.sortWith((s,t) => s < t))
+  }
+}
+```
 
+每个消费者都可以指定消费的topic和线程数,对于同一个消费组中多个消费者可以指定消费同一个topic或不同topic.
+获取topic的所有consumers时,统计所有消费这个topic的消费者线程(原先以消费者,现在转换为以topic).
+注意: 这里是取出当前消费组下所有消费者的所有topic,并没有过滤出属于当前消费者感兴趣的topics.
+```scala
+def getConsumersPerTopic(group: String, excludeInternalTopics: Boolean) : mutable.Map[String, List[ConsumerThreadId]] = 
+{
+  val dirs = new ZKGroupDirs(group)
+  // 当前消费组下所有的consumers
+  val consumers = getChildrenParentMayNotExist(dirs.consumerRegistryDir)
+  val consumersPerTopicMap = new mutable.HashMap[String, List[ConsumerThreadId]]
+  for (consumer <- consumers) {
+    // 每个consumer都指定了topic和thread-count
+    val topicCount = TopicCount.constructTopicCount(group, consumer, this, excludeInternalTopics)
+    for ((topic, consumerThreadIdSet) <- topicCount.getConsumerThreadIdsPerTopic) {
+      // 现在是在同一个consumer里, 对同一个topic,有多个thread-id
+      for (consumerThreadId <- consumerThreadIdSet)
+        // 最后按照topic分,而不是按照consumer分,比如多个consumer都消费了同一个topic,则这些consuemr会加入到同一个topic中
+        consumersPerTopicMap.get(topic) match {
+          case Some(curConsumers) => consumersPerTopicMap.put(topic, consumerThreadId :: curConsumers)
+          case _ => consumersPerTopicMap.put(topic, List(consumerThreadId))
+        }
+    }
+  }
+  for ((topic, consumerList) <- consumersPerTopicMap) 
+  	consumersPerTopicMap.put(topic, consumerList.sortWith((s,t) => s < t))
+  consumersPerTopicMap
+}
+```
 
+##PartitionAssignor 为Partition分配Consumer的算法
+将可用的partitions以及消费者线程排序, 将partitions处于线程数,表示每个线程(不是消费者数量)平均可以分到几个partition.
+如果除不尽,剩余的会分给前面几个消费者线程. 
 
+比如有两个消费者,每个都是两个线程,一共有5个可用的partitions:(p0-p4).
+每个消费者线程(一共四个线程)可以获取到至少一共partition(5/4=1),剩余一个(5%4=1)partition分给第一个线程.
+最后的分配结果为: 
+p0 -> C1-0, p1 -> C1-0, p2 -> C1-1, p3 -> C2-0, p4 -> C2-1
 
+```scala
+class RangeAssignor() extends PartitionAssignor with Logging {
+  def assign(ctx: AssignmentContext) = {
+    val valueFactory = (topic: String) => new mutable.HashMap[TopicAndPartition, ConsumerThreadId]
+    // consumerThreadId -> (TopicAndPartition -> ConsumerThreadId). 所以上面的valueFactory的参数不对哦!
+    val partitionAssignment = new Pool[String, mutable.Map[TopicAndPartition, ConsumerThreadId]](Some(valueFactory))
+    for (topic <- ctx.myTopicThreadIds.keySet) {
+      val curConsumers = ctx.consumersForTopic(topic)                   // 订阅了topic的消费者列表(4)
+      val curPartitions: Seq[Int] = ctx.partitionsForTopic(topic)       // 属于topic的partitions(5)
+      val nPartsPerConsumer = curPartitions.size / curConsumers.size    // 每个线程都可以有这些个partition(1)
+      val nConsumersWithExtraPart = curPartitions.size % curConsumers.size  // 剩余的分给前面几个(1)
+      for (consumerThreadId <- curConsumers) {                          // 每个消费者线程: C1_0,C1_1,C2_0,C2_1
+        val myConsumerPosition = curConsumers.indexOf(consumerThreadId) // 线程在列表中的索引: 0,1,2,3
+        val startPart = nPartsPerConsumer * myConsumerPosition + myConsumerPosition.min(nConsumersWithExtraPart)
+        val nParts = nPartsPerConsumer + (if (myConsumerPosition + 1 > nConsumersWithExtraPart) 0 else 1)
+        // Range-partition the sorted partitions to consumers for better locality. 
+        // The first few consumers pick up an extra partition, if any.
+        if (nParts > 0)
+          for (i <- startPart until startPart + nParts) {
+            val partition = curPartitions(i)
+            // record the partition ownership decision 记录partition的ownership决定,即把partition分配给consumerThreadId
+            val assignmentForConsumer = partitionAssignment.getAndMaybePut(consumerThreadId.consumer)
+            assignmentForConsumer += (TopicAndPartition(topic, partition) -> consumerThreadId)
+          }
+        }
+      }
+    }
+    // 前面的for循环中的consumers是和当前消费者有相同topic的,如果消费者的topic和当前消费者不一样,则在本次assign中不会为它分配的.  
+    // assign Map.empty for the consumers which are not associated with topic partitions 没有和partition关联的consumer分配空的partiton.
+    ctx.consumers.foreach(consumerId => partitionAssignment.getAndMaybePut(consumerId))
+    partitionAssignment
+  }
+}
+```
 
+##PartitionAssignment -> PartitionTopicInfo
+这是ZKRebalancerListener.rebalance的第三步.
+首先为当前消费者创建AssignmentContext上下文.
+上面知道partitionAssignor.assign的返回值是所有consumer的分配结果(虽然有些consumer在本次中并没有分到partition)
+partitionAssignment的结构是
+	consumerThreadId -> (TopicAndPartition -> ConsumerThreadId),
+所以获取当前consumer只要传入assignmentContext.consumerId就可以得到当前消费者的PartitionAssignment.
+```scala
+// ③ 为partition重新选择consumer
+val assignmentContext = new AssignmentContext(group, consumerIdString, config.excludeInternalTopics, zkUtils)
+val globalPartitionAssignment = partitionAssignor.assign(assignmentContext)
+val partitionAssignment = globalPartitionAssignment.get(assignmentContext.consumerId)
+val currentTopicRegistry = new Pool[String, Pool[Int, PartitionTopicInfo]](
+  valueFactory = Some((topic: String) => new Pool[Int, PartitionTopicInfo]))
 
+// fetch current offsets for all topic-partitions
+val topicPartitions = partitionAssignment.keySet.toSeq
+val offsetFetchResponseOpt = fetchOffsets(topicPartitions)
+val offsetFetchResponse = offsetFetchResponseOpt.get
+topicPartitions.foreach(topicAndPartition => {
+    val (topic, partition) = topicAndPartition.asTuple
+    val offset = offsetFetchResponse.requestInfo(topicAndPartition).offset
+    val threadId = partitionAssignment(topicAndPartition)
+    addPartitionTopicInfo(currentTopicRegistry, partition, topic, offset, threadId)
+})
 
+// ④ ⑤ 注册到zk上, 并创建新的fetcher线程
+if(reflectPartitionOwnershipDecision(partitionAssignment)) {
+    topicRegistry = currentTopicRegistry  // topicRegistry来自上一步的addPartitionTopicInfo, 它会被用于updateFetcher
+    updateFetcher(cluster)
+}
+```
+PartitionAssignment的key是TopicAndPartition,根据所有topicAndPartitions获取这些partitions的offsets.
+返回值offsetFetchResponse包含了对应的offset, 最终根据这些信息创建对应的PartitionTopicInfo.
+PartitionTopicInfo包含Partition和Topic:
+队列用来存放数据(topicThreadIdAndQueues在reinitializeConsumer中放入),
+consumedOffset和fetchedOffset都是来自于offset参数,即上面
+offsetFetchResponse中partition的offset.
 
+currentTopicRegistry这个结构也很重要: topic -> (partition -> PartitionTopicInfo)
+key是topic,正如名称所示是topic的注册信息(topicRegistry).又因为来自于fetchOffsets,所以表示的是最新当前的.
 
+queue从topicThreadIdAndQueues中获得,在consume方法中queue也作为KafkaStream的参数.
+所以后面只要面向PartitionTopicInfo,就能获取到底层的queue,也就可以为KafkaStream的queue填充数据.
 
+```scala
+private def addPartitionTopicInfo(currentTopicRegistry: Pool[String, Pool[Int, PartitionTopicInfo]],
+                                    partition: Int, topic: String, offset: Long, consumerThreadId: ConsumerThreadId) {
+    val partTopicInfoMap = currentTopicRegistry.getAndMaybePut(topic)
+    val queue = topicThreadIdAndQueues.get((topic, consumerThreadId))
+    val consumedOffset = new AtomicLong(offset)
+    val fetchedOffset = new AtomicLong(offset)
+    val partTopicInfo = new PartitionTopicInfo(topic,partition,queue,consumedOffset,fetchedOffset,
+      new AtomicInteger(config.fetchMessageMaxBytes), config.clientId)
+    partTopicInfoMap.put(partition, partTopicInfo)
+    checkpointedZkOffsets.put(TopicAndPartition(topic, partition), offset)
+  }
+}
+```
 
+注意:一个threadId可以消费同一个topic的多个partition. 而一个threadId对应一个queue.
+所以一个queue也就可以消费多个partition. 即对于不同的partition,可能使用同一个队列来消费.
+比如消费者设置了一个线程,就只有一个队列,而partition分了两个给它,这样一个队列就要处理两个partition了.
 
+##updateFetcher & closeFetchers
+这里我们看到了在ZooKeeperConsumerConnector初始化时创建的fetcher(ConsumerFetcherManager)终于派上用场了.
+allPartitionInfos是分配给Consumer的Partition列表(但是这里还不知道Leader的,所以在Manager中要自己寻找Leader).
+```scala
+private def updateFetcher(cluster: Cluster) {   // update partitions for fetcher
+  var allPartitionInfos : List[PartitionTopicInfo] = Nil
+  // topicRegistry是在addPartitionTopicInfo中加到currentTopicRegistry,再被赋值给topicRegistry
+  for (partitionInfos <- topicRegistry.values)  
+    for (partition <- partitionInfos.values)    // PartitionTopicInfo
+      allPartitionInfos ::= partition 
+  fetcher match {
+    case Some(f) => f.startConnections(allPartitionInfos, cluster)
+  }
+}
+```
+创建Fetcher是为PartitionInfos准备开始连接,在rebalance时一开始要先closeFetchers就是关闭已经建立的连接.
+relevantTopicThreadIdsMap是当前消费者的topic->threadIds,要从topicThreadIdAndQueues过滤出需要清除的queues.
 
+DataStructure				| Explain
+relevantTopicThreadIdsMap	| 消费者注册的topic->threadIds
+topicThreadIdAndQueues	    | 消费者的(topic,threadId)->queue
+messageStreams				| 消费者注册的topic->List[KafkaStream]消息流
 
+关闭Fetcher时要注意: 先提交offset,然后才停止消费者. 因为在停止消费者的时候当前的数据块中还会有点残留数据.
+因为这时候还没有释放partiton的ownership(即partition还归当前consumer所有),强制提交offset,
+这样拥有这个partition的下一个消费者线程(rebalance后),就可以使用已经提交的offset了,确保不中断.
+因为fetcher线程已经关闭了(stopConnections),这是消费者能得到的最后一个数据块,以后不会有了,直到平衡结束,fetcher重新开始
 
+topicThreadIdAndQueues来自于topicThreadIds,所以它的topic应该都在relevantTopicThreadIdsMap的topics中.
+为什么还要过滤呢? 注释中说到在本次平衡之后,只需要清理可能不再属于这个消费者的队列(部分的topicPartition抓取队列).
 
+```scala
+private def closeFetchers(cluster: Cluster, messageStreams: Map[String,List[KafkaStream[_,_]]], 
+  relevantTopicThreadIdsMap: Map[String, Set[ConsumerThreadId]]) {
+  // only clear the fetcher queues for certain topic partitions that *might* 
+  // no longer be served by this consumer after this rebalancing attempt
+  val queuesTobeCleared = topicThreadIdAndQueues.filter(q => relevantTopicThreadIdsMap.contains(q._1._1)).map(q => q._2)
+  closeFetchersForQueues(cluster, messageStreams, queuesTobeCleared)
+}
+private def closeFetchersForQueues(cluster: Cluster, messageStreams: Map[String,List[KafkaStream[_,_]]], 
+  queuesToBeCleared: Iterable[BlockingQueue[FetchedDataChunk]]) {
+  val allPartitionInfos = topicRegistry.values.map(p => p.values).flatten
+  fetcher match {
+    case Some(f) =>
+      f.stopConnections     // 停止FetcherManager管理的所有Fetcher线程
+      clearFetcherQueues(allPartitionInfos, cluster, queuesToBeCleared, messageStreams)
+      if (config.autoCommitEnable) commitOffsets(true)
+  }
+}
+private def clearFetcherQueues(topicInfos: Iterable[PartitionTopicInfo], cluster: Cluster, 
+  queuesTobeCleared: Iterable[BlockingQueue[FetchedDataChunk]], messageStreams: Map[String,List[KafkaStream[_,_]]]) {
+  // Clear all but the currently iterated upon chunk in the consumer thread's queue
+  queuesTobeCleared.foreach(_.clear)
+  // Also clear the currently iterated upon chunk in the consumer threads
+  if(messageStreams != null) messageStreams.foreach(_._2.foreach(s => s.clear()))
+}
+```
 
+问题:新创建的ZKRebalancerListener中kafkaMessageAndMetadataStreams(即这里的messageStreams)为空的Map.
+如何清空里面的数据? 实际上KafkaStream只是一个迭代器,在运行过程中会有数据放入到这个流中,这样流就有数据了.
 
+---
+#ConsumerFetcherManager
+topicInfos是上一步updateFetcher的topicRegistry,是分配给给consumer的注册信息:
+topic->(partition->PartitionTopicInfo).
+Fetcher线程要抓取数据关心的是PartitionTopicInfo,首先要找出Partition Leader(因为只向Leader Partition发起抓取请求).
+初始时假设所有topicInfos(PartitionTopicInfo)都找不到Leader,即同时加入partitionMap和noLeaderPartitionSet.
+在LeaderFinderThread线程中如果找到Leader,则从noLeaderPartitionSet中移除.
+```scala
+def startConnections(topicInfos: Iterable[PartitionTopicInfo], cluster: Cluster) {
+  leaderFinderThread = new LeaderFinderThread(consumerIdString + "-leader-finder-thread")
+  leaderFinderThread.start()
 
+  inLock(lock) {
+    partitionMap = topicInfos.map(tpi => (TopicAndPartition(tpi.topic, tpi.partitionId), tpi)).toMap
+    this.cluster = cluster
+    noLeaderPartitionSet ++= topicInfos.map(tpi => TopicAndPartition(tpi.topic, tpi.partitionId))
+    cond.signalAll()
+  }
+}
+```
 
+ConsumerFetcherManager管理了当前Consumer的所有Fetcher线程.
+注意ConsumerFetcherThread构造函数中的partitionMap和构建FetchRequest时的partitionMap是不同的.
+不过它们的相同点是都有offset信息.并且都有fetch操作.
 
+#小结
+high level的Consumer Rebalance的控制策略是由每一个Consumer通过在Zookeeper上注册Watch完成的。
 
+每个Consumer被创建时会触发Consumer Group的Rebalance,具体的启动流程是:
+(High Level)Consumer启动时将其ID注册到其Consumer Group下 (registerConsumerInZK)
+/consumers/[group_id]/ids上和/brokers/ids
+上分别注册Watch (reinitializeConsumer->Listener)
 
+强制自己在其Consumer Group内启动Rebalance流程 (ZKRebalancerListener.rebalance)
+在这种策略下，每一个Consumer或者Broker的增加或者减少都会触发Consumer Rebalance。
 
+因为每个Consumer只负责调整自己所消费的Partition，为了保证整个Consumer Group的一致性，
+当一个Consumer触发了Rebalance时，该Consumer Group内的其它所有其它Consumer也应该同时触发Rebalance。
 
-
-
-
+该方式有如下缺陷:
+Herd effect(羊群效应): 任何Broker或者Consumer的增减都会触发所有的Consumer的Rebalance
+Split Brain(脑裂): 每个Consumer分别单独通过Zookeeper判断哪些Broker和Consumer 宕机了，
+那么不同Consumer在同一时刻从Zookeeper“看”到的View就可能不一样，这是由Zookeeper的特性决定的，这就会造成不正确的Reblance尝试。
+调整结果不可控: 所有的Consumer都并不知道其它Consumer的Rebalance是否成功，这可能会导致Kafka工作在一个不正确的状态。
 
 
 

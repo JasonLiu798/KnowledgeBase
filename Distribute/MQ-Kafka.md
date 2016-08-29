@@ -1,6 +1,8 @@
 #kafka
 ---
-# doc
+#doc
+Kafka，高吞吐的分布式消息系统，源于LinkedIn，现在是apache顶级项目。大部分由Scala编写，一些Kafka用Java编写，共有9个核心的开发者，社区非常活跃
+
 http://kafka.apache.org
 [消息系统Kafka介绍](http://dongxicheng.org/search-engine/kafka/)
 [Updated Kafka PHP client library - Lorenzo Alberton](http://www.tuicool.com/articles/zIzyq2)
@@ -14,6 +16,8 @@ http://kafka.apache.org
 [](http://www.infoq.com/cn/articles/kafka-analysis-part-2)
 [](http://www.infoq.com/cn/articles/kafka-analysis-part-3)
 
+##核心思想
+日志有两个重要的特征 有序，不可变
 
 ##目的
 就是要成为一个队列平台，仅仅使用它就能够既支持离线又支持在线使用这两种情况。

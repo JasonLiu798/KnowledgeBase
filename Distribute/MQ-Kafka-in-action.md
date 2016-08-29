@@ -184,15 +184,37 @@ Kafka提供的两种分配策略： range和roundrobin，由参数partition.assi
 
 
 
+---
+#案例&问题
+##环境
+线上的版本是0.9.0.1, 6个broker作集群, 机器的配置为32G内存，600G SAS盘，一共有40+ topics, 日均处理消息量为6000W+。
 
+##使用最少一次
+offset没有提交就rebanlance, 这样会导致消息重复消费
+Kafka还采用了批量fetch提交offset最高位（HW，HighWater）的方式
 
+##消息消费阻塞
+消费处理过慢,session timeout 30s，没有向kafka broker发送心跳和提交offset，broker会发起客户端的rebalancing
+* 增大session time时间(暂时)
+* 减小max.partition.fetch.bytes，默认1M
+* 增大最大拉取消息数的参数 max.poll.records
+kafka-consumer-group.sh 查看 消费情况
+* 消息大于fetch.size（默认为1M
+* 应用阻塞代码（如，异常没有捕获，可用JMC，jvisualvm查看线程状态
+* consumer rebalance 失败，会看到ConsumerRebalanceFailedException
 
+##有序性
+* Producer send指定分区 
+* Consumer指定分区消费，需要自己实现fail-over 
+* replication-factor设置为N（N为Broker的数量），保证Broker n-1 的宕机容忍性
+Linkedin针对这点，构建一个流式处理系统Apache Samza，由Kafka、Yarn和SamaJob组成，其中Kafka作为消息传递，Yarn作资源调度和配置(指定分区)，Samza的基本处理流程是一个用户任务从一个或多个输入流中读取数据，再输出到一个或多个输出流中，具体映射到kafka上就是从一个或多个topic读入数据，再写出到另一个或多个topic中去。多个job串联起来就完成了流式的数据处理流程了。
 
-
-
-
-
-
+##partition数量
++ partitions决定comsuer并行度。
++ partitions 只可以增加，不能减小。
++ 每个partition都在ZooKeeper上注册。
++ 越多partition越久Leader fail-over时间。
+根据应用场景制定partitions，关注rebalancing情况，关注ZooKepper情况
 
 
 

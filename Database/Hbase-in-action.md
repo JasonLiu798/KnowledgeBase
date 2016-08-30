@@ -4,7 +4,59 @@
 所有修改操作行级原子性
 创建HTable实例需要扫描.META表，推荐只创建一次，每个线程创建一个，生存期复用这个对象；需要多个HTable实例，考虑使用HTablePool
 
-##CRUD
+
+---
+#命名空间Namespace
+在关系数据库系统中，命名空间，namespace指的是一个 表的逻辑分组 ，同一组中的表有类似的用途。命名空间的概念为 即将到来 的多租户特性打下基础：
+配额管理Quota Management (HBASE-8410)：限制一个namespace可以使用的资源，资源包括region和table等； 
+命名空间安全管理Namespace Security Administration (HBASE-9206)：提供了另一个层面的多租户安全管理； 
+Region服务器组Region server groups (HBASE-6721)：一个命名空间或一张表，可以被固定到一组regionservers上，从而保证了数据隔离性。 
+##命名空间管理
+命名空间可以被创建、移除、修改。
+表和命名空间的隶属关系 在在创建表时决定，通过以下格式指定：
+<namespace>:<table>
+
+Example：hbase shell中创建命名空间、创建命名空间中的表、移除命名空间、修改命名空间
+```shell
+#Create a namespace
+create_namespace 'my_ns'
+            
+#create my_table in my_ns namespace
+create 'my_ns:my_table', 'fam'
+          
+#drop namespace
+drop_namespace 'my_ns'
+          
+#alter namespace
+alter_namespace 'my_ns', {METHOD => 'set', 'PROPERTY_NAME' => 'PROPERTY_VALUE'}
+```
+##预定义的命名空间
+有两个系统内置的预定义命名空间：
+hbase ：系统命名空间，用于包含hbase的内部表 
+default ： 所有未指定命名空间的表都自动进入该命名空间
+Example：指定命名空间和默认命名空间
+```shell
+#namespace=foo and table qualifier=bar
+create 'foo:bar', 'fam'
+
+#namespace=default and table qualifier=bar
+create 'bar', 'fam'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
+#CRUD
 HbaseConfiguration
 ```
 static Configuration create();//尝试从classpath家中hbase-default.xml，hbase-site.xml
@@ -80,6 +132,47 @@ Get setTimeStamp(long timeStamp);
 Get setMaxVersions();//返回这个单元格中所有的版本
 Get setMaxVersions(int maxVersions) throws IOException;
 
+
+##行锁
+RowLock
+
+hbase-site.xml
+```xml
+<name>hbase.regionserver.lease.period</name>
+<value>120000</value>
+```
+
+RowLock lock = table.lockRow(ROW1);
+lock.getLockId();
+table.unlockRow(lock);
+
+手动设定的时间戳被put，如果遇到锁等待，时间戳不会改变，
+
+##Scan
+扫描器租约
+```xml
+<name>hbase.regionserver.lease.period</name>
+<value>120000</value>
+```
+以上值同时适用于租约锁和扫描器租约；延长租约时间，服务端设定有效
+
+* 扫描器缓存
+每个next调用一次RPC
+setScannerCaching(int scannerCaching)
+int getScannerCaching()
+
+范围：扫描层面，本次扫描实例；表层面，这个表所有扫描实例
+
+hbase-site.xml 设置所有扫描器缓存大小
+```xml
+<property>
+	<name>hbase.client.scanner.caching</name>
+	<value>10</value>
+</property>
+```
+默认值1
+
+值过高，会导致每次next()调用占用时间更长，过高还会OOM
 
 
 ---
@@ -186,12 +279,11 @@ FilterList filterList1 = new FilterList(filters);//默认MUST_PASS_ALL
 FilterList filterList2 = new FilterList(FilterList.Operator.MUST_PASS_ONE,filters);
 
 ##自定义过滤器
+FilterBase
 
 
-
-
------------
-
+-------
+#计数器
 
 
 
@@ -211,6 +303,20 @@ FilterList filterList2 = new FilterList(FilterList.Operator.MUST_PASS_ONE,filter
 #开发
 [开发环境搭建](http://blog.csdn.net/chicm/article/details/41787797)
 
+
+---
+#setup
+wget -P /opt/rpm http://mirror.bit.edu.cn/apache/hbase/stable/hbase-1.0.1-bin.tar.gz &
+pscp -h other.txt -l root /opt/rpm/hbase-1.0.1-bin.tar.gz /opt/rpm
+pssh -h other.txt -l root -i 'tar -zpxvf /opt/rpm/hbase-1.0.1-bin.tar.gz -C /opt/rpm'
+pssh -h other.txt -l root -i 'ln -sfv /opt/rpm/hbase-1.0.1 /opt/hbase'
+
+
+
+
+
+
+
 ---
 #shell
 [hbase shell基础和常用命令详解](http://www.jb51.net/article/31172.htm)
@@ -222,7 +328,7 @@ version
 list
 ```
 
-### DDL
+##DDL
 ### table
 #### create table
 create 'tablename','column1','column2','column3'...
@@ -260,14 +366,14 @@ is_disabled 'tablename'
 * alter table:  alter 'tablename',{NAME=>'columnname',METHOD=>'delete'}
 * enable 'tablename'
 
-### DML
-#### add data
+##DML
+###add data
 put <table>,<rowkey>,<family:column>,<value>,<timestamp>
 put 'gpsInfoTest','0000000320101227','baseInfo:081351','01010200202010000003\x00;2010-12-27 08:13:51\x00;109.10437\x00;36.64465\x00;',1293408831000
 
 put 'user','andieguo','info:age','27'
 
-#### get data
+###get data
 get <table>,<rowkey>,[<family:column>,....]
 get 'gpsInfoTest','0000000320101227','baseInfo:081351'
 
@@ -275,7 +381,7 @@ get 'user','andieguo',{COLUMN=>'info:age',TIMESTAMP=>1409304}
 
 get 'gpsInfoTest','0000000320101227','info'
 
-#### del data
+###del data
 delete  '表名' ,'行名称' , '列名称'
 delete 'test_gpsinfo','0101024050602010796620150325','baseInfo'
 
@@ -285,14 +391,39 @@ put '表名称', '行名称', '列名称:', '值'
 status
 version
 
-##### del row
+####del row
 deleteall 'gpsInfoTest','null20150611'
 
-#### truncate table
+####truncate table
 truncate 'tablename'
 
-#### hbase分页
+####hbase分页
 http://ronxin999.blog.163.com/blog/static/422179202013621111545534/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

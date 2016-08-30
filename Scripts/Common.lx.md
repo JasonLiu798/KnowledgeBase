@@ -650,8 +650,10 @@ http://hz.togogo.net/BrainJam/wenxian/2013/0716/818.html
 
 ---
 #cygwin
-## 配置
+##setup 安装 配置
 http://oldratlee.com/post/2012-12-22/stunning-cygwin
+download site
+http://mirrors.163.com/cygwin/
 
 ##ssh server
 [安装Cygwin中的SSH服务](http://www.blogjava.net/Man/archive/2012/11/26/392004.html)

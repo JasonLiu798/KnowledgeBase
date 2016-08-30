@@ -25,9 +25,12 @@ TPS=U_concurrent / (T_response+T_think)。
 ##响应时间
 
 
+##wall clock time
+系统时间(wall clock time, elapsed time)
+一段程序从运行到终止，系统时钟走过的时间
 
-
-
+##monotonic time
+单调递增时间
 
 
 ---

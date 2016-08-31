@@ -23,6 +23,7 @@
 [正则表达式同时匹配中英文_，还控制长度](http://blog.csdn.net/dl020840504/article/details/8880603#comments)
 
 
+08-30 \d{2}\:\d{2}\:\d{2}\.\d{3}
 
 
 

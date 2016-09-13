@@ -50,13 +50,13 @@ git@gitcafe.com:async/uweatwhat.git
     git diff HEAD -- {filename}
     git diff {version1} {version2}
     git diff {version1}:{filename} {version2}:{filename}
-    
+
     git diff b030b905e5ccd7f85a89da:src/cn/com/cnpc/backGroundServer/component/AH809Component/TransportHandler.java 48a3cf0e615af714d0df7:src/cn/com/cnpc/backGroundServer/component/AH809Component/TransportHandler.java
 
 ##git log
     git log
     git log –pretty=oneline
-   
+
     git reflog
     git rm -r --cached filename
     git show [version id]
@@ -67,7 +67,7 @@ git@gitcafe.com:async/uweatwhat.git
 在不用-f的前提下，想维持树的整洁，方法就是：在git push之前，先git fetch，再git rebase。
 git fetch origin master
 git rebase origin/master
-解决冲突，最后 git add * ，但不许要git commit 
+解决冲突，最后 git add * ，但不许要git commit
 解决后，执行 git rebase --continue
 git push
 
@@ -80,7 +80,7 @@ git push
      git reset a4e215a7[version] filename   #back to old version
 
     #冲突解决，强制覆盖本地文件
-    git fetch --all  
+    git fetch --all
     git reset --hard origin/master
 
 ```
@@ -123,7 +123,7 @@ git reset --soft c3
     git push -u origin master   #first time
     git push origin master      #after first
 
-##git tag 
+##git tag
     git tag 查看所有标签。
     git tag 用于新建一个标签，默认为HEAD，也可以指定一个commit id；
     git tag -a -m “blablabla…”可以指定标签信息；
@@ -133,7 +133,7 @@ git reset --soft c3
     命令git tag -d 可以删除一个本地标签；
     命令git push origin :refs/tags/可以删除一个远程标签。
 
-##git stash 
+##git stash
     git stash list
     git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
     git stash pop
@@ -141,6 +141,18 @@ git reset --soft c3
     git branch -D feature-vulcan。
     查看远端库git remote -v
     git push origin master
+
+
+----
+#clean
+git clean
+确认要删除的文件
+git clean -fd -n
+如果以上命令给出的文件列表是你想删除的， 那么接下来执行
+git clean -f -d或者git clean -fd就可以了。
+其中-f表示文件-d表示目录, 如果还要删除.gitignore中的文件那么再加上-x
+如果git submodule中也存在需要删除的文件那么需要再加个-f， 变成git clean -dff
+[reference](http://stackoverflow.com/questions/61212/how-do-i-remove-local-untracked-files-from-my-current-git-branch)
 
 
 ---
@@ -152,7 +164,7 @@ git reset --soft c3
     等价于
         git branch [branch name]
         gir checkout [branch name]
-    
+
 ## git branch 查看分支
 ```bash
 git branch
@@ -168,7 +180,7 @@ git br -vv #查看本地分支跟踪的远程分支
     git checkout <name>
     git checkout -b <name>      #change & new
     git checkout -b [分支名] [远程名]/[分支名]
-    git co -b 
+    git co -b
     签出远程分支
     git checkout --track origin/serverfix
 
@@ -213,7 +225,7 @@ git pull : 首先，基于本地的FETCH_HEAD记录，比对本地的FETCH_HEAD�
     git log --graph --pretty=oneline --abbrev-commit
     git log --author=bob
     --pretty 参数可以使用若干表现格式
-    git log --pretty=oneline 
+    git log --pretty=oneline
     git log --pretty=short
     git log --pretty=format:'%h was %an, %ar, message: %s'
     git log --pretty=format:'%h : %s' --graph
@@ -241,7 +253,7 @@ git pull : 首先，基于本地的FETCH_HEAD记录，比对本地的FETCH_HEAD�
 [gitignore配置模板](https://github.com/github/gitignore)
 
 ## generate ssh
-github sshkey 
+github sshkey
 ssh-keygen -t rsa -C "jasondliu@qq.com"
 
 ## account
@@ -266,10 +278,10 @@ allow mix format
     git config --global core.safecrlf false
 warn commit mix format
     git config --global core.safecrlf warn
-    
+
 ##配色
 git config --global color.ui auto
-git config --global color.status auto  
+git config --global color.status auto
 git config --global color.branch auto
 git config --global color.diff auto
 git config --global color.interactive auto
@@ -282,7 +294,7 @@ git config --global alias.cm 'commit -m'
 git config --global alias.cam 'commit -a -m'
 git config --global alias.c commit
 git config --global alias.cl clone
-git config --global alias.s status
+git config --global alias.s 'status -uno'
 git config --global alias.br branch
 git config --global alias.bra 'branch -a'
 git config --global alias.unstage 'reset HEAD'
@@ -297,17 +309,17 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 按主分支排序
 
 `git log无颜色版（moba颜色显示有问题）`
-git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit  --date-order" 
+git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit  --date-order"
 git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commit --graph"
 
 ###--pretty=format参数
-%H   提交对象（commit）的完整哈希字串 
-%h   提交对象的简短哈希字串 
-%T   树对象（tree）的完整哈希字串 
-%t   树对象的简短哈希字串 
-%P   父对象（parent）的完整哈希字串 
-%p   父对象的简短哈希字串 
-%an  作者（author）的名字 
+%H   提交对象（commit）的完整哈希字串
+%h   提交对象的简短哈希字串
+%T   树对象（tree）的完整哈希字串
+%t   树对象的简短哈希字串
+%P   父对象（parent）的完整哈希字串
+%p   父对象的简短哈希字串
+%an  作者（author）的名字
 %ae  作者的电子邮件地址
 %ad  作者修订日期-（可以用 -date= 选项定制格式）
 %ar  作者修订日期-相对格式(1 day ago)
@@ -315,7 +327,7 @@ git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commi
 %ar  作者修订日期-相对日期
 %at  作者修订日期-UNIX timestamp
 %ai  作者修订日期-ISO 8601 格式
-%cn  提交者(committer)的名字 
+%cn  提交者(committer)的名字
 %ce  提交者的电子邮件地址
 %cd  提交日期-(--date= 制定的格式)
 %cD  提交日期-RFC2822格式
@@ -325,11 +337,11 @@ git config --global alias.lg "log --pretty=format:'%t-%an-%cr-%s' --abbrev-commi
 %d:  ref名称
 %s:  提交的信息标题
 %b:  提交的信息内容
-%Cred: 切换到红色 
-%Cgreen: 切换到绿色 
+%Cred: 切换到红色
+%Cgreen: 切换到绿色
 %Cblue: 切换到蓝色
-%Creset: 重设颜色 
-%C(...): 制定颜色, as described in color.branch.* config option 
+%Creset: 重设颜色
+%C(...): 制定颜色, as described in color.branch.* config option
 %n:  换行
 作者（author）和提交者（committer）之间差别:作者指的是实际作出修改的人，提交者指的是最后将此工作成果提交到仓库的人。所以，当你为某个项目发布补丁，然后某个核心成员将你的补丁并入项目时，你就是作者，而那个核心成员就是提交者
 
@@ -414,7 +426,7 @@ classes/
 *.iml
 *.iws
 
-#python 
+#python
 *.pyc
 
 # temp ignore

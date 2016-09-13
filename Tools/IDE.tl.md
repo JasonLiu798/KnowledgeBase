@@ -30,9 +30,15 @@ java doc comment，灰绿，7AC668
 注解名，深绿，169F5B
 普通方法调用，蓝色，A19FFF
 
+##external tool
+javap
+Program:    /opt/java/bin/javap
+Parameter:  -classpath /opt/.../calsses -v -s -l -c $FileClass$
+directory:  /opt/.../projectdir
 
-###代码检查配置
-####泛型提示
+
+##代码检查配置
+###泛型提示
 raw use of
 ####不开的
 feature envy
@@ -99,6 +105,8 @@ GenerateSerialVersionUID
 ###sql query plugin
 数据库插件（这个13版本已经自带了database插件，比这个好用。可以不安装了）默认快捷键是ctrl+alt+v  ，但是和其他的快捷键冲突了， 建议修改为ctrl+等号
 ###maven repo search
+
+
 
 
 

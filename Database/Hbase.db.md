@@ -63,6 +63,10 @@ key3    |
 所有值都是以字节数组的形式被存储。
 
 ##物理上如何存储（HRegion，Store，MemStore，StoreFile，HFile，HLog）
+Region [startkey,endkey)
+	Store
+		MemStore
+		StoreFile(HFile)
 (1) Table中所有行都按照row key的字典序排列；
 (2) Table按照行被分割为多个Region。当Table随着记录数不断增加而变大后，会逐渐分裂成多份splits，成为regions，一个region由[startkey,endkey)表示，不同的region会被Master分配给相应的RegionServer进行管理。
 (3) Region按大小分割的，每个表开始只有一个Region，随着数据增多，Region不断增大，当增大到一个阀值的时候，Region就会等分会两个新的Region，之后会有越来越多的Region；
@@ -73,7 +77,9 @@ Store存储是HBase存储的核心了，其中由两部分组成，一部分是M
 * MemStore缓存用户写入的数据
 MemStore是Sorted Memory Buffer，用户写入的数据首先会放入MemStore。
 * StoreFile最终存储这些数据
-当MemStore满了以后会Flush成一个StoreFile（底层实现是HFile），当StoreFile文件数量增长到一定阈值，会触发Compact合并操作，将多个StoreFiles合并成一个StoreFile，合并过程中会进行版本合并和数据删除，因此可以看出HBase其实只有增加数据，所有的更新和删除操作都是在后续的compact过程中进行的，这使得用户的写操作只要进入内存中就可以立即返回，保证了HBase I/O的高性能。当StoreFiles Compact后，会逐步形成越来越大的StoreFile，当单个StoreFile大小超过一定阈值后，会触发Split操作，同时把当前Region Split成2个Region，父Region会下线，新Split出的2个孩子Region会被HMaster分配到相应的HRegionServer上，使得原先1个Region的压力得以分流到2个Region上。
+当MemStore满了以后会Flush成一个StoreFile（底层实现是HFile），当StoreFile文件数量增长到一定阈值，会触发Compact合并操作，将多个StoreFiles合并成一个StoreFile，合并过程中会进行版本合并和数据删除，因此可以看出HBase其实只有增加数据，所有的更新和删除操作都是在后续的compact过程中进行的，这使得用户的写操作只要进入内存中就可以立即返回，保证了HBase I/O的高性能。
+当StoreFiles Compact后，会逐步形成越来越大的StoreFile，当单个StoreFile大小超过一定阈值后，会触发Split操作，同时把当前Region Split成2个Region，父Region会下线，新Split出的2个孩子Region会被HMaster分配到相应的HRegionServer上，使得原先1个Region的压力得以分流到2个Region上。
+
 ```
 Table
 	Region
@@ -178,9 +184,60 @@ region文件总体结构
 .regioninfo文件
 
 ###region拆分
-当一个region存储文件增长到大于配置的hbase.hregion.max.filesize大小或列族层面配置的大小时，一分为二
+[Hbase Region的拆分和合并](http://blog.csdn.net/weihongrao/article/details/17297303)
+[APACHE HBASE REGION SPLITTING AND MERGING](http://hortonworks.com/blog/apache-hbase-region-splitting-and-merging/)
+[Hbase split的过程以及解发条件 源码分析](http://www.tuicool.com/articles/bEjANja)
+[Region拆分逻辑](http://blog.csdn.net/javaman_chen/article/details/48048315)
+* 拆分决定因素
+Region的拆分逻辑是通过CompactSplitThread线程的requestSplit方法来触发的，每当执行MemstoreFlush操作时都会调用该方法进行判断，看是否有必要对目标Region进行拆分。
+拆分条件：
+```
+Min (R^2 * "hbase.hregion.memstore.flush.size", "hbase.hregion.max.filesize")
+R是该region中所包含的该表的region的数量
+```
+一般情况下如果memstore.flush.size的值是128M，那么当开始新建一张表并开始写入数据时，当达到128M开始第一次拆分
+之后依次是2^2*128=512MB, 9*128=1152MB, 16*128m=2GB, 25*128=3.2GB, 36*128=4.6GB
+6.2GB时候开始进行拆分，当达到max.filesize的设定值时便会永远在storefile达到max.filesize进行拆分（默认情况下这个值是10G，在0.90.x版本是256M，现在版本中的默认是是10G）
+需要特别注意的是filessize指的是store下的storefile的大小并不是整个region的大小，一个region可能包含很多个store，确切的说是该表有多少个family就有多少个store，当某个family下的storefile达到以上标准是就会拆分整个region而不管改region下的其他的store下的storefile是否已经达到触发条件。
+按照我的理解，当第一次拆分后所生成的两个新的region,而这两个region有可能会被分配给不同的region server所以当这个regionServer进行第二次拆分的时候R的值有可能是1而不是2，这样一直到所有的region server的节点全部分配到一个region为此（这还需要进一步去验证，因为我至今还搞不清楚当一个region进行拆分式会不会把拆分后的两个region都assign给父region所在的region server，当然我这样的猜测的依据是当出现一个hot region的时候通过手工拆分region可以达到负载均衡的目的，既然是达到负载均衡那肯定是把拆分后的俩region分配到了不同的region sever否则负载均衡大约无从谈起）。
 
-合并
+* 预拆分
+region拆分的另一个问题是当一个新表刚开始建立的时候，默认是一个region这就意味着所有的客户端请求都要去请求这个region所在的region server，这样子其实限制了整个集群的能力，一直到数据足够大到能够触发拆分，并且拆分到的region能够均匀的分布到各个region server中去之后才能发挥整个集群的威力。
+按照上面的拆分约定，第一次拆分仅仅是store的数据达到128M，这并不算大，但是并不意味着可以等待这样的自动拆分，设想一种极端的情况，表建立之后就有1000个客户端同时请求写入数据，那么要等待自动拆分到足够region的数量才能够均衡这样的1000个客户端请求，那效率依然是十分低下的。
+解决的办法是在创建表的时候进行预拆分，就是在建表的时候先预先创建多个region这样子客户端请求的时候就可以分散到不同的region server去请求写入。
+
+第一种对表进行预拆分的方法
+```
+$ hbase org.apache.hadoop.hbase.util.RegionSplitter test_table HexStringSplit -c 10 -f f1:f2:f3
+表名：test_table
+拆分的region的数量：10
+family：f1，f2,f3
+```
+
+第二中预拆分的方法是，当知道rowkey的分布的时候可以指定每个预拆分的region的rowkey的开始值：
+```
+hbase(main):015:0> create 'test_table', 'f1', SPLITS=> ['a', 'b', 'c']
+```
+
+* 手动拆分
+当出现hot region的时候，通常是因为rowkey设计不合理造成的，比如说是自增长的ID，会导致连续的行集中在同一个region中（默认是10G），如果这个region中连续的rowkey都是近一个月的数据，而客户端请求得最为频繁的也是当月的数据，那么就会造成所有请求当月数据的的客户端都连接到该region，导致阻塞，所以彻底解决办法是对rowkey进行良好的设计以让rowkey在集群中均匀分布，如果hot region已经产生，那么就需要手动的去拆分region以让拆分出来的两个region或者数个region分布到不同的region server中去
+```
+hbase(main):024:0> split 'b07d0034cbe72cb040ae9cf66300a10c', 'b'
+```
+
+* 拆分流程
+详细的拆分流程见[HBase-region split and Merge](http://zh.hortonworks.com/blog/apache-hbase-region-splitting-and-merging/)，总得来说可以分为
+当一个region要拆分的时候会首先将该region下线，
+然后block住所有的对该region的客户端请求（所以在事务系统中在拆分的策略上进行均衡）
+拆分的时候会在首先在父region下建立两个referencefile用来指向父region的首行和末行，但是referencefile并不会从父region中拷贝数据
+之后HDFS上建立两个字region的目录然后分别拷贝上步建立的referencefile文件，记住referencefile虽然只是指向父region的数据但是却可以当做子的storefile（分别占据父region的一半数据）使用
+完成子region的创建之后会想meta表发送新产生的region的元数据信息。
+当子的region的memstore不断flush成为新的storefile文件，达到一定数量级的时候就会触发合并（下面会提到），合并的时候就会去父region提取属于它的那一半的数据加上它自己的新生成的storefile的数据，合并完成之后就会自动删除referencefile的文件。
+
+* 合并
+客户端的数据写入region的时候并不会直接写到storefile中而是先写到内存缓冲区memstore(比如大小128M）中，满了之后会flush到store下成为单独的storefile，所以一个store下可能会有多个storefile，当storefile的个数达到设定值（默认是3）时就会合并成一个大的storefile，而当一个storefile达到上述的临界值又会自动进行拆分。
+
+###region合并
 minor合并，重写多个文件写到一个更大文件中
 hbase.hstore.compaction.min 默认=3
 minor合并处理最大文件数量默认为10

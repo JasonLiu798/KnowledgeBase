@@ -2,14 +2,10 @@
 ----
 #doc
 [某互联网大厂kafka最佳实践](http://www.jianshu.com/p/8689901720fd)
-<<<<<<< HEAD
-
 [Kafka 0.9 新消费者API](http://www.cnblogs.com/admln/p/5446361.html)
 [kafka 可靠性思考](http://www.java123.net/975509.html)
-=======
 [go client](https://github.com/wvanbergen/kafka)
 
->>>>>>> b05f61101a6c7239fd01d6aa478087dfec7c66f0
 ---
 #一、硬件考量
 ##1.1、内存

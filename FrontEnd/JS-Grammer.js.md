@@ -7,6 +7,9 @@
 《CSS渲染原理》：在《浏览器内核设计》课程的基础上，深入学习CSS渲染原理，了解CSS的发展史，设计思想，渲染的规则树，盒模型的内核工作机制。
 《HTTP协议》：在《网络工程》课程基础上，深入学习HTTP协议，1.0/1.1/2 等版本的发展史，HTTP协议的格式、RESTFul语义等，《HTTP权威指南》是不错的教材
 《前端工程》：在《软件工程》课程基础上，学习前端有别于传统GUI软件的工程化部分，可能涉及到开发框架、设计模式、组织架构、系统测试、前端安全、统计监控、性能优化等；
+[重新发明 Y 组合子 JavaScript(ES6) 版](http://picasso250.github.io/2015/03/31/reinvent-y.html)
+
+
 
 
 
@@ -85,7 +88,7 @@ m.forEach(function (value, key, map) {
 ##传引用(by reference).
 引用本身复制一份传给function,引用指向的对象并没有被复制传递(java中也是如此),在function中,如果改变了对象的属性的值,由于和原来的引用指向的是同一个对象,因此在通过原来的引用访问到的将是修改过的值;
 但是如果只是在function中将引用指向一个新的对象,将不会改变原对象的值,改变的只是复制的这一份引用.
-##特殊的String  
+##特殊的String
 在JavaScript中,String也传引用的. js中只有charAt方法,而没有对应的修改方法,和java中的String相同,都具有不变性.
 
 
@@ -198,7 +201,7 @@ var xiaoming = {
 };
 
 xiaoming.age(); // 25
-getAge.apply(xiaoming, []); 
+getAge.apply(xiaoming, []);
 ```
 
 ##装饰器，利用apply
@@ -542,6 +545,6 @@ dust(linkin)
 ---
 #other
 grunt gulp
-Sass 
+Sass
 
 

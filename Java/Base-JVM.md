@@ -29,6 +29,14 @@
 方法区，堆，方法栈，本地方法栈，PC寄存器
 [The Java Memory Model](http://www.cs.umd.edu/~pugh/java/memoryModel/)
 
+##永久代->Metaspace
+[Java永久代去哪儿了](http://www.infoq.com/cn/articles/Java-PERMGEN-Removed)
+随着Java8的到来，我们再也见不到永久代了。但是这并不意味着类的元数据信息也消失了。这些数据被移到了一个与堆不相连的本地内存区域，这个区域就是我们要提到的元空间
+因为对永久代进行调优是很困难的。永久代中的元数据可能会随着每一次Full GC发生而进行移动。并且为永久代设置空间大小也是很难确定的，因为这其中有很多影响因素，比如类的总数，常量池的大小和方法数量等。
+
+同时，HotSpot虚拟机的每种类型的垃圾回收器都需要特殊处理永久代中的元数据。将元数据从永久代剥离出来，不仅实现了对元空间的无缝管理，还可以简化Full GC以及对以后的并发隔离类元数据等方面进行优化。
+
+准确的来说，每一个类加载器的存储区域都称作一个元空间，所有的元空间合在一起就是我们一直说的元空间。当一个类加载器被垃圾回收器标记为不再存活，其对应的元空间会被回收。在元空间的回收过程中没有重定位和压缩等操作。但是元空间内的元数据会进行扫描来确定Java引用。
 
 
 
@@ -553,8 +561,9 @@ Yes. So, within HotSpot, the frequency and duration of the garbage collector pau
 http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 [从一次 FULL GC 卡顿谈对服务的影响](http://blog.csdn.net/weiguang_123/article/details/48577175)
 
+
 ----
-#JVM参数的含义
+#JVM参数
 ##常用
 ###测试用例性能测试用
 -Xmx1500m -Xms768m -Xmn512m -Xss128k
@@ -633,7 +642,7 @@ the space 69632K,   4% used [0x227d0000, 0x22aeb958, 0x22aeba00, 0x26bd0000)
 
 
 
-
+#param
 ##-Xms
 初始堆大小初始堆的大小，也是堆大小的最小值，默认值是总共的物理内存/64（且小于1G），默认情况下，当堆中可用内存小于40%(这个值可以用-XX: MinHeapFreeRatio 调整，如-X:MinHeapFreeRatio=30)时，堆内存会开始增加，一直增加到-Xmx的大小；
 
@@ -647,8 +656,13 @@ the space 69632K,   4% used [0x227d0000, 0x22aeb958, 0x22aeba00, 0x26bd0000)
 -Xmn    年轻代大小(1.4or lator)
 -XX:NewSize 设置年轻代大小(for 1.3/1.4)
 -XX:MaxNewSize  年轻代最大值(for 1.3/1.4)
--XX:PermSize    设置持久代(perm gen)初始值
--XX:MaxPermSize 设置持久代最大值
+##-XX:PermSize   
+设置持久代(perm gen)初始值
+##-XX:MaxPermSize 设置持久代最大值
+##-XX:MaxMetaspaceSize
+默认情况下，-XX:MaxMetaspaceSize的值没有限制，因此元空间甚至可以延伸到交换区，但是这时候当我们进行本地内存分配时将会失败。
+64位的服务器端JVM来说，其默认的–XX:MetaspaceSize值为21MB
+-XX:MinMetaspaceFreeRatio和-XX:MaxMetaspaceFreeRatio，他们类似于GC的FreeRatio选项，用来设置元空间空闲比例的最大值和最小值。
 
 ##-Xss 每个线程的堆栈大小
 这个参数用于设置每个线程的栈内存，默认1M，一般来说是不需要改的。除非代码不多，可以设置的小点，另外一个相似的参数是-XX:ThreadStackSize，这两个参数在1.6以前，都是谁设置在后面，谁就生效；1.6版本以后，-Xss设置在后面，则以-Xss为准，-XXThreadStackSize设置在后面，则主线程以-Xss为准，其它线程以-XX:ThreadStackSize为准。

@@ -5,6 +5,15 @@ rescuetime-yp
 everything-net
 
 ----
+
+#快捷键
+程序跑到桌面外边
+按“ALT＋TAB”把焦点切到该窗口；
+按“ALT＋空格”，再按“M”键；
+再按键盘上的“↑”、“↓”、“←”、“→”中的一个，  持续地按住，如果窗口不出现，按换另一个再试
+
+
+
 #common
 #Shadowsocks
 使用：http://ttt.tt/150/ 

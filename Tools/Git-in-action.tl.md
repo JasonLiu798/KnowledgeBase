@@ -260,6 +260,8 @@ ssh-keygen -t rsa -C "jasondliu@qq.com"
 git config --global user.name "JasonLiu798"
 git config --global user.email "jasondliu@qq.com"
 
+git config --global push.default matching
+
 ## format
 git config --global color.ui true
 

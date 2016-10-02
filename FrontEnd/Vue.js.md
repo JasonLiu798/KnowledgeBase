@@ -3,7 +3,7 @@
 http://cn.vuejs.org/guide/overview.html
 
 
-#跨域
+#跨域vue
 ```
 // 后端设置 header 头
 res.setHeader('Access-Control-Allow-Origin', 你的域名);

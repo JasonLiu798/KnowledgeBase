@@ -132,7 +132,7 @@ phpunit -v
 [方案](http://www.cnblogs.com/hnrainll/archive/2013/05/07/3064874.html)
 ##ajax长轮询
 PHP实现: Jquery+php实现comet
-相关:Ajax跨域和js跨域解决方案
+
 ##Comet
 [基于 HTTP 长连接的“服务器推”技术](https://www.ibm.com/developerworks/cn/web/wa-lo-comet/#resources)
 ##websocket

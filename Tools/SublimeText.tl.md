@@ -147,6 +147,7 @@ Ctrl + Alt + Down
     "trim_trailing_white_space_on_save": true,
     "wide_caret": true,
     "word_wrap": true,
+    "update_check": false,
     "wrap_width": 80
 }
 ```

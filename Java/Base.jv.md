@@ -8,6 +8,125 @@
 [Java程序员不要错过的7款新工具](https://www.evget.com/article/2014/7/8/21289.html)
 
 
+---
+#技术栈
+##Java语言
+基础, 基本类型, 操作符, 运算符, 表达式
+面向对象, 类, 继承, 多态, 重写, 重载
+String, Object, Array, Enum
+集合, List, ArrayList, Set, HashSet, Map, HashMap, HashTable
+File, IO, NIO, InputStream, OutputStream, Reader, Writer, Selector
+多线程, 并发, Thread, Runnable, Future
+注解
+反射
+JDBC
+IOC依赖注入, AOP 面向切面编程
+##JavaEE
+Servlet
+JSP, JSTL, EL
+Tomcat
+
+##框架与库
+Spring
+Hibernate,IBatis
+SpringMVC, Struts
+Quartz
+Ehcache
+apache commons
+
+##开发工具
+Eclipse
+IDea
+
+##包管理
+maven
+gradle
+ant
+
+##设计模式
+工厂模式
+工厂方法模式
+策略模式
+门面模式
+代理模式
+桥接模式
+单例模式
+多例模式
+装饰器模式
+迭代模式
+
+##测试
+覆盖率
+[JAVA代码覆盖率采集与分析方案](http://blog.csdn.net/smile0102/article/details/48688763)
+Arquillian
+TestNG
+JUnit
+Mockito
+Powermock
+
+4.1.2. 虚拟化
+
+https://linuxcontainers.org/
+http://www.linux-kvm.org/page/Main_Page
+http://www.xenproject.org/
+https://www.docker.io/
+
+　　4.1.3. 监控
+
+http://www.nagios.org/
+http://ganglia.info/
+
+　　4.1.4. 负载均衡
+
+http://www.linuxvirtualserver.org/
+
+　　4.1.5. 学习使用git
+
+https://github.com/
+https://git.oschina.net/
+
+　　4.1.6. 学习使用maven
+
+http://maven.apache.org/
+
+　　4.1.7. 学习使用gradle
+
+http://www.gradle.org/
+
+　　4.1.8. 学习一个小语种语言
+
+Groovy
+Scala
+LISP, Common LISP, Schema, Clojure
+R
+Julia
+Lua
+Ruby
+
+　　4.1.9. 尝试了解编码的本质
+
+了解以下概念
+ASCII, ISO-8859-1
+GB2312, GBK, GB18030
+Unicode, UTF-8
+不使用 String.getBytes() 等其他工具类/函数完成下面功能
+
+public static void main(String[] args) throws IOException {
+    String str = "Hello, 我们是中国人。";
+    byte[] utf8Bytes = toUTF8Bytes(str);
+    FileOutputStream fos = new FileOutputStream("f.txt");
+    fos.write(utf8Bytes);
+    fos.close();
+}
+public static byte[] toUTF8Bytes(String str) {
+    return null; // TODO
+}
+想一下上面的程序能不能写一个转GBK的？
+写个程序自动判断一个文件是哪种编码
+
+
+
+
 
 ----
 #变量

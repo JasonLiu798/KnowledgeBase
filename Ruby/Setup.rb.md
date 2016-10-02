@@ -1,5 +1,10 @@
 #ruby env
 ---
+#doc
+[ruby](https://www.ruby-lang.org/)
+
+
+---
 #setup
 ##windows
 http://rubyinstaller.org/downloads/
@@ -10,8 +15,21 @@ configure: error: libtool configure failed
 cp /usr/share/libtool/config.guess ./
 
 
+
 ##包安装
+[gem search](https://rubygems.org/)
 sudo apt-get install -y git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common autoconf bison libreadline6-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
+
+##更换source
+$ gem sources --remove https://rubygems.org/
+$ gem sources -a https://ruby.taobao.org/ 【如果你系统不支持https，请将淘宝源更换成：gem sources -a http://gems.ruby-china.org】
+$ gem sources -l
+*** CURRENT SOURCES ***
+
+https://ruby.taobao.org
+# 请确保只有 ruby.taobao.org
+$ gem install sass
+
 
 
 ##rbenv

@@ -14,5 +14,3 @@ hash	#开始的锚具体获取方法：window.location.hostname 等；
 window.location.host
 
 
-#跨域
-[JSONP](http://kb.cnblogs.com/page/139725/)

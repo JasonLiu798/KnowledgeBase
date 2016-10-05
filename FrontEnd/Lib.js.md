@@ -23,7 +23,23 @@ var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
 ----
 #ajax
 [fetch](https://github.com/bitinn/node-fetch)
+
 [superagent](https://github.com/visionmedia/superagent)
+ npm install superagent
+```javascript
+var nocache = require('superagent-no-cache');
+var request = require('superagent');
+var prefix = require('superagent-prefix')('/static');
+
+request
+  .post('/api/pet')
+  .send({ name: 'Manny', species: 'cat' })
+  .set('X-API-Key', 'foobar')
+  .set('Accept', 'application/json')
+  .end(function(err, res){
+    // Calling the end function will send the request
+  });
+```
 
 [request]()
 

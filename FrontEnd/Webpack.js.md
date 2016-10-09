@@ -90,7 +90,6 @@ webpack 没有 requirejs 的那种引入了第三方插件然后可以忽略打�
 
 
 
-
 ----
 #use babel-loader
 babel-preset-es2015
@@ -176,7 +175,6 @@ document.body.appendChild(img1);
 
 ---
 #代码混淆
-
 webpack.config.js
 var webpack = require('webpack');
 var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
@@ -202,11 +200,71 @@ module.exports = {
 
 
 
+
 ---
-[彻底解决Webpack打包慢的问题](http://blog.csdn.net/fengyinchao/article/details/52100357)
+#自动编译
+webpack-dev-server
 
 
+---
+#dll 痛点-打包慢
+[彻底解决Webpack打包慢的问题](./docs/Webpack打包慢.md)
+##打包ddl包
+配置一个这样的 ddl.config.js：
+```
+const webpack = require('webpack');
 
+const vendors = [
+    'react',
+    'react-dom',
+    'react-router',
+    // ...其它库
+];
+
+module.exports = {
+    output: {
+        path: 'build',
+        filename: '[name].js',
+        library: '[name]',
+    },
+    entry: {
+        "lib": vendors,
+    },
+    plugins: [
+        new webpack.DllPlugin({
+            path: 'manifest.json',
+            name: '[name]',
+            context: __dirname,
+        }),
+    ],
+};
+```
+path 是 manifest.json 文件的输出路径，这个文件会用于后续的业务代码打包；
+name 是dll暴露的对象名，要跟 output.library 保持一致；
+context 是解析包路径的上下文，这个要跟接下来配置的 webpack.config.js 一致。
+
+##引用ddl包，打包业务代码
+webpack.config.js：
+```
+const webpack = require('webpack');
+module.exports = {
+    output: {
+        path: 'build',
+        filename: '[name].js',
+    },
+    entry: {
+        app: './src/index.js',
+    },
+    plugins: [
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require('./manifest.json'),
+        }),
+    ],
+};
+```
+context 需要跟之前保持一致，这个用来指导 Webpack 匹配 manifest 中库的路径；
+manifest 用来引入刚才输出的 manifest.json 文件。
 
 
 

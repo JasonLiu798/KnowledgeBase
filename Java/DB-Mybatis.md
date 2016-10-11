@@ -9,7 +9,7 @@ https://mybatis.github.io/mybatis-3/zh/index.html
 mybatis3.2.3+spring整合（附带源码）
 http://www.luoshengsha.com/284.html
 http://haohaoxuexi.iteye.com/blog/1843309
-
+[Mybatis的ResultMap的使用](http://www.cnblogs.com/rollenholt/p/3365866.html)
 
 
 ---

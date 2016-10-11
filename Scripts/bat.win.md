@@ -55,7 +55,7 @@ cmd中文显示乱码永久解决方案，以切换回中文936为例：
 解释：doskey就相当于Linux中的alias，等于号左边是其右边的别名，$*表示这个命令还可能有其他参数，@表示执行这条命令时不显示这条命令本身
 
 ##cmdrc
-reg add "HKLM\Software\Microsoft\Command Processor" /v "AutoRun" /t REG_SZ /d "D:\yp\documents\Scripts\bashrc\cmdrc.bat" /f
+reg add "HKLM\Software\Microsoft\Command Processor" /v "AutoRun" /t REG_SZ /d "D:\project\document\Scripts\cmdrc.bat" /f
 
 ---
 #变量
@@ -64,6 +64,8 @@ set 变量名
 set 变量名=变量内容
 追加
 set 变量名=%变量名%;变量内容
+set 
+
 
 ##环境变量
 %ALLUSERSPROFILE%   | 局部 | 返回所有“用户配置文件”的位置。

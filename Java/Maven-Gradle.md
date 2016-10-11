@@ -103,6 +103,8 @@ system
 
 ---
 #cmd
+常用
+alias mccpi='mvn clean compile package install -Dmaven.test.skip=true'
 ##lifecycle
 mvn clean compile
 mvn clean test

@@ -519,11 +519,6 @@ javascript heap profiler
 
 
 
----
-#跨域共享
-JSONP，CORS，HTTP 协议，浏览器安全机制，PreFlight Request，反向代理
-
-
 
 ---
 #JS模板引擎

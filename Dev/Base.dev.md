@@ -92,8 +92,15 @@ System.out.println( p); p的结果为：127
 
 
 ----
-
-
+#时间
+时区 & 冬令时、夏令时
+http://en.wikipedia.org/wiki/Time_zone
+ftp://ftp.iana.org/tz/data/asia
+http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E6%99%82%E5%8D%80
+闰年
+http://en.wikipedia.org/wiki/Leap_year
+闰秒
+ftp://ftp.iana.org/tz/data/leapseconds
 
 
 

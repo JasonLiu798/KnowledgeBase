@@ -4,6 +4,9 @@
 https://github.com/webpack/webpack
 npm install -g webpack
 [](http://itindex.net/detail/53450-react-webpack)
+
+[webpack-demos](https://github.com/ruanyf/webpack-demos)
+
 ---
 打包工具
 npm install --save-dev gulp-webpack
@@ -16,6 +19,11 @@ npm install --save-dev webpack-dev-server react-hot-loader
 
 ---
 #cmd
+```
+$ browserify main.js > bundle.js
+# be equivalent to
+$ webpack main.js bundle.js
+```
 webpack – for building once for development
 webpack -p – for building once for production (minification)
 webpack --watch – for continuous incremental build
@@ -61,7 +69,10 @@ module: {
 
 ---
 #css
+npm install style-loader
+npm install css-loader --save-dev
 [style-loader](https://www.npmjs.com/package/style-loader)
+insert Style tag into HTML page
 ```
 require('./app.css');
 
@@ -81,6 +92,10 @@ body {
     ]
 ```
 
+[css-loader](https://www.npmjs.com/package/css-loader)
+read CSS file
+
+
 
 ---
 #img
@@ -99,11 +114,25 @@ document.body.appendChild(img1);
 ```
 
 
+---
+#代码混淆
 
-
-
-
-
+webpack.config.js
+var webpack = require('webpack');
+var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+module.exports = {
+  entry: './main.js',
+  output: {
+    filename: 'bundle.js'
+  },
+  plugins: [
+    new uglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
+  ]
+};
 
 
 

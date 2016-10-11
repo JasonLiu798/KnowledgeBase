@@ -1,8 +1,14 @@
 #windows command
 ----
 #must
-rescuetime-yp
-everything-net
+rescuetime-时间管理
+everything-搜索
+[文档API管理 velocity](http://velocity.silverlakesoftware.com/)
+[文档API管理 zeal](https://zealdocs.org/)
+IDEA-开发
+Xmind-知识管理
+
+
 
 ----
 

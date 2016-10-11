@@ -1,0 +1,63 @@
+task hello {
+    doLast {
+        println 'Hello world!'
+    }
+}
+
+task upper << {
+    String someString = 'mY_nAmE'
+    println "Original: " + someString
+    println "Upper case: " + someString.toUpperCase()
+}
+
+task notype << {
+    def oneInt = 1 //等价于 int oneInt = 1
+    def oneFloat = 1.00 //等价于 ioneFloat = 1.00
+    def oneString = 'Clock'//等价于 oneString = 'Clock'
+
+    println "oneInt: " + oneInt
+    println "oneFloat: " + oneFloat
+    println "oneString: " + oneString
+}
+
+//loop
+task rounder << {
+    10.times{
+        println "it is: " + it
+    }
+}
+
+task rounder1 << {
+    10.times{a->
+        println "it is: " + a
+    }
+}
+
+//dependent type1
+task hello1 << {
+    println 'Hello world!'
+}
+task intro(dependsOn: hello1) << {
+    println "I'm Gradle"
+}
+//dependent type2
+task intro(dependsOn: 'hello') << {
+    println "I'm Gradle"
+}
+task hello << {
+    println 'Hello world!'
+}
+
+
+//include 'SubProject1','SubProject2','SubProject3'.........;
+/*
+repositories {
+    mavenCentral()//本地库支持
+    maven {
+        url "http://repo.mycompany.com/maven2" //远程库地址
+    }
+
+}
+*/
+
+

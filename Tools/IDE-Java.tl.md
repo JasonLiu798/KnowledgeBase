@@ -110,19 +110,20 @@ GenerateSerialVersionUID
 
 
 
-## keyMap 快捷键
+##keyMap 快捷键
 [所有](http://www.itjhwd.com/intellij-ideakjj)
-### 常用
+###常用
     ctrl + F12 -> ctrl + \    file structure  ，outline，查看文件所有函数，快速查找
 
-#### 代码生成
+####代码生成
     Shift + F6    (Alt + Shift + R)        重构rename
     Alt + Insert    (Alt + Shift + Z)      自动创建getter/setter
     Alt + Enter     解决错误
     Ctrl + Alt + L     (Ctrl + Shift + F)  自动格式化代码
     Ctrl + Alt + O (Ctrl + Shift + O)   自动去除无用的import语句
     Shift+F6  重构-重命名
-#### 查找/查看
+
+####查找/查看
     Ctrl+Alt+ left/right  返回至上次浏览的位置
     双击Shift   全局查找
     ctrl-E      最近编辑文件
@@ -131,7 +132,7 @@ GenerateSerialVersionUID
     ctrl-alt-H  调用层次
     alt+F7      查看该方法/变量/类被调用的地方
 
-#### 移动
+####移动
     Alt+ left/right 切换代码视图
     在方法间快速移动                        Alt + 上下键
     在定位当前文件到左边结构树的节点上      Alt + F1

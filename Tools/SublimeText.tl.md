@@ -234,6 +234,7 @@ Linux: ctrl-Alt-Shift-F
 * GBK Encoding Support, 转码
 * EncodingHelper,       编码增强
 * Vintageous,   vi扩展
+https://github.com/guillermooo/Vintageous/wiki/Basic-Debugging
 ```
 配置
 http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html

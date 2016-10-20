@@ -66,12 +66,10 @@ maven:
 ${SOURCEPATH}/../../test/java/${PACKAGE}/${FILENAME}
 ###serialversion
 GenerateSerialVersionUID
+###emmet
 ###FindBugs for IntelliJ IDEA
   通过FindBugs帮你找到隐藏的bug及不好的做法。
-###Identifier Highlighter 
-高亮显示选中变量插件（idea14报错无法使用）
-不安装插件的时的快捷键是选中这个变量然后按Ctrl+F7
-idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
+
 ###Key Promoter
 快捷键提示插件，当你点击鼠标一个功能的时候，可以提示 你这个功能快捷键是什么 ，和这个按钮你的使用频率
 ###Jrebel 热部署插件
@@ -98,15 +96,27 @@ idea默认的选中变量以后，是不会像eclipse一样提示这个变量用
 
 ###angularjs
 
+###js语法支持，社区版
+TextMate Bundles Support plug-in.
+[配置](http://plugins.jetbrains.com/plugin/7221?pr=idea_ce)
+https://github.com/textmate
+https://github.com/textmate/latex.tmbundle
+https://github.com/textmate/javascript.tmbundle
+https://github.com/textmate/sql.tmbundle
+https://github.com/textmate/scala.tmbundle
 
-不好用，不可用的
+###不好用，不可用的
 ###FileBrowser 在IDEA中查看项目外的文件 [不可用]（目前13.1.2以上好像不支持不知道其他人怎么样）
 ###sql query plugin
 数据库插件（这个13版本已经自带了database插件，比这个好用。可以不安装了）默认快捷键是ctrl+alt+v  ，但是和其他的快捷键冲突了， 建议修改为ctrl+等号
 ###maven repo search
 ###GenerateToString (idea2016报错)
 自动生成toString方法, toString方法是可定制的
-
+###Identifier Highlighter
+idea2016报错：Unable to save settings: Failed to save settings. Please restart IntelliJ IDEA
+高亮显示选中变量插件
+不安装插件的时的快捷键是选中这个变量然后按Ctrl+F7
+idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
 
 
 

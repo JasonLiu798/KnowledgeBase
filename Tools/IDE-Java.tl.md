@@ -53,28 +53,28 @@ feature envy
 ###手动安装插件目录
 C:\Users\Administrator\.IntelliJIdea14\config\plugins
 $SETUP_DIR/plugins
+###idea vim
+[IdeaVim插件使用技巧](http://kidneyball.iteye.com/blog/1828427)
+模拟linux下 vi编辑器的插件支持vi的命令
 ###junit
 http://my.oschina.net/laugh2last/blog/169352
 http://kidneyball.iteye.com/blog/1814028
-###JunitGenerator
+###JunitGenerator 单元测试
 default:
 ${SOURCEPATH}/test/${PACKAGE}/${FILENAME}
 maven:
 ${SOURCEPATH}/../../test/java/${PACKAGE}/${FILENAME}
-###Identifier Highlighter
-高亮显示选中变量插件（idea14报错无法使用）
-不安装插件的时的快捷键是选中这个变量然后按Ctrl+F7
-idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
+###serialversion
+GenerateSerialVersionUID
+###emmet
+###FindBugs for IntelliJ IDEA
+  通过FindBugs帮你找到隐藏的bug及不好的做法。
+
 ###Key Promoter
 快捷键提示插件，当你点击鼠标一个功能的时候，可以提示 你这个功能快捷键是什么 ，和这个按钮你的使用频率
 ###Jrebel 热部署插件
   MyEclipse10和2014都是默认debugger模式支持热部署的。而idea需要你安装这个插件才会支持热部署，所以也算个遗憾吧
 
-###serialversion
-GenerateSerialVersionUID
-
-###FindBugs for IntelliJ IDEA
-  通过FindBugs帮你找到隐藏的bug及不好的做法。
 ###TabSwitch
   通过ctrl + tab在文件，各个面板tab间切换。
 ###Mybatis
@@ -84,9 +84,7 @@ GenerateSerialVersionUID
 安装后快捷键alt+P全部大写     alt+L全部小写      alt+C开头字母大写
 ###generate serialversionuid
 生成uuid 的插件，安装后快捷键 alt+insert，有冲突
-###idea vim
-[IdeaVim插件使用技巧](http://kidneyball.iteye.com/blog/1828427)
-模拟linux下 vi编辑器的插件支持vi的命令
+
 ###generateO2O    自动对象转换插件。
   方法体内可以生成对应的get set方法把一个对象对等拷贝到另一个对象里  快捷键 alt+insert
 ###EncodingPlugin
@@ -95,18 +93,30 @@ GenerateSerialVersionUID
 重写equals和hashcode方法的自定义模板
 ###unitTest
 在指定的方法上按下shift + cmd + t 即可为这个方法生成单元测试代码模板。
-###GenerateToString
-自动生成toString方法, toString方法是可定制的
+
 ###angularjs
 
+###js语法支持，社区版
+TextMate Bundles Support plug-in.
+[配置](http://plugins.jetbrains.com/plugin/7221?pr=idea_ce)
+https://github.com/textmate
+https://github.com/textmate/latex.tmbundle
+https://github.com/textmate/javascript.tmbundle
+https://github.com/textmate/sql.tmbundle
+https://github.com/textmate/scala.tmbundle
 
-不好用，不可用的
+###不好用，不可用的
 ###FileBrowser 在IDEA中查看项目外的文件 [不可用]（目前13.1.2以上好像不支持不知道其他人怎么样）
 ###sql query plugin
 数据库插件（这个13版本已经自带了database插件，比这个好用。可以不安装了）默认快捷键是ctrl+alt+v  ，但是和其他的快捷键冲突了， 建议修改为ctrl+等号
 ###maven repo search
-
-
+###GenerateToString (idea2016报错)
+自动生成toString方法, toString方法是可定制的
+###Identifier Highlighter
+idea2016报错：Unable to save settings: Failed to save settings. Please restart IntelliJ IDEA
+高亮显示选中变量插件
+不安装插件的时的快捷键是选中这个变量然后按Ctrl+F7
+idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
 
 
 

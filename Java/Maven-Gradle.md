@@ -105,6 +105,8 @@ system
 #cmd
 常用
 alias mccpi='mvn clean compile package install -Dmaven.test.skip=true'
+alias mvni='mvn clean compile package install -Dmaven.test.skip=true'
+alias mvnp='mvn clean compile package -Dmaven.test.skip=true'
 ##lifecycle
 mvn clean compile
 mvn clean test
@@ -322,6 +324,15 @@ http://blog.csdn.net/leonzhouwei/article/details/9978771
 ---
 #Maven仓库
 http://tianya23.blog.51cto.com/1081650/386908/
+```xml
+<mirror>
+      <id>alimaven</id>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>central</mirrorOf>
+</mirror>
+```
+
 1、maven 仓库地址：
 共有的仓库
 http://repo1.maven.org/maven2/

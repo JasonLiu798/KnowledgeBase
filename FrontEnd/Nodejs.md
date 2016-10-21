@@ -23,6 +23,11 @@ npm root -g     #查看在你的系统中全局的路径。
 npm config set prefix "D:\tools\nodejs\win"
 npm config get prefix
 
+##查看
+npm -g outdated
+##升级
+npm update <name>
+##配置相关
 npm config ls -l
 npm config set cache "D:\\log\\npmc"
 npm config get cache

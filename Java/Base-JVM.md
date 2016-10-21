@@ -315,7 +315,7 @@ top -Hp 32598
 printf "%x\n" 32678
 7fa6
 
-jstack 32598 |grep 7fa6
+jstack 100093 |grep 1876f
 
 
 ###TDA

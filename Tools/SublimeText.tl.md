@@ -259,6 +259,7 @@ https://github.com/titoBouzout/SideBarEnhancements
 * AdvancedNewFile,  配置新建文件的附属文件，直接生成一个工程都可以
 * Compare Side-By-Side, Sublime版本的Beyond Compare
 * WordCount,  字数显示
+* vue文件支持，https://github.com/vuejs/vue-syntax-highlight
 
 ##主题
 * Soda[Theme],  Dark and light custom UI themes for Sublime Text

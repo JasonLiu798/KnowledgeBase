@@ -1,5 +1,17 @@
 #Maven
 ---
+#pom.xml配置
+##添加本地包
+```xml
+<dependency>
+  <groupId>com.test</groupId>
+  <artifactId>test</artifactId>
+  <version>1.0.0</version>
+  <scope>system</scope>
+  <systemPath>${project.basedir}/lib/xxx.jar</systemPath>
+</dependency>
+```
+
 #setup
 ## eclipse.ini
 -vm
@@ -226,6 +238,34 @@ mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase -Dversion
 ##check-type
 http://blog.csdn.net/kongxx/article/details/7750015
 
+##代码混淆
+proguard-maven-plugin
+```xml
+  <plugin>
+      <groupId>com.pyx4me</groupId>
+      <artifactId>proguard-maven-plugin</artifactId>
+      <executions>
+         <execution>
+             <phase>package</phase>
+             <goals><goal>proguard</goal></goals>
+         </execution>
+      </executions>
+      <configuration>
+          <proguardVersion>4.4</proguardVersion>
+          <libs>
+              <lib>${java.home}/lib/rt.jar</lib>
+          </libs>
+      </configuration>
+      <dependencies>
+          <dependency>
+              <groupId>net.sf.proguard</groupId>
+              <artifactId>proguard</artifactId>
+              <version>4.4</version>
+              <scope>runtime</scope>
+          </dependency>
+      </dependencies>
+  </plugin>
+```
 
 assembly
 http://blueram.iteye.com/blog/1684070

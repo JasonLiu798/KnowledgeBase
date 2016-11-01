@@ -5,6 +5,8 @@ https://github.com/webpack/webpack
 npm install -g webpack
 [](http://itindex.net/detail/53450-react-webpack)
 [webpack-demos](https://github.com/ruanyf/webpack-demos)
+[webpack-seed](https://github.com/Array-Huang/webpack-seed)
+
 
 ---
 #打包工具
@@ -201,6 +203,7 @@ module.exports = {
 
 
 
+
 ---
 #自动编译
 webpack-dev-server
@@ -266,7 +269,8 @@ module.exports = {
 context 需要跟之前保持一致，这个用来指导 Webpack 匹配 manifest 中库的路径；
 manifest 用来引入刚才输出的 manifest.json 文件。
 
-
+##bootstrap
+https://github.com/ga-wdi-boston/game-project/issues/18
 
 
 

@@ -104,6 +104,9 @@ https://github.com/textmate/latex.tmbundle
 https://github.com/textmate/javascript.tmbundle
 https://github.com/textmate/sql.tmbundle
 https://github.com/textmate/scala.tmbundle
+https://github.com/textmate/antlr.tmbundle
+
+
 
 ###不好用，不可用的
 ###FileBrowser 在IDEA中查看项目外的文件 [不可用]（目前13.1.2以上好像不支持不知道其他人怎么样）

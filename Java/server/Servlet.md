@@ -93,19 +93,6 @@ Weblogic | 开发者，有免费使用一年的许可证 | J2EE全部支持
 WebSphere | 收费  | J2EE全部支持
 
 
----
-#Jetty
-[Jetty 的工作原理以及与 Tomcat 的比较](http://www.ibm.com/developerworks/cn/java/j-lo-jetty/index.html)
-[从Jetty、Tomcat和Mina中提炼NIO构架网络服务器的经典模式（一）](http://blog.csdn.net/cutesource/article/details/6192016)
-
-##与tomcat性能对比
-Jetty 可以同时处理大量连接而且可以长时间保持这些连接
-Jetty 默认使用的是 NIO 技术在处理 I/O 请求上更占优势
-Tomcat 在处理少数非常繁忙的连接上更有优势，也就是说连接的生命周期如果短的话，Tomcat 的总体性能更高
-Tomcat 默认使用的是 BIO，在处理静态资源时，Tomcat 的性能不如 Jetty
-
-
-
 
 
 

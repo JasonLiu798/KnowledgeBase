@@ -137,13 +137,15 @@ idea默认的选中变量以后，是不会像eclipse一样提示这个变量用
     Shift+F6  重构-重命名
 
 ####查找/查看
-    Ctrl+Alt+ left/right  返回至上次浏览的位置
-    双击Shift   全局查找
-    ctrl-E      最近编辑文件
-    ctrl-H      查看类继承层次
-    Ctrl+Q      显示注释文档
-    ctrl-alt-H  调用层次
-    alt+F7      查看该方法/变量/类被调用的地方
+```
+Ctrl+Alt+ left/right  返回至上次浏览的位置
+双击Shift   全局查找
+ctrl-E      最近编辑文件
+ctrl-H      查看类继承层次
+Ctrl+Q      显示注释文档
+ctrl-alt-H  调用层次
+alt+F7  Find Usage(ctrl+shift+3) 查看该方法/变量/类被调用的地方
+```
 
 ####移动
     Alt+ left/right 切换代码视图

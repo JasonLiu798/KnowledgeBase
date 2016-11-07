@@ -28,6 +28,9 @@ javacc语法和词法分析器的生成程序
 [microsoft 人脸识别](http://www.projectoxford.ai/doc/face/How-To/detectface)
 
 
+---
+#解耦
+[java.util.ServiceLoader 的使用](http://tangmingjie2009.iteye.com/blog/1697013)
 
 
 ---

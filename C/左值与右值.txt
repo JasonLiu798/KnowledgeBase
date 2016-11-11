@@ -1,0 +1,141 @@
+左值和右值这两个概念我想大家都耳熟能详了，但它们究竟是什么以及如何理解它运用它，一开始大家都会感觉比较困难。所以我想写这篇总结性的文章来帮助大家理解它们。希望对大家有帮助。
+        
+首先我们需要理解左值和右值的定义：
+左值指的是如果一个表达式可以引用到某一个对象，并且这个对象是一块内存空间且可以被检查和存储，那么这个表达式就可以做为一个左值。      
+右值指的是引用了一个存储在某个内存地址里的数据。
+从上面的两个定义可以看出，左值其实要引用一个对象，而一个对象在我们的程序中又肯定有一个名字或者可以通过一个名字访问到，所以左值又可以归纳为：左值表示程序中必须有一个特定的名字引用到这个值。而右值引用的是地址里的内容，所以相反右值又可以归纳为：右值表示程序中没有一个特定的名字引用到这个值除了用地址。
+            好这些都是从定义上理解左值右值，那么我们再用这些定义作为我们的理论基础来总结一下哪些是左值，哪些是右值：
+左值：
+Expression
+Lvalue
+x = 42
+x
+*ptr = newvalue
+*ptr
+a++
+a++
+b[0] = 100
+b[0]
+const int m = 10
+m
+int& f()
+The function call to f()
+右值：
+Expression
+Rvalue
+100
+100
+a * b
+The expression of a * b
+int f()
+The function call to f() that does not return reference
+以上这些内容都可以用定义来解释为什么这些为左值，而那些为右值。但我要特殊解释一下为什么函数的调用只能作为右值除了这个函数返回的是引用。其实这个也非常好解释，因为如果一个函数返回的值是 内建类型，那么这个返回值是没有办法通过一个名字或者表达式引用到的，同理如果一个函数返回的是一个对象，那么这个对象是一个临时的，也不可能用一个名字访问到。所以函数的调用通常只能作为右值，但如果一个函数返回引用，那么它的返回值就有意义了，因为它是另一个名字的别名，有名字了，所以它就变成了左值。
+注意：左值能转化为右值，但反之不行。
+好了，讲了这么多我觉得已经足够，但还要多讲一点，这点就是哪些操作符必需左值.
+Operator
+Requirement
+& (unary)
+Operand must be an lvalue.
+++ --
+Operand must be an lvalue. This applies to both prefix and postfix forms.
+= += -= *= %= <<= >>= &= ^= |=
+Left operand must be an lvalue.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+关于左值和右值的Q & A 收藏  
+版权声明：可以任意转载，转载时请务必以超链接形式标明如下文章原始出处和作者信息及本声明 
+作者：xixi 
+出处：http://blog.csdn.net/slowgrace/archive/2009/10/20/4704066.aspx
+（感谢supermegaboy，飞雪，hpsmouse，pmerOFc，wangmu7206等网友，来自这几个帖子的讨论：1-112楼、2-54楼、3、4）  
+Q：作为一个程序员，为什么要弄明白左值的概念？ 
+A：有很多原因。比如说，有些语境下必须要使用左值，如果你不知道哪些表达式是左值，你就可能给错。 
+
+Q：请问哪些语境下必须要使用左值？ 
+A：下列运算符的操作数要求左值：取地址运算符 & , ++ 运算符, -- 运算符，赋值 = 运算符的左侧，成员 . 运算符的左侧。 
+
+Q：那么如何判断一个表达式是左值？ 
+A：依据标准的定义来判断。[C99]An lvalue is an expression with an object type or an incomplete type other than void; 也就是说，如果一个表达式具有对象类型或非空不完整类型，那就是左值。其实这里关键的是对象类型，虽然不完整类型不是对象类型，但由于它可以通过某种方式补充完整，因此可以认为它也是一种对象类型；但void除外，因为void不能被补充完整。 
+
+Q：那么如何判断一个表达式具有对象类型？ 
+A：那我们要先搞清楚什么是对象类型。Types are partitioned into object types (types that fully describe objects), function types (types that describe functions), and incomplete types (types that describe objects but lack information needed to determine their sizes). 所以“通过非函数类型声明的非类型标识符”都是左值。 
+
+Q：那么如何判断那些由标识符和运算符共同构成的表达式是否左值呢？ 
+A：每种运算符都规定了它的运算结果是否左值以及它的操作数是否期待左值，依据这些规则就可以判定一个表达式是否左值（以下简称它们是左值规则）。其实也不用记得太牢，因为如果你弄错了，编译器会报错的，嘿嘿。 
+
+Q：有哪些常见的左值规则？ 
+A： 
+（1）最明显的左值表达式的例子是有适当类型和内存的标识符； 
+（2）间接运算符*的运算结果是左值； 
+（3）取地址运算符&的运算结果是右值； 
+（4）下列表达式不能产生lvalue: 数组名，函数，枚举常量，赋值表达式，强制类型转换（目标类型是引用时除外），函数调用。 
+
+Q：晕，*ptr和&a都是指针，为嘛一个是左值、一个是右值啊？ 
+A：简单说，这就是规则。如果你觉得死记硬背这个规则比较累的话，不妨看看飞雪关于*ptr返回对象的解释，来帮助你的记忆：*在这里是解引用运算，相当于说，有一个对象被盒子包起来了，然后用*运算打开盒子，使用这个对象。也就是ptr这个指针包裹了它所指向的对象pa，通过*运算，就获取了pa这个对象。 
+
+Q：明白一点了，有没有什么更通用的帮助理解记忆上述规则的方法呢？ 
+A：来看hpsmouse写的这个心得：左值和右值的概念写代码写多了就会自然产生相应感觉的——就是飞雪提到的“可访问的存储”。一些感性的例子： 
+    a+b这个值是一个相当“悬”的东西，我们只知道它是 a+b 的结果，但不能掌握它的具体情况，也不太关心它到底怎样出现甚至是否出现。 
+    而 *p 就不一样，因为 p 是个指针，它必然有一个值，不管是有效的还是无效的，那么那个值代表的内存区域就肯定有某个东西，这是实实在在的。 
+    至于 &a，我们只知道它是 a 的地址，同样不知道也不关心它到底怎样出现或是否出现。 
+于是，我们把 a+b、&a 这样有些“虚”的表达式称为 rvalue，把 *p 这样实实在在的表达式称为 lvalue。 
+
+其实，hpsmouse“把 *p 这样实实在在的表达式称为 lvalue，多少触及到了lvalue的重要实质”（pmerOFc语）。实际上，lvalue中的“l”可以理解为“location”（来自这篇文章，谢谢Tiger_Zhao提供链接）。早期的左值定义（比如C89）指的就是一个其结果有adrressable location（可以寻址的存储）的表达式，你可以往这个location放数据或信息。（The "l" in lvalue can be though of as location, meaning that an expression has an addressable location that data or information can be put into.） 
+
+Q：貌似有点明白了，为什么要强调可访问的存储？难道还有些拥有存储却不可访问的表达式结果么？ 
+A：对的，来看如下例子（来自飞雪）：
+int a; 
+int foo(){return 1;} 
+foo的返回的是一个int，这个int的值是1，这个值是拥有存储的，但是你不应该知道；a + 1会通过+产生一个值，这个值是拥有存储的，但是这个存储也不是你应该知道的。所以，它们都不是左值。只有当你拥有表达式的存储的访问权时，你才可以把这个表达式放在=的左边，通过赋值来改变这个对象的状态。 
+
+其实左值无非是可以引用到对象的表达式，因此左值的概念和C里的对象是密不可分的，只要理解好了对象，就比较好把握左值了。C里的对象 （注意和“面向对象”里的“对象”完全两回事）是指一块命名的内存区域（An Object is a named region of storage—From “The C Programming Language”）。所以，左值的关键是拥有你可访问的存储！ 
+
+当然左值概念经过发展后，已经不再介意一个左值引用的对象是否真的存在了，重要的是，这个左值具有对象或非空不完整类型。例如（来自supermegaboy）：
+double i; 
+int *p = ( int* )&i;    /*p并非真正指向一个int对象，但*p依然是左值*/ 
+int *p; 
+*p = .........; /*p并没有指向啥，但*p还是左值*/ 
+Q：说了这么多左值，那右值的定义是什么呢？ 
+A：[C99]右值（rvalue）是指表达式的值。（46页脚注）What is sometimes called “rvalue” is in this International Standard described as the “value of an expression”. 实际上，右值里的“r”其实也有“read”的意思（The "r" in rvalue can be thought of as "read" value—来自这篇文章），也就是要把存在左值的存储空间里的东西读出来。当然，这只是个用于帮助理解记忆的经不起推敲的说法，实际中很多右值并没有对应的左值，更谈不上从什么地方读出来了。 
+
+Q：有点晕。那左值表达式的值也是右值？ 
+A：恩，对。实际上，除了上面必须使用左值的场合（以及作为sizeof的操作数）以外，所有左值表达式（数组类型的左值除外）在使用的时候其实是被转化为它所引用的对象所存储的值使用的。 Except when it is the operand of the sizeof .operator. the unary h operator. the ++ operator. the -- operator. or the left operand of the . operator or an assignment -operator. an lvalue that does not have array type is converted to the value stored in the designated object (and is no longer an lvalue). （上述道理和pmerOFc争论了大半夜才弄明白，感谢pmerOFc和supermegaboy。以上内容译摘自C89 6.2.2.1）。 
+
+也就是说，在C中，一个左值表达式，除了应用于一些特定的运算符时以外，在使用时会自动进行左值到右值的转换，并一直进行到无法再转换为止。因此，在C里表达式的值一定是右值（supermegaboy语），而且一定是不拥有可访问的存储的。在C++标准里也有类似的说法（飞雪提供）Whenever an lvalue appears in a context where an rvalue is expected, the lvalue is converted to an rvalue。 
+
+课后练习 
+来看下面这段代码，来自supermegaboy的《指针与数组的艺术》。
+struct Test
+{
+    int a[10];
+}; 
+struct Test fun(struct Test*); 
+int main( void )
+{
+    struct Test T;
+    int *p = fun(&T).a;                         /* 语句1 */
+    int (*q)[10] = &fun(&T).a;                  /* 语句2 */
+    printf( "%d", sizeof(fun(&T).a));           /* 语句3 */
+    return 0;
+}
+struct Test fun(struct Test *T)
+{
+    return *T;
+}
+看看下面的说明你能看懂么？ 
+（1）函数fun(&T)的返回值是一个右值，fun(&T).a就是一个右值数组，是一个右值表达式； 
+（2）语句1中，这个赋值语句要求数组到指针的隐式转换（见？？）。在C89/90中这种转换要求的是左值数组，因此语句1是非法的；而在C99中不要求左值数组，因此语句1是合法的。 
+（3）语句2中，&运算符要求左值，所以语句2是非法的。 
+（4）语句3中，sizeof运算符既不要求左值，也不要求数组到指针的转换，因此对所有C的标准都是合法的。 
+ 
+小结： 
+(1)定义和含义 
+    a) 左值是指具有对象类型或非空不完整类型的表达式。（关键是要可以引用到对象，也就是要可以拥有可访问的存储，l-location） 
+  b) 右值（rvalue）是指表达式的值。（在C里表达式的值一定是右值；在期待右值时，左值会自动转化为右值。r-read） 
+(2)依据下述规则来判断左值： 
+  a) “通过非函数类型声明的非类型标识符”都是左值 
+  b) 每种运算符都规定了它的运算结果是否左值。 
+(3)常见规则 
+  a) 下列运算符的操作数要求左值：Sizeof运算符, 取地址运算符 & , ++ 运算符, -- 运算符，赋值 = 运算符的左侧，成员 . 运算符的左侧。 
+  b) 间接运算符*的运算结果是左值；取地址运算符&的运算结果是右值。 
+  c) 下列表达式不能产生lvalue: 数组名，函数，枚举常量，赋值表达式，强制类型转换（目标类型是引用时除外），函数调用。
+小结的小结：要确认一个表达式是否左值，总的来说要按规则来。要理解记忆这些规则，可以按“拥有可访问的存储“来。但是，其实不用记得太清或太深究，错了编译器会有提示的。

@@ -832,6 +832,9 @@ https://github.com/javaparser/javaparser
 ```
 
 #log
+##log4j 
+[log4j日志封装说明—slf4j对于log4j的日志封装-正确获取调用堆栈](http://www.coderli.com/log4j-slf4j-logger-linenumber/)
+
 ##slf4j
 [SLF4J 教程](http://yangzb.iteye.com/blog/245844)
     final  Logger logger  =  LoggerFactory.getLogger(Wombat. class );

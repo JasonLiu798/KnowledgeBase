@@ -2,7 +2,7 @@
 ---
 #doc
 [antlr4权威参考 读书笔记](http://codemany.com/blog/reading-notes-the-definitive-antlr4-reference-part1/)
-
+[ Antlr v4入门教程和实例](http://blog.csdn.net/dc_726/article/details/45399371)
 
 ---
 #左递归消除

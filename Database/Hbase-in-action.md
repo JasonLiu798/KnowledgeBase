@@ -1,5 +1,7 @@
 #hbase in action
 ---
+#doc
+
 #API client
 所有修改操作行级原子性
 创建HTable实例需要扫描.META表，推荐只创建一次，每个线程创建一个，生存期复用这个对象；需要多个HTable实例，考虑使用HTablePool
@@ -431,6 +433,72 @@ PageFilter
 
 
 
+
+
+
+---
+#安装
+## oper
+start-hbase.sh
+stop-hbase.sh
+### hbase cleanlog
+pssh -h /root/other.txt -l root -i 'rm -f /opt/hbase/logs/*'
+
+## conf
+http://ixirong.com/2015/05/25/how-to-install-hbase-cluster/
+##.bashrc
+HBASE=/opt/hbase
+PATH
+
+pssh -h /root/other.txt -l root -i 'mkdir -p /opt/hbase/logs'
+##hbase-env.sh
+export JAVA_HOME=/opt/java
+export HBASE_CLASSPATH=/opt/hbase/conf
+export HBASE_MANAGES_ZK=false
+export HBASE_HOME=/opt/hbase
+export HADOOP_HOME=/opt/hadoop
+export HBASE_LOG_DIR=/opt/hbase/logs
+export HBASE_PID_DIR=/opt/hbase/pids
+
+pscp -h /root/other.txt -l root /opt/hbase/conf/hbase-env.sh /opt/hbase/conf
+pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/hbase-env.sh'
+
+pssh -h /root/other.txt -l root -i 'mkdir -p /opt/hbase/pids'
+
+
+##hbase-site.xml
+pscp -h /root/other.txt -l root /opt/hbase/conf/hbase-site.xml /opt/hbase/conf
+
+    <configuration>
+            <property>
+                    <name>hbase.rootdir</name>
+                    <value>hdfs://namenode:9000/hbase</value>
+            </property>
+            <property>
+                    <name>hbase.cluster.distributed</name>
+                    <value>true</value>
+            </property>
+            <property>
+                    <name>hbase.master</name>
+                    <value>hmaster1:60000</value>
+            </property>
+            <property>
+                    <name>hbase.zookeeper.quorum</name>
+                    <value>hmaster1,datanode1,datanode2</value>
+            </property>
+    </configuration>    
+pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/hbase-site.xml'
+
+##regionservers
+regionServer1
+regionServer2
+pscp -h /root/other.txt -l root /opt/hbase/conf/regionservers /opt/hbase/conf
+pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/regionservers'
+
+
+# Q&A
+## NoServerForRegionException: Unable to find region for xxxx
+hbase jar包版本问题
 
 
 

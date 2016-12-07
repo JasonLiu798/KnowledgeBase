@@ -118,12 +118,18 @@ HBaseClient使用HBase的RPC机制与HMaster和HRegionServer进行通信.
 HBaseClient包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息
 
 Zookeeper
+##-ROOT-和.META.
+[HBase -ROOT-和.META.表结构](http://greatwqs.iteye.com/blog/1838904)
 HBase中有两张特殊的Table，-ROOT-和.META.
 Ø .META.：记录了用户表的Region信息，.META.可以有多个regoin
 Ø -ROOT-：记录了.META.表的Region信息，-ROOT-只有一个region
 Ø Zookeeper中记录了-ROOT-表的location
 (1) Client访问用户数据之前需要首先访问zookeeper，拿到-ROOT表的位置信息，然后访问-ROOT-表，拿到对应的.META表的位置信息，接着访问.META.表，最后才能找到用户数据的位置去访问，中间需要多次网络操作，不过client端会做cache缓存。
 (2)ZookeeperQuorum中除了存储了-ROOT-表的地址和HMaster的地址，HRegionServer也会把自己以Ephemeral方式注册到Zookeeper中，使得HMaster可以随时感知到各个HRegionServer的健康状态。此外，Zookeeper也避免了HMaster的单点问题
+
+
+
+
 
 ##HMaster
 HMaster没有单点问题，HBase中可以启动多个HMaster，通过Zookeeper的MasterElection机制保证总有一个Master运行，HMaster在功能上主要负责Table和Region的管理工作：
@@ -132,8 +138,19 @@ HMaster没有单点问题，HBase中可以启动多个HMaster，通过Zookeeper�
 3.在RegionSplit后，负责新Region的分配
 4.在HRegionServer停机后，负责失效HRegionServer上的Regions迁移
 
-HRegionServer
+##HRegionServer
+HRegionServer主要负责响应用户IO请求，向HDFS文件系统中读写数据，是HBase中最核心的模块。
+HRegionServer内部管理了一系列HRegion对象，每个HRegion对应了Table中的一个Region，HRegion中由多个HStore组成。每个HStore对应了Table中的一个Column Family的存储，可以看出每个Column Family其实就是一个集中的存储单元，因此最好将具备共同IO特性的column放在一个Column Family中，这样最高效。
+
 HRegionServer维护region，处理对这些region的IO请求，向HDFS文件系统中读写数据，是HBase中最核心的模块。
+
+##HStore
+HStore存储是HBase存储的核心了，其中由两部分组成，一部分是MemStore，一部分是StoreFiles。
+MemStore是Sorted Memory Buffer，用户写入的数据首先会放入MemStore，当MemStore满了以后会Flush成一个StoreFile（底层实现是HFile），当StoreFile文件数量增长到一定阈值，会触发Compact合并操作，将多个StoreFiles合并成一个StoreFile，合并过程中会进行版本合并和数据删除，因此可以看出HBase其实只有增加数据，所有的更新和删除操作都是在后续的compact过程中进行的，这使得用户的写操作只要进入内存中就可以立即返回，保证了HBase I/O的高性能。
+当StoreFiles Compact后，会逐步形成越来越大的StoreFile，当单个StoreFile大小超过一定阈值后，会触发Split操作，同时把当前Region Split成2个Region，父Region会下线，新Split出的2个孩子Region会被HMaster分配到相应的HRegionServer上，使得原先1个Region的压力得以分流到2个Region上。
+
+
+
 
 
 

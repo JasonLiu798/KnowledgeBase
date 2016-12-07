@@ -140,6 +140,9 @@ RANDOMIZED-SELECT(A,p,r,i)
 
 
 
+---
+#Bloom Filter
+http://blog.csdn.net/jiaomeng/article/details/1495500
 
 
 

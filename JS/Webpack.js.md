@@ -6,7 +6,7 @@ npm install -g webpack
 [](http://itindex.net/detail/53450-react-webpack)
 [webpack-demos](https://github.com/ruanyf/webpack-demos)
 [webpack-seed](https://github.com/Array-Huang/webpack-seed)
-
+[webpack使用优化](http://www.alloyteam.com/2016/01/webpack-use-optimization/)
 
 ---
 #打包工具

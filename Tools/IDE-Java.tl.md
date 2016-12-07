@@ -56,6 +56,79 @@ $SETUP_DIR/plugins
 ###idea vim
 [IdeaVim插件使用技巧](http://kidneyball.iteye.com/blog/1828427)
 模拟linux下 vi编辑器的插件支持vi的命令
+https://github.com/JetBrains/ideavim
+####:action命令
+作者：kidneyball
+链接：https://www.zhihu.com/question/21551426/answer/105003969
+来源：知乎
+著作权归作者所有，转载请联系作者获得授权。
+
+:actionlist<回车>
+， 就会看到一个长长的列表，基本上这就是能你用idea的Lookup Action功能所能调用的绝大部分idea动作。你执行
+:action <命令名>
+，就能执行这个动作。
+
+比如说，你执行
+:action FileStructurePopup
+就能打开当前文件的成员列表。（如果你使用的是2016年6月的当前发行版，成员列表弹出窗会闪退，必须升级到eap版）
+
+聪明如你肯定已经想到，这样一来我就可以在.ideavimrc中配热键来调用idea内部功能了啊。完全正确。
+
+比如说，我可以配
+```
+nnoremap <Space>nf<Space> :action NewFile<CR>
+nnoremap <Space>nc<Space> :action NewClass<CR>
+nnoremap <Space>nd<Space> :action NewDir<CR>
+nnoremap <Space>npi<Space> :action NewPackageInfo<CR>
+nnoremap <Space>ns<Space> :action NewScratchFile<CR>
+```
+来新建各种文件。
+
+也可以配
+```
+noremap <Space>dfj :action IntroduceVariable<CR>
+noremap <Space>dfk :action ExtractMehtod<CR>
+noremap <Space>dfl :action Inline<CR>
+noremap <Space>dfu :action ChangeSignature<CR>
+noremap <Space>dfi :action RenameElement<CR>
+noremap <Space>dfo :action MembersPullUp<CR>
+noremap <Space>rrr :action Refactorings.QuickListPopupAction<CR>
+```
+来调用各种重构功能。注意上面是格斗键位：dfj 就是 [下，前，轻拳]，模仿格斗游戏的出招键位。这个特性在Mac下可以用Karabinder来做，现在在任何系统下的Idea里都可以用了。
+
+还可以配
+```
+nnoremap mM :action ToggleBookmark0<CR>
+nnoremap mN :action ToggleBookmark1<CR>
+nnoremap mJ :action ToggleBookmark2<CR>
+nnoremap mK :action ToggleBookmark3<CR>
+nnoremap mH :action ToggleBookmark4<CR>
+nnoremap mL :action ToggleBookmark5<CR>
+nnoremap mY :action ToggleBookmark6<CR>
+nnoremap mI :action ToggleBookmark7<CR>
+nnoremap mA :action ToggleBookmark8<CR>
+nnoremap mB :action ToggleBookmark9<CR>
+
+nnoremap `M :action GotoBookmark0<CR>
+nnoremap `N :action GotoBookmark1<CR>
+nnoremap `J :action GotoBookmark2<CR>
+nnoremap `K :action GotoBookmark3<CR>
+nnoremap `H :action GotoBookmark4<CR>
+nnoremap `L :action GotoBookmark5<CR>
+nnoremap `Y :action GotoBookmark6<CR>
+nnoremap `I :action GotoBookmark7<CR>
+nnoremap `A :action GotoBookmark8<CR>
+nnoremap `B :action GotoBookmark9<CR>
+```
+来局部修正Ideavim不支持跨文件书签的问题，只能配10个，不过基本够用了。
+
+总之可以任意发挥，把常用功能全部绑到基键上，全面解放小尾指。ctrl都不用怎么按了。
+
+顺带一提，:actionlist的列表可以用ctrl+A全选复制（但没有鼠标右键菜单），可以一次性复制出来慢慢挑选。
+
+
+
+
 ###junit
 http://my.oschina.net/laugh2last/blog/169352
 http://kidneyball.iteye.com/blog/1814028

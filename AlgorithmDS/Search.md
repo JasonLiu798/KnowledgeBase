@@ -414,6 +414,9 @@ POJ1703，POJ1988，POJ1456 并查集
 
 
 
+---
+#Bloom Filter
+http://blog.csdn.net/jiaomeng/article/details/1495500
 
 
 

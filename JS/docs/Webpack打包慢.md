@@ -144,6 +144,11 @@ module.exports = {
     ],
 };
 ```
+
+```bash
+webpack --config ddl.config.js
+```
+
 webpack.DllPlugin 的选项中：
 
 path 是 manifest.json 文件的输出路径，这个文件会用于后续的业务代码打包；
@@ -164,6 +169,7 @@ context 是解析包路径的上下文，这个要跟接下来配置的 webpack.
     }
 }
 ```
+
 接下来我们就可以快乐地打包业务代码啦，首先写好打包配置文件 webpack.config.js：
 ```
 const webpack = require('webpack');

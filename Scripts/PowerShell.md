@@ -33,6 +33,18 @@ $var
 $date=Get-Date  获取当前时间
 $date.AddDays(3) 当前时间加3天
 
+##cmd
+cmd /c dir 是执行完dir命令后关闭命令窗口。 
+cmd /k dir 是执行完dir命令后不关闭命令窗口。 
+cmd /c start dir 会打开一个新窗口后执行dir指令，原窗口会关闭。 
+cmd /k start dir 会打开一个新窗口后执行dir指令，原窗口不会关闭。 
+
+##grep
+|findstr 
+|where { $_ -match "some_regexp"} 
+Select-String "some_regexp" somefile.txt
+
+
 ---
 #powershell rc
 $ps_script_dir = "c:\path\to\scripts"

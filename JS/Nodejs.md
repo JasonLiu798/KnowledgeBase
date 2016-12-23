@@ -62,11 +62,14 @@ star, stars, start, stop, submodule, t, tag, test, tst, un,
 uninstall, unlink, unpublish, unstar, up, update, v,
 version, view, whoami
 
+##package.json
+[结构解析](http://blog.csdn.net/woxueliuyun/article/details/39294375)
 
 ##更换源
 镜像举例：
 ###1.临时使用
 npm --registry https://registry.npm.taobao.org install express
+npm --registry http://r.cnpmjs.org/ 
 
 ###2.持久使用
  npm config set registry https://registry.npm.taobao.org
@@ -86,6 +89,12 @@ registry地址：http://registry.npm.taobao.org/
 cnpmjs镜像
 搜索地址：http://cnpmjs.org/
 registry地址：http://r.cnpmjs.org/
+
+npm ---- https://registry.npmjs.org/
+eu ----- http://registry.npmjs.eu/
+au ----- http://registry.npmjs.org.au/
+sl ----- http://npm.strongloop.com/
+nj ----- https://registry.nodejitsu.com/
 
 
 

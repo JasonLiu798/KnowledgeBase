@@ -49,6 +49,14 @@ $DOC="$PRL\document"
 Set-Alias -Name vi -Value sublime_text.exe
 ```
 
+##Q
+无法加载文件 C:\Users\async\Documents\WindowsPowerShell\Microsoft.PowerShell.ps1`
+执行
+```
+Set-ExecutionPolicy RemoteSigned
+```
+
+##提示符
 ```
 function Get-ShortPath($Path)
 {

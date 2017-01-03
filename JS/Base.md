@@ -11,6 +11,28 @@ Access-Control-Allow-Origin是HTML5中定义的一种服务器端返回Response 
 [JSONP](http://kb.cnblogs.com/page/139725/)
 JSONP，CORS，HTTP 协议，浏览器安全机制，PreFlight Request，反向代理
 
+```js
+$.ajax({
+     url: "http://localhost:8080/msg/front/jcj/1.jsp?callback=?",
+     dataType: "jsonp",
+     jsonpCallback: "m1",
+     success: function(data) {}
+});
+function m1(data) {
+    alert(data);
+}
+
+```
+
+服务端
+```
+String str = "{[\"name1\": \"json\",\"name2\": \"json\",\"name3\": \"json\"]}";
+ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(str);
+json = "m1(" + json + ")";
+response.getWriter().print(json);
+```
+
 ##header meta
 站点www.a.com需要调用comment.a.com/api/post.php,那么这个post.php必须加上如下代码
 

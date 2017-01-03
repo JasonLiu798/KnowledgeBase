@@ -9,7 +9,7 @@
 ---
 #布局
 [4种方法实现边栏固定中间自适应的3栏布局](https://segmentfault.com/a/1190000002664237)
-
+[老生长谈：CSS实现右侧固定宽度，左侧宽度自适应](http://jo2.org/css-auto-adapt-width/)
 
 
 #cursor语法

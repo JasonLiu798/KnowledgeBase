@@ -4,6 +4,13 @@
 [知乎软件神器推荐](https://weavi.com/92079)
 
 ---
+#msiexec 
+解压msi包
+如需把d盘下abc.msi文件解包到目录d:\abc，操作如下：
+msiexec /a "d:\abc.msi" /qb TARGETDIR="D:\abc"
+msiexec /help 文档
+
+---
 #mac
 ```bash
 brew install

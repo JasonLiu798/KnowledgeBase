@@ -46,6 +46,16 @@ useGeneratedKeys keyProperty keyProperty是Java对象的属性名
 </insert>  
 自增值通过getId获取
 
+转义
+&lt; | < | 小于号
+&gt; | > | 大于号 
+&amp;| & | 和 
+&apos; | ' | 单引号 
+&quot; | " | 双引号 
+
+
+
+
 ---
 #缓存
 [MyBatis 缓存](http://www.cnblogs.com/zemliu/archive/2013/08/05/3239014.html)

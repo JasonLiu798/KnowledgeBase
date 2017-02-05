@@ -181,7 +181,11 @@ git br -vv #查看本地分支跟踪的远程分支
     git checkout -b <name>      #change & new
     git checkout -b [分支名] [远程名]/[分支名]
     git co -b
+    
     签出远程分支
+    git fetch
+    git checkout -b [local-branchname] origin/[remote_branchname]
+
     git checkout --track origin/serverfix
 
 ## git branch 删除

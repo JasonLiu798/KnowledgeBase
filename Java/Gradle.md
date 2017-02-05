@@ -18,7 +18,57 @@ gradle --gui 或 gradle --gui&（后台运行）
 ##查找所有的gradle命令
 gradle --help
 
+##依赖树
+gradle projects列出子项目
+没有子项目
+gradle dependencies
+否则
+Root project 'my-project'
++--- Project ':core'
+|    +--- Project ':core:core1'
+|    +--- Project ':core:core2'
+gradle :core:core1:dependencies
+
+
 http://www.jiechic.com/archives/the-idea-and-gradle-use-summary
+
+---
+#配置
+##maven库
+```
+repositories {
+    maven {
+        url "http://maven.petrikainulainen.net/repo"
+    }
+}
+//文件
+flatDir {
+        dirs 'lib'
+    }
+```
+
+
+##依赖
+```gradle
+dependencies {
+    compile group: 'foo', name: 'foo', version: '0.1'
+}
+//[group]:[name]:[version]
+dependencies {
+    compile 'foo:foo:0.1'
+}
+//多个
+dependencies {
+    compile (
+        [group: 'foo', name: 'foo', version: '0.1'],
+        [group: 'bar', name: 'bar', version: '0.1']
+    )
+}
+dependencies {
+    compile 'foo:foo:0.1', 'bar:bar:0.1'
+}
+```
+
 
 ---
 #多模块

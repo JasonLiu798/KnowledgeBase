@@ -415,6 +415,9 @@ content assistant
 
 java->edit->content assisnt->Advanced->Java Proposals
 
+[Eclipse蛋疼的变量自动补全类名解决方法  ](http://blog.163.com/scuqifuguang@126/blog/static/17137008620137284213531/)
+
+
 ##settings
 ###jar包乱码
 Window–>Preferences–>General–>Content types

@@ -202,8 +202,10 @@ brew install tesseract
 ##UML
 [jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
+###staruml
 StarUML.app/Contents/www/license/node
 [crack](http://www.360doc.com/content/15/1115/01/9437165_513270982.shtml)
+www/license/node/LicenseManagerDomain.js
 ```javascript
 function validate(PK, name, product, licenseKey) {
         var pk, decrypted;

@@ -11,6 +11,18 @@ http://www.luoshengsha.com/284.html
 http://haohaoxuexi.iteye.com/blog/1843309
 [Mybatis的ResultMap的使用](http://www.cnblogs.com/rollenholt/p/3365866.html)
 
+##MyBatis 通过包含的jdbcType类型
+BIT         FLOAT      CHAR           TIMESTAMP       OTHER       UNDEFINED
+
+TINYINT     REAL       VARCHAR        BINARY          BLOB        NVARCHAR
+
+SMALLINT    DOUBLE     LONGVARCHAR    VARBINARY       CLOB        NCHAR
+
+INTEGER     NUMERIC    DATE           LONGVARBINARY   BOOLEAN     NCLOB
+
+BIGINT      DECIMAL    TIME           NULL            CURSOR
+ 
+
 
 ---
 #configuration
@@ -188,8 +200,13 @@ Access denied for user 'root'@'10.185.8.159' (using password: YES)
 尝试更换datasource实现类为com.mchange.v2.c3p0.ComboPooledDataSource后正常，原因暂时认定为BasicDataSource bug
 
 
+---
+#mybatis-generator
+[doc.CN](http://mbg.cndocs.tk/)
+[Mybatis Generator最完整配置详解](http://www.jianshu.com/p/e09d2370b796)
+[返回主键](http://blog.csdn.net/xyw591238/article/details/51588630)
 
-
+[mybatis generator插件开发](http://www.tuicool.com/articles/fiuqUny)
 
 
 ---

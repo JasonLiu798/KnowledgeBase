@@ -51,6 +51,12 @@ Speccy：电脑硬件信息。
 
 
 ---
+#math 数学
+matlab
+octave
+
+
+---
 #net网络
 ##下载
 [youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
@@ -83,6 +89,8 @@ https://www.gnupg.org/
 ---
 #字体 font
 微软雅黑    Microsoft YaHei
+
+
 
 
 ----

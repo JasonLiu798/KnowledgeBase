@@ -322,6 +322,15 @@ caw，ciw，diw，daw  删除单词（或者然后插入）c的意思是删除�
 
 ## web
 ### jetty 调试配置
+
+###热部署
+http://blog.csdn.net/xiejx618/article/details/49936541
+前提
+a.必须在调试模式下运行jetty;
+b.On 'Update' action选Update classes and resources,On frame deactivation选Update classes and resource.
+
+
+
 http://www.xuebuyuan.com/1115716.html
 http://my.oschina.net/zhanglubing/blog/94386
 run-configuration

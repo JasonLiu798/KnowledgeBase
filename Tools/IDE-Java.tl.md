@@ -58,10 +58,6 @@ $SETUP_DIR/plugins
 模拟linux下 vi编辑器的插件支持vi的命令
 https://github.com/JetBrains/ideavim
 ####:action命令
-作者：kidneyball
-链接：https://www.zhihu.com/question/21551426/answer/105003969
-来源：知乎
-著作权归作者所有，转载请联系作者获得授权。
 
 :actionlist<回车>
 ， 就会看到一个长长的列表，基本上这就是能你用idea的Lookup Action功能所能调用的绝大部分idea动作。你执行
@@ -125,7 +121,6 @@ nnoremap `B :action GotoBookmark9<CR>
 总之可以任意发挥，把常用功能全部绑到基键上，全面解放小尾指。ctrl都不用怎么按了。
 
 顺带一提，:actionlist的列表可以用ctrl+A全选复制（但没有鼠标右键菜单），可以一次性复制出来慢慢挑选。
-
 
 
 
@@ -211,13 +206,16 @@ idea默认的选中变量以后，是不会像eclipse一样提示这个变量用
 
 ####查找/查看
 ```
+implementation  跳到 定义
+ctrl+b      Declaration 跳转到定义
+ctrl+alt+v  Type Declaration 跳转到接口实现定义
 Ctrl+Alt+ left/right  返回至上次浏览的位置
 双击Shift   全局查找
 ctrl-E      最近编辑文件
 ctrl-H      查看类继承层次
 Ctrl+Q      显示注释文档
 ctrl-alt-H  调用层次
-alt+F7  Find Usage(ctrl+shift+3) 查看该方法/变量/类被调用的地方
+alt+F7       Find Usage(ctrl+shift+3) 查看该方法/变量/类被调用的地方
 ```
 
 ####移动
@@ -373,6 +371,10 @@ Deployment目录选择要部署的web应用，注意此处一定要选到WebCont
 JRebel Plugin
 http://wibiline.iteye.com/blog/2073399
 
+
+[JRebel vs IntelliJ - hot swap](http://stackoverflow.com/questions/21674683/jrebel-vs-intellij-hot-swap)
+[HotSwap和JRebel原理](http://www.hollischuang.com/archives/598)
+
 ##Q
 idea jdk无法识别，重导入项目无效
 http://stackoverflow.com/questions/10612813/intellij-idea-cant-setup-jdk
@@ -393,6 +395,11 @@ ctrl+e：快速转换编辑器
 ctrl+2，L：为本地变量赋值
 开发过程中，我常常先编写方法，如Calendar.getInstance()，然后通过ctrl+2快捷键将方法的计算结果赋值于一个本地变量之上。 这样我节省了输入类名，变量名以及导入声明的时间。Ctrl+F的效果类似，不过效果是把方法的计算结果赋值于类中的域。
 
+backward history 调回
+
+##viplugin
+http://www.viplugin.com
+q1MHdGlxh7nCyn_FpHaVazxTdn1tajjeIABlcgJBc20
 
 
 ##eclipse.ini
@@ -401,7 +408,7 @@ ctrl+2，L：为本地变量赋值
 C:/Program Files (x86)/Java/jdk1.7.0_79/bin/javaw.exe
 
 
-### 日期格式
+###日期格式
 -Duser.language=zh-cn
 -Duser.language=en
 
@@ -419,7 +426,6 @@ java->edit->content assisnt->Advanced->Java Proposals
 ###jar包乱码
 Window–>Preferences–>General–>Content types
 Window–>Preferences–>General–>Workspace
-
 
 
 ##plugin

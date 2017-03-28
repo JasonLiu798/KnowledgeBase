@@ -48,6 +48,16 @@ launchctl load -w com.mysql.plist
 
 ---
 #settings
+##连接
+mysql -u root -p
+mysql -h 10.202.45.25 -u aossit -paossit
+
+##user 用户
+CREATE USER 'saphr'@'%' IDENTIFIED BY 'saphr'; 
+##授权
+GRANT ALL PRIVILEGES ON *.* TO 'saphr'@'%' IDENTIFIED BY 'saphr' WITH GRANT OPTION;
+flush privileges;
+
 ##root password
 ```
 use mysql

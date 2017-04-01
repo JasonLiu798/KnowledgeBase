@@ -7,7 +7,7 @@
 #msiexec 
 解压msi包
 如需把d盘下abc.msi文件解包到目录d:\abc，操作如下：
-msiexec /a "d:\abc.msi" /qb TARGETDIR="D:\abc"
+msiexec /a "d:\op.msi" /qb TARGETDIR="D:\abc"
 msiexec /help 文档
 
 ---

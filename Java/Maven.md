@@ -343,7 +343,6 @@ view->tool window->Maven Projects
 org.apache.maven.plugins:maven-idea-plugin:2.2.1:idea
 http://maven.apache.org/plugins/maven-idea-plugin/idea-mojo.html
 
-
 ---
 # Q&A
 ## -Dmaven.multiModuleProjectDirectory system propery is not set. Check $M2_HOME environment variable and mvn script match.

@@ -229,6 +229,21 @@ information_schema.COLUMNS
 select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_name = 'table_name' and table_schema = 'db_name';
 
 
+---
+#死锁
+1、查询是否锁表
+show OPEN TABLES where In_use > 0;
+ 
+2、查询进程
+    show processlist
+  查询到相对应的进程===然后 kill    id
+ 
+补充：
+查看正在锁的事务
+SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCKS; 
+ 
+查看等待锁的事务
+SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS; 
 
 
 ---

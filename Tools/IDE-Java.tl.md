@@ -175,7 +175,6 @@ https://github.com/textmate/scala.tmbundle
 https://github.com/textmate/antlr.tmbundle
 
 
-
 ###不好用，不可用的
 ###FileBrowser 在IDEA中查看项目外的文件 [不可用]（目前13.1.2以上好像不支持不知道其他人怎么样）
 ###sql query plugin
@@ -190,7 +189,6 @@ idea2016报错：Unable to save settings: Failed to save settings. Please restar
 idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
 
 
-
 ##keyMap 快捷键
 [所有](http://www.itjhwd.com/intellij-ideakjj)
 ###常用
@@ -200,7 +198,7 @@ idea默认的选中变量以后，是不会像eclipse一样提示这个变量用
     Shift + F6    (Alt + Shift + R)        重构rename
     Alt + Insert    (Alt + Shift + Z)      自动创建getter/setter
     Alt + Enter     解决错误
-    Ctrl + Alt + L     (Ctrl + Shift + F)  自动格式化代码
+    Ctrl + Alt + L     (Ctrl + Shift + L)  reformat 自动格式化代码
     Ctrl + Alt + O (Ctrl + Shift + O)   自动去除无用的import语句
     Shift+F6  重构-重命名
 
@@ -209,7 +207,7 @@ idea默认的选中变量以后，是不会像eclipse一样提示这个变量用
 implementation  跳到 定义
 ctrl+b      Declaration 跳转到定义
 ctrl+alt+v  Type Declaration 跳转到接口实现定义
-Ctrl+Alt+ left/right  返回至上次浏览的位置
+Ctrl+Alt+ left/right   返回至上次浏览的位置
 双击Shift   全局查找
 ctrl-E      最近编辑文件
 ctrl-H      查看类继承层次

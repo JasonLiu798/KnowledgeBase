@@ -10,6 +10,8 @@
 msiexec /a "d:\op.msi" /qb TARGETDIR="D:\abc"
 msiexec /help 文档
 
+
+
 ---
 #mac
 ```bash

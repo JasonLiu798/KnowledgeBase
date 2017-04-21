@@ -16,6 +16,16 @@ Tomcat 默认使用的是 BIO，在处理静态资源时，Tomcat 的性能不�
 https://github.com/eclipse-jetty/eclipse-jetty-plugin
 
 
+reload
+default:automatic
+manual
+scanIntervalSeconds
+
+manual
+
+[在maven多模块结构中，并且使用overlay的情况下使用jetty热部署](http://www.cnblogs.com/firejava/p/6269138.html)
+
+
 ---
 #maven
 ```xml

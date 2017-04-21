@@ -185,6 +185,33 @@ TLS握手过程中如果有任何错误，都会使加密连接断开，从而�
 
 
 
+----
+#cookie
+
+var xhr = new XMLHttpRequest();  
+xhr.open("POST", "http://xxxx.com/demo/b/index.php", true);  
+xhr.withCredentials = true; //支持跨域发送cookies
+xhr.send();
+jquery的post方法请求：
+
+ $.ajax({
+    type: "POST",
+    url: "http://xxx.com/api/test",
+    dataType: 'jsonp',
+    xhrFields: {withCredentials: true},
+    crossDomain: true,
+})
+服务器端设置：
+
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Origin: http://www.xxx.com");
+
+
+
+#OPTION
+http://blog.csdn.net/leikezhu1981/article/details/7402272
+
+
 
 
 

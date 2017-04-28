@@ -182,6 +182,40 @@ TLS握手过程中如果有任何错误，都会使加密连接断开，从而�
 400 | 15
 
 
+##302
+[cookie系列（二）header302跳转引发的思考](http://www.jianshu.com/p/a95df73bdae4)
+
+[ajax与302响应](http://www.cnblogs.com/dudu/p/ajax_302_found.html)
+
+You can't handle redirects with XHR callbacks because the browser takes care of them automatically. You will only get back what at the redirected location.
+
+原来，当服务器将302响应发给浏览器时，浏览器并不是直接进行ajax回调处理，而是先执行302重定向——从Response Headers中读取Location信息，然后向Location中的Url发出请求，在收到这个请求的响应后才会进行ajax回调处理。大致流程如下：
+
+ajax -> browser -> server -> 302 -> browser(redirect) -> server -> browser -> ajax callback
+
+如何解决？
+
+【方法一】
+继续用ajax，修改服务器端代码，将原来的302响应改为json响应，比如下面的ASP.NET MVC示例代码：
+return Json(new { status = 302, location = "/oauth/respond" });
+ajax代码稍作修改即可：
+
+$.ajax({
+    url: '/oauth/respond',
+    type: 'post',
+    data: data,
+    dataType: 'json',
+    success: function (data) {
+        if (data.status == 302) {
+            location.href = data.location;
+        }
+    }
+});
+【方法二】
+ 不用ajax，改用form。 
+
+<form method="post" action="/oauth/respond">
+</form>
 
 
 

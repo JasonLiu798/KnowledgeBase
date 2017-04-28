@@ -2,7 +2,7 @@
 ----
 #doc
 [单点登录SSO的实现原理](http://blog.csdn.net/cutesource/article/details/5838693)
-
+[单点登录原理与简单实现](http://www.cnblogs.com/ywlaker/p/6113927.html)
 ---
 #概述
 SSO是一种统一认证和授权机制，指访问同一服务器不同应用中的受保护资源的同一用户，只需要登录一次，即通过一个应用中的安全验证后，再访问其他应用中的受保护资源时，不再需要重新登录验证。

@@ -9,6 +9,9 @@ Fabric 来加速部署
 
 [common libs](https://github.com/vinta/awesome-python)
 
+[anaconda](https://www.continuum.io/downloads/)
+python科学计算的第三方库
+
 
 ---
 ##setup

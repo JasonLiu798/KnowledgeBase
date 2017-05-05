@@ -18,3 +18,8 @@ $.ajax({
 })
 .done(成功后的回调函数)
 ```
+
+
+
+组件开发
+[](https://www.talkingcoder.com/article/6310724958473489215?from=iview)

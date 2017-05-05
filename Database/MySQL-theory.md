@@ -83,6 +83,8 @@ innodb_old_blocks_time
 
 
 
+[MySql 外键约束 之CASCADE、SET NULL、RESTRICT、NO ACTION分析和作用](http://www.cnblogs.com/yzuzhang/p/5174720.html)
+
 
 
 ---

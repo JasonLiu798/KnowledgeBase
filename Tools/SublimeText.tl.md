@@ -147,6 +147,7 @@ Ctrl + Alt + Down
     "trim_trailing_white_space_on_save": true,
     "wide_caret": true,
     "word_wrap": true,
+    "update_check": false,
     "wrap_width": 80
 }
 ```
@@ -233,6 +234,7 @@ Linux: ctrl-Alt-Shift-F
 * GBK Encoding Support, 转码
 * EncodingHelper,       编码增强
 * Vintageous,   vi扩展
+https://github.com/guillermooo/Vintageous/wiki/Basic-Debugging
 ```
 配置
 http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
@@ -248,18 +250,22 @@ http://feliving.github.io/Sublime-Text-3-Documentation/vintage.html
 { "keys": ["ctrl+shift+enter"], "command": "open_in_browser" }
 ```
 * SideBarEnhancements,  增强侧边栏
+https://github.com/titoBouzout/SideBarEnhancements
+
 * View In Browser,  在浏览器打开
 * AutoBackups,  自动备份
 * Plain​Tasks, todo list
 * TrailingSpaces, 高亮空格
 * AdvancedNewFile,  配置新建文件的附属文件，直接生成一个工程都可以
 * Compare Side-By-Side, Sublime版本的Beyond Compare
-* WordCount,    字数显示
+* WordCount,  字数显示
+* vue文件支持，https://github.com/vuejs/vue-syntax-highlight
 
 ##主题
 * Soda[Theme],  Dark and light custom UI themes for Sublime Text
 * Monokai Extended[Theme],  如果你喜欢 Soda Dark 和 Monokai，我建议你使用 Monokai Extended (GitHub)。这个 color scheme 是 Monokai Soda 的增强，如果再配合 Markdown Extended (GitHub)，将大大改善 Markdown 的语法高亮。
-
+* 
+https://github.com/SublimeText-Markdown/MarkdownEditing
 
 ## license
 ```

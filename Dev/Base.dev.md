@@ -91,9 +91,37 @@ System.out.println( p); p的结果为：127
 
 
 
+---
+#大端小端
+大端：字数据的高字节存储在低地址中，低字节在高地址中
+小端：字数据的低字节存储在低地址中，高字节在高地址中
+data 00  01  12  13（小端）
+add  00  01  10  11
+data 13  12  01  00（大端）
+add  00  01  10  11
+
+
+在高位优先的计算机上，高位字节就是低地址字节(“高位字节”指的是其值变化后使整个字的值变化最大的那个字节，例如，在值0102H中，01H就是高位字节，而02H是低位字节)。在高位优先的计算机上，字节中的内容如下所示：
+地址    2FFEH    2FFFH    3000H    3001H    3002H    3003H
+值      01H      02H
+这种图示方式很直观――地址就象是尺子上的刻度值，低地址在左，高地址在右。
+在低位优先的计算机上，字节中的内容如下所示：
+地址    3003H    3002H    3001H    3000H    2FFFH    2FFEH
+值      01H      02H
+这种图示方式同样很直观――低位字节存放在低地址中。
+
+
+
 ----
-
-
+#时间
+时区 & 冬令时、夏令时
+http://en.wikipedia.org/wiki/Time_zone
+ftp://ftp.iana.org/tz/data/asia
+http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E6%99%82%E5%8D%80
+闰年
+http://en.wikipedia.org/wiki/Leap_year
+闰秒
+ftp://ftp.iana.org/tz/data/leapseconds
 
 
 

@@ -28,6 +28,9 @@ javacc语法和词法分析器的生成程序
 [microsoft 人脸识别](http://www.projectoxford.ai/doc/face/How-To/detectface)
 
 
+---
+#解耦
+[java.util.ServiceLoader 的使用](http://tangmingjie2009.iteye.com/blog/1697013)
 
 
 ---
@@ -829,6 +832,10 @@ https://github.com/javaparser/javaparser
 ```
 
 #log
+http://www.coderli.com/log4j-slf4j-logger-linenumber/
+##log4j 
+[log4j日志封装说明—slf4j对于log4j的日志封装-正确获取调用堆栈](http://www.coderli.com/log4j-slf4j-logger-linenumber/)
+
 ##slf4j
 [SLF4J 教程](http://yangzb.iteye.com/blog/245844)
     final  Logger logger  =  LoggerFactory.getLogger(Wombat. class );

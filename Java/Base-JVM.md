@@ -29,6 +29,14 @@
 方法区，堆，方法栈，本地方法栈，PC寄存器
 [The Java Memory Model](http://www.cs.umd.edu/~pugh/java/memoryModel/)
 
+##永久代->Metaspace
+[Java永久代去哪儿了](http://www.infoq.com/cn/articles/Java-PERMGEN-Removed)
+随着Java8的到来，我们再也见不到永久代了。但是这并不意味着类的元数据信息也消失了。这些数据被移到了一个与堆不相连的本地内存区域，这个区域就是我们要提到的元空间
+因为对永久代进行调优是很困难的。永久代中的元数据可能会随着每一次Full GC发生而进行移动。并且为永久代设置空间大小也是很难确定的，因为这其中有很多影响因素，比如类的总数，常量池的大小和方法数量等。
+
+同时，HotSpot虚拟机的每种类型的垃圾回收器都需要特殊处理永久代中的元数据。将元数据从永久代剥离出来，不仅实现了对元空间的无缝管理，还可以简化Full GC以及对以后的并发隔离类元数据等方面进行优化。
+
+准确的来说，每一个类加载器的存储区域都称作一个元空间，所有的元空间合在一起就是我们一直说的元空间。当一个类加载器被垃圾回收器标记为不再存活，其对应的元空间会被回收。在元空间的回收过程中没有重定位和压缩等操作。但是元空间内的元数据会进行扫描来确定Java引用。
 
 
 
@@ -58,9 +66,9 @@ G1
 ##Bootstrap ClassLoader
 启动类加载器，是Java类加载层次中最顶层的类加载器，负责加载JDK中的核心类库，如：rt.jar、resources.jar、charsets.jar等，可通过如下程序获得该类加载器从哪些地方加载了相关的jar或class文件：
 ```java
-URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();  
-for (int i = 0; i < urls.length; i++) {  
-    System.out.println(urls[i].toExternalForm());  
+URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();
+for (int i = 0; i < urls.length; i++) {
+    System.out.println(urls[i].toExternalForm());
 }
 System.out.println(System.getProperty("sun.boot.class.path"));
 ```
@@ -98,12 +106,12 @@ JVM在判定两个class是否相同时，
 现在通过实例来验证上述所描述的是否正确：
 1）、在web服务器上建一个org.classloader.simple.NetClassLoaderSimple.java类
 ```java
-package org.classloader.simple;  
-public class NetClassLoaderSimple {  
-    private NetClassLoaderSimple instance;  
-    public void setNetClassLoaderSimple(Object obj) {  
-        this.instance = (NetClassLoaderSimple)obj;  
-    }  
+package org.classloader.simple;
+public class NetClassLoaderSimple {
+    private NetClassLoaderSimple instance;
+    public void setNetClassLoaderSimple(Object obj) {
+        this.instance = (NetClassLoaderSimple)obj;
+    }
 }
 ```
 
@@ -111,24 +119,24 @@ org.classloader.simple.NetClassLoaderSimple类的setNetClassLoaderSimple方法�
 
 2）、测试两个class是否相同（NetWorkClassLoader.java）
 ```java
-package classloader;  
-public class NewworkClassLoaderTest {  
-    public static void main(String[] args) {  
-        try {  
-            //测试加载网络中的class文件  
-            String rootUrl = "http://localhost:8080/httpweb/classes";  
-            String className = "org.classloader.simple.NetClassLoaderSimple";  
-            NetworkClassLoader ncl1 = new NetworkClassLoader(rootUrl);  
-            NetworkClassLoader ncl2 = new NetworkClassLoader(rootUrl);  
-            Class<?> clazz1 = ncl1.loadClass(className);  
-            Class<?> clazz2 = ncl2.loadClass(className);  
-            Object obj1 = clazz1.newInstance();  
-            Object obj2 = clazz2.newInstance();  
-            clazz1.getMethod("setNetClassLoaderSimple", Object.class).invoke(obj1, obj2);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-    }  
+package classloader;
+public class NewworkClassLoaderTest {
+    public static void main(String[] args) {
+        try {
+            //测试加载网络中的class文件
+            String rootUrl = "http://localhost:8080/httpweb/classes";
+            String className = "org.classloader.simple.NetClassLoaderSimple";
+            NetworkClassLoader ncl1 = new NetworkClassLoader(rootUrl);
+            NetworkClassLoader ncl2 = new NetworkClassLoader(rootUrl);
+            Class<?> clazz1 = ncl1.loadClass(className);
+            Class<?> clazz2 = ncl2.loadClass(className);
+            Object obj1 = clazz1.newInstance();
+            Object obj2 = clazz2.newInstance();
+            clazz1.getMethod("setNetClassLoaderSimple", Object.class).invoke(obj1, obj2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
@@ -145,66 +153,66 @@ public class NewworkClassLoaderTest {
 读者可能在这里有疑问，父类有那么多方法，为什么偏偏只重写findClass方法？
 因为JDK已经在loadClass方法中帮我们实现了ClassLoader搜索类的算法，当在loadClass方法中搜索不到类时，loadClass方法就会调用findClass方法来搜索类，所以我们只需重写该方法即可。如没有特殊的要求，一般不建议重写loadClass搜索类的算法。
 ```java
-package classloader;  
+package classloader;
 
-import java.io.ByteArrayOutputStream;  
-import java.io.InputStream;  
-import java.net.URL;  
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 
-/** 
- * 加载网络class的ClassLoader 
- */  
-public class NetworkClassLoader extends ClassLoader {  
+/**
+ * 加载网络class的ClassLoader
+ */
+public class NetworkClassLoader extends ClassLoader {
 
-    private String rootUrl;  
+    private String rootUrl;
 
-    public NetworkClassLoader(String rootUrl) {  
-        this.rootUrl = rootUrl;  
-    }  
+    public NetworkClassLoader(String rootUrl) {
+        this.rootUrl = rootUrl;
+    }
 
-    @Override  
-    protected Class<?> findClass(String name) throws ClassNotFoundException {  
-        Class clazz = null;//this.findLoadedClass(name); // 父类已加载     
-        //if (clazz == null) {  //检查该类是否已被加载过  
-            byte[] classData = getClassData(name);  //根据类的二进制名称,获得该class文件的字节码数组  
-            if (classData == null) {  
-                throw new ClassNotFoundException();  
-            }  
-            clazz = defineClass(name, classData, 0, classData.length);  //将class的字节码数组转换成Class类的实例  
-        //}   
-        return clazz;  
-    }  
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        Class clazz = null;//this.findLoadedClass(name); // 父类已加载
+        //if (clazz == null) {  //检查该类是否已被加载过
+            byte[] classData = getClassData(name);  //根据类的二进制名称,获得该class文件的字节码数组
+            if (classData == null) {
+                throw new ClassNotFoundException();
+            }
+            clazz = defineClass(name, classData, 0, classData.length);  //将class的字节码数组转换成Class类的实例
+        //}
+        return clazz;
+    }
 
-    private byte[] getClassData(String name) {  
-        InputStream is = null;  
-        try {  
-            String path = classNameToPath(name);  
-            URL url = new URL(path);  
-            byte[] buff = new byte[1024*4];  
-            int len = -1;  
-            is = url.openStream();  
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-            while((len = is.read(buff)) != -1) {  
-                baos.write(buff,0,len);  
-            }  
-            return baos.toByteArray();  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        } finally {  
-            if (is != null) {  
-               try {  
-                  is.close();  
-               } catch(IOException e) {  
-                  e.printStackTrace();  
-               }  
-            }  
-        }  
-        return null;  
-    }  
+    private byte[] getClassData(String name) {
+        InputStream is = null;
+        try {
+            String path = classNameToPath(name);
+            URL url = new URL(path);
+            byte[] buff = new byte[1024*4];
+            int len = -1;
+            is = url.openStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            while((len = is.read(buff)) != -1) {
+                baos.write(buff,0,len);
+            }
+            return baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+               try {
+                  is.close();
+               } catch(IOException e) {
+                  e.printStackTrace();
+               }
+            }
+        }
+        return null;
+    }
 
-    private String classNameToPath(String name) {  
-        return rootUrl + "/" + name.replace(".", "/") + ".class";  
-    }  
+    private String classNameToPath(String name) {
+        return rootUrl + "/" + name.replace(".", "/") + ".class";
+    }
 
 }
 ```
@@ -219,10 +227,10 @@ public class NetworkClassLoader extends ClassLoader {
 #tools
 ##jinfo
 jinfo 33673|more
-可以输出并修改运行时的java 进程的opts。 
+可以输出并修改运行时的java 进程的opts。
 
 ##jps
-与unix上的ps类似，用来显示本地的java进程，可以查看本地运行着几个java程序，并显示他们的进程号。 
+与unix上的ps类似，用来显示本地的java进程，可以查看本地运行着几个java程序，并显示他们的进程号。
 
 ##jps
 -q only lvmid
@@ -273,17 +281,17 @@ jstat -gcutil 529 1000 30
 
    GCT: Total garbage collection time.
 ```
-jstat -class pid:显示加载class的数量，及所占空间等信息。 
-jstat -compiler pid:显示VM实时编译的数量等信息。 
-jstat -gc pid:可以显示gc的信息，查看gc的次数，及时间。其中最后五项，分别是young gc的次数，young gc的时间，full gc的次数，full gc的时间，gc的总时间。 
-jstat -gccapacity:可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。 
-jstat -gcnew pid:new对象的信息。 
-jstat -gcnewcapacity pid:new对象的信息及其占用量。 
-jstat -gcold pid:old对象的信息。 
-jstat -gcoldcapacity pid:old对象的信息及其占用量。 
-jstat -gcpermcapacity pid: perm对象的信息及其占用量。 
-jstat -util pid:统计gc信息统计。 
-jstat -printcompilation pid:当前VM执行的信息。 
+jstat -class pid:显示加载class的数量，及所占空间等信息。
+jstat -compiler pid:显示VM实时编译的数量等信息。
+jstat -gc pid:可以显示gc的信息，查看gc的次数，及时间。其中最后五项，分别是young gc的次数，young gc的时间，full gc的次数，full gc的时间，gc的总时间。
+jstat -gccapacity:可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。
+jstat -gcnew pid:new对象的信息。
+jstat -gcnewcapacity pid:new对象的信息及其占用量。
+jstat -gcold pid:old对象的信息。
+jstat -gcoldcapacity pid:old对象的信息及其占用量。
+jstat -gcpermcapacity pid: perm对象的信息及其占用量。
+jstat -util pid:统计gc信息统计。
+jstat -printcompilation pid:当前VM执行的信息。
 
 ##jhat
 
@@ -307,7 +315,7 @@ top -Hp 32598
 printf "%x\n" 32678
 7fa6
 
-jstack 32598 |grep 7fa6
+jstack 100093 |grep 1876f
 
 
 ###TDA
@@ -317,9 +325,9 @@ jstack 32598 |grep 7fa6
 ---
 #GC
 ##minor gc
-因为young GC只收集young gen，但full GC会收集整个GC堆。 
+因为young GC只收集young gen，但full GC会收集整个GC堆。
 HotSpot VM的full GC会收集整个Java堆，包括其中的young gen与old gen；
-同时也会顺便收集不属于Java堆的perm gen。 
+同时也会顺便收集不属于Java堆的perm gen。
 Young + old + perm构成了HotSpot VM的整个GC堆。
 
 ##标记-清除算法
@@ -423,7 +431,7 @@ Mark-Compact
 * 并发GC CMS
 free-list记录空闲
 I.Initial Marking ，暂停应用
-II.Concurrent Marking 
+II.Concurrent Marking
 标记对象
 Mod Union Table记录 Minor GC后修改的Card信息
 浮动垃圾
@@ -433,7 +441,7 @@ IV.Concurrent Sweeping
 
 ---
 #CMS
-CMS在并发模式工作的时候是只收集old gen的。但一旦并发模式失败（发生concurrent mode failure）就有选择性的会进行全堆收集，也就是退回到full GC。 
+CMS在并发模式工作的时候是只收集old gen的。但一旦并发模式失败（发生concurrent mode failure）就有选择性的会进行全堆收集，也就是退回到full GC。
 
 ##过程
 初始标记 ：在这个阶段，需要虚拟机停顿正在执行的任务，官方的叫法STW(Stop The Word)。这个过程从垃圾回收的"根对象"开始，只扫描到能够和"根对象"直接关联的对象，并作标记。所以这个过程虽然暂停了整个JVM，但是很快就完成了。
@@ -497,35 +505,35 @@ jvm heap划分为 多个固定大小region
 java object demography
 
 举例：可能很多人都有一种印象，young gen应该比old gen小。
-笼统说确实如此，因为在最坏情况下young gen里可能所有对象都还活着，而如果它们全部都要晋升到old gen的话，那old gen里的剩余空间必须能容纳下这些对象才行，这就需要old gen比young gen大（否则young GC就无法进行，而必须做full GC才能应付了）。 
+笼统说确实如此，因为在最坏情况下young gen里可能所有对象都还活着，而如果它们全部都要晋升到old gen的话，那old gen里的剩余空间必须能容纳下这些对象才行，这就需要old gen比young gen大（否则young GC就无法进行，而必须做full GC才能应付了）。
 实际上却不总是这样的。所谓“最坏情况”在很多系统里是永远不会出现的。
-调优就是要针对实际应用里对象的存活模式来破除这些“最坏情况”的假设带来的限制。 
+调优就是要针对实际应用里对象的存活模式来破除这些“最坏情况”的假设带来的限制。
 
-许多Web应用里对象会有这样的特征： 
-·(a) 有一部分对象几乎一直活着。这些可能是常用数据的cache之类的 
-·(b) 有一部分对象创建出来没多久之后就没用了。这些很可能会响应一个请求时创建出来的临时对象 
-·(c) 最后可能还有一些中间的对象，创建出来之后不会马上就死，但也不会一直活着。 
+许多Web应用里对象会有这样的特征：
+·(a) 有一部分对象几乎一直活着。这些可能是常用数据的cache之类的
+·(b) 有一部分对象创建出来没多久之后就没用了。这些很可能会响应一个请求时创建出来的临时对象
+·(c) 最后可能还有一些中间的对象，创建出来之后不会马上就死，但也不会一直活着。
 
-如果是这样的模式，那young gen可以设置得非常大，大到每次young GC的时候里面的多数对象(b)最好已经死了。 
-想像一下，如果young gen太小，每次满了就触发一次young GC，那么young GC就会很频繁，或许很多临时对象(b)正好还在被是使用（还没死），这样的话young GC的收集效率就会比较低。要避免这样的情况，最好是就是把young gen设大一些。 
+如果是这样的模式，那young gen可以设置得非常大，大到每次young GC的时候里面的多数对象(b)最好已经死了。
+想像一下，如果young gen太小，每次满了就触发一次young GC，那么young GC就会很频繁，或许很多临时对象(b)正好还在被是使用（还没死），这样的话young GC的收集效率就会比较低。要避免这样的情况，最好是就是把young gen设大一些。
 
-那old gen怎么办？如果是上面说的情况，那old gen至少要足以装下所有长期存活的对象(a)；同时也要留出一定的余地用来容纳young GC没能清理掉的临时对象。 
+那old gen怎么办？如果是上面说的情况，那old gen至少要足以装下所有长期存活的对象(a)；同时也要留出一定的余地用来容纳young GC没能清理掉的临时对象。
 
-这样，最后调整出来的结果很可能young GC反而比old gen大许多。这完全没问题。 
+这样，最后调整出来的结果很可能young GC反而比old gen大许多。这完全没问题。
 
-只有(a)和(b)的话就完美了，现实中最头疼的就是针对(c)对象的调优。它们或许会经历多次young GC之后仍然存活，于是晋升到old gen；但晋升上去之后或许很快就又死掉了。 
+只有(a)和(b)的话就完美了，现实中最头疼的就是针对(c)对象的调优。它们或许会经历多次young GC之后仍然存活，于是晋升到old gen；但晋升上去之后或许很快就又死掉了。
 这种对象最好能不让晋升到old gen（可以让它们在survivor space里多来回倒腾几次再晋升，也就是想办法增加tenuring threshold；不过HotSpot VM里的GC不让外界对此多插手，想减小MaxTenuringThreshold很容易，想增加实际有效的tenuring threshold就没那么容易了）。
-但如果真的不让它们晋升，young GC的暂停时间就会增长（在survivor space里来回倒腾对象意味着要来回拷贝，这会花时间）。 
-所以有一种策略是尽量让这种对象的大部分在young GC中消耗掉（在保持young GC的暂停时间不超过某个预期值的前提下），而“漏”到old gen的那些让诸如CMS之类的并发GC来解决。 
-总之这里要做一定的tradeoff就是了。 
+但如果真的不让它们晋升，young GC的暂停时间就会增长（在survivor space里来回倒腾对象意味着要来回拷贝，这会花时间）。
+所以有一种策略是尽量让这种对象的大部分在young GC中消耗掉（在保持young GC的暂停时间不超过某个预期值的前提下），而“漏”到old gen的那些让诸如CMS之类的并发GC来解决。
+总之这里要做一定的tradeoff就是了。
 
 实践
-首先得了解硬性限制：某个服务器总共有多少内存，其中最多可以分配多少给某个应用程序；有没有一些服务对响应时间有严格要求，有的话限制是多少，之类的。 
+首先得了解硬性限制：某个服务器总共有多少内存，其中最多可以分配多少给某个应用程序；有没有一些服务对响应时间有严格要求，有的话限制是多少，之类的。
 
-然后看看应用的特征是怎样的。可以借助一些工具来了解对象的存活情况，例如NetBeans的profiler就有这样的功能（老文档）；许多其它主流Java profiler也有类似的功能。 
-这些工具的精度和性能开销各异，总之自己摸索下看看吧。 
+然后看看应用的特征是怎样的。可以借助一些工具来了解对象的存活情况，例如NetBeans的profiler就有这样的功能（老文档）；许多其它主流Java profiler也有类似的功能。
+这些工具的精度和性能开销各异，总之自己摸索下看看吧。
 
-情况了解清楚了就可以开始迭代调整各种参数看实际运行的表现如何。迭代到满意为止。 
+情况了解清楚了就可以开始迭代调整各种参数看实际运行的表现如何。迭代到满意为止。
 要分析实际GC的运行状况，首要切入点就是分析GC日志。
 
 
@@ -553,8 +561,88 @@ Yes. So, within HotSpot, the frequency and duration of the garbage collector pau
 http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 [从一次 FULL GC 卡顿谈对服务的影响](http://blog.csdn.net/weiguang_123/article/details/48577175)
 
+
 ----
-#JVM参数的含义
+#JVM参数
+##常用
+###测试用例性能测试用
+-Xmx1500m -Xms768m -Xmn512m -Xss128k
+-ea -Xmx1500m -Xms768m -Xmn512m -Xss128k
+
+-Xmx3550m -Xms3550m -Xmn2g -Xss128k
+-Xmx3550m -Xms3550m -Xss128k -XX:NewRatio=4 -XX:SurvivorRatio=4 -XX:MaxPermSize=16m -XX:MaxTenuringThreshold=0
+
+并行GC
+java -Xmx3800m -Xms3800m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20
+-XX:+UseParallelGC：选择垃圾收集器为并行收集器。此配置仅对年轻代有效。即上述配置下，年轻代使用并发收集，而年老代仍旧使用串行收集。
+-XX:ParallelGCThreads=20：配置并行收集器的线程数，即：同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。
+
+java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20 -XX:+UseParallelOldGC
+-XX:+UseParallelOldGC：配置年老代垃圾收集方式为并行收集。JDK6.0支持对年老代并行收集。
+
+java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100
+-XX:MaxGCPauseMillis=100:设置每次年轻代垃圾回收的最长时间，如果无法满足此时间，JVM会自动调整年轻代大小，以满足此值。
+
+java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100 -XX:+UseAdaptiveSizePolicy
+-XX:+UseAdaptiveSizePolicy：设置此选项后，并行收集器会自动选择年轻代区大小和相应的Survivor区比例，以达到目标系统规定的最低相应时间或者收集频率等，此值建议使用并行收集器时，一直打开。
+
+响应时间优先的并发收集器
+如上文所述，并发收集器主要是保证系统的响应时间，减少垃圾收集时的停顿时间。适用于应用服务器、电信领域等。
+典型配置：
+java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:ParallelGCThreads=20 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC
+-XX:+UseConcMarkSweepGC：设置年老代为并发收集。测试中配置这个以后，-XX:NewRatio=4的配置失效了，原因不明。所以，此时年轻代大小最好用-Xmn设置。
+-XX:+UseParNewGC:设置年轻代为并行收集。可与CMS收集同时使用。JDK5.0以上，JVM会根据系统配置自行设置，所以无需再设置此值。
+
+java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=5 -XX:+UseCMSCompactAtFullCollection
+-XX:CMSFullGCsBeforeCompaction：由于并发收集器不对内存空间进行压缩、整理，所以运行一段时间以后会产生“碎片”，使得运行效率降低。此值设置运行多少次GC以后对内存空间进行压缩、整理。
+-XX:+UseCMSCompactAtFullCollection：打开对年老代的压缩。可能会影响性能，但是可以消除碎片
+
+辅助信息
+JVM提供了大量命令行参数，打印信息，供调试使用。主要有以下一些：
+-XX:+PrintGC
+输出形式：[GC 118250K->113543K(130112K), 0.0094143 secs]
+                [Full GC 121376K->10414K(130112K), 0.0650971 secs]
+-XX:+PrintGCDetails
+输出形式：[GC [DefNew: 8614K->781K(9088K), 0.0123035 secs] 118250K->113543K(130112K), 0.0124633 secs]
+                [GC [DefNew: 8614K->8614K(9088K), 0.0000665 secs][Tenured: 112761K->10414K(121024K), 0.0433488 secs] 121376K->10414K(130112K), 0.0436268 secs]
+-XX:+PrintGCTimeStamps -XX:+PrintGC：PrintGCTimeStamps可与上面两个混合使用
+输出形式：11.851: [GC 98328K->93620K(130112K), 0.0082960 secs]
+-XX:+PrintGCApplicationConcurrentTime:打印每次垃圾回收前，程序未中断的执行时间。可与上面混合使用
+输出形式：Application time: 0.5291524 seconds
+-XX:+PrintGCApplicationStoppedTime：打印垃圾回收期间程序暂停的时间。可与上面混合使用
+输出形式：Total time for which application threads were stopped: 0.0468229 seconds
+-XX:PrintHeapAtGC:打印GC前后的详细堆栈信息
+输出形式：
+34.702: [GC {Heap before gc invocations=7:
+ def new generation   total 55296K, used 52568K [0x1ebd0000, 0x227d0000, 0x227d0000)
+eden space 49152K,  99% used [0x1ebd0000, 0x21bce430, 0x21bd0000)
+from space 6144K,  55% used [0x221d0000, 0x22527e10, 0x227d0000)
+  to   space 6144K,   0% used [0x21bd0000, 0x21bd0000, 0x221d0000)
+ tenured generation   total 69632K, used 2696K [0x227d0000, 0x26bd0000, 0x26bd0000)
+the space 69632K,   3% used [0x227d0000, 0x22a720f8, 0x22a72200, 0x26bd0000)
+ compacting perm gen  total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)
+   the space 8192K,  35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)
+    ro space 8192K,  66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)
+    rw space 12288K,  46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)
+34.735: [DefNew: 52568K->3433K(55296K), 0.0072126 secs] 55264K->6615K(124928K)Heap after gc invocations=8:
+ def new generation   total 55296K, used 3433K [0x1ebd0000, 0x227d0000, 0x227d0000)
+eden space 49152K,   0% used [0x1ebd0000, 0x1ebd0000, 0x21bd0000)
+  from space 6144K,  55% used [0x21bd0000, 0x21f2a5e8, 0x221d0000)
+  to   space 6144K,   0% used [0x221d0000, 0x221d0000, 0x227d0000)
+ tenured generation   total 69632K, used 3182K [0x227d0000, 0x26bd0000, 0x26bd0000)
+the space 69632K,   4% used [0x227d0000, 0x22aeb958, 0x22aeba00, 0x26bd0000)
+ compacting perm gen  total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)
+   the space 8192K,  35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)
+    ro space 8192K,  66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)
+    rw space 12288K,  46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)
+}
+, 0.0757599 secs]
+-Xloggc:filename:与上面几个配合使用，把相关日志信息记录到文件以便分析。
+
+
+
+
+#param
 ##-Xms
 初始堆大小初始堆的大小，也是堆大小的最小值，默认值是总共的物理内存/64（且小于1G），默认情况下，当堆中可用内存小于40%(这个值可以用-XX: MinHeapFreeRatio 调整，如-X:MinHeapFreeRatio=30)时，堆内存会开始增加，一直增加到-Xmx的大小；
 
@@ -566,10 +654,15 @@ http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 建议在开发测试环境可以用Xms和Xmx分别设置最小值最大值，但是在线上生产环境，Xms和Xmx设置的值必须一样，原因与年轻代一样——防止抖动；
 
 -Xmn    年轻代大小(1.4or lator)
--XX:NewSize 设置年轻代大小(for 1.3/1.4)    
+-XX:NewSize 设置年轻代大小(for 1.3/1.4)
 -XX:MaxNewSize  年轻代最大值(for 1.3/1.4)
--XX:PermSize    设置持久代(perm gen)初始值
--XX:MaxPermSize 设置持久代最大值
+##-XX:PermSize   
+设置持久代(perm gen)初始值
+##-XX:MaxPermSize 设置持久代最大值
+##-XX:MaxMetaspaceSize
+默认情况下，-XX:MaxMetaspaceSize的值没有限制，因此元空间甚至可以延伸到交换区，但是这时候当我们进行本地内存分配时将会失败。
+64位的服务器端JVM来说，其默认的–XX:MetaspaceSize值为21MB
+-XX:MinMetaspaceFreeRatio和-XX:MaxMetaspaceFreeRatio，他们类似于GC的FreeRatio选项，用来设置元空间空闲比例的最大值和最小值。
 
 ##-Xss 每个线程的堆栈大小
 这个参数用于设置每个线程的栈内存，默认1M，一般来说是不需要改的。除非代码不多，可以设置的小点，另外一个相似的参数是-XX:ThreadStackSize，这两个参数在1.6以前，都是谁设置在后面，谁就生效；1.6版本以后，-Xss设置在后面，则以-Xss为准，-XXThreadStackSize设置在后面，则主线程以-Xss为准，其它线程以-XX:ThreadStackSize为准。
@@ -599,21 +692,21 @@ http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 -XX:+UseFastAccessorMethods 原始类型的快速优化
 -XX:+DisableExplicitGC      关闭System.gc()
 -XX:MaxTenuringThreshold    垃圾最大年龄  串行GC时才有效
--XX:+AggressiveOpts     加快编译         
--XX:+UseBiasedLocking   锁机制的性能改善         
--Xnoclassgc             禁用垃圾回收       
--XX:SoftRefLRUPolicyMSPerMB     每兆堆空闲空间中SoftReference的存活时间  1s  
+-XX:+AggressiveOpts     加快编译
+-XX:+UseBiasedLocking   锁机制的性能改善
+-Xnoclassgc             禁用垃圾回收
+-XX:SoftRefLRUPolicyMSPerMB     每兆堆空闲空间中SoftReference的存活时间  1s
 -XX:PretenureSizeThreshold      对象超过多大是直接在旧生代分配，另一种直接在旧生代分配的情况是大的数组对象,且数组中无外部引用对象
--XX:TLABWasteTargetPercent      TLAB占eden区的百分比  1%   
--XX:+CollectGen0First           FullGC时是否先YGC   false    
+-XX:TLABWasteTargetPercent      TLAB占eden区的百分比  1%
+-XX:+CollectGen0First           FullGC时是否先YGC   false
 
 ##并行收集器相关参数
 -XX:+UseParallelGC      Full GC采用parallel MSC
 -XX:+UseParNewGC        设置年轻代为并行收集 JDK5.0以上,无需再设置此值
 -XX:ParallelGCThreads   并行收集器的线程数，此值最好配置与处理器数目相等
--XX:+UseParallelOldGC   年老代垃圾收集方式为并行收集(Parallel Compacting) 
+-XX:+UseParallelOldGC   年老代垃圾收集方式为并行收集(Parallel Compacting)
 -XX:MaxGCPauseMillis    每次年轻代垃圾回收的最长时间(最大暂停时间)
--XX:+UseAdaptiveSizePolicy  自动选择年轻代区大小和相应的Survivor区比例  
+-XX:+UseAdaptiveSizePolicy  自动选择年轻代区大小和相应的Survivor区比例
 -XX:GCTimeRatio         设置垃圾回收时间占程序运行时间的百分比，公式为1/(1+n)
 -XX:+ScavengeBeforeFullGC   Full GC前调用YGC   true
 
@@ -622,45 +715,45 @@ http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 -XX:+AggressiveHeap         试图是使用大量的物理内存，长时间大内存使用的优化，能检查计算资源（内存， 处理器数量）至少需要256MB内存，大量的CPU／内存， （在1.4.1在4CPU的机器上已经显示有提升）
 -XX:CMSFullGCsBeforeCompaction      多少次后进行内存压缩      由于并发收集器不对内存空间进行压缩,整理,所以运行一段时间以后会产生"碎片",使得运行效率降低.此值设置运行多少次GC以后对内存空间进行压缩,整理.
 
--XX:+CMSParallelRemarkEnabled       降低标记停顿       
+-XX:+CMSParallelRemarkEnabled       降低标记停顿
 -XX+UseCMSCompactAtFullCollection   在FULL GC的时候， 对年老代的压缩        CMS是不会移动内存的， 因此， 这个非常容易产生碎片， 导致内存不够用， 因此， 内存的压缩这个时候就会被启用。 增加这个参数是个好习惯。
 可能会影响性能,但是可以消除碎片
 -XX:+UseCMSInitiatingOccupancyOnly  使用手动定义初始化定义开始CMS收集      禁止hostspot自行触发CMS GC
 -XX:CMSInitiatingOccupancyFraction=70   使用cms作为垃圾回收，使用70％后开始CMS收集，为了保证不出现promotion failed(见下面介绍)错误,值的设置需要满足以下公式CMSInitiatingOccupancyFraction计算公式
--XX:CMSInitiatingPermOccupancyFraction  设置Perm Gen使用到达多少比率时触发  
+-XX:CMSInitiatingPermOccupancyFraction  设置Perm Gen使用到达多少比率时触发
 -XX:+CMSIncrementalMode     设置为增量模式     用于单CPU情况
--XX:+CMSClassUnloadingEnabled    
+-XX:+CMSClassUnloadingEnabled
 
 ##辅助信息
-### -XX:+PrintGC            
+### -XX:+PrintGC
 输出形式:
 [GC 118250K->113543K(130112K), 0.0094143 secs]
 [Full GC 121376K->10414K(130112K), 0.0650971 secs]
 
-### -XX:+PrintGCDetails         
+### -XX:+PrintGCDetails
 输出形式:[GC [DefNew: 8614K->781K(9088K), 0.0123035 secs] 118250K->113543K(130112K), 0.0124633 secs]
 [GC [DefNew: 8614K->8614K(9088K), 0.0000665 secs][Tenured: 112761K->10414K(121024K), 0.0433488 secs] 121376K->10414K(130112K), 0.0436268 secs]
 
-### -XX:+PrintGCTimeStamps           
-### -XX:+PrintGC:PrintGCTimeStamps          
+### -XX:+PrintGCTimeStamps
+### -XX:+PrintGC:PrintGCTimeStamps
 可与-XX:+PrintGC -XX:+PrintGCDetails混合使用
 输出形式:11.851: [GC 98328K->93620K(130112K), 0.0082960 secs]
-### -XX:+PrintGCApplicationStoppedTime  
-打印垃圾回收期间程序暂停的时间.可与上面混合使用        
+### -XX:+PrintGCApplicationStoppedTime
+打印垃圾回收期间程序暂停的时间.可与上面混合使用
 输出形式:Total time for which application threads were stopped: 0.0468229 seconds
-### -XX:+PrintGCApplicationConcurrentTime   
+### -XX:+PrintGCApplicationConcurrentTime
 打印每次垃圾回收前,程序未中断的执行时间.可与上面混合使用
 输出形式:Application time: 0.5291524 seconds
-### -XX:+PrintHeapAtGC  
-打印GC前后的详细堆栈信息        
+### -XX:+PrintHeapAtGC
+打印GC前后的详细堆栈信息
 ### -Xloggc:filename    把相关日志信息记录到文件以便分析.
-与上面几个配合使用        
+与上面几个配合使用
 ### -XX:+PrintClassHistogram
-garbage collects before printing the histogram.      
-### -XX:+PrintTLAB  
-查看TLAB空间的使用情况        
-### XX:+PrintTenuringDistribution   
-查看每次minor GC后新的存活周期的阈值      
+garbage collects before printing the histogram.
+### -XX:+PrintTLAB
+查看TLAB空间的使用情况
+### XX:+PrintTenuringDistribution
+查看每次minor GC后新的存活周期的阈值
 Desired survivor size 1048576 bytes, new threshold 7 (max 15)
 new threshold 7即标识新的存活周期的阈值为7。
 
@@ -693,14 +786,14 @@ Mark-Sweep
 
 ---
 #dev
-空闲内存： 
-Runtime.getRuntime().freeMemory() 
-总内存： 
-Runtime.getRuntime().totalMemory() 
-最大内存： 
-Runtime.getRuntime().maxMemory() 
-已占用的内存： 
-Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() 
+空闲内存：
+Runtime.getRuntime().freeMemory()
+总内存：
+Runtime.getRuntime().totalMemory()
+最大内存：
+Runtime.getRuntime().maxMemory()
+已占用的内存：
+Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
 
 
 
@@ -742,8 +835,8 @@ while(true){
         public void run() {
             try {
                 Thread.sleep(10000000);
-            } catch(InterruptedException e) { }        
-        }   
+            } catch(InterruptedException e) { }
+        }
     }).start();
 }
 ```
@@ -794,16 +887,16 @@ Native Memory的例外，如果你在以下场景：
 #内存分析
 [使用 Eclipse Memory Analyzer 进行堆转储文件分析](http://www.ibm.com/developerworks/cn/opensource/os-cn-ecl-ma/index.html)
 ```
-0x01b6d627: call   0x01b2b210         ; OopMap{[60]=Oop off=460}      
-                                       ;*invokeinterface size      
-                                       ; - Client1::main@113 (line 23)      
-                                       ;   {virtual_call}      
- 0x01b6d62c: nop                       ; OopMap{[60]=Oop off=461}      
-                                       ;*if_icmplt      
-                                       ; - Client1::main@118 (line 23)      
- 0x01b6d62d: test   %eax,0x160100      ;   {poll}      
- 0x01b6d633: mov    0x50(%esp),%esi      
- 0x01b6d637: cmp    %eax,%esi     
+0x01b6d627: call   0x01b2b210         ; OopMap{[60]=Oop off=460}
+                                       ;*invokeinterface size
+                                       ; - Client1::main@113 (line 23)
+                                       ;   {virtual_call}
+ 0x01b6d62c: nop                       ; OopMap{[60]=Oop off=461}
+                                       ;*if_icmplt
+                                       ; - Client1::main@118 (line 23)
+ 0x01b6d62d: test   %eax,0x160100      ;   {poll}
+ 0x01b6d633: mov    0x50(%esp),%esi
+ 0x01b6d637: cmp    %eax,%esi
 ```
 test  %eax,0x160100 就是一个safepoint polling page操作。当JVM要停止所有的Java线程时会把一个特定内存页设置为不可读，那么当Java线程读到这个位置的时候就会被挂起
 
@@ -813,7 +906,7 @@ test  %eax,0x160100 就是一个safepoint polling page操作。当JVM要停止�
 * The GC reigns in all threads at safepoints. This is when it has exact knowledge of things touched by the threads.
 * They can also be used for non-GC activity like optimization.
 * A thread at a safepoint is not necessarily idle but it often is.
-* Safepoint opportunities should be frequent. 
+* Safepoint opportunities should be frequent.
 * All threads need to reach a global safepoint typically every dozen or so instructions (for example, at the end of loops).
 
 safepoint机制可以stop the world，不仅仅是在GC的时候用，
@@ -821,41 +914,41 @@ safepoint机制可以stop the world，不仅仅是在GC的时候用，
 
 OpenJDK里面关于safepoint的一些说明
 ```
-// Begin the process of bringing the system to a safepoint.    
-// Java threads can be in several different states and are    
-// stopped by different mechanisms:    
-//    
-//  1. Running interpreted    
-//     The interpeter dispatch table is changed to force it to    
-//     check for a safepoint condition between bytecodes.    
-//  2. Running in native code    
-//     When returning from the native code, a Java thread must check    
-//     the safepoint _state to see if we must block.  If the    
-//     VM thread sees a Java thread in native, it does    
-//     not wait for this thread to block.  The order of the memory    
-//     writes and reads of both the safepoint state and the Java    
-//     threads state is critical.  In order to guarantee that the    
-//     memory writes are serialized with respect to each other,    
-//     the VM thread issues a memory barrier instruction    
-//     (on MP systems).  In order to avoid the overhead of issuing    
-//     a mem barrier for each Java thread making native calls, each Java    
-//     thread performs a write to a single memory page after changing    
-//     the thread state.  The VM thread performs a sequence of    
-//     mprotect OS calls which forces all previous writes from all    
-//     Java threads to be serialized.  This is done in the    
-//     os::serialize_thread_states() call.  This has proven to be    
-//     much more efficient than executing a membar instruction    
-//     on every call to native code.    
-//  3. Running compiled Code    
-//     Compiled code reads a global (Safepoint Polling) page that    
-//     is set to fault if we are trying to get to a safepoint.    
-//  4. Blocked    
-//     A thread which is blocked will not be allowed to return from the    
-//     block condition until the safepoint operation is complete.    
-//  5. In VM or Transitioning between states    
-//     If a Java thread is currently running in the VM or transitioning    
-//     between states, the safepointing code will wait for the thread to    
-//     block itself when it attempts transitions to a new state.    
+// Begin the process of bringing the system to a safepoint.
+// Java threads can be in several different states and are
+// stopped by different mechanisms:
+//
+//  1. Running interpreted
+//     The interpeter dispatch table is changed to force it to
+//     check for a safepoint condition between bytecodes.
+//  2. Running in native code
+//     When returning from the native code, a Java thread must check
+//     the safepoint _state to see if we must block.  If the
+//     VM thread sees a Java thread in native, it does
+//     not wait for this thread to block.  The order of the memory
+//     writes and reads of both the safepoint state and the Java
+//     threads state is critical.  In order to guarantee that the
+//     memory writes are serialized with respect to each other,
+//     the VM thread issues a memory barrier instruction
+//     (on MP systems).  In order to avoid the overhead of issuing
+//     a mem barrier for each Java thread making native calls, each Java
+//     thread performs a write to a single memory page after changing
+//     the thread state.  The VM thread performs a sequence of
+//     mprotect OS calls which forces all previous writes from all
+//     Java threads to be serialized.  This is done in the
+//     os::serialize_thread_states() call.  This has proven to be
+//     much more efficient than executing a membar instruction
+//     on every call to native code.
+//  3. Running compiled Code
+//     Compiled code reads a global (Safepoint Polling) page that
+//     is set to fault if we are trying to get to a safepoint.
+//  4. Blocked
+//     A thread which is blocked will not be allowed to return from the
+//     block condition until the safepoint operation is complete.
+//  5. In VM or Transitioning between states
+//     If a Java thread is currently running in the VM or transitioning
+//     between states, the safepointing code will wait for the thread to
+//     block itself when it attempts transitions to a new state.
 ```
 
 

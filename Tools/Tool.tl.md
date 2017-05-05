@@ -4,6 +4,15 @@
 [知乎软件神器推荐](https://weavi.com/92079)
 
 ---
+#msiexec 
+解压msi包
+如需把d盘下abc.msi文件解包到目录d:\abc，操作如下：
+msiexec /a "d:\op.msi" /qb TARGETDIR="D:\abc"
+msiexec /help 文档
+
+
+
+---
 #mac
 ```bash
 brew install
@@ -44,6 +53,12 @@ Speccy：电脑硬件信息。
 
 
 ---
+#math 数学
+matlab
+octave
+
+
+---
 #net网络
 ##下载
 [youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
@@ -76,6 +91,8 @@ https://www.gnupg.org/
 ---
 #字体 font
 微软雅黑    Microsoft YaHei
+
+
 
 
 ----
@@ -202,8 +219,10 @@ brew install tesseract
 ##UML
 [jude](http://jude.change-vision.com/jude-web/product/community.html)
 [多平台](http://staruml.io/)
+###staruml
 StarUML.app/Contents/www/license/node
 [crack](http://www.360doc.com/content/15/1115/01/9437165_513270982.shtml)
+www/license/node/LicenseManagerDomain.js
 ```javascript
 function validate(PK, name, product, licenseKey) {
         var pk, decrypted;

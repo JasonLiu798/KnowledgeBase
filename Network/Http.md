@@ -11,6 +11,43 @@ HEAD 请求获取由Request-URI所标识的资源的响应消息报头。
 OPTIONS 请求查询服务器的性能，或查询与资源相关的选项和需求。
 
 
+---
+#协议头
+
+##Content-Type 
+[各浏览器对常用或者错误的 Content-Type 类型处理方式不一致](http://blog.csdn.net/maweiqi/article/details/7677411)
+content-type 用于定义用户的浏览器或相关设备如何显示将要加载的数据，或者如何处理将要加载的数据，此属性的值可以查看MIME 类型。
+
+MIME (Multipurpose Internet Mail Extensions，多用途互联网邮件扩展) 是描述消息内容类型的因特网标准。MIME 消息能包含文本、图像、音频、视频以及其他应用程序专用的数据。
+###content-type 一般以下面的形式出现
+Content-Type: [type]/[subtype]; parameter
+type 有下面的形式：
+Text：用于标准化地表示的文本信息，文本消息可以是多种字符集和或者多种格式的；
+Multipart：用于连接消息体的多个部分构成一个消息，这些部分可以是不同类型的数据；
+Application：用于传输应用程序数据或者二进制数据；
+Message：用于包装一个E-mail消息；
+Image：用于传输静态图片数据；
+Audio：用于传输音频或者音声数据；
+Video：用于传输动态影像数据，可以是与音频编辑在一起的视频数据格式。
+###subtype
+用于指定 type 的详细形式。“type/subtype”配对的集合和与此相关的参数。下面是最经常用到的一些 MIME 类型：
+text/html（HTML 文档）；
+text/plain（纯文本）；
+text/css（CSS 样式表）；
+image/gif（GIF 图像）；
+image/jpeg（JPG 图像）；
+application/x-javascript（JavaScript 脚本）；
+application/x-shockwave-flash（Flash）；
+application/x- www-form-urlencoded（使用 HTTP 的 POST 方法提交的表单）；
+multipart/form-data（同上，但主要用于表单提交时伴随文件上传的场合）。
+关于 content-type 的详细信息，请参考 HTML4.01 规范 6.7 Content types (MIME types) 中的内容。
+关于 MIME 的相信信息，请参考 IETF 的 [RFC2045] 及 [RFC2046] 规范。
+更多的 MIME 类型参见：
+http://www.utoronto.ca/webdocs/HTMLdocs/Book/Book-3ed/appb/mimetype.html
+http://www.iana.org/assignments/media-types/
+
+
+
 
 
 
@@ -145,8 +182,68 @@ TLS握手过程中如果有任何错误，都会使加密连接断开，从而�
 400 | 15
 
 
+##302
+[cookie系列（二）header302跳转引发的思考](http://www.jianshu.com/p/a95df73bdae4)
+
+[ajax与302响应](http://www.cnblogs.com/dudu/p/ajax_302_found.html)
+
+You can't handle redirects with XHR callbacks because the browser takes care of them automatically. You will only get back what at the redirected location.
+
+原来，当服务器将302响应发给浏览器时，浏览器并不是直接进行ajax回调处理，而是先执行302重定向——从Response Headers中读取Location信息，然后向Location中的Url发出请求，在收到这个请求的响应后才会进行ajax回调处理。大致流程如下：
+
+ajax -> browser -> server -> 302 -> browser(redirect) -> server -> browser -> ajax callback
+
+如何解决？
+
+【方法一】
+继续用ajax，修改服务器端代码，将原来的302响应改为json响应，比如下面的ASP.NET MVC示例代码：
+return Json(new { status = 302, location = "/oauth/respond" });
+ajax代码稍作修改即可：
+
+$.ajax({
+    url: '/oauth/respond',
+    type: 'post',
+    data: data,
+    dataType: 'json',
+    success: function (data) {
+        if (data.status == 302) {
+            location.href = data.location;
+        }
+    }
+});
+【方法二】
+ 不用ajax，改用form。 
+
+<form method="post" action="/oauth/respond">
+</form>
 
 
+
+----
+#cookie
+
+var xhr = new XMLHttpRequest();  
+xhr.open("POST", "http://xxxx.com/demo/b/index.php", true);  
+xhr.withCredentials = true; //支持跨域发送cookies
+xhr.send();
+jquery的post方法请求：
+
+ $.ajax({
+    type: "POST",
+    url: "http://xxx.com/api/test",
+    dataType: 'jsonp',
+    xhrFields: {withCredentials: true},
+    crossDomain: true,
+})
+服务器端设置：
+
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Origin: http://www.xxx.com");
+
+
+
+#OPTION
+http://blog.csdn.net/leikezhu1981/article/details/7402272
 
 
 

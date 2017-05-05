@@ -26,6 +26,19 @@ pssh -h /root/ot.txt -l root -i 'ln -sfv /home/project /opt/project'
 见[zookeeper](../Distribute/Zookeeper.md)
 
 
+## 1 hadoop 
+hadoop fsck / -files -blocks
+
+### chk size
+hadoop dfsadmin -report
+
+### file operation
+hadoop fs -copyFromLocal localfile hdfs://localhost/xxx
+
+http://zy19982004.iteye.com/blog/2024467
+
+
+
 ---
 # env
 
@@ -282,72 +295,6 @@ pscp -h /root/other.txt -l root /opt/zookeeper/conf/zoo.cfg /opt/zookeeper/conf
 pscp -h /root/slave -l root /opt/zookeeper/conf/zoo.cfg /opt/zookeeper/conf
 pscp -h /root/other.txt -l root /root/.bashrc /root
 /opt/zookeeper/conf/zoo.cfg
-
-
-
----
-#hbase 
-## oper
-start-hbase.sh
-stop-hbase.sh
-### hbase cleanlog
-pssh -h /root/other.txt -l root -i 'rm -f /opt/hbase/logs/*'
-
-## conf
-http://ixirong.com/2015/05/25/how-to-install-hbase-cluster/
-##.bashrc
-HBASE=/opt/hbase
-PATH
-
-pssh -h /root/other.txt -l root -i 'mkdir -p /opt/hbase/logs'
-##hbase-env.sh
-export JAVA_HOME=/opt/java
-export HBASE_CLASSPATH=/opt/hbase/conf
-export HBASE_MANAGES_ZK=false
-export HBASE_HOME=/opt/hbase
-export HADOOP_HOME=/opt/hadoop
-export HBASE_LOG_DIR=/opt/hbase/logs
-export HBASE_PID_DIR=/opt/hbase/pids
-
-pscp -h /root/other.txt -l root /opt/hbase/conf/hbase-env.sh /opt/hbase/conf
-pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/hbase-env.sh'
-
-pssh -h /root/other.txt -l root -i 'mkdir -p /opt/hbase/pids'
-
-
-##hbase-site.xml
-pscp -h /root/other.txt -l root /opt/hbase/conf/hbase-site.xml /opt/hbase/conf
-
-    <configuration>
-            <property>
-                    <name>hbase.rootdir</name>
-                    <value>hdfs://namenode:9000/hbase</value>
-            </property>
-            <property>
-                    <name>hbase.cluster.distributed</name>
-                    <value>true</value>
-            </property>
-            <property>
-                    <name>hbase.master</name>
-                    <value>hmaster1:60000</value>
-            </property>
-            <property>
-                    <name>hbase.zookeeper.quorum</name>
-                    <value>hmaster1,datanode1,datanode2</value>
-            </property>
-    </configuration>    
-pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/hbase-site.xml'
-
-##regionservers
-regionServer1
-regionServer2
-pscp -h /root/other.txt -l root /opt/hbase/conf/regionservers /opt/hbase/conf
-pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/regionservers'
-
-
-# Q&A
-## NoServerForRegionException: Unable to find region for xxxx
-hbase jar包版本问题
 
 
 

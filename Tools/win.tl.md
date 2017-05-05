@@ -1,10 +1,25 @@
 #windows command
 ----
 #must
-rescuetime-yp
-everything-net
+rescuetime-时间管理
+everything-搜索
+[文档API管理 velocity](http://velocity.silverlakesoftware.com/)
+[文档API管理 zeal](https://zealdocs.org/)
+IDEA-开发
+Xmind-知识管理
+
+
 
 ----
+
+#快捷键
+程序跑到桌面外边
+按“ALT＋TAB”把焦点切到该窗口；
+按“ALT＋空格”，再按“M”键；
+再按键盘上的“↑”、“↓”、“←”、“→”中的一个，  持续地按住，如果窗口不出现，按换另一个再试
+
+
+
 #common
 #Shadowsocks
 使用：http://ttt.tt/150/ 
@@ -80,6 +95,21 @@ ultimate
 KH2J9-PC326-T44D4-39H6V-TVPBY
 
 
+
+---
+#IE
+##证书
+手动添加
+win+r  mmc
+文件—添加/删除管理单元
+选择 证书，并点击 添加
+在弹出的窗口上选择 我的用户帐户 并 完成
+点 确定
+选择左边窗口的“中级证书颁发机构—证书”，选中右边窗口的东风邮箱证书，右键复制
+在左边窗口的 个人 那里右键粘贴
+在 受信任的根证书颁发机构—证书 右键 粘贴
+
+---
 #cmd速查
 mstsc--远程桌面连接 
 logoff--注销命令 

@@ -21,45 +21,40 @@ http://download.csdn.net/detail/flybirds98/1934334
 
 [blog machine learing](http://www.cnblogs.com/jerrylead/tag/Machine%20Learning/)
 
----
-#book
-统计学习方法
-Pattern Recognition And Machine Learning
-数据科学实战
-数据检索导论
+
+
+----
+#standford ml note
+#C1 机器学习的动机与应用
+矩阵、逆矩阵、乘法
+Arthur Samuel 1959
+Field of study that gives computers the ability to learn without being explicitly programmed.
+Tom Michell 1998
+A computer program is said to learn from experience E with respect to some task T and some performance measure P,if its performance on T,as measured by P,improves with experience E.
+
+Supervised learning
+标准问题+标准答案->得出其他问题的答案
+
+分类问题
+
+Unsupervised learning
+
+reinforcement learning
+一系列决策，遥控飞机
+
+#C2 监督学习应用.线性回归  梯度下降 
+Training set
+learning algorithm
+h
 
 
 
-统计学习方法.李航
-All of Statistics
-统计学习基础-数据挖掘、推理与预测
-
-
-PRML, ESL, MLAPP,
-Linear Algebra Done Right
 
 
 
-机器学习及其应用
-All of Statistics.LarryWasserman
-机器学习.TomMitchell
-PRML.pdf
-PRML读书会合集打印版.pdf
-Programming Collective Intelligence.pdf
-[奥莱理] Machine Learning for Hackers.pdf
-大数据：互联网大规模数据挖掘与分布式处理
-推荐系统实践.pdf
-数据挖掘-实用机器学习技术（中文第二版）.pdf
-数据挖掘_概念与技术.pdf
-机器学习导论.pdf
-模式分类第二版中文版Duda.pdf（全）.pdf
-深入搜索引擎--海量信息的压缩、索引和查询.pdf
-矩阵分析.美国 Roger.A.Horn.扫描版.pdf
-
-机器学习实战
-LDA数学八卦.pdf
 
 ---
+#机器学习,Tom Michell
 #C1 base 序论
 CS principal
 数据结构，基本算法
@@ -317,6 +312,7 @@ L的归纳偏置是最小断言集合B，它使任意目标概念c和相应的�
 
 ---
 #C4 神经网络
+[CNN(卷积神经网络)是什么？有入门简介或文章吗？](https://www.zhihu.com/question/52668301#answer-48146682)
 神经网络学习方法对于逼近实数值、离散值或向量值的目标函数提供了一种鲁棒性很强的方法
 
 
@@ -329,6 +325,42 @@ L的归纳偏置是最小断言集合B，它使任意目标概念c和相应的�
 
 
 
+
+
+
+
+---
+#reference book
+统计学习方法
+Pattern Recognition And Machine Learning
+数据科学实战
+数据检索导论
+
+统计学习方法.李航
+All of Statistics
+统计学习基础-数据挖掘、推理与预测
+
+
+PRML, ESL, MLAPP,
+Linear Algebra Done Right
+
+机器学习及其应用
+All of Statistics.LarryWasserman
+机器学习.TomMitchell
+PRML.pdf
+PRML读书会合集打印版.pdf
+Programming Collective Intelligence.pdf
+[奥莱理] Machine Learning for Hackers.pdf
+大数据：互联网大规模数据挖掘与分布式处理
+推荐系统实践.pdf
+数据挖掘-实用机器学习技术（中文第二版）.pdf
+数据挖掘_概念与技术.pdf
+机器学习导论.pdf
+模式分类第二版中文版Duda.pdf（全）.pdf
+深入搜索引擎--海量信息的压缩、索引和查询.pdf
+矩阵分析.美国 Roger.A.Horn.扫描版.pdf
+机器学习实战
+LDA数学八卦.pdf
 
 
 

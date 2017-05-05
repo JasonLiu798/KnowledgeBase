@@ -132,7 +132,7 @@ enum ThreadState{
    OBJECT_WAIT,
    BREAKPOINTED,
    SLEEPING,
-   ZOMBIE 
+   ZOMBIE
 }
 ```
 
@@ -183,61 +183,61 @@ notify()调用后，并不是马上就释放对象锁的，而是在相应的syn
 synchronized method，等价于 synchronized (this) block
 synchronized block
 ```java
-    public synchronized void fun1() {  
-        // do something here  
+    public synchronized void fun1() {
+        // do something here
     }
-    public synchronized void fun2() {  
-        synchronized (this) {  
-        // do something here  
-        }  
-    } 
+    public synchronized void fun2() {
+        synchronized (this) {
+        // do something here
+        }
+    }
 ```
-静态方法的 synchronized method也就等价于下面这种形式的 synchronized block 
+静态方法的 synchronized method也就等价于下面这种形式的 synchronized block
 ```java
-    public static synchronized void fun2() {  
-        synchronized (ClassName.class) {  
-        // do something here  
-        }  
+    public static synchronized void fun2() {
+        synchronized (ClassName.class) {
+        // do something here
+        }
     }
 ```
 
 ##实现
 [synchronized的实现方式](http://blog.csdn.net/feelang/article/details/40134631)
 ```java
-typedef struct monitor {  
-pthread_mutex_t lock;  
-Thread *owner;  
-Object *obj;  
-int count;  
-int in_wait;  
-uintptr_t entering;  
-int wait_count;  
-Thread *wait_set;  
-struct monitor *next;  
-} Monitor;  
+typedef struct monitor {
+pthread_mutex_t lock;
+Thread *owner;
+Object *obj;
+int count;
+int in_wait;
+uintptr_t entering;
+int wait_count;
+Thread *wait_set;
+struct monitor *next;
+} Monitor;
 
 
-void monitorLock(Monitor *mon, Thread *self) {  
-    if(mon->owner == self)  
-        mon->count++;  
-    else {  
-        if(pthread_mutex_trylock(&mon->lock)) {  
-            disableSuspend(self);  
-              
-            self->blocked_mon = mon;  
-            self->blocked_count++;  
+void monitorLock(Monitor *mon, Thread *self) {
+    if(mon->owner == self)
+        mon->count++;
+    else {
+        if(pthread_mutex_trylock(&mon->lock)) {
+            disableSuspend(self);
+
+            self->blocked_mon = mon;
+            self->blocked_count++;
             self->state = BLOCKED;//
-              
-            pthread_mutex_lock(&mon->lock);  
-              
-            self->state = RUNNING;  
-            self->blocked_mon = NULL;  
-              
-            enableSuspend(self);  
-        }  
-        mon->owner = self;  
-    }  
-}  
+
+            pthread_mutex_lock(&mon->lock);
+
+            self->state = RUNNING;
+            self->blocked_mon = NULL;
+
+            enableSuspend(self);
+        }
+        mon->owner = self;
+    }
+}
 ```
 
 
@@ -353,10 +353,10 @@ sleep不出让系统资源；wait是进入线程等待池等待，出让系统�
 sleep(milliseconds)可以用时间指定使它自动唤醒过来，如果时间不到只能调用interrupt()强行打断。
 Thread.Sleep(0)的作用是“触发操作系统立刻重新进行一次CPU竞争”。
 
-3.使用范围：wait，notify和notifyAll只能在同步控制方法或者同步控制块里面使用，而sleep可以在任何地方使用 
-   synchronized(x){ 
-      x.notify() 
-     //或者wait() 
+3.使用范围：wait，notify和notifyAll只能在同步控制方法或者同步控制块里面使用，而sleep可以在任何地方使用
+   synchronized(x){
+      x.notify()
+     //或者wait()
    }
 
 4.sleep必须捕获异常，而wait，notify和notifyAll不需要捕获异常
@@ -601,9 +601,9 @@ JDK的线程池实现的非常灵活，并提供了很多功能，一些场景�
 ```java
     volatile int runState;
      /* 线程池正在运行，可以正常的接收新任务，同时执行任务队列中缓存的任务 */
-    static final int RUNNING    = 0;  
+    static final int RUNNING    = 0;
      /* 线程池处于关闭状态，暂停接受新任务，但是会继续执行缓存队列中的旧任务     */
-    static final int SHUTDOWN   = 1;  
+    static final int SHUTDOWN   = 1;
     /*
      * 线程池处于停止状态，暂停接受新的任务，也不会去执行缓存队列中的旧任务
      */
@@ -687,6 +687,19 @@ ThreadPoolExecutor中有没有主控线程，只有任务缓存队列和任务�
 
 
 ---
+#Atomic
+##LongAdder
+jdk-8u20以上可用
+[从LongAdder 看更高效的无锁实现](http://www.liuinsect.com/2014/04/15/%E6%AF%94atomiclong%E8%BF%98%E9%AB%98%E6%95%88%E7%9A%84longadder-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/)
+
+[Java 8 Performance Improvements: LongAdder vs AtomicLong](http://blog.palominolabs.com/2014/02/10/java-8-performance-improvements-longadder-vs-atomiclong/)
+
+
+DoubleAdder
+
+
+
+---
 #API
 ##创建
 ```java
@@ -694,10 +707,10 @@ Thread thread = new Thread(){
         public void run(){
 
         }
-}  
+}
 Thread thread = new Thread(new Runnable(){
           public void run(){
- 
+
            }
 });
 ```
@@ -719,7 +732,7 @@ p->infty => {W}/{W_s}
 context switch
 memory barrier
 block
-## decrease lock compete 
+## decrease lock compete
 
 
 ----

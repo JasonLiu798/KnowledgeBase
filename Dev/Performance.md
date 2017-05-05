@@ -25,6 +25,14 @@ TPS=U_concurrent / (T_response+T_think)。
 ##响应时间
 
 
+##wall clock time
+系统时间(wall clock time, elapsed time)
+一段程序从运行到终止，系统时钟走过的时间
+
+##monotonic time
+单调递增时间
+
+
 
 
 
@@ -54,6 +62,31 @@ performance profiling
 资源被过度使用，余量已经不足以正常工作
 资源没有被正确配置
 资源已经损坏或者失灵
+
+
+----
+
+
+
+#循环展开
+减少了不直接有助于程序结果的操作数量
+减少整个计算关键路径上的操作数量
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

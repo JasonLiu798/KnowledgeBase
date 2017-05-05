@@ -686,6 +686,13 @@ ThreadPoolExecutor中有没有主控线程，只有任务缓存队列和任务�
 
 
 
+##threadGroup
+[ThreadGroup 管理Thread](http://blog.csdn.net/a352193394/article/details/39323427)
+[ThreadGroup其实比ExecutorService更好](http://www.cnblogs.com/yy2011/archive/2011/05/05/2037564.html)
+由以上的代码可以看出：ThreadGroup比ExecutorService多以下几个优势  
+1.ThreadGroup可以遍历线程，知道那些线程已经运行完毕，那些还在运行  
+2.可以通过ThreadGroup.activeCount知道有多少线程从而可以控制插入的线程数
+
 ---
 #Atomic
 ##LongAdder

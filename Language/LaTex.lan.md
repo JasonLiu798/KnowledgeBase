@@ -1,5 +1,6 @@
 #LaTex
 ---
+[LaTeX 各种命令，符号](http://blog.csdn.net/garfielder007/article/details/51646604)
 #setup
 方法A-自助
 MikTeX的官网下载免费的MikTeX编译包并安装
@@ -95,6 +96,9 @@ $
 ###幂^ /下标_ /不等号\neq
 $a^b \neq e^{-\alpha t}_{ij}$ \qquad
 $a_b$
+
+\hat{x}
+
 ###平方根
 平方根（square root）的输入命令为：\sqrt，n 次方根相应地为: \sqrt[n]
 方根符号的大小由LATEX自动加以调整。也可用\surd 仅给出符号
@@ -102,7 +106,7 @@ $\sqrt{x}$ \qquad
 $\sqrt{ x^{2}+\sqrt{y} }$ \qquad
 $\sqrt[3]{2}$ \\[3pt] $\surd[x^2+y^2]$
 ###上下水平线
-\overline 和\underline 在表达式的上、下方画出水平线
+\overline 和 \underline 在表达式的上、下方画出水平线
 $\overline{m+n}$ \qquad
 $\underline{m+n}$
 ###上下大括号
@@ -111,12 +115,12 @@ $\underbrace{ a+b+\cdots+z}_{26}$
 
 
 ###向量 
-上方有小箭头（arrow symbols）的变量，由\vec 得到
-另两个命令\overrightarrow 和\overleftarrow在定义从A 到B 的向量时非常有用
-\begin{displaymath}
-\vec a\quad\overrightarrow{AB}
-\end{displaymath}
-$\vec a\quad\overrightarrow{AB}$
+上方有小箭头（arrow symbols）的变量
+\vec{x}
+从A 到B 的向量时 \overrightarrow 和\overleftarrow
+\overrightarrow{a b}  
+\overleftarrow{b a}
+\widehat{e f g}
 
 ###积分
 上限和下限用^ 和_来生成，类似于上标和下标
@@ -150,6 +154,53 @@ d444 & e555555 & f6
 \end{array}
 \right]
 \]
+
+无括号矩阵
+```latex
+\begin{matrix}
+x & y \\
+z & v
+\end{matrix}
+```
+单竖线边矩阵
+```latex
+\begin{vmatrix}
+x & y \\
+z & v
+\end{vmatrix}
+```
+双竖线边矩阵
+```latex
+\begin{Vmatrix}
+x & y \\
+z & v
+\end{Vmatrix}
+```
+
+方括号矩阵（常用）
+```latex
+\begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix}
+```
+
+圆括号矩阵
+```latex
+\begin{pmatrix}
+1 & 2 \\
+3 & 4
+\end{pmatrix}
+```‘
+
+小圆括号矩阵
+```latex
+\bigl( \begin{smallmatrix}
+a&b\\ c&d
+\end{smallmatrix} \bigr)
+```
+
+
 
 ###方程
 here \& is the symbol for aligning different rows

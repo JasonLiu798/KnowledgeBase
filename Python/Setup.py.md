@@ -37,7 +37,7 @@ http://www.tuicool.com/articles/JraYBfr
 
 ----
 #包管理
-#自定义库
+#自定义库  PYTHONPATH
 PYTHONPATH=D:\yp\project\python
 ```
 注：
@@ -54,6 +54,8 @@ cat files.txt | xargs rm -rf
 ##pip
 [download](https://pypi.python.org/pypi/pip)
 [doc](https://pip.pypa.io/en/stable/installing/)
+###安装
+python get-pip.py
 升级：
 pip install --upgrade pip
 

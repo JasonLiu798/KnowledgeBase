@@ -8,12 +8,12 @@ MikTeX的官网下载免费的MikTeX编译包并安装
 方法B-打包
 在ctex.org下载ctex套装（含MikTeX及WinEdt）
 ---
-```latex
+$$
 \documentclass{article}
 \begin{document}
 hello, world
 \end{document}
-```
+$$
 
 ##中文支持
 MikTeX+WinEdt
@@ -23,6 +23,7 @@ MikTeX+WinEdt
 ---
 #语法
 ##基本结构
+$$
 \documentclass{article}     #标题
 \author{My Name}            #作者
 \begin{document}            #
@@ -34,8 +35,10 @@ MikTeX+WinEdt
 \subparagraph{Hello Chairman Mao} is in the center of Tian'anmen Square
 \paragraph{Sun Yat-sen University} is the best university in Guangzhou.
 \end{document}
+$$
 
 ##换行
+$$
 \\ start a new paragraph.       
 \\* start a new line but not a new paragraph.
 \- OK to hyphenate a word here.
@@ -48,16 +51,27 @@ MikTeX+WinEdt
 \nolinebreak no line break should happen here.
 \nopagebreak no page break should happen here.
 \pagebreak encourage page break.
+$$
 
 ##插入图片
-\includegraphics[width=4.00in,height=3.00in]{figure1.eps}
+$ \includegraphics[width=4.00in,height=3.00in]{figure1.eps} $
 
 ##表格
-\begin{tabular}{|c|c|}
-a & b \\
-c & d\\
-\end{tabular}
+$$
+\begin{table}
+\caption{设置表格总长}
+\begin{tabular*}{12cm}{|||}
+\hline
+Start & End & Character block name \\
+\hline
+3400  & 4DB5 & CJK Unified Ideographs Extension A \\  
+4E00  & 9FFF & CJK Unified Ideographs \\  
+\hline  
+\end{tabular*}
+\end{table}
+$$
 
+$$
 \begin{tabular}{|c|c|}
 \hline
 a & b \\
@@ -65,34 +79,60 @@ a & b \\
 c & d\\
 \hline
 \end{tabular}
+$$
 
+$$
 \begin{tabular}{|c|c|}
 \hline
 a & b \\ \hline
 c & d\\
 \hline
 \end{tabular}
-
-
+$$
 
 ---
 #数学公式
 [公示表](http://www.mohu.org/info/symbols/symbols.htm)
 [数学公式基本命令](http://hubl82.blog.163.com/blog/static/12676948520134510173383/)
+
+##运算符
+叉乘 \times
+点乘 \cdot
+异或 \oplus	\bigoplus
+叉乘+圈 \otimes \bigotimes
+除号 \div
+小空圈 \circ
+大黑点 \bullet
+圈+点 \bigodot
+正方形+叉 \boxtimes
+正方形+加号 \boxplus
+
 ###基本形式
-$$F=ma$$
+$$ F=ma $$
 \[F=ma\]
 ###希腊字母 
-$\eta$ and $\mu$
+$ \alpha \beta \gamma $
+$ \delta \epsilon \zeta \eta \theta $
+$ \iota \kappa\varkappa \lambda \mu \nu \xi \omicron\pi $
+$ \rho \sigma \tau \upsilon \phi \chi \psi\omega $
+$ \Epsilon \epsilon \varepsilon	 $
+$ \Theta\theta\vartheta $
+$ \Kappa \kappa \varkappa $
 
 ###分数 
 \frac{...}{...} 排版
-一般来说，1/2 这种形式更受欢迎，因为对于少量的分式，它看起来更好些
-$1\frac{1}{2}$~hours
-$\frac{ x^{2} }{ k+1 } \qquad
-x^{ \frac{2}{k+1} } \qquad
-x^{ 1/2 }
-$
+$$ 	\frac{2}{4}=0.5 $$
+一般来说，1/2这种形式更受欢迎，因为对于少量的分式，它看起来更好些
+$ 1 \frac{1}{2} $ ~hours
+$ \frac{ x^{2} }{ k+1 } \qquad $
+$ x^{ \frac{2}{k+1} } \qquad $
+小型分数
+$ \tfrac{2}{4} = 0.5 $
+大型分数（嵌套）
+$ \cfrac{2}{c + \cfrac{2}{d + \cfrac{2}{4}}} =a $
+大型分数（不嵌套）
+$ \dfrac{2}{c + \dfrac{2}{d +\dfrac{2}{4}}} = a $
+
 ###幂^ /下标_ /不等号\neq
 $a^b \neq e^{-\alpha t}_{ij}$ \qquad
 $a_b$

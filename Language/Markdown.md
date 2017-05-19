@@ -22,7 +22,7 @@ markdown 浏览器实时预览
  "extensions": ["extra", "codehilite", "toc", "strikeout", "smarty", "subscript", "superscript"]
  }
 
-//支持latex
+//配置支持latex
 "mathjax_enabled": true,
 下载MathJax：
 https://github.com/downloads/timonwong/OmniMarkupPreviewer/mathjax.zip

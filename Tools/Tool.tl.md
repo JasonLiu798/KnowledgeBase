@@ -58,11 +58,27 @@ matlab
 octave
 
 
+
+---
+#远程控制
+Splashtop
+teamview
+
+---
+#性能检测
+superpi
+HDTunePro
+
+
+
+
 ---
 #net网络
 ##下载
 [youtube-dl](http://bbs.feng.com/read-htm-tid-8856281-page-1.html)
+MoeLoader 搜图
 
+[ComicShelf]()下漫画
 
 ---
 #editor编辑器
@@ -93,7 +109,23 @@ https://www.gnupg.org/
 微软雅黑    Microsoft YaHei
 
 
+---
+#图像图形处理
+证件照处理：证照之星
 
+
+
+录屏 TechsmithCamtasiaStudio
+
+
+#格式转换
+PNG2ICO
+
+
+---
+#游戏 #game
+手柄映射 joy2key
+延迟修复 Leatrix Latency Fix 1.23
 
 ----
 #其他
@@ -127,6 +159,11 @@ C44YG-8BM4M-9RTJM-VJCTD-WKVYT
 YG64T-FDD7J-P6R3Q-4X4YV-7QGJP
 ```
 
+
+
+---
+#SNS
+twitter win客户端 tween
 
 -----
 #DEV
@@ -362,6 +399,10 @@ http://www.macupdate.com/app/mac/45860/doo
 [资源修改器](http://www.portablesoft.org/restorator/)
 [mac-winskin]()
 [mac-winskin-辅助-THE PORTINGKIT](http://paulthetall.com/portingkit-2/)
+ps_release phase shift 吉他英雄
+eof1.8b25(r857)
+
+
 
 
 ----

@@ -330,7 +330,22 @@ http://www.tuicool.com/articles/IfeUfq
 垃圾回收不会发生在永久代，如果永久代满了或者是超过了临界值，会触发完全垃圾回收(Full GC)。如果你仔细查看垃圾收集器的输出信息，就会发现永久代也是被回收的。这就是为什么正确的永久代大小对避免Full GC是非常重要的原因。
 
 ---
-#Exception
+#Exception 异常处理
+[Java异常(二) 《Effective Java》中关于异常处理的几条建议](http://www.cnblogs.com/skywang12345/p/3544287.html)
+异常只应该被用于不正常的条件，它们永远不应该被用于正常的控制流。
+对于可恢复的条件使用被检查的异常，对于程序错误使用运行时异常
+避免不必要的使用被检查的异常
+    适用于"被检查的异常"必须同时满足两个条件：第一，即使正确使用API并不能阻止异常条件的发生。第二，一旦产生了异常，使用API的程序员可以采取有用的动作对程序进行处理。
+尽量使用标准的异常
+抛出的异常要适合于相应的抽象
+每个方法抛出的异常都要有文档
+在细节消息中包含失败 -- 捕获消息
+努力使失败保持原子性
+不要忽略异常
+
+[Java中异常Exception的实现的一些分析](http://blog.csdn.net/hengyunabc/article/details/14108617)
+JVM里实现异常的指令是athrow，指令的参考在这里：http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5.athrow
+
 [深入理解java异常处理机制](http://blog.csdn.net/hguisu/article/details/6155636)
 ```
 Throwable

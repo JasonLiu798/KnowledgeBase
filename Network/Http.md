@@ -217,6 +217,15 @@ $.ajax({
 <form method="post" action="/oauth/respond">
 </form>
 
+---
+#跨域
+[探讨跨域请求资源的几种方式](http://www.cnblogs.com/dojo-lzz/p/4265637.html)
+什么是跨域
+JSONP
+proxy代理
+cors
+xdr
+
 
 
 ----
@@ -244,6 +253,25 @@ header("Access-Control-Allow-Origin: http://www.xxx.com");
 
 #OPTION
 http://blog.csdn.net/leikezhu1981/article/details/7402272
+http://www.barretlee.com/blog/2014/08/19/post-method-change-to-options/
+出现 OPTIONS 的情况一般为：
+非 GET | POST 请求
+POST 请求的 content-type 不是常规的那三个
+POST 请求的 payload 为 text/xml
+跨域 Preflighted Requests(预检请求)
+
+
+[一个Option请求引发的深度解析](http://www.cnblogs.com/virtual/p/3720750.html)
+Preflighted Requests是CORS中一种透明服务器验证机制。预检请求首先需要向另外一个域名的资源发送一个 HTTP OPTIONS 请求头，其目的就是为了判断实际发送的请求是否是安全的。
+下面的2种情况需要进行预检：
+1、  简单请求，比如使用Content-Type 为 application/xml 或 text/xml 的 POST 请求；
+2、中设置自定义头，比如 X-JSON、X-MENGXIANHUI 等。
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+http://blog.csdn.net/hfahe/article/details/7730944
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+
 
 
 

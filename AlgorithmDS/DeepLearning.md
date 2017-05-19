@@ -1,0 +1,8 @@
+
+
+TensorFlow
+
+TorchNet
+
+
+CNTK

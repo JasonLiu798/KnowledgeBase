@@ -85,6 +85,13 @@ curl -H "Content-type: application/json" -X POST -d '{"account":"$RANDOM","passw
 http://java-er.com/blog/wget-useage-x/
 ###with post
 wget -q -O- --post-data="account=$RANDOM&password=123345"  http://aaaa
+
+##curl
+
+curl -i -X HEAD 
+
+
+
 ###测网速
 wget -O /dev/null http://ftp.jaist.ac.jp/pub/eclipse/technology/epp/downloads/release/mars/R/eclipse-jee-mars-R-win32-x86_64.zip
 ###爬虫

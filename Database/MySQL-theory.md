@@ -82,9 +82,41 @@ LRU midpoint insertion strategy
 innodb_old_blocks_time
 
 
-
+---
+#外键约束
 [MySql 外键约束 之CASCADE、SET NULL、RESTRICT、NO ACTION分析和作用](http://www.cnblogs.com/yzuzhang/p/5174720.html)
+CASCADE
+在父表上update/delete记录时，同步update/delete掉子表的匹配记录 
 
+SET NULL
+在父表上update/delete记录时，将子表上匹配记录的列设为null (要注意子表的外键列不能为not null)  
+
+NO ACTION
+如果子表中有匹配的记录,则不允许对父表对应候选键进行update/delete操作  
+
+RESTRICT
+同no action, 都是立即检查外键约束
+
+SET NULL
+父表有变更时,子表将外键列设置成一个默认的值 但Innodb不能识别
+
+NULL、RESTRICT、NO ACTION
+删除：从表记录不存在时，主表才可以删除。删除从表，主表不变
+更新：从表记录不存在时，主表才可以更新。更新从表，主表不变
+ 
+CASCADE
+删除：删除主表时自动删除从表。删除从表，主表不变
+更新：更新主表时自动更新从表。更新从表，主表不变
+ 
+SET NULL
+删除：删除主表时自动更新从表值为NULL。删除从表，主表不变
+更新：更新主表时自动更新从表值为NULL。更新从表，主表不变
+
+外键约束属性： RESTRICT | CASCADE | SET NULL | NO ACTION  外键的使用需要满足下列的条件：
+1. 两张表必须都是InnoDB表，并且它们没有临时表。
+2. 建立外键关系的对应列必须具有相似的InnoDB内部数据类型。
+3. 建立外键关系的对应列必须建立了索引。
+4. 假如显式的给出了CONSTRAINT symbol，那symbol在数据库中必须是唯一的。假如没有显式的给出，InnoDB会自动的创建。
 
 
 ---

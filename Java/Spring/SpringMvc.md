@@ -1,6 +1,112 @@
 
 
+-------------
+#异常处理
+##spring自带的各种异常处理器
+基于注解的异常解析器 AnnotationHandlerMethodExceptionResolver
+全局异常处理器 SimpleMappingExceptionResolver
 
+##自定义实现spring的全局异常解析器HandlerExceptionResolver
+<bean id="exceptionHandler" class="com.aaa.bbb.exception.DefaultExceptionHandler" />
+
+使用 FastJsonJsonView
+```java
+public class DefaultExceptionHandler implements HandlerExceptionResolver {    
+    private static Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);  
+      
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,  Exception ex) {    
+            ModelAndView mv = new ModelAndView();  
+            /*  使用FastJson提供的FastJsonJsonView视图返回，不需要捕获异常 */
+            FastJsonJsonView view = new FastJsonJsonView();  
+            Map<String, Object> attributes = new HashMap<String, Object>();  
+            attributes.put("code", "1000001");  
+            attributes.put("msg", ex.getMessage());  
+            view.setAttributesMap(attributes);  
+            mv.setView(view);   
+            log.debug("异常:" + ex.getMessage(), ex);  
+            return mv;  
+    }  
+}
+```
+
+使用response直接写流
+```java
+public class DefaultExceptionHandler implements HandlerExceptionResolver {    
+    private static Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);  
+      
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,  Exception ex) {    
+            ModelAndView mv = new ModelAndView();             
+            /*  使用response返回    */  
+            response.setStatus(HttpStatus.OK.value()); //设置状态码  
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE); //设置ContentType  
+            response.setCharacterEncoding("UTF-8"); //避免乱码  
+            response.setHeader("Cache-Control", "no-cache, must-revalidate");  
+            try {  
+                response.getWriter().write("{\"success\":false,\"msg\":\"" + ex.getMessage() + "\"}");  
+            } catch (IOException e) {  
+               log.error("与客户端通讯异常:"+ e.getMessage(), e);  
+            }  
+  
+            log.debug("异常:" + ex.getMessage(), ex);  
+            return mv;  
+    }  
+}
+```
+
+web异常页面
+```xml
+<error-page>  
+    <exception-type>java.lang.Throwable</exception-type>  
+    <location>/error_500</location>  
+</error-page>  
+<error-page>
+    <exception-type>java.lang.Exception</exception-type>  
+    <location>/error_404</location>  
+</error-page>  
+<error-page>  
+    <error-code>500</error-code>  
+    <location>/error_500</location>  
+</error-page>  
+<error-page>  
+    <error-code>501</error-code>  
+    <location>/error_500</location>  
+</error-page>  
+<error-page>  
+    <error-code>502</error-code>  
+    <location>/error_500</location>  
+</error-page>  
+<error-page>  
+    <error-code>404</error-code>  
+    <location>/error_404</location>  
+</error-page>  
+<error-page>  
+    <error-code>403</error-code>  
+    <location>/error_404</location>  
+</error-page>  
+<error-page>  
+    <error-code>400</error-code>  
+    <location>/error_404</location>  
+</error-page>  
+```
+
+```java
+@RequestMapping(value = "/error_404", produces = "text/html;charset=UTF-8")  
+@ResponseBody  
+public String error_404() throws Exception {   
+     return "{\"msg\":\"找不到页面\",\"code\":\"1000001\"}";  
+}
+/** 
+ * 服务器异常 
+ * @return 
+ * String 
+ */  
+@RequestMapping(value ="/error_500", produces = "text/html;charset=UTF-8")  
+public String error_500() {     <pre name="code" class="java">                return "{\"msg\":\"服务器处理失败\",\"code\":\"1000002\"}";  
+}
+```
+
+
+------------
 #使用springmvc时处理404的方法
 如何定义404
 404，说白了就是找不到页面，那么如何定义“找不到”呢？

@@ -21,6 +21,39 @@ servlet还有一些CGI脚本所不具备的独特优点：
 5、setvlet可以在多种多样的客户机上使用。由于servlet是用Java编写的，所以你可以很方便地在HTML中使用它们，就像你使用applet一样。
 
 
+----
+#跨域
+##jetty
+[配置maven jetty 插件允许跨域访问](http://blog.csdn.net/sd4015700/article/details/49852453)
+```xml
+<dependency>  
+    <groupId>org.eclipse.jetty</groupId>  
+    <artifactId>jetty-servlets</artifactId>  
+    <version>9.3.0.M2</version>  
+</dependency>  
+```
 
-
-
+```xml
+<!-- web.xml -->
+<filter>  
+    <filter-name>cross-origin</filter-name>  
+    <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>  
+    <init-param>  
+        <param-name>allowedOrigins</param-name>  
+        <param-value>*</param-value>  
+    </init-param>  
+    <init-param>  
+        <param-name>allowedMethods</param-name>  
+        <param-value>GET,POST,HEAD</param-value>  
+    </init-param>  
+    <init-param>  
+        <param-name>allowedHeaders</param-name>  
+        <param-value>X-Requested-With,Content-Type,Accept,Origin</param-value>  
+    </init-param>  
+</filter>  
+<!-- 此处表示jetty中的所有url都可以支持跨域 -->  
+<filter-mapping>  
+    <filter-name>cross-origin</filter-name>  
+    <url-pattern>/*</url-pattern>  
+</filter-mapping>
+```

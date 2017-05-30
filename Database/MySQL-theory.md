@@ -27,19 +27,18 @@ utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8
 
 
 ---
-#引擎
-MyISAM 表级并发控制锁
-InnoDB 记录级并发控制锁
-
-BDB 页面级并发控制锁
-内存存储引擎 HEAP表，适合查找表，周期性缓存聚合数据，保存中间数据，表级锁，并发写入差，每行长度固定，
-merge 合并存储引擎，
-archive，只支持insert select，zlib压缩，针对高速插入和压缩优化的简单引擎
-cluster，
-csv，不支持索引
-blackhole，
-fedreted，访问其他mysql的代理
-custom storage engine，
+#存储引擎
+* MyISAM 表级并发控制锁
+* InnoDB 记录级并发控制锁
+* BDB 页面级并发控制锁
+* 内存存储引擎 HEAP表，适合查找表，周期性缓存聚合数据，保存中间数据，表级锁，并发写入差，每行长度固定，
+* merge 合并存储引擎
+* archive，只支持insert select，zlib压缩，针对高速插入和压缩优化的简单引擎
+* cluster，
+* csv，不支持索引
+* blackhole，
+* fedreted，访问其他mysql的代理
+* custom storage engine，
 
 ##InnoDB MyISAM 引擎选择
 [InnoDB还是MyISAM 再谈MySQL存储引擎的选择](http://database.51cto.com/art/200905/124370.htm)
@@ -72,6 +71,8 @@ MyISAM
 3.Innodb达不到MyISAM的写性能，如果是针对基于索引的update操作，虽然MyISAM可能会逊色Innodb，如并发高，myISM可通过分库分表解决
 4.myISAM merge引擎
 5.系统内建全文索引
+
+索引的指针和锁的策略有关的，数据是顺序存储的（innodb数据存储方式是聚簇索引）索引btree上的节点是一个指向数据物理位置的指针，所以查找起来很快
 
 Innodb
 1.InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB只需要几分钟。

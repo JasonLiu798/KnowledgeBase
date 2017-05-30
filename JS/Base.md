@@ -1,6 +1,22 @@
 
 
 
+
+---
+#原型链
+[JS原型与原型链终极详解](http://www.108js.com/article/article1/10201.html?id=1092)
+
+
+
+
+
+
+
+
+
+
+----
+
 #跨域
 相同域必须忙住协议相同、端口相同、域名相同. 只要其中一点不满足那就是跨域
 Access-Control-Allow-Origin

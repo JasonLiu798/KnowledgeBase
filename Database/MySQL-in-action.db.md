@@ -249,14 +249,23 @@ SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS;
 ---
 #PerformanceTuning
 网络、CPU计算、生成统计信息执行计划、锁等待、
+##架构优化
+存储引擎的选择 
+主从复制 主主复制
+读写分离
+第三方工具 [atlas](https://github.com/Qihoo360/Atlas)
+分区表
+垂直拆分，业务拆分
+水平拆分
 
-##2.优化数据访问
+##sql 查询优化
+###2.优化数据访问
 查询不需要的数据 limit
 多表关联 返回全部列
 总是取出全部列
 重复查询相同数据
 
-##3.重构查询方式
+###3.重构查询方式
 分散大事务的数据量
 切分查询
   尽量让数据库来做查询的原因：传统认为网络通信、查询解析和优化是代价很高的事
@@ -268,26 +277,26 @@ SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS;
   * 减少冗余记录查询
   * 应用中实现了哈希关联
 
-##4.查询执行的基础
-###客户端/服务器通信协议
+###4.查询执行的基础
+####客户端/服务器通信协议
   mysql同常要等所有数据都已经发送给客户端才能释放[这条查询所占用的资源] ，因此减少查询数据，使用limit限制数据量，尽早结束查询，尽早释放资源
     查询占用的资源包括：
     结果集的内存消耗
-###查询缓存
+####查询缓存
 大小写敏感的哈希表
-###查询优化处理
+####查询优化处理
 语法解析，预处理
 查询优化
   静态优化
     IN,转换为ORmysql log(n)
   动态优化
 
-###查询执行引擎
+####查询执行引擎
 
-###返回结果
+####返回结果
 增量逐步返回
 
-##5.优化器的局限性
+###5.优化器的局限性
 关联子查询
   外层表查询被压缩进子查询
   推荐：用实际数据来验证
@@ -295,11 +304,11 @@ union限制
   union的limit放到外层，会最后再取出所需数据
 等值传递
 
-##6.查询优化器提示hint
+###6.查询优化器提示hint
 high_prority
 low_prority
 
-##7.优化特定类型查询
+###7.优化特定类型查询
 count()
   count(*)查询行数
   覆盖索引
@@ -313,20 +322,10 @@ limit
   搜索引擎
   SQL_CALC_FOUND_ROWS hint
 
-##慢查询日志
-show status
-
-##间歇性问题
-show global status
-show processlist
-观察线程处于的状态
-
-##其他profile工具
-1.USER_STATISTICS表
-2.strace
-
-##explain
+##工具
+###explain
 [mysql explain用法和结果的含义 ](http://blog.chinaunix.net/uid-540802-id-3419311.html)
+
 
 ###type性能从差到好排序
 all -> index -> range -> index_subquery ->unique_subquery -> index_merage -> ref_or_null -> fulltext -> ref -> eq_ref -> const -> sytem
@@ -347,6 +346,22 @@ Using index、Using filesort、Using temporary
 
 filesort
 在内存排序
+
+
+
+###慢查询日志
+show status
+
+###间歇性问题
+show global status
+show processlist
+观察线程处于的状态
+
+###其他profile工具
+1.USER_STATISTICS表
+2.strace
+
+
 
 ##insert
 1)使用LOAD DATA INFILE从文本下载数据这将比使用插入语句快20倍。

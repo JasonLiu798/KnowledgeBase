@@ -3,7 +3,7 @@
 [dangdang dubbox](https://github.com/dangdangdotcom/dubbox)
 [dubbo-async](https://github.com/kubbo/dubbo-async)
 [HSF](http://www.cnblogs.com/zhwl/p/3642472.html)
-
+[Play Framework: async I/O without the thread pool and callback hell](https://engineering.linkedin.com/play/play-framework-async-io-without-thread-pool-and-callback-hell)
 
 ---
 #theory
@@ -125,7 +125,9 @@ RpcContext.getContext().setAttachment("index", "1");
 ### server
 RpcContext.getContext().getAttachment("index"); 
 
-## 异步调用
+## 异步调用]
+[dubbo-async](https://github.com/kubbo/dubbo-async)
+[Async Call](http://dubbo.io/Async+Call.htm)
 2.0.6及其以上版本支持
 基于NIO的非阻塞实现并行调用，客户端不需要启动多线程即可完成并行调用多个远程服务，相对多线程开销较小。
 ### consumer

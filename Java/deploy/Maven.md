@@ -235,6 +235,9 @@ mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase -Dversion
 
 ---
 #plugins
+##version
+mvn versions:set -DnewVersion=2.3-SNAPSHOPT
+
 ##check-type
 http://blog.csdn.net/kongxx/article/details/7750015
 

@@ -31,7 +31,8 @@ https://github.com/swagger-api/swagger-ui
 默认地址
 /v2/api-docs
 
-
+#cdn
+http://www.bootcdn.cn/swagger-ui/
 
 
 

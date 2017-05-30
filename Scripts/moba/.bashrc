@@ -42,7 +42,18 @@ alias tl='cd /d/project/java/toolbox-java'
 
 
 #maven
-alias mccpi='mvn clean compile package install -Dmaven.test.skip=true'
+alias mvnc='mvn compile -Dmaven.test.skip=true'
 alias mvni='mvn clean compile package install -Dmaven.test.skip=true'
-alias mvnp='mvn clean compile package -Dmaven.test.skip=true'
+alias mvnp='mvn clean package -U -e -Dmaven.test.skip=true'
+alias mvnv='mvn versions:set -DnewVersion= '
+alias mvnlib='mvn dependency:copy-dependencies -DoutputDirectory=lib'
+
+
+
+
+
+
+
+
+
 

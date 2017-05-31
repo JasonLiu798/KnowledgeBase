@@ -29,6 +29,9 @@ manual
 ---
 #maven 多模块部署
 [maven多模块jetty如何热部署](http://www.oschina.net/question/1383717_129478)
+[Maven jetty plugin - automatic reload using a multi-module project
+
+](https://stackoverflow.com/questions/25725552/maven-jetty-plugin-automatic-reload-using-a-multi-module-project)
 ```xml
 <plugins>
    <plugin>

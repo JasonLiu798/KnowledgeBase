@@ -11,6 +11,7 @@ Markdown Preview
 
 ##OmniMarkupPreviewer
 [近乎完美的 Markdown 写作体验](http://blog.leanote.com/post/54bfa17b8404f03097000000)
+[LATEX Support in OmniMarkupPreviewer](http://theo.im/blog/2012/11/03/latex-support-in-omnimarkuppreviewer/)
 markdown 浏览器实时预览
 ###配置
 ```javascript

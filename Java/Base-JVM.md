@@ -1,11 +1,20 @@
 #JVM
 ---
 #doc
+##原理
+[Understanding Java Garbage Collection and What You Can Do about It](https://www.infoq.com/presentations/Understanding-Java-Garbage-Collection)
+[内存模型barrier](http://ifeve.com/jmm-cookbook-mb/)
+
+
 [编程语言与高级语言虚拟机杂谈](http://zhuanlan.zhihu.com/hllvm)
 [IntelliJ IDEA设置JVM运行参数](http://blog.csdn.net/sdujava2011/article/details/50086933)
 
 [ JCONSOLE的连接问题](http://blog.csdn.net/blade2001/article/details/7742574)
-[内存模型barrier](http://ifeve.com/jmm-cookbook-mb/)
+
+##C4
+[C4 Attila Szegedi on JVM and GC Performance Tuning at Twitter](https://www.infoq.com/interviews/szegedi-performance-tuning)
+
+
 ---
 #theory
 [栈式虚拟机和寄存器式虚拟机](http://www.zhihu.com/question/35777031)

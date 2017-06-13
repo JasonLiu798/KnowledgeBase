@@ -90,6 +90,11 @@ response.sendRedirect("test.jsp");
 
 
 
+----
+#获取参数
+[AJAX POST请求中参数以form data和request payload形式在servlet中的获取方式](http://blog.csdn.net/mhmyqn/article/details/25561535)
+
+
 ---
 ##servlet新特性
 [Servlet 3.0 新特性详解](http://www.ibm.com/developerworks/cn/java/j-lo-servlet30/)

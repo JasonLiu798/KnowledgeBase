@@ -770,19 +770,54 @@ rebase
 
 
 
+------
+#备份
+duplicity & rsyncrypto
+Duplicity是使用rsync算法加密的高效率备份软件，Duplicity支持目录加密生产和格式上传到远程或本地文件服务器。
+
+rsyncrypto 就是 rsync + encryption。对于rsync的算法可参看酷壳的rsync核心算法。
 
 
 
 
 
+calcurse & remind + wyrd
+calcurse是一个命令行下的日历和日程软件。remind + wyrd也很类似。关于日历，我不得不提一个Linux的Cycle日历，也是一个神器，呵呵。
+
+calcurse screenshot
+
+newsbeuter & rsstail
+newsbeuter 和 rsstail 是命令行下RSS的阅读工具。
+
+newsbeuter screenshot
+
+powertop
+做个环保的程序员，看看自己的电脑里哪些程序费电。PowerTOP 是一个让 Intel 平台的笔记本电脑节省电源的 Linux 工具。此工具由 Intel 公司发布。它可以帮助用户找出那些耗电量大的程序，通过修复或者关闭那些应用程序或进程，从而为用户节省电源。
 
 
 
+#ttyrec & ipbt
+ttyrec 是一个 tty 控制台录制程序，其所录制的数据文件可以使用与之配套的 ttyplay 播放。不管是你在 tty 中的各种操作，还是在 tty 中耳熟能详的软件，都可进行录制。
+
+#ipbt
+是一个用来回放 ttyrec 所录制的控制台输入过程的工具。
+
+与此类似的还有Shelr 和 termrec 
+
+ipbt screenshot
+
+#rsync
+通过SSH进行文件同步的经典工具（核心算法）
+
+rsync screenshot
 
 
+#vifm & ranger
+Vifm 基于ncurses的文件管理器，DOS风格，用键盘操作。
 
+vifm screenshot
 
-
+Ranger用 Python 完成，默认为使用 Vim 风格的按键绑定，比如 hjkl（上下左右），dd（剪切），yy（复制）等等。功能很全，扩展/可配置性也非常不错。类似MacOS X下Finder（文件管理器）的多列文件管理方式。支持多标签页。实时预览文本文件和目录。
 
 
 

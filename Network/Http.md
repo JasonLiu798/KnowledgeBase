@@ -226,6 +226,7 @@ proxy代理
 cors
 xdr
 
+spring5 http://ifeve.com/%E3%80%8Aspring-5-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E3%80%8B20-cors-%E6%94%AF%E6%8C%81/
 
 
 ----

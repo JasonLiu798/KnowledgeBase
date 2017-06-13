@@ -63,6 +63,7 @@
 
 ---
 #一致性hash
+[Ketama一致性Hash算法(含Java代码)](http://langyu.iteye.com/blog/684087)
 按机器唯一ID 计算hash 映射到圆环
 key 计算hash映射到圆环，顺时针找到机器，超过最大，则映射到第一个
 

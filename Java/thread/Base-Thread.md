@@ -1,11 +1,12 @@
 #Java Thread/Concurrent
 ---
 #1.doc
+[The JSR-133 Cookbook for Compiler Writers](http://gee.cs.oswego.edu/dl/jmm/cookbook.html)
 [Disruptor](http://ifeve.com/locks-are-bad/)
 [fucking-java-concurrency](https://github.com/oldratlee/fucking-java-concurrency)
 [构建高性能服务（一）ConcurrentSkipListMap和链表构建高性能Java Memcached](http://maoyidao.iteye.com/blog/1559420)
 
-
+[The Java Memory Model](http://www.cs.umd.edu/~pugh/java/memoryModel/)
 
 
 

@@ -1,6 +1,7 @@
 #mybatis
 ---
 #doc
+[开发插件](http://mbg.cndocs.tk/reference/pluggingIn.html)
 mybatis3官方文档
 https://mybatis.github.io/mybatis-3/index.html
 https://mybatis.github.io/mybatis-3/zh/index.html

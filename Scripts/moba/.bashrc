@@ -8,7 +8,7 @@ alias mac='ssh liujianlong@192.168.1.103'
 
 #PS1="\[\033[1;32;40m[\033[0;32;40m\u@\h:\033[1;35;40m\w\033[1;32;40m]\033[1;31;40m\$\033[1;32;40m \]"
 
-export PRJ=/d/project
+export PRJ=/d/project/java
 export PRL=/d/project
 export C=/c
 export D=/d
@@ -32,8 +32,6 @@ export M2_HOME=/opt/maven
 export PATH=$PATH:'/home/mobaxterm/bin':$JAVA_HOME/bin:$M2_HOME/bin
 export DK=/home/mobaxterm/Desktop
 
-
-export BG=/drives/c/project/gps-bgserver
 
 export JPRJ=$PRJ/java
 export TBX=$JPRJ/toolbox-java

@@ -742,15 +742,6 @@ block
 ## decrease lock compete
 
 
-----
-#threadlocal
-[threadlocal](http://blog.csdn.net/lufeng20/article/details/24314381)
-[Java并发编程：深入剖析ThreadLocal](http://www.cnblogs.com/dolphin0520/p/3920407.html)
-ThreadLocalMap
-
-
-[指令重排](https://www.zhihu.com/question/39458585)
-
 
 
 ---

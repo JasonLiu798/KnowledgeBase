@@ -1,0 +1,4 @@
+
+启动jdk设置
+PYCHARM_JDK
+PYCHARM_JDK_64

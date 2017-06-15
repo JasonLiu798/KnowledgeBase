@@ -228,8 +228,24 @@ Supervisor监控
 
 
 
-
-
+---
+#跨域
+[跨域处理](http://www.pylist.com/topic/1482134167)
+```py
+class BaseHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        print "setting headers!!!"
+        client = "http://localhost:8005"
+        self.set_header("Access-Control-Allow-Origin", client )
+        # Access-Control-Allow-Credentials:true
+        self.set_header('Access-Control-Allow-Credentials','true')
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()
+```
 
 ----
 #db
@@ -238,7 +254,56 @@ Supervisor监控
 
 
 
+-----
+#Q
+##ctrl+c退出
+[How to stop the tornado web server with ctrl+c?](https://stackoverflow.com/questions/17101502/how-to-stop-the-tornado-web-server-with-ctrlc)
 
+You can stop Tornado main loop with tornado.ioloop.IOLoop.instance().stop(). To have this method called after passing signal with Crtl+C you can periodically check global flag to test if main loop should end and register handler for SIGINT signal which will change value of this flag:
+
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import tornado.ioloop
+import tornado.web
+import signal
+import logging
+from tornado.options import options
+
+is_closing = False
+
+def signal_handler(signum, frame):
+    global is_closing
+    logging.info('exiting...')
+    is_closing = True
+
+def try_exit(): 
+    global is_closing
+    if is_closing:
+        # clean up here
+        tornado.ioloop.IOLoop.instance().stop()
+        logging.info('exit success')
+
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write("Hello, world")
+
+application = tornado.web.Application([
+    (r"/", MainHandler),
+])
+
+if __name__ == "__main__":
+    tornado.options.parse_command_line()
+    signal.signal(signal.SIGINT, signal_handler)
+    application.listen(8888)
+    tornado.ioloop.PeriodicCallback(try_exit, 100).start() 
+    tornado.ioloop.IOLoop.instance().start()
+Output:
+
+$ python test.py
+[I 130614 11:19:19 web:1514] 200 GET / (127.0.0.1) 0.56ms
+^C[I 130614 11:19:21 test:14] exiting...
+[I 130614 11:19:21 test:22] exit success
 
 
 

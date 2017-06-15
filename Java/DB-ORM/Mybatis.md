@@ -5,6 +5,8 @@ mybatis3官方文档
 https://mybatis.github.io/mybatis-3/index.html
 https://mybatis.github.io/mybatis-3/zh/index.html
 
+[Mybatis深入之获取数据库连接](http://blog.csdn.net/crave_shy/article/details/46597239)
+
     高级结果映射
 mybatis3.2.3+spring整合（附带源码）
 http://www.luoshengsha.com/284.html
@@ -201,11 +203,15 @@ Access denied for user 'root'@'10.185.8.159' (using password: YES)
 
 
 ---
+#plugin 插件
+[limit 插件](https://github.com/wucao/mybatis-generator-limit-plugin)
+[分页](http://blog.csdn.net/xiao__gui/article/details/51333693)
+
 #mybatis-generator
 [doc.CN](http://mbg.cndocs.tk/)
 [Mybatis Generator最完整配置详解](http://www.jianshu.com/p/e09d2370b796)
 [返回主键](http://blog.csdn.net/xyw591238/article/details/51588630)
-
+[mybatis-generator-gui](https://github.com/astarring/mybatis-generator-gui)
 [mybatis generator插件开发](http://www.tuicool.com/articles/fiuqUny)
 
 

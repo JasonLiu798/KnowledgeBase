@@ -542,6 +542,14 @@ truncate 'tablename'
 http://ronxin999.blog.163.com/blog/static/422179202013621111545534/
 
 
+
+---
+#API
+[simplehbase](http://www.infoq.com/cn/articles/hbase-orm-simplehbase-design)
+
+
+
+
 ---
 #坑
 PageFilter

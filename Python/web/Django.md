@@ -1,0 +1,65 @@
+
+
+
+[Recommended Django Project Layout](http://www.revsys.com/blog/2014/nov/21/recommended-django-project-layout/)
+
+```
+myproject/
+    manage.py
+    myproject/
+        __init__.py
+        urls.py
+        wsgi.py
+        settings/
+            __init__.py
+            base.py
+            dev.py
+            prod.py
+    blog/
+        __init__.py
+        models.py
+        managers.py
+        views.py
+        urls.py
+        templates/
+            blog/
+                base.html
+                list.html
+                detail.html
+        static/
+           …
+        tests/
+            __init__.py
+            test_models.py
+            test_managers.py
+            test_views.py
+    users/
+        __init__.py
+        models.py
+        views.py
+        urls.py
+        templates/
+            users/
+                base.html
+                list.html
+                detail.html
+        static/
+            …
+        tests/
+            __init__.py
+            test_models.py
+            test_views.py
+     static/
+         css/
+             …
+         js/
+             …
+     templates/
+         base.html
+         index.html
+     requirements/
+         base.txt
+         dev.txt
+         test.txt
+         prod.txt
+```

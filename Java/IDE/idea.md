@@ -1,4 +1,7 @@
 #idea
+##启动jdk替换
+http://www.cnblogs.com/scown/p/5561625.html
+
 ##配置
 ### keymap
 http://www.juvenxu.com/2013/07/18/my-most-used-intellij-idea-shortcuts/

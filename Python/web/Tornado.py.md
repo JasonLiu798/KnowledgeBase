@@ -30,6 +30,34 @@ if __name__ == "__main__":
 ```
 
 
+---
+#参数获取
+一.通过路由正则参数
+tornado路由可以使用正则表达式中的子表达式传递url参数。比如：
+
+(r"/member//(\w*)/([01]*)", MemberHandler),
+
+匹配以后，tornado会将字符串（）中匹配到的内容，作为参数传递到MemberHandler中去，因此我们在MemberHandler中定义get方法时增加参数：
+
+class MemberHandler(tornado.web.RequestHandler):
+    def get(self,data,num):
+        self.write(data)
+
+二.通过self.get_argument()
+
+tornado的get和post提交的参数都可以通过self.get_argument()获得。只需要在第一个参数中填写key值就可以获取，第二个参数为默认值
+
+if self.request.arguments.has_key("greeting"):
+    greeting = self.get_argument('greeting', 'Hello')
+
+三.通过self.request.body
+
+tornado的参数存储在self.request.body内，通过json以后就可以直接取值，当初我在前端使用angular时tornado就不能通过self.get_argument()获取到只能用这种办法获得angular post过来的数据。
+
+data = json.loads(self.request.body)
+keyword = data['content']
+
+
 
 ---
 #模板

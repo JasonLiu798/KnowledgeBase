@@ -6,6 +6,8 @@ sqlacodegen mysql+pymysql://root:root@10.202.125.245:3306/bk > models.py
 
 #json
 http://www.cnblogs.com/wancy86/p/6421792.html
+[How to serialize SqlAlchemy result to JSON?](https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json)
+
 ##旧版
 ```py
 import json
@@ -47,6 +49,50 @@ for msg in UnReadMsg:
 UnReadMsg = json.dumps(msgs, cls=new_alchemy_encoder(), check_circular=False)
 ```
 
+A recursive, possibly-circular, selective implementation
+```py
+def new_alchemy_encoder(revisit_self = False, fields_to_expand = []):
+    _visited_objs = []
+    class AlchemyEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj.__class__, DeclarativeMeta):
+                # don't re-visit self
+                if revisit_self:
+                    if obj in _visited_objs:
+                        return None
+                    _visited_objs.append(obj)
+
+                # go through each field in this SQLalchemy class
+                fields = {}
+                for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+                    val = obj.__getattribute__(field)
+
+                    # is this field another SQLalchemy object, or a list of SQLalchemy objects?
+                    if isinstance(val.__class__, DeclarativeMeta) or (isinstance(val, list) and len(val) > 0 and isinstance(val[0].__class__, DeclarativeMeta)):
+                        # unless we're expanding this field, stop here
+                        if field not in fields_to_expand:
+                            # not expanding this field: set it to None and continue
+                            fields[field] = None
+                            continue
+
+                    fields[field] = val
+                # a json-encodable dict
+                return fields
+
+            return json.JSONEncoder.default(self, obj)
+    return AlchemyEncoder
+
+print json.dumps(e, cls=new_alchemy_encoder(False, ['parents']), check_circular=False)
+```
+
+##as dict
+```py
+class User:
+   def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+```
+
+
 ##新版
 ```py
 UnReadMsg = self.db.query(Message).filter(Message.uid == self.uid)
@@ -59,8 +105,19 @@ return JsonResponse(self, 50000, data=msgs)
 
 
 
+使用__repr__定义返回的数据
+```
+class User(Base):
+    __tablename__ = 'user'
+    nid = Column(Integer,primary_key=True,autoincrement=True)
+    name = Column(String(10),nullable=False)
+    role = Column(Integer,ForeignKey('role.rid'))
+    group = relationship("Role",backref='uuu')    #Role为类名
 
-
+    def __repr__(self):
+        output = "(%s,%s,%s)" %(self.nid,self.name,self.role)
+        return output
+```
 
 
 

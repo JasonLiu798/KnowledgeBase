@@ -55,6 +55,15 @@ performance profiling
 被掩藏的细节
     突刺数据，通过直方图、百分比、标准差、偏差指数等多个参数来判断
 
+##压测工具
+siege & tsung
+Siege是一个压力测试和评测工具，设计用于WEB开发这评估应用在压力下的承受能力：可以根据配置对一个WEB站点进行多用户的并发访问，记录每个用户所有请求过程的相应时间，并在一定数量的并发访问下重复进行。
+
+Tsung 是一个压力测试工具，可以测试包括HTTP, WebDAV, PostgreSQL, MySQL, LDAP, and XMPP/Jabber等服务器。针对 HTTP 测试，Tsung 支持 HTTP 1.0/1.1 ，包含一个代理模式的会话记录、支持 GET、POST 和 PUT 以及 DELETE 方法，支持 Cookie 和基本的 WWW 认证，同时还支持 SSL。
+
+参看：十个免费的Web压力测试工具
+http://coolshell.cn/articles/2589.html
+
 
 
 ---

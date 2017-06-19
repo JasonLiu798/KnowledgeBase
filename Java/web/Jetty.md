@@ -27,7 +27,45 @@ manual
 
 
 ---
-#maven
+#maven 多模块部署
+[maven多模块jetty如何热部署](http://www.oschina.net/question/1383717_129478)
+[Maven jetty plugin - automatic reload using a multi-module project](https://stackoverflow.com/questions/25725552/maven-jetty-plugin-automatic-reload-using-a-multi-module-project)
+mvn -pl webapp jetty:run
+```xml
+<plugins>
+   <plugin>
+       <groupId>org.mortbay.jetty</groupId>
+       <artifactId>jetty-maven-plugin</artifactId>
+       <version>8.0.1.v20110908</version>
+       <configuration>
+           <!--<webAppSourceDirectory>./lease-web/src/main/webapp</webAppSourceDirectory>-->
+           <!--<classesDirectory>./lease-web/target/classes</classesDirectory>-->
+           <reload>automatic</reload>
+           <scanIntervalSeconds>1</scanIntervalSeconds>
+           <stopKey>foo</stopKey>
+           <stopPort>9999</stopPort>
+           <connectors>
+               <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                   <port>8080</port>
+                   <maxIdleTime>60000</maxIdleTime>
+               </connector>
+           </connectors>
+           <scanTargets>
+               <scanTarget>./target/classes</scanTarget>
+               <scanTarget>../lease-core/target/classes</scanTarget>
+           </scanTargets>
+
+           <webAppConfig>
+               <contextPath>/</contextPath>
+               <!--<extraClasspath>./lease-core/target/classes</extraClasspath>-->
+               <defaultsDescriptor>E:\servers\jetty-distribution-9.0.6.v20130930\etc\webdefault.xml</defaultsDescriptor>
+           </webAppConfig>
+
+       </configuration>
+   </plugin>
+   </plugins>
+```
+
 ```xml
 <project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
     xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">

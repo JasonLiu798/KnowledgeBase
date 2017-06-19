@@ -1,5 +1,18 @@
 #Network 网络相关 
 ---
+#监控
+##mtr
+MTR – traceroute 2.0，其是把 traceroute 和 ping 集成在一块的一个小工具 用于诊断网络。
+
+mtr screenshot
+
+##socat & netpipes
+socat是一个多功能的网络工具，名字来由是” Socket CAT”，可以看作是netcat的N倍加强版。
+
+netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。
+
+
+
 #网卡，网络配置
 ##网络配置
 ```bash

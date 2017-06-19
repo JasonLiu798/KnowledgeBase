@@ -234,12 +234,128 @@ mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase -Dversion
 
 
 ---
-#plugins
-##version
-mvn versions:set -DnewVersion=2.3-SNAPSHOPT
+#plugins 常用插件
+##编译插件
+```xml
+<!-- 统一编译版本 -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.1</version>
+    <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+        <!-- 这下面的是可选项 -->
+        <meminitial>128m</meminitial>
+        <maxmem>512m</maxmem>
+        <fork>true</fork> <!-- fork is enable,用于明确表示编译版本配置的可用 -->
+        <encoding>UTF-8</encoding>
+        <compilerArguments>
+            <!--<extdirs>../web/src/main/webapp/WEB-INF/lib</extdirs>-->
+        </compilerArguments>
+    </configuration>
+</plugin>
+```
 
-##check-type
-http://blog.csdn.net/kongxx/article/details/7750015
+##跳过测试
+http://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html
+```xml
+<!-- 跳过测试 -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>2.9</version>
+    <configuration>
+        <skipTests>true</skipTests>
+    </configuration>
+</plugin>
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>  
+    <configuration>  
+        <argLine>-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</argLine>    
+        <additionalClasspathElements>  
+            <additionalClasspathElement>  
+                ${basedir}/target/test-classes  
+            </additionalClasspathElement>  
+        </additionalClasspathElements>  
+        <includes>  
+            <include>**/*Test.java</include> 
+        </includes> 
+        <excludes> 
+            <exclude>**/TestConstants.java</exclude>  
+        </excludes>  
+        <forkMode>pertest</forkMode>  
+    </configuration>  
+</plugin>
+
+```
+forkmode属性中指明是要为每个测试创建一个进程，还是所有测试在同一个进程中完成。
+forkMode 可设置值有 “never”， “once”， “always” 和 “pertest”。
+pretest： 每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归。
+once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。
+always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5。
+<forkMode>always</forkMode>  
+<parallel>methods</parallel>  
+<threadCount>4</threadCount>
+
+
+
+##打包可执行 jar包
+```xml
+<!-- 打包可执行 jar -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>2.4</version>
+    <configuration>
+        <archive>
+            <manifest>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>lib/</classpathPrefix>
+                <mainClass>com.sf.inv.test.TestClient</mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+</plugin>
+```
+
+##拷贝依赖lib jar
+```xml
+<!-- 拷贝 依赖jar -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+                <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>
+                    ${project.build.directory}/lib
+                </outputDirectory>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+##version 版本号插件，统一修改版本号
+mvn versions:set -DnewVersion=2.3-SNAPSHOPT
+```xml
+<plugin>
+    <artifactId>versions-maven-plugin</artifactId>
+    <groupId>org.codehaus.mojo</groupId>
+    <version>2.2</version>
+    <configuration>
+        <newVersion>1.1.1</newVersion>
+    </configuration>
+</plugin>
+```
 
 ##代码混淆
 proguard-maven-plugin
@@ -296,6 +412,10 @@ http://blueram.iteye.com/blog/1684070
         </executions>
       </plugin>
 
+##check-type 代码检查
+http://blog.csdn.net/kongxx/article/details/7750015
+
+
 ##tomcat7-maven-plugin
 [maven自动部署到tomcat](http://blog.csdn.net/smilevt/article/details/8212075)
 
@@ -314,17 +434,9 @@ http://tomcat.apache.org/maven-plugin-2.0-beta-1/
         </configuration>
     </plugin>
 
-##jdk
-<plugin>
-<groupId>org.apache.maven.plugins</groupId>
-<artifactId>maven-compiler-plugin</artifactId>
-<version>3.1</version>
-<configuration>
-<source>1.7</source>
-<target>1.7</target>
-<encoding>UTF8</encoding>
-</configuration>
-</plugin>
+
+
+
 
 ---
 #eclipse setting

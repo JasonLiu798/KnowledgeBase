@@ -187,8 +187,9 @@ idea2016报错：Unable to save settings: Failed to save settings. Please restar
 idea默认的选中变量以后，是不会像eclipse一样提示这个变量用到的地方的。安装这个插件以后既可以和eclipse一样啦
 
 
-##keyMap 快捷键
+##keyMap 快捷键 
 [所有](http://www.itjhwd.com/intellij-ideakjj)
+[十大Intellij IDEA快捷键](http://blog.csdn.net/dc_726/article/details/42784275)
 ###常用
     ctrl + F12 -> ctrl + \    file structure  ，outline，查看文件所有函数，快速查找
 

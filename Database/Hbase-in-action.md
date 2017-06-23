@@ -1,7 +1,7 @@
 #hbase in action
 ---
 #doc
-
+[快速理解 Omid: Yahoo在HBase上的分布式事务方案](http://blog.csdn.net/colorant/article/details/47296183)
 #API client
 所有修改操作行级原子性
 创建HTable实例需要扫描.META表，推荐只创建一次，每个线程创建一个，生存期复用这个对象；需要多个HTable实例，考虑使用HTablePool

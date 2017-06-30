@@ -87,7 +87,7 @@ mysql>GRANT ALL PRIVILEGES ON *.* TO 'jack'@'10.10.50.127' IDENTIFIED BY '654321
 /etc/my.cnf
 在[mysqld]下添加一行skip-grant-table，再设置密码
 
-##charset
+##charset 字符集
 ```sql
 show variables like 'character%';
 show variables like 'collation%';
@@ -151,19 +151,22 @@ http://www.cnblogs.com/gomysql/p/3615897.html
 
 ----
 #theory
-##character set 和 collation
+##字符集character set，排序规则 collation 
 character set， 即字符集
 collation, 即比对方法 指定数据集如何排序，以及字符串的比对规则
 mysql> show collation;
-ollation 名字的规则可以归纳为这两类：
-1. <character set>_<language/other>_<ci/cs>
-2. <character set>_bin</li>
-ci 是 case insensitive 的缩写， cs 是 case sensitive 的缩写，bin 二进制排序
-###utf8_general_ci和utf8_unicode_ci的区别
+
+##bin,ci,cs区别
+* utf8_bin 每一个字符用二进制数据存储，区分大小写
+* utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感
+* utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感
+
+### utf8_general_ci 和 utf8_unicode_ci 的区别
 [utf8_general_ci和utf8_unicode_ci的区别](http://www.nowamagic.net/academy/detail/32161544)
-当前，utf8_unicode_ci校对规则仅部分支持Unicode校对规则算法
+utf8_unicode_ci校对规则仅部分支持Unicode校对规则算法
 utf8_unicode_ci的最主要的特色是支持扩展
 utf8_general_ci是一个遗留的 校对规则，不支持扩展。意味着utf8_general_ci校对规则进行的比较速度很快，但是与使用utf8_unicode_ci的 校对规则相比，比较正确性较差
+
 
 ---
 #common grammer
@@ -230,6 +233,15 @@ substr(t.uln_uid,CHAR_LENGTH(t.uln_uid))
 information_schema.COLUMNS
 字段信息
 select COLUMN_NAME，COLUMN_TYPE from information_schema.COLUMNS where table_name = 'table_name' and table_schema = 'db_name';
+
+
+##外键
+前提：没有脏数据
+增加
+ALTER TABLE `t_tab`  ADD  CONSTRAINT  `fk_system`  FOREIGN  KEY  (`SYSTEM_ID`)  REFERENCES  `t_system`  (`SYSTEM_ID`) 
+ON UPDATE CASCADE ON DELETE CASCADE; 
+
+
 
 
 ---

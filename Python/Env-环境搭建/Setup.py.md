@@ -14,7 +14,11 @@ python科学计算的第三方库
 
 
 ---
-##setup
+#setup
+##手动安装
+下载 https://www.python.org/ftp/python/2.7.9/
+
+
 ```bash
 ./configure  --enable-shared --prefix=/usr 
 ./configure & make & make install

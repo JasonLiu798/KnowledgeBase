@@ -1,5 +1,10 @@
 
 
+[Python中的str与unicode处理方法](http://python.jobbole.com/81244/)
+
+
+
+
 #json中文
 ```py
 #!/usr/bin/python

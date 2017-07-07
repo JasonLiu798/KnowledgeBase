@@ -1,6 +1,16 @@
-
 #exception异常处理
+---------
+#raise
 ```
+raise [Exception [, args [, traceback]]]
+```
+
+
+#try catch
+
+
+
+```py
 try:
     print 'try...'
     r = 10 / int('a')

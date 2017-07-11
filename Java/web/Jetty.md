@@ -11,6 +11,44 @@ Tomcat 在处理少数非常繁忙的连接上更有优势，也就是说连接�
 Tomcat 默认使用的是 BIO，在处理静态资源时，Tomcat 的性能不如 Jetty
 
 
+
+#jsp支持
+https://stackoverflow.com/questions/9350391/using-embedded-jetty-using-jsp-gives-error-web-jsptaglibrary-1-2-dtd-not-found
+PWC6181: File /javax/servlet/jsp/resources/web-jsptaglibrary_1_2.dtd
+
+5
+down vote
+accepted
+I found out that the problem with the missing dtd-file was that I needed Jetty JSP JARs.
+
+I was using these dependencies for JSP-support when it did not work:
+
+<dependency>
+        <groupId>javax.servlet.jsp</groupId>
+        <artifactId>jsp-api</artifactId>
+        <version>2.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jsp-impl</artifactId>
+        <version>2.2</version>
+    </dependency>
+Jetty-runner always worked for me so I looked at the dependencies in that jar-file.
+
+<dependency>
+    <groupId>org.eclipse.jetty.orbit</groupId>
+    <artifactId>javax.servlet.jsp</artifactId>
+    <version>2.2.0.v201112011158</version>
+</dependency>
+<dependency>
+    <groupId>org.eclipse.jetty.orbit</groupId>
+    <artifactId>org.apache.jasper.glassfish</artifactId>
+    <version>2.2.2.v201112011158</version>
+</dependency>
+In the javax.servlet.jsp dependency the missing dtd-files exist, so the problem went away when I started using them.
+
+So I guess the problem was that I needed the Jetty specific JSP dependencies and not the general ones. Can anyone explain why Jetty is implemented that way?
+
 ---
 #jetty plugin
 https://github.com/eclipse-jetty/eclipse-jetty-plugin

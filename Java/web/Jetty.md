@@ -182,8 +182,26 @@ mvn -pl webapp jetty:run
 ```
 
 
+
+
 ---
 #Q
+##js css无法修改
+Jetty会使用内存映射文件来缓存静态文件,包括js,css文件。
+在Windows下，使用内存映射文件会导致文件被锁定，所以当Jetty启动的时候无法在编辑器对js或者css文件进行编辑。
+http://blog.csdn.net/hj7jay/article/details/53579445
+<configuration>  
+    ...  
+    <webAppConfig>  
+       <defaultsDescriptor>src/test/resources/webdefault.xml</defaultsDescriptor>  
+    </webAppConfig>  
+<configuration>
+
+<init-param>  
+     <param-name>useFileMappedBufferparam-name>  
+     <param-value>false<param-value>  
+<init-param>  
+
 ##
 javax.servlet.jar 和 javax.servlet.jsp.jar
 

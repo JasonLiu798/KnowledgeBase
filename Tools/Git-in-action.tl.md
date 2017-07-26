@@ -75,7 +75,7 @@ git push
 ##reset
 [git reset简介](http://blog.csdn.net/hudashi/article/details/7664464)
 
-     git reset –-hard commit_id      #强制撤销
+    git reset --hard commit_id      #强制撤销
      git reset HEAD file                    #commited,then upper
      git reset a4e215a7[version] filename   #back to old version
 

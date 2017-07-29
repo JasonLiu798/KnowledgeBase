@@ -1,6 +1,8 @@
 #hbase in action
 ---
 #doc
+
+[1.1API文档](http://hbase.apache.org/1.1/apidocs/index.html)
 [快速理解 Omid: Yahoo在HBase上的分布式事务方案](http://blog.csdn.net/colorant/article/details/47296183)
 #API client
 所有修改操作行级原子性

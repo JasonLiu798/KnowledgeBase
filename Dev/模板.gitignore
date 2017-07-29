@@ -1,0 +1,14 @@
+.gitignore
+.idea
+.settings
+.classpath
+*1.bat
+.gradle
+.project
+/.gradle
+*.lanuch
+*.launch
+build
+gradle.log
+*.log
+

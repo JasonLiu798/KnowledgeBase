@@ -1,0 +1,3 @@
+#!/bin/bash
+#/apps/sh/sms.sh 13580404184 my_index "die to starting"
+exec /apps/svr/node/bin/node /apps/dat/web/working/myopen.vipshop.com/index.js

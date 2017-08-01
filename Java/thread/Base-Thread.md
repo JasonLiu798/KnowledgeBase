@@ -8,6 +8,7 @@
 
 [The Java Memory Model](http://www.cs.umd.edu/~pugh/java/memoryModel/)
 
+[Threading 官方文档，线程介绍 实现](http://www.oracle.com/technetwork/java/threads-140302.html)
 
 
 ---
@@ -50,6 +51,12 @@ wait 让进程从 running -> 等待队列 notify 等待队列->锁池 ->runable
 
 ##实现
 1:1（内核线程）、N:1（用户态线程）、M:N（混合）模型
+
+1:1模型下Java线程与操作系统线程一一对应，在JVM内没有任何线程调度器，全部交给操作系统的调度器解决。
+N:1模型则是所有Java线程共用一个操作系统线程，Java线程的调度全部由JVM内的调度器实现。
+M:N是上述两者的混合模型。
+
+
 HotSpot VM
 在这个JVM的较新版本所支持的所有平台上，它都是使用1:1线程模型的——除了Solaris之外
 http://www.oracle.com/technetwork/java/threads-140302.html

@@ -33,8 +33,10 @@ TPS=U_concurrent / (T_response+T_think)。
 单调递增时间
 
 
-
-
+----
+#
+$$ speedup<= \frac{1}{F+(1-F)/N} $$
+$$ speedup<= \frac{1}{F(1-1/N) + 1/N} $$
 
 
 

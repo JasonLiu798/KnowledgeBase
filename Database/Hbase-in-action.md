@@ -630,6 +630,10 @@ pssh -h /root/other.txt -l root -i 'cat /opt/hbase/conf/regionservers'
 hbase jar包版本问题
 
 
+#hbck
+读写测试、建表测试、hbck等命令。hbck是一个非常有用的工具，不过要注意它也是一个很重的操作，因此尽量减少hbck的调用次数，尽量不要并行运行hbck服务。在0.90.4以前的hbck会有一些机率使hbase宕机。另外为了确保hdfs的安全性，需要定期运行fsck等以检查hdfs的状态，如block的replica数量等。
+由于hbase服务是单点的，即宕机一台，则该台机器所服务的数据在恢复前是无法读写的。宕机恢复速度决定了我们服务的可用率。为此主要做了几点优化。首先是将zk的宕机发现时间尽量缩短到1分钟，其次改进了master恢复日志为并行恢复，大大提高了master恢复日志的速度，然后我们修改了openhandler中可能出现的一些超时异常，以及死锁，去掉了日志中可能发生的open…too long等异常。原生的hbase在宕机恢复时有可能发生10几分钟甚至半小时无法重启的问题己经被修复掉了。另外，hdfs层面我们将socket.timeout时间以及重试时间也缩短了，以降低datanode宕机引起的长时间block现象。
+
 
 
 

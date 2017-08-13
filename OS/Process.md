@@ -1,8 +1,8 @@
 
 
-#è¿›ç¨‹æè¿°ç¬¦
-##è¿›ç¨‹å†…æ ¸æ ˆç»“æž„ï¼šunion task_union
-åœ¨../include/linux/sched.hä¸­å®šä¹‰äº†å¦‚ä¸‹ä¸€ä¸ªè”åˆç»“æž„ç”¨æ¥åˆ›å»ºå†…æ ¸æ ˆç©ºé—´ã€‚
+#½ø³ÌÃèÊö·û
+##½ø³ÌÄÚºËÕ»½á¹¹£ºunion task_union
+ÔÚ../include/linux/sched.hÖÐ¶¨ÒåÁËÈçÏÂÒ»¸öÁªºÏ½á¹¹ÓÃÀ´´´½¨ÄÚºËÕ»¿Õ¼ä¡£
 ```c
 //../include/linux/sched.h
 union task_union {
@@ -11,12 +11,12 @@ union task_union {
 }:
 ```
 
-##çº¿ç¨‹æè¿°ç¬¦ï¼šstruct thread_info
-æ¯ä¸€ä¸ªè¿›ç¨‹éƒ½æœ‰ä¸€ä¸ªè¿›ç¨‹æè¿°ç¬¦task_structï¼Œä¸”æœ‰ä¸€ä¸ªç”¨æ¥å®šä½å®ƒçš„ç»“æž„thread_infoï¼Œthread_infoä½äºŽå…¶è¿›ç¨‹å†…æ ¸æ ˆä¸­(æœ‰äº›å®žçŽ°æ²¡æœ‰ç”¨åˆ°thread_infoï¼Œè€Œæ˜¯ä½¿ç”¨ä¸€ä¸ªå¯„å­˜å™¨æ¥è®°å½•è¿›ç¨‹æè¿°ç¬¦çš„åœ°å€)ï¼Œæ“ä½œç³»ç»Ÿä½¿ç”¨è¿™ä¸ªç»“æž„ä¸­çš„taskæŒ‡é’ˆå­—æ®µæ‰¾åˆ°è¿›ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦ï¼Œä»Žè€Œå¾—åˆ°æ‰§è¡Œä¸€ä¸ªè¿›ç¨‹æ‰€éœ€çš„å…¨éƒ¨ä¿¡æ¯
+##Ïß³ÌÃèÊö·û£ºstruct thread_info
+Ã¿Ò»¸ö½ø³Ì¶¼ÓÐÒ»¸ö½ø³ÌÃèÊö·ûtask_struct£¬ÇÒÓÐÒ»¸öÓÃÀ´¶¨Î»ËüµÄ½á¹¹thread_info£¬thread_infoÎ»ÓÚÆä½ø³ÌÄÚºËÕ»ÖÐ(ÓÐÐ©ÊµÏÖÃ»ÓÐÓÃµ½thread_info£¬¶øÊÇÊ¹ÓÃÒ»¸ö¼Ä´æÆ÷À´¼ÇÂ¼½ø³ÌÃèÊö·ûµÄµØÖ·)£¬²Ù×÷ÏµÍ³Ê¹ÓÃÕâ¸ö½á¹¹ÖÐµÄtaskÖ¸Õë×Ö¶ÎÕÒµ½½ø³ÌµÄ½ø³ÌÃèÊö·û£¬´Ó¶øµÃµ½Ö´ÐÐÒ»¸ö½ø³ÌËùÐèµÄÈ«²¿ÐÅÏ¢
 ```c
 //../arch/xtensa/include/asm
 struct thread_info {
-	struct task_struct          *task; //æŒ‡å‘å½“å‰è¿›ç¨‹å†…æ ¸æ ˆå¯¹åº”çš„è¿›ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦
+	struct task_struct          *task; //Ö¸Ïòµ±Ç°½ø³ÌÄÚºËÕ»¶ÔÓ¦µÄ½ø³ÌµÄ½ø³ÌÃèÊö·û
 
 	struct exec_domain          *exec_domain;
 	__u32                       flags;
@@ -31,74 +31,74 @@ struct thread_info {
 ```
 
 
-##è¿›ç¨‹æè¿°ç¬¦ï¼štask_struct
-ä»Žå†…æ ¸è§‚ç‚¹çœ‹ï¼Œè¿›ç¨‹çš„ç›®çš„å°±æ˜¯æ‹…å½“åˆ†é…ç³»ç»Ÿèµ„æº(CPU æ—¶é—´ã€å†…å­˜ç­‰)çš„å®žä½“ã€‚ä¸ºæ­¤ç›®çš„ï¼Œæ“ä½œç³»ç»Ÿä¸ºæ¯ä¸ªè¿›ç¨‹ç»´æŒç€ä¸€ä¸ªè¿›ç¨‹æè¿°ç¬¦ã€‚
+##½ø³ÌÃèÊö·û£ºtask_struct
+´ÓÄÚºË¹Ûµã¿´£¬½ø³ÌµÄÄ¿µÄ¾ÍÊÇµ£µ±·ÖÅäÏµÍ³×ÊÔ´(CPU Ê±¼ä¡¢ÄÚ´æµÈ)µÄÊµÌå¡£Îª´ËÄ¿µÄ£¬²Ù×÷ÏµÍ³ÎªÃ¿¸ö½ø³ÌÎ¬³Ö×ÅÒ»¸ö½ø³ÌÃèÊö·û¡£
 
-åœ¨../include/linux/sched.hä¸­å®šä¹‰äº†task_structï¼Œå…¶ä¸­åŒ…å«äº†ä¸€ä¸ªè¿›ç¨‹æ‰€éœ€çš„å…¨éƒ¨ä¿¡æ¯ã€‚å…¶ç»“æž„ä½“å®žä¾‹åœ¨å†…å­˜ä¸­çš„å¤§å°ä¸€èˆ¬åœ¨1KBä»¥ä¸Šã€‚
+ÔÚ../include/linux/sched.hÖÐ¶¨ÒåÁËtask_struct£¬ÆäÖÐ°üº¬ÁËÒ»¸ö½ø³ÌËùÐèµÄÈ«²¿ÐÅÏ¢¡£Æä½á¹¹ÌåÊµÀýÔÚÄÚ´æÖÐµÄ´óÐ¡Ò»°ãÔÚ1KBÒÔÉÏ¡£
 ```c
 //../include/linux/sched.h
-//---------------------------------------------------è¿›ç¨‹æè¿°ç¬¦ç»“æž„å®šä¹‰---------------------------------------------------
+//---------------------------------------------------½ø³ÌÃèÊö·û½á¹¹¶¨Òå---------------------------------------------------
 
 struct task_struct
 {
-//---------------------------------------------------------è¿›ç¨‹çŠ¶æ€------------------------------------------------------------ 
-  long                  state;           //ä»»åŠ¡çš„è¿è¡ŒçŠ¶æ€
-//---------------------------------------------------------è¿›ç¨‹æ ‡è¯†ä¿¡æ¯--------------------------------------------------------- 
-  pid_t                 pid;  //è¿›ç¨‹ID
-  pid_t                 pgrp; //è¿›ç¨‹ç»„æ ‡è¯†,è¡¨ç¤ºè¿›ç¨‹æ‰€å±žçš„è¿›ç¨‹ç»„ï¼Œç­‰äºŽè¿›ç¨‹ç»„çš„é¢†å¤´è¿›ç¨‹çš„pid
-  pid_t                 tgid;  //è¿›ç¨‹æ‰€åœ¨çº¿ç¨‹ç»„çš„IDï¼Œç­‰äºŽçº¿ç¨‹ç»„çš„é¢†å¤´çº¿ç¨‹çš„pidï¼Œgetpid()ç³»ç»Ÿè°ƒç”¨è¿”å›žtgidå€¼ã€‚ 
-  pid_t                 session; //è¿›ç¨‹çš„ç™»å½•ä¼šè¯æ ‡è¯†ï¼Œç­‰äºŽç™»å½•ä¼šè¯é¢†å¤´è¿›ç¨‹çš„pidã€‚ 
-  struct pid            pids[PIDTYPE_MAX]; //PIDTYPE_MAX=4ï¼Œä¸€å…±4ä¸ªhashè¡¨ã€‚
-  char                  comm[TASK_COMM_LEN];  //è®°å½•è¿›ç¨‹çš„åå­—ï¼Œå³è¿›ç¨‹æ­£åœ¨è¿è¡Œçš„å¯æ‰§è¡Œæ–‡ä»¶å 
-  int                   leader; //æ ‡å¿—,è¡¨ç¤ºè¿›ç¨‹æ˜¯å¦ä¸ºä¼šè¯ä¸»ç®¡(ä¼šè¯é¢†å¤´è¿›ç¨‹)ã€‚
+//---------------------------------------------------------½ø³Ì×´Ì¬------------------------------------------------------------ 
+  long                  state;           //ÈÎÎñµÄÔËÐÐ×´Ì¬
+//---------------------------------------------------------½ø³Ì±êÊ¶ÐÅÏ¢--------------------------------------------------------- 
+  pid_t                 pid;  //½ø³ÌID
+  pid_t                 pgrp; //½ø³Ì×é±êÊ¶,±íÊ¾½ø³ÌËùÊôµÄ½ø³Ì×é£¬µÈÓÚ½ø³Ì×éµÄÁìÍ·½ø³ÌµÄpid
+  pid_t                 tgid;  //½ø³ÌËùÔÚÏß³Ì×éµÄID£¬µÈÓÚÏß³Ì×éµÄÁìÍ·Ïß³ÌµÄpid£¬getpid()ÏµÍ³µ÷ÓÃ·µ»ØtgidÖµ¡£ 
+  pid_t                 session; //½ø³ÌµÄµÇÂ¼»á»°±êÊ¶£¬µÈÓÚµÇÂ¼»á»°ÁìÍ·½ø³ÌµÄpid¡£ 
+  struct pid            pids[PIDTYPE_MAX]; //PIDTYPE_MAX=4£¬Ò»¹²4¸öhash±í¡£
+  char                  comm[TASK_COMM_LEN];  //¼ÇÂ¼½ø³ÌµÄÃû×Ö£¬¼´½ø³ÌÕýÔÚÔËÐÐµÄ¿ÉÖ´ÐÐÎÄ¼þÃû 
+  int                   leader; //±êÖ¾,±íÊ¾½ø³ÌÊÇ·ñÎª»á»°Ö÷¹Ü(»á»°ÁìÍ·½ø³Ì)¡£
 
-//-------------------------------------------------------è¿›ç¨‹è°ƒåº¦ç›¸å…³ä¿¡æ¯-------------------------------------------------------
-  long                          nice;//è¿›ç¨‹çš„åˆå§‹ä¼˜å…ˆçº§ï¼ŒèŒƒå›´[-20,+19]ï¼Œé»˜è®¤0ï¼Œniceå€¼è¶Šå¤§ä¼˜å…ˆçº§è¶Šä½Žï¼Œåˆ†é…çš„æ—¶é—´ç‰‡
-  //å¯èƒ½è¶Šå°‘ã€‚
-  int                           static_prio;//é™æ€ä¼˜å…ˆçº§ã€‚
-  int                           prio;//å­˜æ”¾è°ƒåº¦ç¨‹åºè¦ç”¨åˆ°çš„ä¼˜å…ˆçº§ã€‚
+//-------------------------------------------------------½ø³Ìµ÷¶ÈÏà¹ØÐÅÏ¢-------------------------------------------------------
+  long                          nice;//½ø³ÌµÄ³õÊ¼ÓÅÏÈ¼¶£¬·¶Î§[-20,+19]£¬Ä¬ÈÏ0£¬niceÖµÔ½´óÓÅÏÈ¼¶Ô½µÍ£¬·ÖÅäµÄÊ±¼äÆ¬
+  //¿ÉÄÜÔ½ÉÙ¡£
+  int                           static_prio;//¾²Ì¬ÓÅÏÈ¼¶¡£
+  int                           prio;//´æ·Åµ÷¶È³ÌÐòÒªÓÃµ½µÄÓÅÏÈ¼¶¡£
     /*
     0-99 -> Realtime process
     100-140 -> Normal process
   */
-  unsigned int                  rt_priority;//å®žæ—¶ä¼˜å…ˆçº§ï¼Œé»˜è®¤æƒ…å†µä¸‹èŒƒå›´[0,99]
+  unsigned int                  rt_priority;//ÊµÊ±ÓÅÏÈ¼¶£¬Ä¬ÈÏÇé¿öÏÂ·¶Î§[0,99]
     /*
     0 -> normal
     1-99 -> realtime
     */
-  unsigned long                 sleep_avg;//è¿™ä¸ªå­—æ®µçš„å€¼ç”¨æ¥æ”¯æŒè°ƒåº¦ç¨‹åºå¯¹è¿›ç¨‹çš„ç±»åž‹(I/Oæ¶ˆè€—åž‹ or CPUæ¶ˆè€—åž‹)è¿›è¡Œ
-  //åˆ¤æ–­ï¼Œå€¼è¶Šå¤§è¡¨ç¤ºç¡çœ çš„æ—¶å€™æ›´å¤šï¼Œæ›´è¶‹å‘äºŽI/Oæ¶ˆè€—åž‹ï¼Œåä¹‹ï¼Œæ›´è¶‹å‘äºŽCPUæ¶ˆè€—åž‹ã€‚
-  unsigned long                 sleep_time;//è¿›ç¨‹çš„ç¡çœ æ—¶é—´   
-  unsigned int                  time_slice;//è¿›ç¨‹å‰©ä½™æ—¶é—´ç‰‡ï¼Œå½“ä¸€ä¸ªä»»åŠ¡çš„æ—¶é—´ç‰‡ç”¨å®Œä¹‹åŽï¼Œè¦æ ¹æ®ä»»åŠ¡çš„é™æ€ä¼˜å…ˆçº§
-  //static_prioé‡æ–°è®¡ç®—æ—¶é—´ç‰‡ã€‚task_timeslice()ä¸ºç»™å®šçš„ä»»åŠ¡è¿”å›žä¸€ä¸ªæ–°çš„æ—¶é—´ç‰‡ã€‚å¯¹äºŽäº¤äº’æ€§å¼ºçš„è¿›ç¨‹ï¼Œæ—¶é—´ç‰‡ç”¨å®Œä¹‹åŽï¼Œå®ƒ
-  //ä¼šè¢«å†æ”¾åˆ°æ´»åŠ¨æ•°ç»„è€Œä¸æ˜¯è¿‡æœŸæ•°ç»„ï¼Œè¯¥é€»è¾‘åœ¨scheduler_tick()ä¸­å®žçŽ°ã€‚
+  unsigned long                 sleep_avg;//Õâ¸ö×Ö¶ÎµÄÖµÓÃÀ´Ö§³Öµ÷¶È³ÌÐò¶Ô½ø³ÌµÄÀàÐÍ(I/OÏûºÄÐÍ or CPUÏûºÄÐÍ)½øÐÐ
+  //ÅÐ¶Ï£¬ÖµÔ½´ó±íÊ¾Ë¯ÃßµÄÊ±ºò¸ü¶à£¬¸üÇ÷ÏòÓÚI/OÏûºÄÐÍ£¬·´Ö®£¬¸üÇ÷ÏòÓÚCPUÏûºÄÐÍ¡£
+  unsigned long                 sleep_time;//½ø³ÌµÄË¯ÃßÊ±¼ä   
+  unsigned int                  time_slice;//½ø³ÌÊ£ÓàÊ±¼äÆ¬£¬µ±Ò»¸öÈÎÎñµÄÊ±¼äÆ¬ÓÃÍêÖ®ºó£¬Òª¸ù¾ÝÈÎÎñµÄ¾²Ì¬ÓÅÏÈ¼¶
+  //static_prioÖØÐÂ¼ÆËãÊ±¼äÆ¬¡£task_timeslice()Îª¸ø¶¨µÄÈÎÎñ·µ»ØÒ»¸öÐÂµÄÊ±¼äÆ¬¡£¶ÔÓÚ½»»¥ÐÔÇ¿µÄ½ø³Ì£¬Ê±¼äÆ¬ÓÃÍêÖ®ºó£¬Ëü
+  //»á±»ÔÙ·Åµ½»î¶¯Êý×é¶ø²»ÊÇ¹ýÆÚÊý×é£¬¸ÃÂß¼­ÔÚscheduler_tick()ÖÐÊµÏÖ¡£
 #if defined(CONFIG_SCHEDSTATS)||define(CONFIG_TASK_DELAY_ACCT)  
-  unsigned int                  policy;//è¡¨ç¤ºè¯¥è¿›ç¨‹çš„è¿›ç¨‹è°ƒåº¦ç­–ç•¥ã€‚è°ƒåº¦ç­–ç•¥æœ‰:
-//SCHED_NORMAL 0, éžå®žæ—¶è¿›ç¨‹, ç”¨åŸºäºŽä¼˜å…ˆæƒçš„è½®è½¬æ³•ã€‚
-//SCHED_FIFO 1, å®žæ—¶è¿›ç¨‹, ç”¨å…ˆè¿›å…ˆå‡ºç®—æ³•ã€‚
-//SCHED_RR 2, å®žæ—¶è¿›ç¨‹, ç”¨åŸºäºŽä¼˜å…ˆæƒçš„è½®è½¬æ³•
+  unsigned int                  policy;//±íÊ¾¸Ã½ø³ÌµÄ½ø³Ìµ÷¶È²ßÂÔ¡£µ÷¶È²ßÂÔÓÐ:
+//SCHED_NORMAL 0, ·ÇÊµÊ±½ø³Ì, ÓÃ»ùÓÚÓÅÏÈÈ¨µÄÂÖ×ª·¨¡£
+//SCHED_FIFO 1, ÊµÊ±½ø³Ì, ÓÃÏÈ½øÏÈ³öËã·¨¡£
+//SCHED_RR 2, ÊµÊ±½ø³Ì, ÓÃ»ùÓÚÓÅÏÈÈ¨µÄÂÖ×ª·¨
 #endif
-  struct list_head              tasks;//ä»»åŠ¡é˜Ÿåˆ—ï¼Œé€šè¿‡è¿™ä¸ªå¯„å®¿äºŽPCB(task_struct)ä¸­çš„å­—æ®µæž„æˆçš„åŒå‘å¾ªçŽ¯é“¾è¡¨å°†å®¿ä¸»
-  //PCBé“¾æŽ¥èµ·æ¥ã€‚
-  struct list_head              run_list;//è¯¥è¿›ç¨‹æ‰€åœ¨çš„è¿è¡Œé˜Ÿåˆ—ã€‚è¿™ä¸ªé˜Ÿåˆ—æœ‰ä¸€ä¸ªä¸Žä¹‹å¯¹åº”çš„ä¼˜å…ˆçº§kï¼Œæ‰€æœ‰ä½äºŽè¿™ä¸ªé˜Ÿåˆ—ä¸­
-  //çš„è¿›ç¨‹çš„ä¼˜å…ˆçº§éƒ½æ˜¯kï¼Œè¿™äº›kä¼˜å…ˆçº§è¿›ç¨‹ä¹‹é—´ä½¿ç”¨è½®è½¬æ³•è¿›è¡Œè°ƒåº¦ã€‚kçš„å–å€¼æ˜¯0~139ã€‚è¿™ä¸ªä½äºŽå®¿ä¸»PCBä¸­çš„struct list_headç±»
-  //åž‹çš„run_listå­—æ®µå°†æž„æˆä¸€ä¸ªä¼˜å…ˆçº§ä¸ºkçš„åŒå‘å¾ªçŽ¯é“¾è¡¨ï¼Œåƒä¸€æ¡ç»†ç»†çš„ç»³å­ä¸€æ ·ï¼Œå°†æ‰€æœ‰ä¼˜å…ˆçº§ä¸ºkçš„å¤„äºŽå¯è¿è¡ŒçŠ¶æ€çš„è¿›ç¨‹çš„
-  //PCB(task_struct)é“¾æŽ¥èµ·æ¥ã€‚
-  prio_array_t                  *array; //typedef struct prio_array prio_array_t; å¯ä»¥è¯´ï¼Œè¿™ä¸ªæŒ‡é’ˆåŒ…å«äº†æ“ä½œ
-  //ç³»ç»ŸçŽ°æœ‰çš„æ‰€æœ‰æŒ‰PCBçš„ä¼˜å…ˆçº§è¿›è¡Œæ•´ç†äº†çš„PCBçš„ä¿¡æ¯ã€‚ 
+  struct list_head              tasks;//ÈÎÎñ¶ÓÁÐ£¬Í¨¹ýÕâ¸ö¼ÄËÞÓÚPCB(task_struct)ÖÐµÄ×Ö¶Î¹¹³ÉµÄË«ÏòÑ­»·Á´±í½«ËÞÖ÷
+  //PCBÁ´½ÓÆðÀ´¡£
+  struct list_head              run_list;//¸Ã½ø³ÌËùÔÚµÄÔËÐÐ¶ÓÁÐ¡£Õâ¸ö¶ÓÁÐÓÐÒ»¸öÓëÖ®¶ÔÓ¦µÄÓÅÏÈ¼¶k£¬ËùÓÐÎ»ÓÚÕâ¸ö¶ÓÁÐÖÐ
+  //µÄ½ø³ÌµÄÓÅÏÈ¼¶¶¼ÊÇk£¬ÕâÐ©kÓÅÏÈ¼¶½ø³ÌÖ®¼äÊ¹ÓÃÂÖ×ª·¨½øÐÐµ÷¶È¡£kµÄÈ¡ÖµÊÇ0~139¡£Õâ¸öÎ»ÓÚËÞÖ÷PCBÖÐµÄstruct list_headÀà
+  //ÐÍµÄrun_list×Ö¶Î½«¹¹³ÉÒ»¸öÓÅÏÈ¼¶ÎªkµÄË«ÏòÑ­»·Á´±í£¬ÏñÒ»ÌõÏ¸Ï¸µÄÉþ×ÓÒ»Ñù£¬½«ËùÓÐÓÅÏÈ¼¶ÎªkµÄ´¦ÓÚ¿ÉÔËÐÐ×´Ì¬µÄ½ø³ÌµÄ
+  //PCB(task_struct)Á´½ÓÆðÀ´¡£
+  prio_array_t                  *array; //typedef struct prio_array prio_array_t; ¿ÉÒÔËµ£¬Õâ¸öÖ¸Õë°üº¬ÁË²Ù×÷
+  //ÏµÍ³ÏÖÓÐµÄËùÓÐ°´PCBµÄÓÅÏÈ¼¶½øÐÐÕûÀíÁËµÄPCBµÄÐÅÏ¢¡£ 
 
 
-//---------------------------------------------------------è¿›ç¨‹é“¾æŽ¥ä¿¡æ¯---------------------------------------------------------
-  struct task_struct            *real_parent;//æŒ‡å‘åˆ›å»ºäº†è¯¥è¿›ç¨‹çš„è¿›ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦ï¼Œå¦‚æžœçˆ¶è¿›ç¨‹ä¸å†å­˜åœ¨ï¼Œå°±æŒ‡å‘è¿›ç¨‹
-  //1(init)çš„è¿›ç¨‹æè¿°ç¬¦ã€‚
-  struct task_struct            *parent;//recipient of SIGCHLD, wait4() reports.ã€€parentæ˜¯è¯¥è¿›ç¨‹çŽ°åœ¨çš„çˆ¶è¿›ç¨‹ï¼Œ
-  //æœ‰å¯èƒ½æ˜¯â€œç»§çˆ¶â€
-  struct list_head              children;//list of my children.  childrenæŒ‡çš„æ˜¯è¯¥è¿›ç¨‹å­©å­çš„é“¾è¡¨ï¼Œä½¿ç”¨
-  //list_for_eachå’Œlist_entryï¼Œå¯ä»¥å¾—åˆ°æ‰€æœ‰å­©å­çš„è¿›ç¨‹æè¿°ç¬¦ã€‚  
+//---------------------------------------------------------½ø³ÌÁ´½ÓÐÅÏ¢---------------------------------------------------------
+  struct task_struct            *real_parent;//Ö¸Ïò´´½¨ÁË¸Ã½ø³ÌµÄ½ø³ÌµÄ½ø³ÌÃèÊö·û£¬Èç¹û¸¸½ø³Ì²»ÔÙ´æÔÚ£¬¾ÍÖ¸Ïò½ø³Ì
+  //1(init)µÄ½ø³ÌÃèÊö·û¡£
+  struct task_struct            *parent;//recipient of SIGCHLD, wait4() reports.¡¡parentÊÇ¸Ã½ø³ÌÏÖÔÚµÄ¸¸½ø³Ì£¬
+  //ÓÐ¿ÉÄÜÊÇ¡°¼Ì¸¸¡±
+  struct list_head              children;//list of my children.  childrenÖ¸µÄÊÇ¸Ã½ø³Ìº¢×ÓµÄÁ´±í£¬Ê¹ÓÃ
+  //list_for_eachºÍlist_entry£¬¿ÉÒÔµÃµ½ËùÓÐº¢×ÓµÄ½ø³ÌÃèÊö·û¡£  
   struct lsit_head              sibling;//linkage in my parent's children list.
-//siblingä¸ºè¯¥è¿›ç¨‹çš„å…„å¼Ÿçš„é“¾è¡¨ï¼Œä¹Ÿå°±æ˜¯å…¶çˆ¶äº²çš„æ‰€æœ‰å­©å­çš„é“¾è¡¨ã€‚ç”¨æ³•ä¸Žchildrenç›¸ä¼¼ã€‚  
-  struct task_struct            *group_leader;//threadgroup leaderï¼Œä¸»çº¿ç¨‹æè¿°ç¬¦
-  struct list_head              thread_group;  //çº¿ç¨‹ç»„é“¾è¡¨ï¼Œä¹Ÿå°±æ˜¯è¯¥è¿›ç¨‹æ‰€æœ‰çº¿ç¨‹çš„é“¾è¡¨ã€‚
+//siblingÎª¸Ã½ø³ÌµÄÐÖµÜµÄÁ´±í£¬Ò²¾ÍÊÇÆä¸¸Ç×µÄËùÓÐº¢×ÓµÄÁ´±í¡£ÓÃ·¨ÓëchildrenÏàËÆ¡£  
+  struct task_struct            *group_leader;//threadgroup leader£¬Ö÷Ïß³ÌÃèÊö·û
+  struct list_head              thread_group;  //Ïß³Ì×éÁ´±í£¬Ò²¾ÍÊÇ¸Ã½ø³ÌËùÓÐÏß³ÌµÄÁ´±í¡£
 
 //----------------------------------------------------------......------------------------------------------------------------
 
@@ -107,29 +107,29 @@ struct task_struct
 
 
 
-#linuxè¿›ç¨‹çš„å‡ ä¸ªçŠ¶æ€
-* R (TASK_RUNNING)ï¼Œå¯æ‰§è¡ŒçŠ¶æ€&è¿è¡ŒçŠ¶æ€(åœ¨run_queueé˜Ÿåˆ—é‡Œçš„çŠ¶æ€)
-* S (TASK_INTERRUPTIBLE)ï¼Œå¯ä¸­æ–­çš„ç¡çœ çŠ¶æ€, å¯å¤„ç†signal
-* D (TASK_UNINTERRUPTIBLE)ï¼Œä¸å¯ä¸­æ–­çš„ç¡çœ çŠ¶æ€,ã€€å¯å¤„ç†signal,ã€€æœ‰å»¶è¿Ÿï¼Œæ¯”å¦‚è®¾å¤‡é©±åŠ¨é‡Œçš„ä¸€äº›æ“ä½œ
-* T (TASK_STOPPED or TASK_TRACED) æš‚åœçŠ¶æ€æˆ–è·Ÿè¸ªçŠ¶æ€,ã€€ä¸å¯å¤„ç†signal,ã€€å› ä¸ºæ ¹æœ¬æ²¡æœ‰æ—¶é—´ç‰‡è¿è¡Œä»£ç 
-* Z (TASK_DEAD - EXIT_ZOMBIE)ï¼Œé€€å‡ºçŠ¶æ€ï¼Œè¿›ç¨‹æˆä¸ºåƒµå°¸è¿›ç¨‹ã€‚ä¸å¯è¢«kill,ã€€å³ä¸å“åº”ä»»åŠ¡ä¿¡å·,ã€€æ— æ³•ç”¨SIGKILLæ€æ­»
-* EXIT_DEAD åƒµæ­»æ’¤æ¶ˆçŠ¶æ€ï¼Œæœ€ç»ˆçŠ¶æ€
+#linux½ø³ÌµÄ¼¸¸ö×´Ì¬
+* R (TASK_RUNNING)£¬¿ÉÖ´ÐÐ×´Ì¬&ÔËÐÐ×´Ì¬(ÔÚrun_queue¶ÓÁÐÀïµÄ×´Ì¬)
+* S (TASK_INTERRUPTIBLE)£¬¿ÉÖÐ¶ÏµÄË¯Ãß×´Ì¬, ¿É´¦Àísignal
+* D (TASK_UNINTERRUPTIBLE)£¬²»¿ÉÖÐ¶ÏµÄË¯Ãß×´Ì¬,¡¡¿É´¦Àísignal,¡¡ÓÐÑÓ³Ù£¬±ÈÈçÉè±¸Çý¶¯ÀïµÄÒ»Ð©²Ù×÷
+* T (TASK_STOPPED or TASK_TRACED) ÔÝÍ£×´Ì¬»ò¸ú×Ù×´Ì¬,¡¡²»¿É´¦Àísignal,¡¡ÒòÎª¸ù±¾Ã»ÓÐÊ±¼äÆ¬ÔËÐÐ´úÂë
+* Z (TASK_DEAD - EXIT_ZOMBIE)£¬ÍË³ö×´Ì¬£¬½ø³Ì³ÉÎª½©Ê¬½ø³Ì¡£²»¿É±»kill,¡¡¼´²»ÏìÓ¦ÈÎÎñÐÅºÅ,¡¡ÎÞ·¨ÓÃSIGKILLÉ±ËÀ
+* EXIT_DEAD ½©ËÀ³·Ïû×´Ì¬£¬×îÖÕ×´Ì¬
 
 
 ----
-#åŒå‘é“¾è¡¨
-##è¿›ç¨‹é“¾è¡¨
+#Ë«ÏòÁ´±í
+##½ø³ÌÁ´±í
 
-é“¾æŽ¥æ‰€æœ‰è¿›ç¨‹çš„æè¿°ç¬¦
-å¤´ï¼šinit_taskæè¿°ç¬¦ï¼Œ0è¿›ç¨‹
+Á´½ÓËùÓÐ½ø³ÌµÄÃèÊö·û
+Í·£ºinit_taskÃèÊö·û£¬0½ø³Ì
 
-##TASK_RUNNINGçŠ¶æ€çš„ è¿›ç¨‹é“¾è¡¨
+##TASK_RUNNING×´Ì¬µÄ ½ø³ÌÁ´±í
 
-##ç­‰å¾…é˜Ÿåˆ—
+##µÈ´ý¶ÓÁÐ
 ```c
-//é˜Ÿåˆ—å¤´
+//¶ÓÁÐÍ·
 struct __wait_queue_head {  
-        spinlock_t lock;//è‡ªæ—‹é”ï¼Œä¸­æ–­å¤„ç†ç¨‹åºã€ä¸»è¦å†…æ ¸å‡½æ•° ä¼šå¹¶å‘ä¿®æ”¹
+        spinlock_t lock;//×ÔÐýËø£¬ÖÐ¶Ï´¦Àí³ÌÐò¡¢Ö÷ÒªÄÚºËº¯Êý »á²¢·¢ÐÞ¸Ä
         struct list_head task_list;  
 };  
 typedef struct __wait_queue_head wait_queue_head_t;  
@@ -137,47 +137,171 @@ typedef struct __wait_queue_head wait_queue_head_t;
 
 struct __wait_queue {  
         unsigned int flags;            
-		#define WQ_FLAG_EXCLUSIVE      0x01  /* è¡¨ç¤ºç­‰å¾…è¿›ç¨‹æƒ³è¦è¢«ç‹¬å åœ°å”¤é†’  */  
-        void *private;               /* æŒ‡å‘ç­‰å¾…è¿›ç¨‹çš„task_structå®žä¾‹ */  
-        wait_queue_func_t func;      /* ç”¨äºŽå”¤é†’ç­‰å¾…è¿›ç¨‹              */  
-        struct list_head task_list;  /* ç”¨äºŽé“¾è¡¨å…ƒç´ ï¼Œå°†wait_queue_té“¾æŽ¥åˆ°wait_queue_head_t */  
+		#define WQ_FLAG_EXCLUSIVE      0x01  /* ±íÊ¾µÈ´ý½ø³ÌÏëÒª±»¶ÀÕ¼µØ»½ÐÑ  */  
+        void *private;               /* Ö¸ÏòµÈ´ý½ø³ÌµÄtask_structÊµÀý */  
+        wait_queue_func_t func;      /* ÓÃÓÚ»½ÐÑµÈ´ý½ø³Ì              */  
+        struct list_head task_list;  /* ÓÃÓÚÁ´±íÔªËØ£¬½«wait_queue_tÁ´½Óµ½wait_queue_head_t */  
 };  
 typedef struct __wait_queue wait_queue_t;  
 ```
-å”¤é†’ç­‰å¾…é˜Ÿåˆ—ä¸­æ‰€æœ‰ç¡çœ è¿›ç¨‹ï¼Œå¯èƒ½ä¼šå¯¼è‡´æƒŠç¾¤é—®é¢˜
+»½ÐÑµÈ´ý¶ÓÁÐÖÐËùÓÐË¯Ãß½ø³Ì£¬¿ÉÄÜ»áµ¼ÖÂ¾ªÈºÎÊÌâ
 
+»¥³â½ø³Ì
+flags×Ö¶ÎÎª1 ÄÚºËÓÐÑ¡ÔñµÄ»½ÐÑ
 
+·Ç»¥³â½ø³Ì
+flags×Ö¶ÎÎª0 ÓÉÄÚºËÔÚÊÂ¼þ·¢ÉúÊ±»½ÐÑ
 
 ---
 #pids
-4ä¸ªæ•£åˆ—è¡¨
-PID è¿›ç¨‹pid
-TGID çº¿ç¨‹ç»„é¢†å¤´è¿›ç¨‹PID
-PGID è¿›ç¨‹ç»„é¢†å¤´è¿›ç¨‹PID
-SID ä¼šè¯é¢†å¤´è¿›ç¨‹PID
+4¸öÉ¢ÁÐ±í
+PID ½ø³Ìpid
+TGID Ïß³Ì×éÁìÍ·½ø³ÌPID
+PGID ½ø³Ì×éÁìÍ·½ø³ÌPID
+SID »á»°ÁìÍ·½ø³ÌPID
 
-é“¾è¡¨æ³•å¤„ç†å“ˆå¸Œå†²çª
+Á´±í·¨´¦Àí¹þÏ£³åÍ»
 
-pidç»“æž„å­—æ®µ
-int nr 						pidæ•°å€¼				
-struct hlist_node pid_chain	é“¾æŽ¥æ•£åˆ—è¡¨çš„ä¸‹ä¸€ä¸ªå’Œå‰ä¸€ä¸ªå…ƒç´ 
-struct list_head pid_list	æ¯ä¸ªpidçš„è¿›ç¨‹é“¾è¡¨å¤´
+pid½á¹¹×Ö¶Î
+int nr 						pidÊýÖµ				
+struct hlist_node pid_chain	Á´½ÓÉ¢ÁÐ±íµÄÏÂÒ»¸öºÍÇ°Ò»¸öÔªËØ
+struct list_head pid_list	Ã¿¸öpidµÄ½ø³ÌÁ´±íÍ·
 
 
 ---------
 
+[Linux ½ø³Ì¿ØÖÆ¡ª¡ªµÈ´ý¶ÓÁÐÏê½â](http://blog.csdn.net/lizuobin2/article/details/51785812)
+wait_event
+```c
+#define wait_event(wq, condition)                   \  
+do {                                    \  
+    if (condition)                          \  
+        break;                          \  
+    __wait_event(wq, condition);                    \  
+} while (0)  
+
+#define __wait_event(wq, condition)                     \  
+do {                                    \  
+    DEFINE_WAIT(__wait);                        \  
+                                    \  
+    for (;;) {                          \  
+        prepare_to_wait(&wq, &__wait, TASK_UNINTERRUPTIBLE);    \  
+        if (condition)                      \  
+            break;                      \  
+        schedule();                     \  
+    }                               \  
+    finish_wait(&wq, &__wait);                  \  
+} while (0)  
+
+#define DEFINE_WAIT(name)                       \  
+    wait_queue_t name = {                       \  
+        .private    = current,              \  
+        .func       = autoremove_wake_function,     \  
+        .task_list  = LIST_HEAD_INIT((name).task_list), \  
+    }
+
+typedef struct __wait_queue wait_queue_t;     
+struct __wait_queue {  
+    unsigned int flags;  
+#define WQ_FLAG_EXCLUSIVE   0x01  
+    void *private;  
+    wait_queue_func_t func;  
+    struct list_head task_list;  
+};  
+```
+
+¶¨ÒåÁËÒ»¸ö½Ð __wait µÄµÈ´ý¶ÓÁÐ£¬private Ö¸Ïòµ±Ç°½ø³ÌµÄ task_struct ½á¹¹Ìå£¨»½ÐÑµÄÊ±ºòºÃÖªµÀÊÇÄÄ¸ö½ø³Ì£©£¬È»ºóµ÷ÓÃ prepare_to_wait ½«µÈ´ý¶ÓÁÐÍ·¼ÓÈëµ½µÈ´ý¶ÓÁÐÖÐÈ¥£¬²¢ÉèÖÃµ±Ç°½ø³ÌµÄ×´Ì¬ÎªTASK_UNINTERRUPTIBLE¡£È»ºó£¬Èç¹û condition Îª¼Ù£¬Ôòschedule()£¬½ø³Ìµ÷¶ÈµÄÊ±ºò£¬µ±Ç°½ø³ÌµÄ×´Ì¬²»ÊÇ TASK_RUNNING ±ØÈ»Òª±»ÒÆ³ý ¡°ÔËÐÐ¶ÓÁÐ¡±£¬Ò²¾ÍÓÀÔ¶²»»á±»µ÷¶È³ý·ÇÖ±µ½ÐÑÀ´¡£Èç¹û condition ÎªÕæ£¬ÄÇÃ´finish_wait »á°ÑÖ®Ç°µÄ¹¤×÷¶¼»¹Ô­ ¼ÌÐøÖ´ÐÐ
+
+```c
+void fastcall  
+prepare_to_wait(wait_queue_head_t *q, wait_queue_t *wait, int state)  
+{  
+    unsigned long flags;  
+  
+    wait->flags &= ~WQ_FLAG_EXCLUSIVE;  
+    spin_lock_irqsave(&q->lock, flags);  
+    if (list_empty(&wait->task_list))  
+        __add_wait_queue(q, wait);  
+    /* 
+     * don't alter the task state if this is just going to 
+     * queue an async wait queue callback 
+     */  
+    if (is_sync_wait(wait))  
+        set_current_state(state);  
+    spin_unlock_irqrestore(&q->lock, flags);  
+}  
+void fastcall finish_wait(wait_queue_head_t *q, wait_queue_t *wait)  
+{  
+    unsigned long flags;  
+  
+    __set_current_state(TASK_RUNNING);  
+  
+    if (!list_empty_careful(&wait->task_list)) {  
+        spin_lock_irqsave(&q->lock, flags);  
+        list_del_init(&wait->task_list);  
+        spin_unlock_irqrestore(&q->lock, flags);  
+    }  
+}  
+```
+
+»½ÐÑ
+```c
+#define wake_up(x) __wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 1, NULL)  
+void fastcall __wake_up(wait_queue_head_t *q, unsigned int mode,  
+            int nr_exclusive, void *key)  
+{  
+    unsigned long flags;  
+  
+    spin_lock_irqsave(&q->lock, flags);  
+    __wake_up_common(q, mode, nr_exclusive, 0, key);  
+    spin_unlock_irqrestore(&q->lock, flags);  
+}  
+static void __wake_up_common(wait_queue_head_t *q, unsigned int mode,  
+                 int nr_exclusive, int sync, void *key)  
+{  
+    struct list_head *tmp, *next;  
+  
+    //list_for_each_safe ºêÉ¨ÃèË«ÏòÁ´±íq->task_listÖÐËùÓÐÏî£¬¼´µÈ´ý¶ÓÁÐÖÐËùÓÐÏî
+    list_for_each_safe(tmp, next, &q->task_list) {
+        wait_queue_t *curr = list_entry(tmp, wait_queue_t, task_list);  
+        unsigned flags = curr->flags;  
+  
+        if (curr->func(curr, mode, sync, key) &&  
+                (flags & WQ_FLAG_EXCLUSIVE) && !--nr_exclusive)  
+            break;  
+    }  
+}  
+
+//´ËÊ±»áµ÷ÓÃµ½£¬ÎÒÃÇÔÚµÈ´ý¶ÓÁÐÀïÖ¸¶¨µÄÄÇ¸ö func º¯Êý£¬Ò²¾ÍÊÇ autoremove_wake_function
+
+int autoremove_wake_function(wait_queue_t *wait, unsigned mode, int sync, void *key)  
+{  
+    int ret = default_wake_function(wait, mode, sync, key);  
+  
+    if (ret)  
+        list_del_init(&wait->task_list);  
+    return ret;  
+}  
+int default_wake_function(wait_queue_t *curr, unsigned mode, int sync,  
+              void *key)  
+{  
+    return try_to_wake_up(curr->private, mode, sync);  
+}  
+```
+×îÖÕµ÷ÓÃµ½ default_wake_function À´»½ÐÑ µÈ´ý¶ÓÁÐÀï private ÀïÖ¸¶¨µÄÄÇ¸ö½ø³Ì¡£È»ºó£¬ÒÆ³ý½«µÈ´ý¶ÓÁÐÍ·ÒÆ³ýµÈ´ý¶ÓÁÐ¡£try_to_wake_up £¬»á½« Òª»½ÐÑ½ø³ÌµÄ ½ø³Ì×´Ì¬ÉèÖÃÎª TASK_RUNNING ,È»ºó·Åµ½ ¡°ÔËÐÐ¶ÓÁÐ¡±ÖÐ¡£
+
+1¡¢´´½¨µÈ´ý¶ÓÁÐ¡¢µÈ´ý¶ÓÁÐÍ·
+2¡¢½«µÈ´ý¶ÓÁÐÍ·¼ÓÈëµ½µÈ´ý¶ÓÁÐÖÐÈ¥
+3¡¢ÉèÖÃµ±Ç°½ø³ÌµÄ½ø³Ì×´Ì¬
+4¡¢½ø³Ìµ÷¶È~
 
 
+-------------------
+#Ö´ÐÐ½ø³ÌÇÐ»»
+ÇÐ»»È«¾ÖÄ¿Â¼ÒÔ°²×°Ò»¸öÐÂµÄµØÖ·¿Õ¼ä
+ÇÐ»»ÄÚºËÌ¬¶ÑÕ»ºÍÓ²¼þÉÏÏÂÎÄ
 
-
-
-
-
-
-
-
-
-
+switch_toºê
 
 
 

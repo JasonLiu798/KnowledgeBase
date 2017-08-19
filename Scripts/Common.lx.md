@@ -171,6 +171,7 @@ http://os.51cto.com/art/201003/187533.htm
 
 ---
 #date时间相关
+##打印
 % : 印出 
 % %n : 下一行 
 %t : 跳格 
@@ -205,6 +206,11 @@ http://os.51cto.com/art/201003/187533.htm
 
 date +%Y-%m-%d-%H-%M-%s
 
+
+##设置时间
+date -s 11:25:00
+
+##同步
 ```bash
 ntpdate asia.pool.ntp.org >> /var/log/ntpdate.log
 ntpdate time.windows.com
@@ -215,7 +221,6 @@ ntpdate -s 210.72.145.44
 ntpdate 219.158.14.130
 date -s '11:16:18 2014-01-07'
 ```
-
 [Linux 下的服务器时间同步方案有哪些](http://www.zhihu.com/question/20089241)
 大多数应用场景中,使用ntpd的-g参数令其在启动时允许大步长同步就足够了
 （除此之外还可以在配置中使用 iburst来让加速同步）。使用 ntpd 唯一需要注意的是在配置时应配置 ACL，以免成为攻击跳板。

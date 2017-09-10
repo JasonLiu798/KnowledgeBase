@@ -107,6 +107,88 @@ strategy模式
 
 
 
+---
+#singleton
+防止创建多个对象
+##优点
+跨平台：可扩展为跨多个jvm
+适用于任何类：构造函数私有，增加相应静态函数和变量
+可透过派生类创建：可以创建一个SINGLETON子类
+延迟求值：如果singleton从未使用，那绝不会创建
+##缺点
+销毁方法未定义：没有好的方法destroy一个singleton，即使把引用指向空，系统其它模块仍然持有singleton实例的引用
+不能继承：继承类也要加相应的静态方法
+效率问题：每次调用instance都要指向if
+不透明性：必须要调用instance方法
+
+
+#monostate
+可创建多个对象，但对象内部指向static同一个内容
+##优点
+透明性：与常规对象无区别
+可派生：共享相同的静态变量
+多态性：可基于同样的静态变量表现不同行为
+##缺点
+不可转换性：不能通过派生把常规类转为monostat类
+效率问题：有对象创建和销毁开销
+内存占用：从未使用monostat，变量也要占用内存空间
+平台局限：不能跨多个jvm工作
+
+---
+#null object
+null object什么也不做
+
+
+
+---
+#composite
+
+
+
+---
+#observer
+
+---
+#abastract server
+switch -> switchable(turnOn,turnOff)<-light(turnOn,turnOff)
+
+#adapter模式
+
+#bridge模式
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

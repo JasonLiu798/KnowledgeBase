@@ -100,6 +100,9 @@ maxWait=5000
 ```
 
 #config
+
+java -cp druid-1.0.16.jar com.alibaba.druid.filter.config.ConfigTools passwd123 >> pass.md
+
 ```xml
 <!--数据源加密操作 -->  
 <bean id="dbPasswordCallback" class="com.waukeen.util.DBPasswordCallback" lazy-init="true" />

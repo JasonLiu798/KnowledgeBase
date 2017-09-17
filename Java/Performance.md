@@ -1,6 +1,11 @@
 
 
-Eclipse MAT
+#visualVm
+[Jvisualvm--JAVA性能分析工具](http://zhouanya.blog.51cto.com/4944792/1370017/)
+
+
+---
+#Eclipse MAT
 
 要定位问题，首先你需要获取服务器jvm某刻内存快照。jdk自带的jmap可以获取内存某一时刻的快照，导出为dmp文件后，就可以用Eclipse MAT来分析了，找出是那个对象使用内存过多，使用命令为：$JAVA_HOME/bin/jmap -dump:format=b,file=String <进程号> 
 下面用一个实例来演示内存溢出，然后通过Eclipse MAT定位出导致内存溢出的对象。 

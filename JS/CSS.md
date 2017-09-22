@@ -1,7 +1,14 @@
 #CSS
 ---
 
-
+#字体
+[为什么在css中设置了font-family:" 微软雅黑"没有用](http://blog.csdn.net/formyqianduan/article/details/52738362)
+不生效的3种情况： 
+1.当此属性定义的是全局样式时，对于表单类的标签就不会生效，还需要再次定义如： 
+body {font-family: “Microsoft YaHei”;}对表单input就不生效， 
+还需要定义一个input {font-family: “Microsoft YaHei”;}才可以。
+2.本地计算机不存在微软雅黑字体，有的系统默认没有微软雅黑，则一般默认为宋体，只要下载一个微软雅黑字体，安装后即可。
+3.还有一个是字符集问题，建议把中文font-family:” 微软雅黑”;改为font-family: “Microsoft YaHei”;字符集申明一下UTF-8或GB2312。
 
 #less
 [lessc](http://www.th7.cn/web/html-css/201308/11926.shtml)

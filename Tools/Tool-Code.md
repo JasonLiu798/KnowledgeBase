@@ -26,6 +26,9 @@ jude
 ##socketIo
 
 
+##ciso模拟器
+DynamipsGUI
+
 ---
 #Performance性能检测
 

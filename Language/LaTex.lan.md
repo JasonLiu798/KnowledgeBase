@@ -133,8 +133,12 @@ $ \cfrac{2}{c + \cfrac{2}{d + \cfrac{2}{4}}} =a $
 大型分数（不嵌套）
 $ \dfrac{2}{c + \dfrac{2}{d +\dfrac{2}{4}}} = a $
 
-###幂^ /下标_ /不等号\neq
-$a^b \neq e^{-\alpha t}_{ij}$ \qquad
+###幂^ 
+$a^b$
+###下标_ 
+
+###不等号\neq
+\neq e^{-\alpha t}_{ij}$ \qquad
 $a_b$
 
 \hat{x}

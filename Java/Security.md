@@ -72,9 +72,6 @@ org.springframework.security.web.util.UrlMatcher;
 org.springframework.security.web.util.matcher.RequestMatcher;
 org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
----
-#CAS
-[JAVA CAS单点登录(SSO)](http://blog.csdn.net/kuangkunkui/article/details/7902822)
 
 ---
 #权限设计

@@ -1,5 +1,9 @@
 #git
 ---
+
+git checkout -b [分支名] [远程名]/[分支名]
+
+
 # github repositories
 ##data
 git@github.com:JasonLiu798/KnowledgeBase.git

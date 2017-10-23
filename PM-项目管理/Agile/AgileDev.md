@@ -159,15 +159,23 @@ switch -> switchable(turnOn,turnOff)<-light(turnOn,turnOff)
 
 
 
+---
+#state模式
+##有限状态机
+嵌套switch/case实现
+逻辑和实现不好分离
 
+迁移表
+速度
 
+##state模式
+分离了 动作和逻辑
+动作在context类
+逻辑在state派生类
 
+##状态机编译器
 
-
-
-
-
-
+---
 
 
 

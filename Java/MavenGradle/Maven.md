@@ -12,6 +12,12 @@
 </dependency>
 ```
 
+mvn install:install-file -Dfile=[your file] -DgroupId=[xxxx] -DartifactId=[xxxx] -Dversion=[xxxx] -Dpackaging=[pom|jar|other]  
+
+mvn deploy:deploy-file -Dfile=pom.xml -DgroupId=[xxxx] -DartifactId=[xxxx] -Dversion=[xxxx] -Dpackaging=[pom|jar|other] -DrepositoryId=[id] -Durl=[repo url]  
+
+mvn deploy:deploy-file -Dfile=pom.xml -DgroupId=com.atjl -DartifactId=common-tools-parent -Dversion=1.1.0 -Dpackaging=pom -DrepositoryId=releases -Durl=http://nexus.sf-express.com/nexus/content/repositories/releases/  
+
 #setup
 ## eclipse.ini
 -vm
@@ -113,7 +119,23 @@ system
 </activeProfiles>
 ```
 
+
+
 ---
+
+#加密
+--encrypt-master-password
+--encrypt-password 
+${user.home}/.m2 目录下创建settings-security.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?> 
+<settingsSecurity> 
+<master>123</master> 
+</settingsSecurity>
+```
+
+
+
 #cmd
 常用
 alias mccpi='mvn clean compile package install -Dmaven.test.skip=true'

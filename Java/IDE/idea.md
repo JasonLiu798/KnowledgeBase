@@ -320,6 +320,8 @@ caw，ciw，diw，daw  删除单词（或者然后插入）c的意思是删除�
 
 ## web
 ### jetty 调试配置
+端口
+-Djetty.port=8090
 
 ###热部署
 http://blog.csdn.net/xiejx618/article/details/49936541

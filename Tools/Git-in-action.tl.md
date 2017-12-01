@@ -2,7 +2,8 @@
 ---
 
 git checkout -b [分支名] [远程名]/[分支名]
-
+git pull <远程主机名> <远程分支名>:<本地分支名>
+git pull my release/V1.3:release/V1.3
 
 # github repositories
 ##data

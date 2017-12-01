@@ -1,5 +1,9 @@
 #Maven
 ---
+
+mvn dependency:copy-dependencies -DoutputDirectory=libjar   -DincludeScope=compile
+
+
 #pom.xml配置
 ##添加本地包
 ```xml
@@ -124,7 +128,7 @@ system
 ---
 
 #加密
---encrypt-master-password
+--encrypt-master-password 
 --encrypt-password 
 ${user.home}/.m2 目录下创建settings-security.xml
 ```xml

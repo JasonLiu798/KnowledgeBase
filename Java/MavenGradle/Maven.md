@@ -1,5 +1,10 @@
 #Maven
 ---
+
+alias mvnv='mvn versions:set -DnewVersion='
+
+
+
 #pom.xml配置
 ##添加本地包
 ```xml

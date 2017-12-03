@@ -1,8 +1,12 @@
 #Maven
 ---
 
+<<<<<<< HEAD
 alias mvnv='mvn versions:set -DnewVersion='
 
+=======
+mvn dependency:copy-dependencies -DoutputDirectory=libjar   -DincludeScope=compile
+>>>>>>> ca11151239810ac2b4dd77cbba1d92079bd05f6c
 
 
 #pom.xml配置
@@ -129,7 +133,7 @@ system
 ---
 
 #加密
---encrypt-master-password
+--encrypt-master-password 
 --encrypt-password 
 ${user.home}/.m2 目录下创建settings-security.xml
 ```xml

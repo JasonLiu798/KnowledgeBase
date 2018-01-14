@@ -1,6 +1,9 @@
 
 
 
+[Setting Up Swagger 2 with a Spring REST API](http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
+
+
 https://github.com/swagger-api/swagger-ui
 
 [Swagger+Spring mvc生成Restful接口文档](http://www.cnblogs.com/yuananyun/p/4993426.html)

@@ -3,7 +3,17 @@
 #doc
 [单点登录SSO的实现原理](http://blog.csdn.net/cutesource/article/details/5838693)
 [单点登录原理与简单实现](http://www.cnblogs.com/ywlaker/p/6113927.html)
+[SSO](http://blog.csdn.net/cutesource/article/details/5838693)
+[单点登录SSO原理](http://hansionxu.blog.163.com/blog/static/24169810920149155440886/)
+
 ---
+#单点登录SSO
+
+CAS v1 非常原始，传送一个用户名居然是 ”yes\ndavid.turing” 的方式， CAS v2 开始使用了 XML 规范，大大增强了可扩展性， CAS v3 开始使用 AOP技术，让 Spring 爱好者可以轻松配置 CAS Server 到现有的应用环境中。
+
+CAS 是通过 TGT(Ticket Granting Ticket) 来获取 ST(Service Ticket) ，通过 ST 来访问服务
+
+
 #概述
 SSO是一种统一认证和授权机制，指访问同一服务器不同应用中的受保护资源的同一用户，只需要登录一次，即通过一个应用中的安全验证后，再访问其他应用中的受保护资源时，不再需要重新登录验证。
 
@@ -172,7 +182,19 @@ CAS 规定 ST 只能存活一定的时间，然后 CAS Server 会让它失效。
 3、ST 是基于随机数生成的
 ST 必须足够随机，如果 ST 生成规则被猜出， Hacker 就等于绕过 CAS 认证，直接访问 对应的服务。
 
-##参考资料
+
+
+
+
+----
+#应用
+[SSO单点登录、跨域重定向、跨域设置Cookie、京东单点登录实例分析](http://blog.csdn.net/clh604/article/details/20365967/)
+
+
+
+
+---
+#参考资料
 1、 https://wiki.jasig.org/display/CASUM/Introduction
 2、 http://www.jasig.org/cas/protocol/
 3、 http://www.ibm.com/developerworks/cn/opensource/os-cn-cas/index.html

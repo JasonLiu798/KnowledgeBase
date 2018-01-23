@@ -1,6 +1,7 @@
 
 #doc
-http://whoosh.readthedocs.io/en/latest/quickstart.html
+[官方](http://whoosh.readthedocs.io/en/latest/quickstart.html)
+
 
 
 

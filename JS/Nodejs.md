@@ -27,6 +27,8 @@ npm config get prefix
 npm -g outdated
 ##升级
 npm update <name>
+升级自己
+npm install -g npm
 ##配置相关
 npm config ls -l
 npm config set cache "D:\\log\\npmc"

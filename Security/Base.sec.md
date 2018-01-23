@@ -64,13 +64,7 @@ ModSecurity
 
 
 
----
-#单点登录SSO
-[SSO](http://blog.csdn.net/cutesource/article/details/5838693)
-[单点登录SSO原理](http://hansionxu.blog.163.com/blog/static/24169810920149155440886/)
-CAS v1 非常原始，传送一个用户名居然是 ”yes\ndavid.turing” 的方式， CAS v2 开始使用了 XML 规范，大大增强了可扩展性， CAS v3 开始使用 AOP技术，让 Spring 爱好者可以轻松配置 CAS Server 到现有的应用环境中。
 
-CAS 是通过 TGT(Ticket Granting Ticket) 来获取 ST(Service Ticket) ，通过 ST 来访问服务
 
 ---
 #编译器

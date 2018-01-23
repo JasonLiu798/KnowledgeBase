@@ -3,7 +3,7 @@
 
 
 
-
+[原理](https://www.zhihu.com/question/25007334)
 
 
 

@@ -12,6 +12,10 @@ socat是一个多功能的网络工具，名字来由是” Socket CAT”，可�
 netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。
 
 
+---
+#dig
+https://mediatemple.net/community/products/dv/204644130/understanding-the-dig-command
+
 
 #网卡，网络配置
 ##网络配置

@@ -1,6 +1,9 @@
 
 
 
+[Setting Up Swagger 2 with a Spring REST API](http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
+
+
 https://github.com/swagger-api/swagger-ui
 
 [](http://www.mamicode.com/info-detail-525592.html)

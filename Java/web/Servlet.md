@@ -119,6 +119,44 @@ Collection<Part> getParts()
 
 
 ---
+#servlet直接发送文件
+```xml
+    <servlet> 
+        <servlet-name> javascriptservlet </servlet-name> 
+        <servlet-class> JavaScriptServlet </servlet-class> 
+    </servlet> 
+    <servlet-mapping> 
+        <servlet-name> javascriptservlet </servlet-name> 
+        <url-pattern> *.js </url-pattern> 
+    </servlet-mapping> 
+```
+这样请求js文件时，就不是找工程下的js，而是请求交给servlet。
+```java
+public class JavaScriptServlet extends HttpServlet{ 
+        public void doGet(HttpServletRequest request,HttpServletResponse response)throws
+                        ServletException,IOException { 
+                String fileUri = request.getRequestURI(); 
+                String contextPath = request.getContextPath(); 
+                if(!contextPath.endsWith( "/ ")){ 
+                      contextPath = contextPath + "/ "; 
+                } 
+                fileUri = fileUri.substring(contextPath.length(),fileUri.length());
+                //注意：此处未考虑并发访问异常 
+                BufferedReader in = new BufferedReader(new InputStreamReader(getClass().
+                                getClassLoader().getResourceAsStream(fileUri))); 
+                PrintWriter out = response.getWriter();
+                response.setContentType("text/javascript;charset=GBK"); 
+                String line = null; 
+                while((line = in.readLine()) != null){ 
+                     out.println(line); 
+                }
+                in.close(); 
+                out.close(); 
+        } 
+} 
+```
+
+---
 #J2EE Servers
 Tomcat 	| 免费 | jsp,servlet
 JBoss | 免费，文档收费 | 核心服务不包括支持servlet/JSP的WEB容器，需配合Tomcat,jetty，支持支持EJB 1.1、EJB 2.0和EJB3.0

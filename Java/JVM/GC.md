@@ -3,13 +3,26 @@
 
 
 
+Mark-Sweep算法：会导致不连续内存空间
+Copy算法：比Mark-Sweep高效，新生代GC算法
+Mark-Compact算法：基于Mark-Sweep改进的算法，第一阶段Mark与Mark-Sweep基本相同，但第二阶段压缩存活对象到内存一端，之后清理边界外的所有其他空间。老年代GC算法
+
+GC分代假设：绝大部分对象的生命周期都很短
+分配小对象开销很小，不要吝啬去创建小对象
+Young GC速度远高于Full GC，尽量避免对象提升到老年代，Young GC应该占绝大部分，Full GC应该很少
+让对象生命周期尽可能短，避免生命周期过长被提升到老年代
+为新生代预留足够空间，使大部分对象停留在新生代
+尽量避免短命大对象，使用-XX:PretenureSizeThreshold设置大对象直接进入老年代的阈值
+避免堆震荡，设置相同的-Xmx和-Xms，可以减少GC次数
+不可变对象对GC友好：减少卡表扫描
+…
 
 
 
 
 
 
-
+---
 #C4 垃圾回收
 [JVM 性能优化, Part 4: C4 垃圾回收](http://www.importnew.com/2410.html)
 C4算法，该算法是Azul System公司中无暂停垃圾回收算法的新成果，目前只在Zing JVM上得到实现。此外，本文还将对Oracle公司的G1垃圾回收算法和IBM公司的Balanced Garbage Collection Policy算法做简单介绍。希望通过对这些垃圾回收算法的学习可以扩展你对Java内存管理模型和Java应用程序伸缩性的理解，并激发你对这方面内容的兴趣以便更深入的学习相关知识。至少，你可以学习到在选择JVM时有哪些需要关注的方面，以及在不同应用程序场景下要注意的事项。

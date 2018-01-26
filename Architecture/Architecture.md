@@ -208,6 +208,9 @@ C一致性
 * 不同功能，根据功能进行物理分离
 * 单一功能，多台服务器部署相同服务
 
+## 水平伸缩、垂直伸缩
+[高性能可伸缩系统构建的简要思想](http://blog.hesey.net/2011/04/summary-of-construction-of-high-performance-scalable-system.html)
+
 ##应用集群伸缩
 无状态
     负载均衡

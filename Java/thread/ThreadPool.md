@@ -62,7 +62,9 @@ static class DefaultThreadFactory implements ThreadFactory {
 cas递增 当前线程数
 
 
-
+---
+# 扩展
+[支持生产阻塞的线程池](http://blog.hesey.net/2013/04/blocking-threadpool-executor.html)
 
 
 

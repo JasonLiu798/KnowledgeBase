@@ -196,99 +196,6 @@ HotSwappableTargetSource
 CommonsPoolTargetSource
 ThreadLocalTargetSource
 
-##事务
-####Spring事务的隔离级别Isolation
-    ISOLATION_DEFAULT：PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别.
-    另外四个与JDBC的隔离级别相对应
-    ISOLATION_READ_UNCOMMITTED:这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。这种隔离级别会产生脏读，不可重复读和幻像读。
-    ISOLATION_READ_COMMITTED:保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据
-    ISOLATION_REPEATABLE_READ:这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻读。它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。
-    ISOLATION_SERIALIZABLE 
-####PropagationBehavior
-    REQUIRED 不存在创建新事务，存在则加入
-    SUPPORTS 不存在则直接执行，存在则加入
-    MANDATORY 强制存在，不存在抛出异常，自身不新建事务
-    REQUIRES_NEW 不管存在与否，都创建，[独立于已经存在事务]
-    NOT_SUPPORTED 不支持当前事务，没有事务的情况下执行
-    NEVER 存在则异常
-    NESTED 存在，则在当前的嵌套事务执行，不存在创建新事务
-Timeout
-ReadOnly
-
-
-###注解
-[@Transactional spring 配置事务 注意事项 ](http://blog.sina.com.cn/s/blog_667ac0360102ebem.html)
-@Transactional
-
-    <!-- 使用annotation定义事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-    <!-- 定义aspectj -->
-    <aop:aspectj-autoproxy proxy-target-class="true" />
-cglib与java动态代理最大区别是代理目标对象不用实现接口,那么注解要是写到接口方法上，要是使用cglib代理，这是注解事物就失效了，为了保持兼容注解最好都写到实现类方法上。
-事务开启 ，或者是基于接口的 或者是基于类的代理被创建。同一个类中一个方法调用另一个方法有事务的方法，事务是不会起作用的。
-默认情况下，如果被注解的数据库操作方法中发生了unchecked异常，所有的数据库操作将rollback；如果发生的异常是checked异常，默认情况下数据库操作还是会提交的。
-
-####checked exception回滚
-@Transactional(rollbackFor=Exception.class)
-//rollbackFor这属性指定了，既使你出现了checked这种例外，那么它也会对事务进行回滚
-
-####传播设定
-@Transactional(propagation=Propagation.NOT_SUPPORTED)
-
-###实现
-####interface TransactionDefinition
-    transaction.support.DefaultTransactionDefinition
-        TransactionTemplate
-
-####TransactionStatus
-SavepointManager 支持嵌套事务
-interface transaction.TransactionStatus
-    DefaultTransactionStatus
-    SimpleTransactionStatus
-
-####PlatformTransactionManager (strategy模式)
-实现类
-JDBC/myBatis    DataSourceTransactionManager
-Hibernate       HibernateTransactionManager
-全局事务    jta.JtaTransactionManager
-
-TransactionSynchronization 事务处理过程中的回调接口
-TransactionSynchronizationManager 资源绑定目的地
-
-####AbastractTransactionManager
-    DataSourceTransactionManager
-    Hibernate...
-
-AbastractTransactionManager处理流程
-    判断是否存在当前事务
-    根据TransactionDefinition的PropagationBehavior传播行为执行逻辑
-    根据情况挂起或恢复事务
-    提前事务前检查readOnly是否设置，是则回滚代替提交
-    如回滚则恢复状态
-    如Synchronization为active，触发回调接口
-
-getTransaction(TransactionDefinition definition)
-开启事务，并判断之前是否有事务，如存在则决定挂起或异常
-    Object transaction=doGetTransaction();//根据实现类各异，返回transactionObject
-    if( definition == null ){
-        definition = new DefaultTransactionDefinition();
-    }
-    if( isExistiongTransaction(transaction)){//是否存在事务
-        return handleExistingTransaction(definition,transaction,debugEnabled);
-    }
-
-    isExistiongTransaction = true
-    handleExistingTransaction
-        REQUIRES_NEW    挂起后返回新事务
-        NOT_SUPPORTED   挂起后返回
-        NEVER 抛出异常
-        NESTED 根据情况创建嵌套事务，通过Savepoint或JTA的TransactionManager
-
-    isExistiongTransaction=false
-        MANDATORY   抛出异常
-
-###分布式事务
-[JOTM例子](http://log-cd.iteye.com/blog/807607)
 
 
 ---
@@ -297,7 +204,6 @@ getTransaction(TransactionDefinition definition)
 ###进度显示
 [spring mvc文件上传实现进度条](http://my.oschina.net/xiaotian120/blog/198225)
 [springMVC文件上传带进度条前端使用html5+bootstarp](http://www.th7.cn/Program/java/201503/406582.shtml)
-
 
 
 ## 返回json

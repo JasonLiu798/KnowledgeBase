@@ -272,6 +272,7 @@ public class SpinLock1 {
 ```
 
 
+
 #偏向锁
 [](http://itlab.idcquan.com/Java/advance/805449.html)
 JDK1.6引入的，主要为了解决在没有竞争情况下锁的性能问题。
@@ -333,12 +334,60 @@ GC标记     |
 
 
 [深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析](https://zhuanlan.zhihu.com/p/27374597)
+[深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析(二)](https://zhuanlan.zhihu.com/p/27405768)
 
 
+---
+#
 
+```java
+ /**
+ - Performs non-fair tryLock.  tryAcquire is implemented in
+ - subclasses, but both need nonfair try for trylock method.
+ */
+final boolean nonfairTryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        if (compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc < 0) // overflow
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
 
-
-
+/**
+ - Fair version of tryAcquire.  Don't grant access unless
+ - recursive call or no waiters or is first.
+ */
+protected final boolean tryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        if (!hasQueuedPredecessors() &&
+            compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc < 0)
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+```
 
 
 

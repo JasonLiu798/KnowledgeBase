@@ -1,6 +1,16 @@
 #lock
 ---
 
+总线锁
+LOCK#信号
+
+缓存锁
+不使用缓存锁的情况：
+* 操作数据不能被缓存在处理器内部，或操作的数据跨多个缓存行
+* 有些处理器不支持缓存锁定
+
+
+
 1、自旋锁
 2、自旋锁的其他种类
 3、阻塞锁
@@ -287,7 +297,40 @@ JDK1.6引入的，主要为了解决在没有竞争情况下锁的性能问题�
 
 
 ---
-#实现
+# 实现
+## synchronized
+代码块同步 
+使用monitorenter和 monitorexit 指令实现
+monitorexit插入到代码块执行结束和异常处
+
+任何一个对象由一个monitor与之关联
+
+synchronized用的锁在java对象头里
+
+如对象是数组类型，3个字宽存储对象头
+非数组类型，2个字宽存储对象头
+1个字宽4字节32bit
+
+MarkWord
+锁状态     | 25bit         | 4bit         | 1bit是否偏向锁 | 2bit锁标志位
+无锁状态   | 对象的hashCode| 对象分代年龄 | 0              | 01
+
+随标志位变化而变化
+锁状态     | 25bit         | 4bit         | 1bit是否偏向锁 | 2bit锁标志位
+轻量级锁   | 
+重量级锁   |
+GC标记     |
+偏向锁     |线程id| epoch | 
+
+
+
+
+
+
+
+
+
+
 
 [深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析](https://zhuanlan.zhihu.com/p/27374597)
 

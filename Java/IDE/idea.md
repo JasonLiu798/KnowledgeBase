@@ -1,18 +1,47 @@
-#idea
-##启动jdk替换
-http://www.cnblogs.com/scown/p/5561625.html
+#IDEA
+---
+#启动参数
+```
+-server
+-Xms512m
+-Xmx1500m
+-XX:+UseConcMarkSweepGC
+-XX:ReservedCodeCacheSize=240m
+-XX:SoftRefLRUPolicyMSPerMB=50
+-ea
+-Dsun.io.useCanonCaches=false
+-Djava.net.preferIPv4Stack=true
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:-OmitStackTraceInFastThrow
+-Dfile.encoding=UTF8
+-Xverify：none
+-XX:+DisableEx-plicitGC
+```
+-Xverify：none 不验证字节码
 
-##配置
-### keymap
+
+#启动jdk替换
+64位：IDEA_JDK_64
+32位：IDEA_JKD
+
+---
+#配置
+## keymap
 http://www.juvenxu.com/2013/07/18/my-most-used-intellij-idea-shortcuts/
 vim
 http://linux.chinaunix.net/techdoc/desktop/2009/07/06/1122020.shtml
-###乱码
+## 乱码
 File->setting->encoding改
 intellij安装目录下bin\idea.exe.vmoptions文件，加上
 -Dfile.encoding=UTF-8 (无法识别)
 -Dfile.encoding=UTF8
 [关于Idea testng单元测试乱码的解决](http://www.iteye.com/topic/1131087)
+
+Build,Execution,Deployment > Compiler > Java Compiler， 设置 Additional command line parameters选项为
+-encoding utf-8
+
+## compile的VM参数
+如果是compile期出了问题，则需要为javac设置"-encoding UTF-8 "参数，在idea中，是通过ctrl+alt+s-compiler>java compiler->additional command line parameters设置）； 
 
 ##配色
 动态相关：
@@ -31,35 +60,39 @@ java doc comment，灰绿，7AC668
 注解名，深绿，169F5B
 普通方法调用，蓝色，A19FFF
 
-##external tool
+## external tool
 javap
-Program:    /opt/java/bin/javap
-Parameter:  -classpath /opt/.../calsses -v -s -l -c $FileClass$
-directory:  /opt/.../projectdir
+Program:    $JDKPath$\bin\javap.exe
+Arguments:  -c $FileClass$
+//Parameter:  -classpath /opt/.../calsses -v -s -l -c $FileClass$
+Work dir: $OutputPath$
+//directory:  /opt/.../projectdir
 
+## 显示右侧边栏
+View->Tool buttons
 
-##代码检查配置
-###泛型提示
+## 代码检查配置
+### 泛型提示
 raw use of
-####不开的
+#### 不开的
 feature envy
 
-###自动换行
+### 自动换行
 1)搜 soft wrap
 2)在File->settings->Code Style->Java中，选中“Wrapping and Braces”选项卡，在“Keep when reformatting”中有一个“Ensure rigth margin is not exceeded
 
 
-## plugins 插件
+---
+# plugins 插件
 [intellij idea 13&14 插件](http://blog.csdn.net/sunny243788557/article/details/26556967)
-###手动安装插件目录
+## 手动安装插件目录
 C:\Users\Administrator\.IntelliJIdea14\config\plugins
 $SETUP_DIR/plugins
-###idea vim
+## idea vim
 [IdeaVim插件使用技巧](http://kidneyball.iteye.com/blog/1828427)
 模拟linux下 vi编辑器的插件支持vi的命令
 https://github.com/JetBrains/ideavim
-####:action命令
-
+### :action命令
 :actionlist<回车>
 ， 就会看到一个长长的列表，基本上这就是能你用idea的Lookup Action功能所能调用的绝大部分idea动作。你执行
 :action <命令名>
@@ -125,17 +158,17 @@ nnoremap `B :action GotoBookmark9<CR>
 
 
 
-###junit
+## junit
 http://my.oschina.net/laugh2last/blog/169352
 http://kidneyball.iteye.com/blog/1814028
-###JunitGenerator 单元测试
+## JunitGenerator 单元测试
 default:
 ${SOURCEPATH}/test/${PACKAGE}/${FILENAME}
 maven:
 ${SOURCEPATH}/../../test/java/${PACKAGE}/${FILENAME}
-###serialversion
+## serialversion
 GenerateSerialVersionUID
-###emmet
+## emmet
 ###FindBugs for IntelliJ IDEA
   通过FindBugs帮你找到隐藏的bug及不好的做法。
 
@@ -318,12 +351,13 @@ idea里面是跳转到定义，vim里面是翻页；既然要抛弃鼠标，自�
 caw，ciw，diw，daw  删除单词（或者然后插入）c的意思是删除然后进入插入模式，d则是删除，iw以及aw是文本语义，aw代表一个单词，包含前后空格，iw代表一个单词；还不仅如此，w可以换成别的，比如“代表两个引号之间的内容，｝两个大括号之间的，依次类推；di}可以删除块之间的内容。
 
 
-## web
-### jetty 调试配置
+---
+# web
+## jetty 调试配置
 端口
 -Djetty.port=8090
 
-###热部署
+## 热部署
 http://blog.csdn.net/xiejx618/article/details/49936541
 前提
 a.必须在调试模式下运行jetty;
@@ -360,7 +394,7 @@ jetty:run
           </configuration>
       </plugin>
 
-### tomcat 配置
+## tomcat 配置
 ####  1 配置tomcat应用服务器
 File->Settings...
 Build,Execution,Deployment ->Application Servers

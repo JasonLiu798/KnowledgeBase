@@ -1,60 +1,6 @@
-#Machine Learning
----
-#docs
-斯坦福大学机器学习课程原始讲义
-http://download.csdn.net/detail/blackring007/4679238
-http://download.csdn.net/detail/flybirds98/1934334
-[Awesome Deep Vision](https://github.com/kjw0612/awesome-deep-vision)
-[基于Python的卷积神经网络和特征提取](http://www.csdn.net/article/2015-08-27/2825549)
-
-[Twitter情感分析技术](http://www.infoq.com/cn/news/2015/12/Twitter-api-notion)
-[deeplearning](http://www.deeplearningbook.org/)
-[Github上的十大机器学习项目](http://geek.csdn.net/news/detail/52337)
-[深度学习2015年文章整理（CVPR2015）](http://blog.csdn.net/u010402786/article/details/50548996)
-[CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的内部网络结构有什么区别？](https://www.zhihu.com/question/34681168#answer-29055567)
-[Using Deep Q-Network to Learn How To Play Flappy Bird](https://github.com/yenchenlin1994/DeepLearningFlappyBird.git)
-[25个Java机器学习工具&库](http://www.csdn.net/article/2015-12-25/2826560)
-[贝叶斯深度学习——基于PyMC3的变分推理](http://geek.csdn.net/news/detail/80255)
-
-[kNN算法python实现和简单数字识别的方法](http://www.jb51.net/article/57553.htm)
-[Python验证码识别处理实例](http://www.jb51.net/article/77100.htm)
-
-[blog machine learing](http://www.cnblogs.com/jerrylead/tag/Machine%20Learning/)
-
-
-
-----
-#standford ml note
-#C1 机器学习的动机与应用
-矩阵、逆矩阵、乘法
-Arthur Samuel 1959
-Field of study that gives computers the ability to learn without being explicitly programmed.
-Tom Michell 1998
-A computer program is said to learn from experience E with respect to some task T and some performance measure P,if its performance on T,as measured by P,improves with experience E.
-
-Supervised learning
-标准问题+标准答案->得出其他问题的答案
-
-分类问题
-
-Unsupervised learning
-
-reinforcement learning
-一系列决策，遥控飞机
-
-#C2 监督学习应用.线性回归  梯度下降 
-Training set
-learning algorithm
-h
-
-
-
-
-
-
-
----
 #机器学习,Tom Michell
+
+---
 #C1 base 序论
 CS principal
 数据结构，基本算法
@@ -80,10 +26,12 @@ good dog or bad dog
 没有高效算法的领域
 动态地适应变化的领域
 
-##1.1 学习问题的标准描述
-定义： 对于某类任务T和性能度量P，如果一个计算机程序在T上以P衡量的性能随着经验E而自我完
+## 1.1 学习问题的标准描述
+### 定义
+对于某类任务T和性能度量P，如果一个计算机程序在T上以P衡量的性能随着经验E而自我完
 善，那么我们称这个计算机程序在从经验E学习
-特征：
+
+### 特征
 任务的种类；
 衡量任务提高的标准；
 经验的来源。
@@ -317,51 +265,6 @@ L的归纳偏置是最小断言集合B，它使任意目标概念c和相应的�
 神经网络学习方法对于逼近实数值、离散值或向量值的目标函数提供了一种鲁棒性很强的方法
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
----
-#reference book
-统计学习方法
-Pattern Recognition And Machine Learning
-数据科学实战
-数据检索导论
-
-统计学习方法.李航
-All of Statistics
-统计学习基础-数据挖掘、推理与预测
-
-
-PRML, ESL, MLAPP,
-Linear Algebra Done Right
-
-机器学习及其应用
-All of Statistics.LarryWasserman
-机器学习.TomMitchell
-PRML.pdf
-PRML读书会合集打印版.pdf
-Programming Collective Intelligence.pdf
-[奥莱理] Machine Learning for Hackers.pdf
-大数据：互联网大规模数据挖掘与分布式处理
-推荐系统实践.pdf
-数据挖掘-实用机器学习技术（中文第二版）.pdf
-数据挖掘_概念与技术.pdf
-机器学习导论.pdf
-模式分类第二版中文版Duda.pdf（全）.pdf
-深入搜索引擎--海量信息的压缩、索引和查询.pdf
-矩阵分析.美国 Roger.A.Horn.扫描版.pdf
-机器学习实战
-LDA数学八卦.pdf
 
 
 

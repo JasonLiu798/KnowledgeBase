@@ -14,14 +14,15 @@
 -XX:+HeapDumpOnOutOfMemoryError
 -XX:-OmitStackTraceInFastThrow
 -Dfile.encoding=UTF8
--Xverify：none
--XX:+DisableEx-plicitGC
+-Xverify:none
+-XX:+DisableExplicitGC
 ```
 -Xverify：none 不验证字节码
 
 
 #启动jdk替换
-64位：IDEA_JDK_64
+64位：
+IDEA_JDK_64
 32位：IDEA_JKD
 
 ---

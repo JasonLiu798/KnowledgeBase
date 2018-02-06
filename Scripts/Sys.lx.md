@@ -84,8 +84,7 @@ MultiTail是个用来实现同时监控多个文档、类似tail命令的功能�
 发行版本
 cat /etc/issue
 
-##date
-date -s 11:25:00
+
 
 ## mount
 mount -o loop disk1.iso /mntmount/iso

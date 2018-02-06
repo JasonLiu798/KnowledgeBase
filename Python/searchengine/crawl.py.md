@@ -4,6 +4,8 @@
 urllib2
 requests
 
+Selenium
+
 ---
 #页面解析
 #BeautifulSoup

@@ -330,7 +330,6 @@ private static final ChannelMetadata METADATA = new ChannelMetadata(false);
 
 doConnect
 
-
 doReadMessages
 
 

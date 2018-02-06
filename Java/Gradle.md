@@ -1,5 +1,17 @@
 #gradle
 ---
+#doc
+[Gradle 1.12 翻译——第十六章. 使用文件](http://blog.csdn.net/maosidiaoxian/article/details/41113353)
+[Gradle 1.12用户指南翻译——第三十九章. IDEA 插件](http://blog.csdn.net/maosidiaoxian/article/details/47291703)
+
+
+
+
+
+
+
+
+---
 #常用命令 cmd
 ##查看版本号
 gradle -v

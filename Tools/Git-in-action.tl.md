@@ -1,5 +1,10 @@
 #git
 ---
+
+git checkout -b [分支名] [远程名]/[分支名]
+git pull <远程主机名> <远程分支名>:<本地分支名>
+git pull my release/V1.3:release/V1.3
+
 # github repositories
 ##data
 git@github.com:JasonLiu798/KnowledgeBase.git
@@ -75,7 +80,7 @@ git push
 ##reset
 [git reset简介](http://blog.csdn.net/hudashi/article/details/7664464)
 
-     git reset –-hard commit_id      #强制撤销
+    git reset --hard commit_id      #强制撤销
      git reset HEAD file                    #commited,then upper
      git reset a4e215a7[version] filename   #back to old version
 

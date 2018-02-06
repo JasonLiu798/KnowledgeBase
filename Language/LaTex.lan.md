@@ -95,8 +95,11 @@ $$
 [公示表](http://www.mohu.org/info/symbols/symbols.htm)
 [数学公式基本命令](http://hubl82.blog.163.com/blog/static/12676948520134510173383/)
 
+## 放大缩小
+\huge
+
 ##运算符
-叉乘 \times
+乘号，叉乘 \times
 点乘 \cdot
 异或 \oplus	\bigoplus
 叉乘+圈 \otimes \bigotimes
@@ -110,6 +113,7 @@ $$
 ###基本形式
 $$ F=ma $$
 \[F=ma\]
+
 ###希腊字母 
 $ \alpha \beta \gamma $
 $ \delta \epsilon \zeta \eta \theta $
@@ -133,8 +137,12 @@ $ \cfrac{2}{c + \cfrac{2}{d + \cfrac{2}{4}}} =a $
 大型分数（不嵌套）
 $ \dfrac{2}{c + \dfrac{2}{d +\dfrac{2}{4}}} = a $
 
-###幂^ /下标_ /不等号\neq
-$a^b \neq e^{-\alpha t}_{ij}$ \qquad
+###幂^  上标
+$a^b$
+###下标_ 
+
+###不等号\neq
+\neq e^{-\alpha t}_{ij}$ \qquad
 $a_b$
 
 \hat{x}
@@ -162,6 +170,12 @@ $\underbrace{ a+b+\cdots+z}_{26}$
 \overleftarrow{b a}
 \widehat{e f g}
 
+### 求和
+独立公式
+p = \sum_{n=1}^Na_n
+行间公式
+p = \sum_{n=1}^Na_n
+
 ###积分
 上限和下限用^ 和_来生成，类似于上标和下标
 积分运算符（integral operator）用\int 来生成       
@@ -175,8 +189,12 @@ $\prod_\epsilon$
 ?读作round 法国人发明的
 $\frac{d^{2}y}{dx^{2}}$
 
-###偏导数
+### 导数
+
+
+### 偏导数
 $\frac{\partial y}{\partial t} $
+∂
 
 
 ###加粗 
@@ -305,15 +323,41 @@ http://www.mohu.org/info/symbols/symbols.htm
 无限  \infty
 
 ##希腊字母
-\alpha
-\beta
-\gamma
-\delta
-\epsilon
-\varepsilon
-\zeta
-\eta
-\theta
+\alpha  	Α	α
+\beta 		Β	β
+\gamma		Γ 	γ 	\Gamma
+\delta		Δ 	δ 	\Delta	
+\epsilon 	Ε 	ε 	\varepsilon
+\zeta 		Ζ 	ζ
+\eta 		Η	η
+\theta 		Θ	θ 	 \vartheta \Theta
+\iota		Ι	ι
+\kappa 		Κ	κ
+\lambda		Λ	λ
+\mu 		Μ	μ
+\nu 	 	Ν 	ν
+\xi 		Ξ 	ξ 	\Xi
+\omicron	Ο 	ο
+\pi 		Π	π
+\rho 		P   ρ ϱ 	\varrho 
+\sigma		Σ 	σ ς
+\tau 		Τ 	τ
+\upsilon 	Υ 	υ 	\Upsilon
+\phi 		Φ 	φ 	\varphi \Phi
+\chi 		Χ 	χ
+\psi 		Ψ 	ψ
+\omega 		Ω 	ω
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,36 @@
 sqlacodegen mysql+pymysql://root:root@10.202.125.245:3306/bk > models.py
 
 
+
+------
+#批量插入
+http://docs.sqlalchemy.org/en/rel_1_0/orm/persistence_techniques.html
+
+```py
+s = Session()
+objects = [
+    User(name="u1"),
+    User(name="u2"),
+    User(name="u3")
+]
+s.bulk_save_objects(objects)
+
+'''
+For Session.bulk_insert_mappings(), and Session.bulk_update_mappings(), dictionaries are passed:
+'''
+s.bulk_insert_mappings(User,
+  [dict(name="u1"), dict(name="u2"), dict(name="u3")]
+)
+```
+See also
+Session.bulk_save_objects()
+Session.bulk_insert_mappings()
+Session.bulk_update_mappings()
+
+
+
+
+----------
 #json
 http://www.cnblogs.com/wancy86/p/6421792.html
 [How to serialize SqlAlchemy result to JSON?](https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json)
@@ -120,6 +150,20 @@ class User(Base):
 ```
 
 
+----
+#Q
+##sqlalchemy.exc.UnboundExecutionError: Instance <MyClass at 0x8db7fec> is not bound to a Session; attribute refresh operation cannot proceed
+
+In your first function example, you will need to add a line:
+
+session.expunge_all()
+before
+
+session.close()
+More generally, let's say the session is not closed right away, like in the first example. Perhaps this is a session that is kept active during entire duration of a web request or something like that. In such cases, you don't want to do expunge_all. You will want to be more surgical:
+
+for item in lst:
+    session.expunge(item)
 
 
 

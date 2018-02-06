@@ -1,5 +1,8 @@
 
 
+java -cp druid-1.0.16.jar com.alibaba.druid.filter.config.ConfigTools passwd123 >> pass.md
+
+
 #加密
 [Druid连接池自定义数据库密码加解密的实现](http://kengun.iteye.com/blog/2342115)
 
@@ -100,6 +103,8 @@ maxWait=5000
 ```
 
 #config
+
+
 ```xml
 <!--数据源加密操作 -->  
 <bean id="dbPasswordCallback" class="com.waukeen.util.DBPasswordCallback" lazy-init="true" />

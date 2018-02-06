@@ -1,0 +1,13 @@
+[user]
+	email = jasondliu@qq.com
+	name = JasonLiu798
+[color]
+	ui = false
+[alias]
+	co = checkout
+	ci = commit
+	br = branch
+	last = ‘log
+	lg = log --graph --pretty=oneline --abbrev-commit
+[push]
+	default = current

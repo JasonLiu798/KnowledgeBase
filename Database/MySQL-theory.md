@@ -78,7 +78,6 @@ Innodb
 1.InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB只需要几分钟。
 2.select count(*) 和order by一类的，Innodb其实也是会锁表
 
-
 LRU midpoint insertion strategy
 innodb_old_blocks_time
 
@@ -452,7 +451,10 @@ MySQL的主从复制解决了数据库的读写分离，并很好的提升了读
 2,把sql放到排队队列中;
 3,执行sql;
 4,返回执行结果
-在这个执行过程中最花时间在什么地方呢？第一，是排队等待的时间，第二，sql的执行时间。其实这二个是一回事，等待的同时，肯定有sql在执行。所以我们要缩短sql的执行时间。
+在这个执行过程中最花时间在什么地方呢？
+第一，是排队等待的时间，
+第二，sql的执行时间。
+其实这二个是一回事，等待的同时，肯定有sql在执行。所以我们要缩短sql的执行时间。
 
 表锁定（myisam存储引擎），一个是行锁定（innodb存储引擎）
 1.mysql集群，利用mysql cluster ，mysql proxy，mysql replication，drdb等等

@@ -31,7 +31,7 @@ Ctrl + Alt + Down
 - ↑↓←→ ：上下左右移动光标，注意不是不是 KJHL ！
 - Alt ：调出菜单
 - Ctrl + Shift + P ：调出命令板（Command Palette）
-- `Ctrl + “：调出控制台
+- Ctrl + “：调出控制台
 
 ## Editing
 - Ctrl + Enter ：在当前行下面新增一行然后跳至该行
@@ -163,15 +163,20 @@ Ctrl + Alt + Down
 ```
 
 ---
-#plugins packages 插件
+# plugins packages 插件
 ## package control安装
 ### 简单的安装方法
 使用```Ctrl+` ```快捷键或者通过View->Show Console菜单打开命令行，粘贴如下代码：
+
+### 3
 ```python
 import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())
 ```
 
+
 如果顺利的话，此时就可以在Preferences菜单下看到Package Settings和Package Control两个菜单了。
+
+### 2
 顺便贴下Sublime Text2 的代码：
 ```javascript
 import urllib2,os; pf='Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), 'wb' ).write( urllib2.urlopen( 'http://sublime.wbond.net/' +pf.replace( ' ','%20' )).read()); print( 'Please restart Sublime Text to finish installation')

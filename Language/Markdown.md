@@ -1,7 +1,7 @@
-#markdown
+# markdown
 ----
-#Editor
-#sublime text插件
+# Editor
+# sublime text插件
 必备：
 OmniMarkupPreviewer
 markdown editing
@@ -9,11 +9,11 @@ Markdown Preview
 
 [Sublime插件：Markdown篇](http://www.jianshu.com/p/aa30cc25c91b)
 
-##OmniMarkupPreviewer
+## OmniMarkupPreviewer
 [近乎完美的 Markdown 写作体验](http://blog.leanote.com/post/54bfa17b8404f03097000000)
 [LATEX Support in OmniMarkupPreviewer](http://theo.im/blog/2012/11/03/latex-support-in-omnimarkuppreviewer/)
 markdown 浏览器实时预览
-###配置
+### 配置
 ```javascript
 "browser_command": ["open", "-a", "Google Chrome", "{url}"],
 "html_template_name": "Evolution Yellow",
@@ -32,14 +32,14 @@ Sublime Text 2\Packages\OmniMarkupPreviewer\public
 之后在目录“Sublime Text 2\Packages\OmniMarkupPreviewer”中创建一个空文件MATHJAX.DOWNLOADED
 ```
 
-###快捷键：
+### 快捷键：
 ```javascript
 "ctrl+alt+o" "command": "omni_markup_preview"
 "ctrl+alt+x" "command": "omni_markup_export"
 "ctrl+alt+c" "command": "omni_markup_export""args": { "clipboard_only": true }
 ```
 
-##Markdown Preview
+## Markdown Preview
 markdown 浏览器查看
 ```javascript
 [
@@ -48,7 +48,7 @@ markdown 浏览器查看
 
 ```
 
-##markdown editing
+## markdown editing
 [official site](http://sublimetext-markdown.github.io/MarkdownEditing/#installation)
 [github](https://github.com/SublimeText-Markdown/MarkdownEditing)
 markdown 语法着色

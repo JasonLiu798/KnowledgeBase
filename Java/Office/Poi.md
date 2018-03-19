@@ -1,13 +1,34 @@
 
 
 
-分页符：<br clear=all style="page-break-before:always" mce_style="page-break-before:always"> 
+# 预置样式
+https://stackoverflow.com/questions/2643822/how-can-i-use-predefined-formats-in-docx-with-poi
+It's very simple: Use a "template" docx file.
+
+Create an empty docx file with Word 2007.
+Use this file as a template for your XWPFDocument
+Add your paragraphs with the styles.
+Here's the code:
+
+XWPFDocument document = new XWPFDocument(new FileInputStream("template.docx");
+paragraph = document.createParagraph();
+paragraph.setStyle("Heading1");
+The template contains all styles and therefore they can referenced via setStyle("Heading1");.
+
+# 大纲格式
+[POI操作word2010实现多级标题结构](http://blog.csdn.net/oh_maxy/article/details/46515619)
+
+
+# 分页符
+<br clear=all style="page-break-before:always" mce_style="page-break-before:always"> 
 
 
 经常导出word功能，想在jsp、html中控制word的页数、在指定的位置进行分页可以通过这段代码进行分页。
 
+# word转html
+[利用POI将word转换成html实现在线阅读](http://blog.csdn.net/jbjwpzyl3611421/article/details/49612537)
 
-横向打印
+# 横向打印
 首先在页面的head中加下面的一段代码 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
@@ -46,6 +67,7 @@ this.Page.Response.AddHeader("Content-Disposition: ","attachment;filename="+name
 
 ---
 ```java
+//word 2 html 代码示例
 package com.my.util;
 
 import java.io.BufferedWriter;

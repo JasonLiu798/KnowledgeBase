@@ -25,6 +25,8 @@ Smaller of 1/4th of the physical memory or 1GB.
 
 
 
+
+
 # 指定gc
 ## -XX:+UseSerialGC
 开启单线程、Stop-The-World的新生代和老年代垃圾收集器
@@ -57,6 +59,17 @@ Smaller of 1/4th of the physical memory or 1GB.
 ## -XX:+UseCMSInitiatingOccupancyOnly 
 表示只有在老年代占用达到-XX:CMSInitiatingOccupancyFraction=<percent> 设置的阀值时，才会触发CMS的并发垃圾收集周期。
 
+
+----
+# 参考
+JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8787 -Xnoagent -Xms1024m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m -Xss256K -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseFastAccessorMethods -XX:ParallelCMSThreads=20 -XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dsun.lang.ClassLoader.allowArraySyntax=true"
+
+JAVA_OPTS="-Xms1024m -Xmx1024m
+-XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m -Xss256K
+-XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled
+-XX:ParallelCMSThreads=20
+-XX:+UseFastAccessorMethods
+-XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dsun.lang.ClassLoader.allowArraySyntax=true -Dlogback.configurationFile=xxx"
 
 
 

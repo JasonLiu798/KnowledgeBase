@@ -288,6 +288,3 @@ JDK 6 Update 24之后，这个测试结果会有差异，Han-dlePromotionFailure
 
 
 
-
-
-

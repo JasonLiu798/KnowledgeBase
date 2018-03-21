@@ -30,6 +30,17 @@ npm uninstall xxx  (-g) 卸载模块
 spm install module-name -save 自动把模块和版本号添加到dependencies部分
 spm install module-name -save-dve 自动把模块和版本号添加到devdependencies部分
 
+### 查看依赖版本
+npm view webpack versions
+
+## 依赖升级
+npm upgrade
+或
+npm uninstall xxx 
+npm install
+
+npm install webpack-cli -D
+
 
 
 npm cache clean         清理缓存

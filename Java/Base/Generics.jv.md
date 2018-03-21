@@ -326,6 +326,50 @@ Vector<? super Integer> x = new Vector<Byte>();//这是错误的
  
 提示：限定通配符总是包括自己
 
+---
+# 继承
+8.1.4. Superclasses and Subclasses
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.1.4
+
+Super:
+    extends ClassType
+
+ClassType:
+    TypeDeclSpecifier TypeArgumentsopt
+其中的TypeDeclSpecifier是指父类型，见4.3章节：
+
+TypeDeclSpecifier:
+    TypeName  
+    ClassOrInterfaceType . Identifier
+
+TypeName:
+    Identifier
+    TypeName . Identifier
+关键是后面的可选的TypeArguments，见4.5.1章节：
+
+TypeArguments:
+    < TypeArgumentList >
+
+TypeArgumentList: 
+    TypeArgument
+    TypeArgumentList , TypeArgument
+
+TypeArgument:
+    ReferenceType
+    Wildcard
+倒数第二个ReferenceType包括类、接口、数组等，当然Number也是合法的。
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,4 +1,6 @@
 
+# doc
+[段选择子与段描述符结构](http://blog.csdn.net/q1007729991/article/details/52538080)
 
 #深入理解linux内核  C2内存寻址
 

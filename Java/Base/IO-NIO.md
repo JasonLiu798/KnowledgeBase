@@ -292,6 +292,9 @@ client-->mainReactor->acceptor-->subReactor->read,decode,compute,encode,send
 
 
 
+---
+# lib 相关库
+[common-vfs](http://commons.apache.org/proper/commons-vfs/)
 
 
 

@@ -150,6 +150,10 @@ jhat内置了一个微型的HTTP/HTML服务器，生成dump文件的分析结果
 
 
 ---
+# 运行分析
+[JRat the Java Runtime Analysis Toolkit](http://jrat.sourceforge.net/)
+
+
 
 ---
 # 图形可视化工具

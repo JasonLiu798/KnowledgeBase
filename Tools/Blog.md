@@ -1,5 +1,13 @@
 #blog
 ----
+# 常用
+## 生成
+hugo --theme=hyde --baseUrl="http://JasonLiu798.github.io"
+## 调试
+hugo server --theme=hyde --buildDrafts --watch
+hugo server --theme=hyde --buildDrafts
+
+
 #hugo
 ##setup
 golang

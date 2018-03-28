@@ -49,6 +49,12 @@ In the javax.servlet.jsp dependency the missing dtd-files exist, so the problem 
 
 So I guess the problem was that I needed the Jetty specific JSP dependencies and not the general ones. Can anyone explain why Jetty is implemented that way?
 
+
+---
+# 配置
+-Djetty.port=8090
+
+
 ---
 #jetty plugin
 https://github.com/eclipse-jetty/eclipse-jetty-plugin

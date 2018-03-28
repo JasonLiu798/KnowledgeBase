@@ -12,3 +12,13 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 ```
 
 [reflect gc](http://mp.weixin.qq.com/s/5H6UHcP6kvR2X5hTj_SBjA)
+
+
+# 值拷贝
+## dozer
+http://dozer.sourceforge.net/
+[Advanced dozer mappings](https://www.tikalk.com/posts/2013/06/11/advanced-dozer-mappings/)
+
+
+
+

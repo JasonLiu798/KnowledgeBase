@@ -1,8 +1,9 @@
 #Maven
 ---
-
-
+# 常用
 alias mvnv='mvn versions:set -DnewVersion='
+
+mvn dependency:tree -Dverbose -Dincludes=xxx.xxx:xxx
 
 mvn dependency:copy-dependencies -DoutputDirectory=libjar   -DincludeScope=compile
 

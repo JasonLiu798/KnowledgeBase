@@ -165,7 +165,7 @@ Get-Process > c:/aa.txt
 Get-Process | Export-Clixml c:/ddd.xml  将命令执行结果导出到xml文件中
 Import-Clixml c:/ddd.xml  将xml文件导出到控件台
 
-# 注释使用
+#注释使用
 Get-Proccess | #这里写注释信息
 sort ws
 
